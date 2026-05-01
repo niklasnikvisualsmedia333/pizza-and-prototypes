@@ -1,11 +1,10 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { CSSProperties, FormEvent, useState } from 'react';
 import {
   ArrowRight,
   CalendarDays,
   Check,
   ClipboardCopy,
   Code2,
-  Download,
   ExternalLink,
   Image as ImageIcon,
   Lightbulb,
@@ -21,6 +20,8 @@ import {
   WandSparkles,
   Workflow,
 } from 'lucide-react';
+import frederikImage from './assets/frederik-krause.jpg';
+import niklasImage from './assets/niklas-bruene.jpg';
 import prototypeNightImage from './assets/prototype-night.jpg';
 
 type Lang = 'de' | 'en';
@@ -37,12 +38,11 @@ const EVENT = {
     de: 'geplant im Startpunkt57, Haus der Innovation, Siegen',
     en: 'planned at Startpunkt57, Haus der Innovation, Siegen',
   },
-  address: 'Sandstrasse 26, 57072 Siegen',
+  address: 'Sandstraße 26, 57072 Siegen',
   // TODO: Replace this demo direct chat link with the real WhatsApp group invite later.
   whatsappLink: 'https://wa.me/4917655263773',
 };
 
-const STORAGE_KEY = 'pizza-prototypes-interest-list';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 
 type InterestForm = {
@@ -77,10 +77,12 @@ const copy = {
   de: {
     nav: ['Ablauf', 'Problemkarten', 'Anmelden'],
     joinShort: 'Liste',
+    studioName: 'Buildpunkt Labs',
+    studioLine: 'Prototype nights, SaaS curiosity and Mittelstand problems.',
     eyebrow: 'Builder-first Prototype Night in Siegen',
     heroTitle: 'Baue etwas Echtes an einem Abend.',
     heroText:
-      'Pizza & Prototypes ist ein builder-first Abend in Siegen fuer Entwickler, Maker und technische Studierende, die echte lokale Probleme in erste Prototypen verwandeln wollen.',
+      'Pizza & Prototypes ist ein builder-first Abend in Siegen für Entwickler, Maker und technische Studierende, die echte lokale Probleme in erste Prototypen verwandeln wollen.',
     primaryCta: 'Auf die Interessentenliste',
     secondaryCta: 'WhatsApp-Gruppe beitreten',
     note: 'Keine Pitch Decks. Kein Startup-Theater. Nur echte Probleme, gute Leute und Prototypen.',
@@ -92,77 +94,84 @@ const copy = {
     problemCards: [
       ['Echte Probleme, keine Fake-Ideen', 'Der Abend startet mit konkreten Pain Points von KMU, Handwerk, Vereinen und Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest mit einer fokussierten Gruppe an einer Karte, einem klaren Ansatz und einem kurzen Sprint.'],
-      ['Erst Prototyp, spaeter Pitch', 'UI-Skizzen, Workflows, Code-Demos und Validierungstests zaehlen mehr als perfekte Slides.'],
-      ['Tech-Mehrheit, kuratierter Kontext', 'Der Raum ist fuer Menschen gedacht, die Dinge bauen, mit genug Realitaetskontakt, damit es nuetzlich bleibt.'],
+      ['Erst Prototyp, später Pitch', 'UI-Skizzen, Workflows, Code-Demos und Validierungstests zählen mehr als perfekte Slides.'],
+      ['Tech-Mehrheit, kuratierter Kontext', 'Der Raum ist für Menschen gedacht, die Dinge bauen, mit genug Realitätskontakt, damit es nützlich bleibt.'],
     ],
-    howKicker: 'So laeuft es',
+    howKicker: 'So läuft es',
     howTitle: 'Du musst keine eigene Startup-Idee mitbringen.',
-    steps: ['Problemkarte waehlen', 'Kleines Builder-Team bilden', '60 bis 90 Minuten bauen, skizzieren oder automatisieren', 'Ergebnis zeigen oder 7-Tage-Test definieren'],
+    steps: ['Problemkarte wählen', 'Kleines Builder-Team bilden', '60 bis 90 Minuten bauen, skizzieren oder automatisieren', 'Ergebnis zeigen oder 7-Tage-Test definieren'],
     examplesKicker: 'Beispiel-Problemkarten',
-    examplesTitle: 'Konkret genug zum Bauen. Klein genug fuer einen Abend.',
+    examplesTitle: 'Konkret genug zum Bauen. Klein genug für einen Abend.',
     prototypeIdea: 'Prototyp-Idee',
     examples: [
       ['Follow-up-Chaos im Handwerk', 'Angebote werden verschickt, aber Follow-ups passieren manuell oder gar nicht.', 'Leichtes CRM oder Reminder-Workflow.'],
       ['Vereinsorganisation per WhatsApp', 'Freiwillige, Schichten und Zusagen verschwinden in Gruppenchats.', 'Einfacher Helferplaner oder formularbasierter Workflow.'],
       ['Fotodokumentation auf Baustellen', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
-      ['Wartungs- und Prueferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
+      ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
     ],
-    vibeKicker: 'So koennte es aussehen',
+    vibeKicker: 'So könnte es aussehen',
     vibeTitle: 'Ein Abend mit Laptops, Problemkarten, Pizza und schnellen Prototypen.',
     vibeText:
-      'Das Bild ist bewusst als Vorschau generiert: Es zeigt die gewuenschte Atmosphaere, nicht ein echtes Foto der Location.',
+      'Das Bild ist bewusst als Vorschau generiert: Es zeigt die gewünschte Atmosphäre, nicht ein echtes Foto der Location.',
     locationKicker: 'Location',
     locationTitle: 'Geplant im Haus der Innovation, mitten in Siegen.',
     locationText:
-      'Startpunkt57 beschreibt das Haus der Innovation als Raum fuer Gruendergeist, Vernetzung, Coworking, Workshops und kreative Koepfe in der Siegener Unterstadt.',
+      'Startpunkt57 beschreibt das Haus der Innovation als Raum für Gründergeist, Vernetzung, Coworking, Workshops und kreative Köpfe in der Siegener Unterstadt.',
     sourceLabel: 'Offizielle Startpunkt57-Info',
+    foundersKicker: 'Organisiert von Buildpunkt Labs',
+    foundersTitle: 'Zwei Masterstudenten, ein klares Motiv: mehr echte Builder-Verbindungen in Siegen.',
+    foundersText:
+      'Wir sind Niklas Brüne und Frederik Krause. Wir studieren Entrepreneurship bzw. SME Management im Master und starten Pizza & Prototypes, weil wir selbst mehr Kontakt zu Entwicklern, technischen Studierenden und SaaS-interessierten Buildern suchen. Uns interessiert, wie aus echten Problemen im Mittelstand schnell erste Software-Ideen, Workflows und Prototypen entstehen können.',
+    founders: [
+      ['Niklas Brüne', 'Entrepreneurship / SME Management, SaaS-interessiert und Initiator von Pizza & Prototypes.'],
+      ['Frederik Krause', 'Entrepreneurship / SME Management, Mitinitiator mit Interesse an lokalen Problemräumen und digitalen Lösungen.'],
+    ],
+    motionCards: ['Problemkarte', 'Builder-Team', 'Mini-Prototyp', '7-Tage-Test'],
     whoKicker: 'Wer kommen sollte',
-    whoTitle: 'Entworfen fuer Menschen, die gerne bauen.',
-    mainly: 'Vor allem fuer',
+    whoTitle: 'Entworfen für Menschen, die gerne bauen.',
+    mainly: 'Vor allem für',
     also: 'Auch willkommen',
-    whoNote: 'Das ist kein allgemeines Networking-Event. Es ist fuer Menschen gedacht, die gerne bauen.',
-    audienceMain: ['Programmierer', 'Informatikstudierende', 'Hobby-Entwickler', 'Maker', 'UI/UX- und HCI-Leute', 'Data-Science- und AI-Enthusiasten', 'Technische Problemloeser'],
+    whoNote: 'Das ist kein allgemeines Networking-Event. Es ist für Menschen gedacht, die gerne bauen.',
+    audienceMain: ['Programmierer', 'Informatikstudierende', 'Hobby-Entwickler', 'Maker', 'UI/UX- und HCI-Leute', 'Data-Science- und AI-Enthusiasten', 'Technische Problemlöser'],
     audienceAlso: ['Zugang zu echten Problemen', 'Produktdenken', 'Startup-Interesse'],
     scheduleKicker: 'Ablauf',
-    scheduleTitle: 'Ein kompakter Abend mit genug Raum fuer gute Gespraeche.',
+    scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
     schedule: [
       ['18:30', 'Ankommen, Pizza und Problemkarten'],
-      ['18:45', 'Kurze Einfuehrung und Spielregeln'],
+      ['18:45', 'Kurze Einführung und Spielregeln'],
       ['18:55', 'Teambildung'],
       ['19:05', 'Prototype Sprint'],
       ['20:20', 'Demo Walk'],
-      ['20:45', 'Naechste Schritte und WhatsApp-Gruppe'],
+      ['20:45', 'Nächste Schritte und WhatsApp-Gruppe'],
       ['21:00', 'Open End'],
     ],
     formKicker: 'Interessentenliste',
     formTitle: 'Komm in die erste Builder-Runde.',
     pilotDetails: 'Pilotdetails',
-    organizerExport: 'Organizer-Export',
-    localStorageNote: 'Eintraege werden an Formspree gesendet und zusaetzlich in diesem Browser als Organizer-Backup gespeichert.',
-    stored: 'gespeicherte Eintraege',
     successTitle: 'Du bist auf der Interessentenliste.',
-    successText: 'Danke. Deine Anmeldung wurde gesendet und zusaetzlich lokal als Backup gespeichert.',
-    error: 'Bitte fuelle die Pflichtfelder aus, bevor du dich eintraegst.',
-    sendError: 'Das Senden hat gerade nicht geklappt. Bitte pruefe deine Verbindung und versuche es erneut.',
+    successText: 'Danke. Deine Anmeldung wurde über Formspree gesendet.',
+    formDelivery: 'Deine Anmeldung landet direkt bei uns über Formspree. Kein JSON-Export, kein Demo-Speicher.',
+    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
+    sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
-      fullName: 'Vollstaendiger Name',
+      fullName: 'Vollständiger Name',
       email: 'E-Mail-Adresse',
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
       coding: 'Kannst du coden?',
-      followUp: 'Zeit fuer ein kleines Folgeprojekt nach dem Event?',
+      followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
       link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
-      pizza: 'Pizza-Praeferenz',
+      pizza: 'Pizza-Präferenz',
       interests: 'Was interessiert dich?',
       foodNotes: 'Allergien oder Essenshinweise, optional',
       notes: 'Sonst noch etwas, das wir wissen sollten?',
-      select: 'Auswaehlen',
+      select: 'Auswählen',
     },
     roles: ['Programmierer', 'Informatikstudent', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Andere'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
     followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
-    pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza fuer mich'],
+    pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und Follow-up-Projekte an einem Ort.',
     whatsappButton: 'WhatsApp beitreten',
@@ -173,17 +182,17 @@ const copy = {
     shareButton: 'Teilen',
     sending: 'Wird gesendet...',
     copied: 'Link kopiert.',
-    noShare: 'Teilen wird in diesem Browser nicht unterstuetzt. Du kannst stattdessen den Link kopieren.',
+    noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
     shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Pizza & Prototypes in Siegen weiter.',
     faqKicker: 'FAQ',
     faqTitle: 'Kurze Antworten vor der Anmeldung.',
     faqs: [
       ['Muss ich eine Startup-Idee mitbringen?', 'Nein. Wir bringen Problemkarten mit. Du brauchst nur Neugier und Lust zu bauen.'],
-      ['Muss ich Expert Programmer sein?', 'Nein. Builder, Einsteiger, Designer, HCI-Leute und technische Problemloeser sind willkommen.'],
+      ['Muss ich Expert Programmer sein?', 'Nein. Builder, Einsteiger, Designer, HCI-Leute und technische Problemlöser sind willkommen.'],
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitch Decks. Wir machen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
-      ['Ist das nur fuer Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Fuer den ersten Pilot ja.'],
+      ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
+      ['Ist das kostenlos?', 'Für den ersten Pilot ja.'],
     ],
     footerSub: 'Builder-first Prototype Night in Siegen',
     footerLine: 'Made for people who prefer building over talking.',
@@ -191,6 +200,8 @@ const copy = {
   en: {
     nav: ['How it works', 'Problem cards', 'Register'],
     joinShort: 'Join list',
+    studioName: 'Buildpunkt Labs',
+    studioLine: 'Prototype nights, SaaS curiosity and SME problems.',
     eyebrow: 'Builder-first prototype night in Siegen',
     heroTitle: 'Build something real in one evening.',
     heroText:
@@ -230,6 +241,15 @@ const copy = {
     locationText:
       'Startpunkt57 describes Haus der Innovation as a place for entrepreneurial spirit, networking, coworking, workshops and creative minds in Siegen.',
     sourceLabel: 'Official Startpunkt57 info',
+    foundersKicker: 'Organized by Buildpunkt Labs',
+    foundersTitle: 'Two master students with one clear motive: more real builder connections in Siegen.',
+    foundersText:
+      'We are Niklas Brüne and Frederik Krause. We study Entrepreneurship and SME Management in the master’s program and started Pizza & Prototypes because we want to connect with developers, technical students and SaaS-curious builders ourselves. We are interested in how real SME problems can become first software ideas, workflows and prototypes quickly.',
+    founders: [
+      ['Niklas Brüne', 'Entrepreneurship / SME Management, SaaS-curious and initiator of Pizza & Prototypes.'],
+      ['Frederik Krause', 'Entrepreneurship / SME Management, co-initiator interested in local problem spaces and digital solutions.'],
+    ],
+    motionCards: ['Problem card', 'Builder team', 'Mini prototype', '7-day test'],
     whoKicker: 'Who should come',
     whoTitle: 'Designed for people who like building.',
     mainly: 'Mainly for',
@@ -251,11 +271,9 @@ const copy = {
     formKicker: 'Interest list',
     formTitle: 'Join the first builder cohort.',
     pilotDetails: 'Pilot details',
-    organizerExport: 'Organizer export',
-    localStorageNote: 'Submissions are sent to Formspree and also stored in this browser as an organizer backup.',
-    stored: 'stored submissions',
     successTitle: 'You are on the interest list.',
-    successText: 'Thanks. Your registration was sent and also saved locally as a backup.',
+    successText: 'Thanks. Your registration was sent through Formspree.',
+    formDelivery: 'Your registration goes straight to us through Formspree. No JSON export, no demo storage.',
     error: 'Please fill in the required fields before joining the list.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -315,14 +333,6 @@ function App() {
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const registrations = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') as InterestForm[];
-    } catch {
-      return [];
-    }
-  }, [submitted]);
-
   const updateField = (field: keyof InterestForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
     setFormError('');
@@ -368,9 +378,6 @@ function App() {
         throw new Error('Formspree request failed');
       }
 
-      // Keep a local organizer backup so the export buttons still work on this device.
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved, submission]));
       setSubmitted(true);
       setForm(initialForm);
     } catch {
@@ -378,19 +385,6 @@ function App() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const exportData = (format: 'json' | 'csv') => {
-    const raw = localStorage.getItem(STORAGE_KEY) ?? '[]';
-    const data = JSON.parse(raw);
-    const content = format === 'json' ? JSON.stringify(data, null, 2) : toCsv(data as Record<string, unknown>[]);
-    const blob = new Blob([content], { type: format === 'json' ? 'application/json' : 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `pizza-prototypes-interest-list.${format}`;
-    link.click();
-    URL.revokeObjectURL(url);
   };
 
   const copyLink = async () => {
@@ -421,6 +415,7 @@ function App() {
       <ExampleProblems t={t} />
       <VibeSection t={t} />
       <LocationSection t={t} lang={lang} />
+      <FoundersSection t={t} />
       <WhoShouldCome t={t} />
       <Schedule t={t} />
       <Registration
@@ -428,12 +423,10 @@ function App() {
         form={form}
         submitted={submitted}
         formError={formError}
-        registrationsCount={registrations.length}
         isSubmitting={isSubmitting}
         updateField={updateField}
         toggleInterest={toggleInterest}
         handleSubmit={handleSubmit}
-        exportData={exportData}
       />
       <WhatsAppSection t={t} />
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
@@ -448,10 +441,11 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#07080d]/75 backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
         <a href="#top" className="flex min-w-0 items-center gap-2 font-semibold tracking-tight sm:gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/15 bg-white/8">
-            <Pizza className="h-5 w-5 text-orange-300" aria-hidden="true" />
+          <LogoMark />
+          <span className="flex min-w-0 flex-col leading-tight">
+            <span className="truncate text-sm text-white sm:text-base">Pizza & Prototypes</span>
+            <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.studioName}</span>
           </span>
-          <span className="truncate">Pizza & Prototypes</span>
         </a>
         <div className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
           <a href="#how" className="hover:text-white">{t.nav[0]}</a>
@@ -467,6 +461,15 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
         </div>
       </nav>
     </header>
+  );
+}
+
+function LogoMark() {
+  return (
+    <span className="logo-mark" aria-hidden="true">
+      <Pizza className="h-4 w-4 text-orange-300" />
+      <Code2 className="h-4 w-4 text-cyan-200" />
+    </span>
   );
 }
 
@@ -550,6 +553,13 @@ function HeroVisual({ t }: { t: typeof copy.de }) {
       </div>
       <div className="floating-chip bottom-10 right-0">
         <WandSparkles className="h-4 w-4" /> 7-day test output
+      </div>
+      <div className="pop-stack" aria-hidden="true">
+        {t.motionCards.map((item, index) => (
+          <span key={item} style={{ '--delay': `${index * 180}ms` } as CSSProperties}>
+            {item}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -649,6 +659,35 @@ function LocationSection({ t, lang }: { t: typeof copy.de; lang: Lang }) {
   );
 }
 
+function FoundersSection({ t }: { t: typeof copy.de }) {
+  const founderImages = [niklasImage, frederikImage];
+
+  return (
+    <Section id="founders" kicker={t.foundersKicker} title={t.foundersTitle}>
+      <div className="founders-panel mt-10">
+        <div>
+          <p className="section-lead mt-0">{t.foundersText}</p>
+          <div className="mt-7 rounded-xl border border-cyan-300/15 bg-cyan-300/8 p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-200">{t.studioName}</p>
+            <p className="mt-2 text-slate-300">{t.studioLine}</p>
+          </div>
+        </div>
+        <div className="founder-grid">
+          {t.founders.map(([name, description], index) => (
+            <article key={name} className="founder-card">
+              <img src={founderImages[index]} alt={name} />
+              <div>
+                <h3>{name}</h3>
+                <p>{description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 function WhoShouldCome({ t }: { t: typeof copy.de }) {
   return (
     <Section id="who" kicker={t.whoKicker} title={t.whoTitle}>
@@ -695,15 +734,13 @@ type RegistrationProps = {
   form: InterestForm;
   submitted: boolean;
   formError: string;
-  registrationsCount: number;
   isSubmitting: boolean;
   updateField: (field: keyof InterestForm, value: string) => void;
   toggleInterest: (interest: string) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  exportData: (format: 'json' | 'csv') => void;
 };
 
-function Registration({ t, form, submitted, formError, registrationsCount, isSubmitting, updateField, toggleInterest, handleSubmit, exportData }: RegistrationProps) {
+function Registration({ t, form, submitted, formError, isSubmitting, updateField, toggleInterest, handleSubmit }: RegistrationProps) {
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
@@ -714,18 +751,11 @@ function Registration({ t, form, submitted, formError, registrationsCount, isSub
             <InfoRow icon={Timer} label={EVENT.time} />
             <InfoRow icon={MapPin} label={EVENT.locationFlexible.de} />
           </div>
-          <div className="mt-8 rounded-xl border border-orange-300/20 bg-orange-300/8 p-5">
-            <p className="font-medium text-orange-100">{t.organizerExport}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">{t.localStorageNote}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <button type="button" className="btn btn-small" onClick={() => exportData('json')}>
-                <Download className="h-4 w-4" /> JSON
-              </button>
-              <button type="button" className="btn btn-small" onClick={() => exportData('csv')}>
-                <Download className="h-4 w-4" /> CSV
-              </button>
-            </div>
-            <p className="mt-3 text-xs text-slate-500">{registrationsCount} {t.stored}</p>
+          <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
+            <p className="font-medium text-cyan-100">Formspree</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">
+              {t.formDelivery}
+            </p>
           </div>
         </div>
 
@@ -943,16 +973,6 @@ function BackgroundScene() {
       <div className="grid-overlay" />
     </div>
   );
-}
-
-function toCsv(rows: Record<string, unknown>[]) {
-  if (!rows.length) return '';
-  const headers = Object.keys(rows[0]);
-  const escapeCell = (value: unknown) => {
-    const text = Array.isArray(value) ? value.join('; ') : String(value ?? '');
-    return `"${text.replace(/"/g, '""')}"`;
-  };
-  return [headers.join(','), ...rows.map((row) => headers.map((header) => escapeCell(row[header])).join(','))].join('\n');
 }
 
 export default App;
