@@ -87,6 +87,12 @@ main > header {
   transform: translateY(-1px);
 }
 
+.btn:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+}
+
 .btn-primary {
   border-color: rgba(103, 232, 249, 0.45);
   background: linear-gradient(135deg, #e5fbff 0%, #67e8f9 42%, #fb923c 120%);

@@ -43,6 +43,7 @@ const EVENT = {
 };
 
 const STORAGE_KEY = 'pizza-prototypes-interest-list';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 
 type InterestForm = {
   fullName: string;
@@ -137,11 +138,12 @@ const copy = {
     formTitle: 'Komm in die erste Builder-Runde.',
     pilotDetails: 'Pilotdetails',
     organizerExport: 'Organizer-Export',
-    localStorageNote: 'Demo-Eintraege werden nur in diesem Browser gespeichert. Exportiere sie, bevor Browserdaten geloescht werden.',
+    localStorageNote: 'Eintraege werden an Formspree gesendet und zusaetzlich in diesem Browser als Organizer-Backup gespeichert.',
     stored: 'gespeicherte Eintraege',
     successTitle: 'Du bist auf der Interessentenliste.',
-    successText: 'Diese Demo hat deinen Eintrag lokal in diesem Browser gespeichert.',
+    successText: 'Danke. Deine Anmeldung wurde gesendet und zusaetzlich lokal als Backup gespeichert.',
     error: 'Bitte fuelle die Pflichtfelder aus, bevor du dich eintraegst.',
+    sendError: 'Das Senden hat gerade nicht geklappt. Bitte pruefe deine Verbindung und versuche es erneut.',
     fields: {
       fullName: 'Vollstaendiger Name',
       email: 'E-Mail-Adresse',
@@ -169,6 +171,7 @@ const copy = {
     shareText: 'Ein guter Abend startet mit den richtigen Leuten.',
     copyLink: 'Link kopieren',
     shareButton: 'Teilen',
+    sending: 'Wird gesendet...',
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstuetzt. Du kannst stattdessen den Link kopieren.',
     shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Pizza & Prototypes in Siegen weiter.',
@@ -249,11 +252,12 @@ const copy = {
     formTitle: 'Join the first builder cohort.',
     pilotDetails: 'Pilot details',
     organizerExport: 'Organizer export',
-    localStorageNote: 'Temporary demo submissions are stored in this browser only. Export before clearing browser data.',
+    localStorageNote: 'Submissions are sent to Formspree and also stored in this browser as an organizer backup.',
     stored: 'stored submissions',
     successTitle: 'You are on the interest list.',
-    successText: 'This demo saved your entry locally in this browser.',
+    successText: 'Thanks. Your registration was sent and also saved locally as a backup.',
     error: 'Please fill in the required fields before joining the list.',
+    sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
       fullName: 'Full name',
       email: 'Email address',
@@ -281,6 +285,7 @@ const copy = {
     shareText: 'A good room starts with the right people.',
     copyLink: 'Copy page link',
     shareButton: 'Share',
+    sending: 'Sending...',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
     shareNativeText: 'Know someone who likes building? Send them Pizza & Prototypes in Siegen.',
@@ -308,6 +313,7 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [shareMessage, setShareMessage] = useState('');
   const [formError, setFormError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const registrations = useMemo(() => {
     try {
@@ -331,7 +337,7 @@ function App() {
     }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!form.fullName || !form.email || !form.role || !form.codingLevel || !form.followUp || !form.pizza) {
@@ -339,16 +345,39 @@ function App() {
       return;
     }
 
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+    setIsSubmitting(true);
+    setFormError('');
 
-    // TODO: Connect a real backend here later, for example Formspree, Airtable,
-    // Google Sheets, Supabase or a small API endpoint. localStorage is only a demo.
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify([...saved, { ...form, language: lang, submittedAt: new Date().toISOString() }]),
-    );
-    setSubmitted(true);
-    setForm(initialForm);
+    const submission = { ...form, language: lang, submittedAt: new Date().toISOString() };
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...submission,
+          interests: submission.interests.join(', '),
+          event: 'Pizza & Prototypes',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree request failed');
+      }
+
+      // Keep a local organizer backup so the export buttons still work on this device.
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved, submission]));
+      setSubmitted(true);
+      setForm(initialForm);
+    } catch {
+      setFormError(t.sendError);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const exportData = (format: 'json' | 'csv') => {
@@ -400,6 +429,7 @@ function App() {
         submitted={submitted}
         formError={formError}
         registrationsCount={registrations.length}
+        isSubmitting={isSubmitting}
         updateField={updateField}
         toggleInterest={toggleInterest}
         handleSubmit={handleSubmit}
@@ -666,13 +696,14 @@ type RegistrationProps = {
   submitted: boolean;
   formError: string;
   registrationsCount: number;
+  isSubmitting: boolean;
   updateField: (field: keyof InterestForm, value: string) => void;
   toggleInterest: (interest: string) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   exportData: (format: 'json' | 'csv') => void;
 };
 
-function Registration({ t, form, submitted, formError, registrationsCount, updateField, toggleInterest, handleSubmit, exportData }: RegistrationProps) {
+function Registration({ t, form, submitted, formError, registrationsCount, isSubmitting, updateField, toggleInterest, handleSubmit, exportData }: RegistrationProps) {
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
@@ -740,8 +771,8 @@ function Registration({ t, form, submitted, formError, registrationsCount, updat
               <textarea value={form.notes} onChange={(event) => updateField('notes', event.target.value)} rows={5} />
             </label>
           </div>
-          <button type="submit" className="btn btn-primary mt-7 w-full justify-center">
-            {t.primaryCta}
+          <button type="submit" className="btn btn-primary mt-7 w-full justify-center" disabled={isSubmitting}>
+            {isSubmitting ? t.sending : t.primaryCta}
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </button>
         </form>
