@@ -38,8 +38,8 @@ const EVENT = {
     en: 'planned at Startpunkt57, Haus der Innovation, Siegen',
   },
   address: 'Sandstrasse 26, 57072 Siegen',
-  // TODO: Replace this placeholder with the real WhatsApp invite link.
-  whatsappLink: 'https://chat.whatsapp.com/REPLACE_WITH_REAL_LINK',
+  // TODO: Replace this demo direct chat link with the real WhatsApp group invite later.
+  whatsappLink: 'https://wa.me/4917655263773',
 };
 
 const STORAGE_KEY = 'pizza-prototypes-interest-list';
