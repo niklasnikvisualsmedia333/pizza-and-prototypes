@@ -7,6 +7,7 @@ import {
   Code2,
   ExternalLink,
   Lightbulb,
+  Mail,
   MapPin,
   MessageCircle,
   Rocket,
@@ -22,6 +23,7 @@ type Lang = 'en' | 'de';
 const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
   logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
+  heroMap: `${import.meta.env.BASE_URL}assets/hero-pizza-prototypes-map.png`,
   startpunkt57: `${import.meta.env.BASE_URL}assets/logo-startpunkt57.png`,
   entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
   niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
@@ -39,6 +41,7 @@ const EVENT = {
   address: 'Sandstraße 26, 57072 Siegen',
   size: '15 to 30 people',
   whatsappLink: 'https://wa.me/4917655263773',
+  contactEmail: 'info@nikvisuals.de',
 };
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
@@ -487,7 +490,8 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
         <a href="#top" className="flex min-w-0 items-center gap-3">
           <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-header" />
           <span className="flex min-w-0 flex-col leading-tight">
-            <span className="truncate text-sm font-semibold text-white sm:text-base">{t.brand}</span>
+            <span className="brand-title-full truncate text-sm font-semibold text-white sm:text-base">{t.brand}</span>
+            <span className="brand-title-mobile text-sm font-semibold text-white">Tech Meets</span>
             <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.edition}</span>
           </span>
         </a>
@@ -499,7 +503,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
         <div className="flex shrink-0 items-center gap-2">
           <a href="#companies" className="company-nav-link hidden xl:inline-flex">{t.nav[2]}</a>
           <LanguageToggle lang={lang} setLang={setLang} />
-          <a href="#register" className="btn btn-compact hidden sm:inline-flex">
+          <a href="#register" className="btn btn-compact">
             {t.joinShort}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
@@ -525,7 +529,7 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
-      <div className="max-w-3xl">
+      <div className="min-w-0 max-w-3xl">
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
@@ -536,16 +540,17 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           ))}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
-        <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
-          <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
-          <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-          <HeroFact icon={MapPin} label={EVENT.location} />
-        </div>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <HeroSupporters t={t} />
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <a href="#register" className="btn btn-primary">
             {t.primaryCta}
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </a>
+        </div>
+        <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
+          <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
+          <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+          <HeroFact icon={MapPin} label={EVENT.location} />
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
       </div>
@@ -556,33 +561,29 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
 
 function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
-    <div className="relative">
-      <div className="event-map-card">
-        <div className="event-beam event-beam-one" aria-hidden="true" />
-        <div className="event-beam event-beam-two" aria-hidden="true" />
-        <div className="event-map-center">
-          <span>{t.tagline}</span>
-          <strong>{t.edition.split(' · ')[0]}</strong>
-        </div>
-        <div className="event-orbit event-orbit-one" />
-        <div className="event-orbit event-orbit-two" />
-        <div className="event-node need-node">
-          <Lightbulb className="h-5 w-5" aria-hidden="true" />
-          <span>{t.facts[0]}</span>
-        </div>
-        <div className="event-node team-node">
-          <Users className="h-5 w-5" aria-hidden="true" />
-          <span>{t.facts[1]}</span>
-        </div>
-        <div className="event-node concept-node">
-          <Workflow className="h-5 w-5" aria-hidden="true" />
-          <span>{t.facts[2]}</span>
-        </div>
-        <div className="event-node share-node">
-          <MessageCircle className="h-5 w-5" aria-hidden="true" />
-          <span>{t.facts[3]}</span>
-        </div>
+    <div className="relative min-w-0">
+      <div className="event-map-card hero-visual-card">
+        <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" />
+        <div className="visual-sheen" aria-hidden="true" />
+        <div className="visual-glow visual-glow-blue" aria-hidden="true" />
+        <div className="visual-glow visual-glow-orange" aria-hidden="true" />
+        <div className="visual-layer-card visual-layer-need" aria-hidden="true" />
+        <div className="visual-layer-card visual-layer-team" aria-hidden="true" />
+        <div className="visual-layer-card visual-layer-concept" aria-hidden="true" />
+        <div className="visual-layer-card visual-layer-share" aria-hidden="true" />
+        <Rocket className="visual-rocket h-8 w-8" aria-hidden="true" />
       </div>
+    </div>
+  );
+}
+
+function HeroSupporters({ t }: { t: typeof copy.en }) {
+  return (
+    <div className="hero-supporters" aria-label={t.poweredBy}>
+      <span>{t.poweredBy}</span>
+      {supporterLogos.map((supporter) => (
+        <img key={supporter.name} src={supporter.src} alt={supporter.name} />
+      ))}
     </div>
   );
 }
@@ -916,9 +917,9 @@ function CompaniesSection({ t }: { t: typeof copy.en }) {
     <Section id="companies" kicker={t.companiesKicker} title={t.companiesTitle}>
       <div className="company-contact mt-10">
         <p>{t.companiesText}</p>
-        <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
+        <a href={`mailto:${EVENT.contactEmail}?subject=Tech%20Meets%20Problems%20cooperation`} className="btn btn-secondary">
           {t.companiesButton}
-          <MessageCircle className="h-5 w-5" aria-hidden="true" />
+          <Mail className="h-5 w-5" aria-hidden="true" />
         </a>
       </div>
     </Section>
