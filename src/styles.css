@@ -92,6 +92,29 @@ main > header {
   font-weight: 800;
 }
 
+.brand-logo {
+  display: block;
+  object-fit: contain;
+}
+
+.brand-logo-header {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.7rem;
+}
+
+.brand-logo-hero {
+  width: min(18rem, 72vw);
+  height: auto;
+  filter: drop-shadow(0 18px 38px rgba(34, 211, 238, 0.12));
+}
+
+.brand-logo-footer {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+}
+
 .btn {
   display: inline-flex;
   min-height: 48px;
@@ -333,6 +356,35 @@ main > header {
   backdrop-filter: blur(14px);
 }
 
+.flow-visual {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.flow-node {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  border-radius: 0.75rem;
+  background: rgba(103, 232, 249, 0.07);
+  padding: 0.65rem 0.75rem;
+  color: #dff7fb;
+}
+
+.flow-node span {
+  display: grid;
+  height: 2rem;
+  width: 2rem;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #071019;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
 @media (min-width: 768px) {
   .floating-chip {
     display: flex;
@@ -382,6 +434,10 @@ main > header {
   object-fit: cover;
 }
 
+.compact-founder-card img {
+  aspect-ratio: 1 / 1;
+}
+
 .founder-card div {
   padding: 1.25rem;
 }
@@ -396,6 +452,39 @@ main > header {
   margin-top: 0.55rem;
   color: #cbd5e1;
   line-height: 1.65;
+}
+
+.supporter-panel {
+  border: 1px solid rgba(103, 232, 249, 0.15);
+  border-radius: 1rem;
+  background: rgba(103, 232, 249, 0.07);
+  padding: 1.25rem;
+}
+
+.supporter-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.supporter-card {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.055);
+  color: #f8fafc;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .supporter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (min-width: 900px) {

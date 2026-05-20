@@ -1,4 +1,4 @@
-import { CSSProperties, FormEvent, useState } from 'react';
+import { type CSSProperties, type FormEvent, useState } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -6,12 +6,10 @@ import {
   ClipboardCopy,
   Code2,
   ExternalLink,
-  Image as ImageIcon,
   Lightbulb,
   MapPin,
   MessageCircle,
   Network,
-  Pizza,
   Rocket,
   Share2,
   Sparkles,
@@ -20,26 +18,26 @@ import {
   WandSparkles,
   Workflow,
 } from 'lucide-react';
-import frederikImage from './assets/frederik-krause.jpg';
-import niklasImage from './assets/niklas-bruene.jpg';
-import prototypeNightImage from './assets/prototype-night.jpg';
 
-type Lang = 'de' | 'en';
+type Lang = 'en' | 'de';
+
+const ASSETS = {
+  logoTransparent: '/assets/logo-tech-meets-problems-transparent.png',
+  logoDark: '/assets/logo-tech-meets-problems-dark.png',
+  niklas: '/assets/niklas-bruene.jpg',
+  frederik: '/assets/frederik-krause.jpg',
+};
 
 const EVENT = {
-  // Change these values later if the event date, time or venue changes.
   date: {
-    de: 'Freitag, 26. Juni 2026',
     en: 'Friday, June 26, 2026',
+    de: 'Freitag, 26. Juni 2026',
   },
-  time: '18:30 bis 21:00',
+  time: '18:30 to 21:00',
+  timeDe: '18:30 bis 21:00',
   location: 'Startpunkt57 / Haus der Innovation, Siegen',
-  locationFlexible: {
-    de: 'geplant im Startpunkt57, Haus der Innovation, Siegen',
-    en: 'planned at Startpunkt57, Haus der Innovation, Siegen',
-  },
   address: 'Sandstraße 26, 57072 Siegen',
-  // TODO: Replace this demo direct chat link with the real WhatsApp group invite later.
+  size: '15 to 30 people',
   whatsappLink: 'https://wa.me/4917655263773',
 };
 
@@ -74,206 +72,84 @@ const initialForm: InterestForm = {
 };
 
 const copy = {
-  de: {
-    nav: ['Ablauf', 'Problemkarten', 'Anmelden'],
-    joinShort: 'Liste',
-    studioName: 'Buildpunkt Labs',
-    studioLine: 'Prototype nights, SaaS curiosity and Mittelstand problems.',
-    eyebrow: 'Builder-first Prototype Night in Siegen',
-    heroTitle: 'Baue etwas Echtes an einem Abend.',
-    heroText:
-      'Pizza & Prototypes ist ein builder-first Abend in Siegen für Entwickler, Maker und technische Studierende, die echte lokale Probleme in erste Prototypen verwandeln wollen.',
-    primaryCta: 'Auf die Interessentenliste',
-    secondaryCta: 'WhatsApp-Gruppe beitreten',
-    note: 'Keine Pitch Decks. Kein Startup-Theater. Nur echte Probleme, gute Leute und Prototypen.',
-    facts: ['Echte Problemkarten', 'Kleine Teams', '90-Minuten-Sprint', 'Demo Walk'],
-    problemKicker: 'Warum das Format',
-    problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
-    problemLead:
-      'Viele Entrepreneurship-Formate ziehen Business-Leute an, aber zu wenige technische Builder. Pizza & Prototypes dreht die Perspektive: erst bauen, dann Business-Kontext.',
-    problemCards: [
-      ['Echte Probleme, keine Fake-Ideen', 'Der Abend startet mit konkreten Pain Points von KMU, Handwerk, Vereinen und Nischenbranchen.'],
-      ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest mit einer fokussierten Gruppe an einer Karte, einem klaren Ansatz und einem kurzen Sprint.'],
-      ['Erst Prototyp, später Pitch', 'UI-Skizzen, Workflows, Code-Demos und Validierungstests zählen mehr als perfekte Slides.'],
-      ['Tech-Mehrheit, kuratierter Kontext', 'Der Raum ist für Menschen gedacht, die Dinge bauen, mit genug Realitätskontakt, damit es nützlich bleibt.'],
-    ],
-    howKicker: 'So läuft es',
-    howTitle: 'Du musst keine eigene Startup-Idee mitbringen.',
-    steps: ['Problemkarte wählen', 'Kleines Builder-Team bilden', '60 bis 90 Minuten bauen, skizzieren oder automatisieren', 'Ergebnis zeigen oder 7-Tage-Test definieren'],
-    examplesKicker: 'Beispiel-Problemkarten',
-    examplesTitle: 'Konkret genug zum Bauen. Klein genug für einen Abend.',
-    prototypeIdea: 'Prototyp-Idee',
-    examples: [
-      ['Follow-up-Chaos im Handwerk', 'Angebote werden verschickt, aber Follow-ups passieren manuell oder gar nicht.', 'Leichtes CRM oder Reminder-Workflow.'],
-      ['Vereinsorganisation per WhatsApp', 'Freiwillige, Schichten und Zusagen verschwinden in Gruppenchats.', 'Einfacher Helferplaner oder formularbasierter Workflow.'],
-      ['Fotodokumentation auf Baustellen', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
-      ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
-    ],
-    vibeKicker: 'So könnte es aussehen',
-    vibeTitle: 'Ein Abend mit Laptops, Problemkarten, Pizza und schnellen Prototypen.',
-    vibeText:
-      'Das Bild ist bewusst als Vorschau generiert: Es zeigt die gewünschte Atmosphäre, nicht ein echtes Foto der Location.',
-    locationKicker: 'Location',
-    locationTitle: 'Geplant im Haus der Innovation, mitten in Siegen.',
-    locationText:
-      'Startpunkt57 beschreibt das Haus der Innovation als Raum für Gründergeist, Vernetzung, Coworking, Workshops und kreative Köpfe in der Siegener Unterstadt.',
-    sourceLabel: 'Offizielle Startpunkt57-Info',
-    foundersKicker: 'Organisiert von Buildpunkt Labs',
-    foundersTitle: 'Zwei Masterstudenten, ein klares Motiv: mehr echte Builder-Verbindungen in Siegen.',
-    foundersText:
-      'Wir sind Niklas Brüne und Frederik Krause. Wir studieren Entrepreneurship bzw. SME Management im Master und starten Pizza & Prototypes, weil wir selbst mehr Kontakt zu Entwicklern, technischen Studierenden und SaaS-interessierten Buildern suchen. Uns interessiert, wie aus echten Problemen im Mittelstand schnell erste Software-Ideen, Workflows und Prototypen entstehen können.',
-    founders: [
-      ['Niklas Brüne', 'Entrepreneurship / SME Management, SaaS-interessiert und Initiator von Pizza & Prototypes.'],
-      ['Frederik Krause', 'Entrepreneurship / SME Management, Mitinitiator mit Interesse an lokalen Problemräumen und digitalen Lösungen.'],
-    ],
-    motionCards: ['Problemkarte', 'Builder-Team', 'Mini-Prototyp', '7-Tage-Test'],
-    whoKicker: 'Wer kommen sollte',
-    whoTitle: 'Entworfen für Menschen, die gerne bauen.',
-    mainly: 'Vor allem für',
-    also: 'Auch willkommen',
-    whoNote: 'Das ist kein allgemeines Networking-Event. Es ist für Menschen gedacht, die gerne bauen.',
-    audienceMain: ['Programmierer', 'Informatikstudierende', 'Hobby-Entwickler', 'Maker', 'UI/UX- und HCI-Leute', 'Data-Science- und AI-Enthusiasten', 'Technische Problemlöser'],
-    audienceAlso: ['Zugang zu echten Problemen', 'Produktdenken', 'Startup-Interesse'],
-    scheduleKicker: 'Ablauf',
-    scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
-    schedule: [
-      ['18:30', 'Ankommen, Pizza und Problemkarten'],
-      ['18:45', 'Kurze Einführung und Spielregeln'],
-      ['18:55', 'Teambildung'],
-      ['19:05', 'Prototype Sprint'],
-      ['20:20', 'Demo Walk'],
-      ['20:45', 'Nächste Schritte und WhatsApp-Gruppe'],
-      ['21:00', 'Open End'],
-    ],
-    formKicker: 'Interessentenliste',
-    formTitle: 'Komm in die erste Builder-Runde.',
-    pilotDetails: 'Pilotdetails',
-    successTitle: 'Du bist auf der Interessentenliste.',
-    successText: 'Danke. Deine Anmeldung wurde über Formspree gesendet.',
-    formDelivery: 'Deine Anmeldung landet direkt bei uns über Formspree. Kein JSON-Export, kein Demo-Speicher.',
-    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
-    sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
-    fields: {
-      fullName: 'Vollständiger Name',
-      email: 'E-Mail-Adresse',
-      phone: 'Telefonnummer, optional',
-      role: 'Was beschreibt dich am besten?',
-      coding: 'Kannst du coden?',
-      followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
-      link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
-      pizza: 'Pizza-Präferenz',
-      interests: 'Was interessiert dich?',
-      foodNotes: 'Allergien oder Essenshinweise, optional',
-      notes: 'Sonst noch etwas, das wir wissen sollten?',
-      select: 'Auswählen',
-    },
-    roles: ['Programmierer', 'Informatikstudent', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Andere'],
-    codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
-    interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
-    followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
-    pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
-    whatsappKicker: 'Builder-Gruppe',
-    whatsappTitle: 'Updates, Problemkarten und Follow-up-Projekte an einem Ort.',
-    whatsappButton: 'WhatsApp beitreten',
-    shareKicker: 'Teilen',
-    shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
-    shareText: 'Ein guter Abend startet mit den richtigen Leuten.',
-    copyLink: 'Link kopieren',
-    shareButton: 'Teilen',
-    sending: 'Wird gesendet...',
-    copied: 'Link kopiert.',
-    noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
-    shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Pizza & Prototypes in Siegen weiter.',
-    faqKicker: 'FAQ',
-    faqTitle: 'Kurze Antworten vor der Anmeldung.',
-    faqs: [
-      ['Muss ich eine Startup-Idee mitbringen?', 'Nein. Wir bringen Problemkarten mit. Du brauchst nur Neugier und Lust zu bauen.'],
-      ['Muss ich Expert Programmer sein?', 'Nein. Builder, Einsteiger, Designer, HCI-Leute und technische Problemlöser sind willkommen.'],
-      ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitch Decks. Wir machen einen entspannten Demo Walk.'],
-      ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
-      ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Für den ersten Pilot ja.'],
-    ],
-    footerSub: 'Builder-first Prototype Night in Siegen',
-    footerLine: 'Made for people who prefer building over talking.',
-  },
   en: {
     nav: ['How it works', 'Problem cards', 'Register'],
     joinShort: 'Join list',
-    studioName: 'Buildpunkt Labs',
-    studioLine: 'Prototype nights, SaaS curiosity and SME problems.',
-    eyebrow: 'Builder-first prototype night in Siegen',
-    heroTitle: 'Build something real in one evening.',
+    brand: 'Tech Meets Problems',
+    edition: 'Pizza & Prototypes · First Edition',
+    tagline: 'Where builders work on real business needs.',
+    eyebrow: 'Builder-first pilot in Siegen',
+    heroTitle: 'Work on real problems with people who build.',
     heroText:
-      'Pizza & Prototypes is a builder-first night in Siegen for developers, makers and technical students who want to turn real local problems into first prototypes.',
+      'Tech Meets Problems is a builder-first event in Siegen where technical students, developers, makers and HCI/UX people explore real business needs and turn them into first concepts, workflows, mockups or optional prototypes.',
     primaryCta: 'Join the interest list',
     secondaryCta: 'Join the WhatsApp group',
-    note: 'No pitch decks. No startup theatre. Just real problems, good people and prototypes.',
-    facts: ['Real problem cards', 'Small teams', '90-minute sprint', 'Demo walk'],
+    note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
+    facts: ['Real business needs', 'Builder team', 'First concept', 'Optional prototype', '7-day test'],
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
-      'Many entrepreneurship formats attract business people, but not enough technical builders. Pizza & Prototypes flips the perspective: builders first, business context second.',
+      'Many entrepreneurship formats attract business people first. This pilot flips the perspective: technical people first, real business needs as the starting point, and just enough startup context to make the work useful.',
     problemCards: [
-      ['Real problems, not fake startup ideas', 'Work starts from concrete pain points gathered from local SMEs, crafts businesses, clubs and niche industries.'],
-      ['Small teams, not random networking', 'You build with a focused group around a problem card, a clear angle and a short sprint window.'],
-      ['Prototype first, pitch later', 'UI sketches, workflows, code demos and validation tests matter more than polished slide decks.'],
-      ['Tech majority, curated context', 'The room is designed for people who make things, with enough real-world context to keep it useful.'],
+      ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
+      ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
+      ['Concepts, workflows and prototypes before pitches', 'Sketches, mockups, workflows and MVP ideas matter more than polished slides.'],
+      ['Tech majority, curated context', 'The room is designed for builders, with enough business context to keep it grounded.'],
     ],
     howKicker: 'How it works',
     howTitle: 'You do not need to bring a startup idea.',
-    steps: ['Pick a real problem card', 'Form a small builder team', 'Build, sketch or automate for 60 to 90 minutes', 'Demo the result or define a 7-day test'],
-    examplesKicker: 'Example problem cards',
-    examplesTitle: 'Concrete enough to build. Small enough to finish.',
-    prototypeIdea: 'Prototype idea',
+    howLead:
+      'We bring problem spaces. You bring curiosity, technical thinking and a willingness to work on something real.',
+    steps: [
+      'Pick a real problem card',
+      'Form a small builder team',
+      'Build, sketch or automate for 60 to 90 minutes',
+      'Share the result or define a 7-day test',
+    ],
+    examplesKicker: 'Example problem spaces',
+    examplesTitle: 'Examples only. Final cases may change.',
+    angleLabel: 'Possible angle',
     examples: [
       ['Craft business follow-up chaos', 'Offers are sent, but follow-ups happen manually or not at all.', 'Lightweight CRM or reminder workflow.'],
       ['Club organization via WhatsApp', 'Volunteers, shifts and commitments disappear in group chats.', 'Simple helper planner or form-based workflow.'],
       ['Construction photo documentation', 'Photos are spread across phone galleries, chats and email.', 'Upload flow with project tagging.'],
       ['Maintenance and inspection reminders', 'Recurring appointments are tracked manually.', 'Automated reminder service.'],
     ],
-    vibeKicker: 'What it could feel like',
-    vibeTitle: 'An evening with laptops, problem cards, pizza and fast prototypes.',
-    vibeText:
-      'This image is intentionally generated as a preview of the desired atmosphere, not a real photo of the location.',
-    locationKicker: 'Location',
-    locationTitle: 'Planned at Haus der Innovation, in central Siegen.',
-    locationText:
-      'Startpunkt57 describes Haus der Innovation as a place for entrepreneurial spirit, networking, coworking, workshops and creative minds in Siegen.',
-    sourceLabel: 'Official Startpunkt57 info',
-    foundersKicker: 'Organized by Buildpunkt Labs',
-    foundersTitle: 'Two master students with one clear motive: more real builder connections in Siegen.',
-    foundersText:
-      'We are Niklas Brüne and Frederik Krause. We study Entrepreneurship and SME Management in the master’s program and started Pizza & Prototypes because we want to connect with developers, technical students and SaaS-curious builders ourselves. We are interested in how real SME problems can become first software ideas, workflows and prototypes quickly.',
-    founders: [
-      ['Niklas Brüne', 'Entrepreneurship / SME Management, SaaS-curious and initiator of Pizza & Prototypes.'],
-      ['Frederik Krause', 'Entrepreneurship / SME Management, co-initiator interested in local problem spaces and digital solutions.'],
-    ],
-    motionCards: ['Problem card', 'Builder team', 'Mini prototype', '7-day test'],
     whoKicker: 'Who should come',
-    whoTitle: 'Designed for people who like building.',
+    whoTitle: 'Designed for people who like building, solving and thinking through real problems.',
     mainly: 'Mainly for',
-    also: 'Also welcome',
-    whoNote: 'This is not a general networking event. It is designed for people who like building.',
-    audienceMain: ['Programmers', 'Computer science students', 'Hobby developers', 'Makers', 'UI/UX and HCI people', 'Data science and AI enthusiasts', 'Technical problem solvers'],
-    audienceAlso: ['Real problem access', 'Product thinking', 'Startup interest'],
+    also: 'Helpful, not required',
+    whoNote:
+      'This is not a general networking event. It is designed for people who like building, solving and thinking through real problems.',
+    audienceMain: ['Programmers', 'Computer science students', 'Hobby developers', 'Makers', 'HCI / UX people', 'Data / AI enthusiasts', 'Technical problem solvers'],
+    audienceAlso: ['Startup interest', 'Product thinking', 'Real-world problem access', 'First project ideas'],
     scheduleKicker: 'Schedule',
-    scheduleTitle: 'A tight evening sprint with enough room to meet good people.',
+    scheduleTitle: 'A compact evening sprint with enough room to meet good people.',
     schedule: [
       ['18:30', 'Check-in, pizza and problem cards'],
       ['18:45', 'Short intro and ground rules'],
       ['18:55', 'Team formation'],
-      ['19:05', 'Prototype sprint'],
-      ['20:20', 'Demo walk'],
+      ['19:05', 'Problem sprint'],
+      ['20:20', 'Demo walk / share results'],
       ['20:45', 'Next steps and WhatsApp group'],
       ['21:00', 'Open end'],
     ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Small answers before you sign up.',
+    faqs: [
+      ['Do I need to bring a startup idea?', 'No. We bring problem cards. You only need curiosity and a willingness to work on something real.'],
+      ['Do I need to be an expert programmer?', 'No. You do not need to be an expert. But you should be curious about building, coding, designing or solving technical problems.'],
+      ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
+      ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
+      ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
+      ['Is this free?', 'For the first pilot, yes.'],
+    ],
     formKicker: 'Interest list',
-    formTitle: 'Join the first builder cohort.',
-    pilotDetails: 'Pilot details',
+    formTitle: 'Save your spot for the first session.',
+    pilotDetails: 'First pilot details',
+    privacyNote: 'We only use your data to organize this first event and send relevant updates. No spam.',
     successTitle: 'You are on the interest list.',
     successText: 'Thanks. Your registration was sent through Formspree.',
-    formDelivery: 'Your registration goes straight to us through Formspree. No JSON export, no demo storage.',
     error: 'Please fill in the required fields before joining the list.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -287,14 +163,15 @@ const copy = {
       pizza: 'Pizza preference',
       interests: 'What are you interested in?',
       foodNotes: 'Allergies or food notes, optional',
-      notes: 'Anything we should know?',
+      notes: 'Anything we should know? Own project idea, question or context?',
       select: 'Select one',
     },
-    roles: ['Programmer', 'Computer Science Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Other'],
+    roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'No, but I can design, research or validate'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
     followUp: ['Yes', 'Maybe', 'Not right now'],
     pizza: ['Yes, normal pizza', 'Vegetarian', 'Vegan', 'No pizza for me'],
+    sending: 'Sending...',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and follow-up project threads.',
     whatsappButton: 'Join WhatsApp',
@@ -303,29 +180,161 @@ const copy = {
     shareText: 'A good room starts with the right people.',
     copyLink: 'Copy page link',
     shareButton: 'Share',
-    sending: 'Sending...',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
-    shareNativeText: 'Know someone who likes building? Send them Pizza & Prototypes in Siegen.',
-    faqKicker: 'FAQ',
-    faqTitle: 'Small answers before you sign up.',
-    faqs: [
-      ['Do I need to bring a startup idea?', 'No. We bring problem cards. You only need curiosity and a willingness to build.'],
-      ['Do I need to be an expert programmer?', 'No. Builders, beginners, designers, HCI people and technical problem solvers are welcome.'],
-      ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
-      ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
-      ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'For the first pilot, yes.'],
+    shareNativeText: 'Know someone who likes building? Send them Tech Meets Problems: Pizza & Prototypes.',
+    locationKicker: 'Location',
+    locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
+    locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
+    sourceLabel: 'Official Startpunkt57 info',
+    organizersKicker: 'Organizers',
+    organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
+    organizersText:
+      'We are two Entrepreneurship / SME Management master students who wanted this format to exist: a low-barrier place where technical people in Siegen can meet real business problems, explore first ideas and connect with people who like building.',
+    organizers: [
+      ['Niklas Brüne', 'Event concept, communication and problem framing'],
+      ['Frederik Krause', 'Outreach, operations and participant experience'],
     ],
-    footerSub: 'Builder-first prototype night in Siegen',
-    footerLine: 'Made for people who prefer building over talking.',
+    poweredBy: 'Powered by',
+    supporters: ['Startpunkt57', 'Entrepreneurship Center'],
+    footerSub: 'Where builders work on real business needs.',
+    footerLine: 'Tech Meets Problems: Pizza & Prototypes',
+  },
+  de: {
+    nav: ['Ablauf', 'Problemkarten', 'Anmelden'],
+    joinShort: 'Liste',
+    brand: 'Tech Meets Problems',
+    edition: 'Pizza & Prototypes · First Edition',
+    tagline: 'Where builders work on real business needs.',
+    eyebrow: 'Builder-first Pilot in Siegen',
+    heroTitle: 'Arbeite an echten Problemen mit Menschen, die bauen.',
+    heroText:
+      'Tech Meets Problems ist ein builder-first Event in Siegen für technische Studierende, Entwickler, Maker und HCI/UX-Leute, die an echten Business-Problemen arbeiten und daraus erste Konzepte, Workflows, Mockups oder optionale Prototypen entwickeln wollen.',
+    primaryCta: 'Zur Interessentenliste',
+    secondaryCta: 'WhatsApp-Gruppe beitreten',
+    note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
+    facts: ['Echtes Business-Problem', 'Builder-Team', 'Erstes Konzept', 'Optionaler Prototyp', '7-Tage-Test'],
+    problemKicker: 'Warum das Format',
+    problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
+    problemLead:
+      'Viele Entrepreneurship-Formate ziehen Business-Leute zuerst an. Dieser Pilot dreht die Perspektive: technische Leute zuerst, echte Business-Probleme als Startpunkt und nur so viel Startup-Kontext, dass die Arbeit nützlich wird.',
+    problemCards: [
+      ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
+      ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
+      ['Konzepte, Workflows und Prototypen vor Pitches', 'Skizzen, Mockups, Workflows und MVP-Ideen zählen mehr als perfekte Slides.'],
+      ['Tech-Mehrheit, kuratierter Kontext', 'Der Raum ist für Builder gedacht, mit genug Business-Kontext, damit es geerdet bleibt.'],
+    ],
+    howKicker: 'So läuft es',
+    howTitle: 'Du musst keine eigene Startup-Idee mitbringen.',
+    howLead:
+      'Wir bringen Problemräume mit. Du bringst Neugier, technisches Denken und Lust mit, an etwas Echtem zu arbeiten.',
+    steps: [
+      'Echte Problemkarte wählen',
+      'Kleines Builder-Team bilden',
+      '60 bis 90 Minuten bauen, skizzieren oder automatisieren',
+      'Ergebnis teilen oder 7-Tage-Test definieren',
+    ],
+    examplesKicker: 'Beispiel-Problemräume',
+    examplesTitle: 'Nur Beispiele. Die finalen Fälle können sich ändern.',
+    angleLabel: 'Möglicher Ansatz',
+    examples: [
+      ['Follow-up-Chaos im Handwerk', 'Angebote werden verschickt, aber Follow-ups passieren manuell oder gar nicht.', 'Leichtes CRM oder Reminder-Workflow.'],
+      ['Vereinsorganisation per WhatsApp', 'Freiwillige, Schichten und Zusagen verschwinden in Gruppenchats.', 'Einfacher Helferplaner oder formularbasierter Workflow.'],
+      ['Fotodokumentation auf Baustellen', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
+      ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
+    ],
+    whoKicker: 'Wer kommen sollte',
+    whoTitle: 'Für Menschen, die gerne bauen, lösen und echte Probleme durchdenken.',
+    mainly: 'Vor allem für',
+    also: 'Hilfreich, nicht notwendig',
+    whoNote:
+      'Das ist kein allgemeines Networking-Event. Es ist für Menschen gedacht, die gerne bauen, lösen und echte Probleme durchdenken.',
+    audienceMain: ['Programmierer', 'Informatikstudierende', 'Hobby-Entwickler', 'Maker', 'HCI / UX-Leute', 'Data / AI-Interessierte', 'Technische Problemlöser'],
+    audienceAlso: ['Startup-Interesse', 'Produktdenken', 'Zugang zu echten Problemen', 'Erste Projektideen'],
+    scheduleKicker: 'Ablauf',
+    scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
+    schedule: [
+      ['18:30', 'Check-in, Pizza und Problemkarten'],
+      ['18:45', 'Kurze Einführung und Spielregeln'],
+      ['18:55', 'Teambildung'],
+      ['19:05', 'Problem-Sprint'],
+      ['20:20', 'Demo Walk / Ergebnisse teilen'],
+      ['20:45', 'Nächste Schritte und WhatsApp-Gruppe'],
+      ['21:00', 'Open End'],
+    ],
+    faqKicker: 'FAQ',
+    faqTitle: 'Kurze Antworten vor der Anmeldung.',
+    faqs: [
+      ['Muss ich eine Startup-Idee mitbringen?', 'Nein. Wir bringen Problemkarten mit. Du brauchst nur Neugier und Lust, an etwas Echtem zu arbeiten.'],
+      ['Muss ich Expert Programmer sein?', 'Nein. Du musst kein Experte sein. Aber du solltest Lust auf Bauen, Coden, Designen oder technische Problemlösung haben.'],
+      ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
+      ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
+      ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
+      ['Ist das kostenlos?', 'Für den ersten Pilot ja.'],
+    ],
+    formKicker: 'Interessentenliste',
+    formTitle: 'Sichere dir einen Platz für die erste Session.',
+    pilotDetails: 'Details zum ersten Pilot',
+    privacyNote: 'Wir nutzen deine Daten nur, um dieses erste Event zu organisieren und relevante Updates zu senden. Kein Spam.',
+    successTitle: 'Du bist auf der Interessentenliste.',
+    successText: 'Danke. Deine Anmeldung wurde über Formspree gesendet.',
+    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
+    sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
+    fields: {
+      fullName: 'Vollständiger Name',
+      email: 'E-Mail-Adresse',
+      phone: 'Telefonnummer, optional',
+      role: 'Was beschreibt dich am besten?',
+      coding: 'Kannst du coden?',
+      followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
+      link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
+      pizza: 'Pizza-Präferenz',
+      interests: 'Was interessiert dich?',
+      foodNotes: 'Allergien oder Essenshinweise, optional',
+      notes: 'Sonst noch etwas? Eigene Projektidee, Frage oder Kontext?',
+      select: 'Auswählen',
+    },
+    roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Andere'],
+    codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
+    interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
+    followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
+    pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
+    sending: 'Wird gesendet...',
+    whatsappKicker: 'Builder-Gruppe',
+    whatsappTitle: 'Updates, Problemkarten und Follow-up-Projektthreads.',
+    whatsappButton: 'WhatsApp beitreten',
+    shareKicker: 'Teilen',
+    shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
+    shareText: 'Ein guter Raum startet mit den richtigen Leuten.',
+    copyLink: 'Link kopieren',
+    shareButton: 'Teilen',
+    copied: 'Link kopiert.',
+    noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
+    shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Tech Meets Problems: Pizza & Prototypes weiter.',
+    locationKicker: 'Location',
+    locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
+    locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 und Entrepreneurship Center.',
+    sourceLabel: 'Offizielle Startpunkt57-Info',
+    organizersKicker: 'Organisatoren',
+    organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
+    organizersText:
+      'Wir sind zwei Entrepreneurship / SME Management Masterstudenten und wollten dieses Format selbst haben: einen niedrigschwelligen Ort, an dem technische Menschen in Siegen echte Business-Probleme kennenlernen, erste Ideen explorieren und Leute treffen, die gerne bauen.',
+    organizers: [
+      ['Niklas Brüne', 'Eventkonzept, Kommunikation und Problem-Framing'],
+      ['Frederik Krause', 'Outreach, Operations und Participant Experience'],
+    ],
+    poweredBy: 'Powered by',
+    supporters: ['Startpunkt57', 'Entrepreneurship Center'],
+    footerSub: 'Where builders work on real business needs.',
+    footerLine: 'Tech Meets Problems: Pizza & Prototypes',
   },
 };
 
 const cardIcons = [Lightbulb, Users, Rocket, Code2];
+const founderImages = [ASSETS.niklas, ASSETS.frederik];
 
 function App() {
-  const [lang, setLang] = useState<Lang>('de');
+  const [lang, setLang] = useState<Lang>('en');
   const t = copy[lang];
   const [form, setForm] = useState<InterestForm>(initialForm);
   const [submitted, setSubmitted] = useState(false);
@@ -370,7 +379,7 @@ function App() {
         body: JSON.stringify({
           ...submission,
           interests: submission.interests.join(', '),
-          event: 'Pizza & Prototypes',
+          event: 'Tech Meets Problems: Pizza & Prototypes',
         }),
       });
 
@@ -399,7 +408,7 @@ function App() {
     }
 
     await navigator.share({
-      title: 'Pizza & Prototypes',
+      title: 'Tech Meets Problems: Pizza & Prototypes',
       text: t.shareNativeText,
       url: window.location.href,
     });
@@ -413,13 +422,12 @@ function App() {
       <ProblemSection t={t} />
       <HowItWorks t={t} />
       <ExampleProblems t={t} />
-      <VibeSection t={t} />
-      <LocationSection t={t} lang={lang} />
-      <FoundersSection t={t} />
       <WhoShouldCome t={t} />
       <Schedule t={t} />
+      <FAQ t={t} />
       <Registration
         t={t}
+        lang={lang}
         form={form}
         submitted={submitted}
         formError={formError}
@@ -430,21 +438,22 @@ function App() {
       />
       <WhatsAppSection t={t} />
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
-      <FAQ t={t} />
+      <LocationSection t={t} lang={lang} />
+      <OrganizersSection t={t} />
       <Footer t={t} />
     </main>
   );
 }
 
-function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => void; t: typeof copy.de }) {
+function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => void; t: typeof copy.en }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#07080d]/75 backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
-        <a href="#top" className="flex min-w-0 items-center gap-2 font-semibold tracking-tight sm:gap-3">
-          <LogoMark />
+        <a href="#top" className="flex min-w-0 items-center gap-3">
+          <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-header" />
           <span className="flex min-w-0 flex-col leading-tight">
-            <span className="truncate text-sm text-white sm:text-base">Pizza & Prototypes</span>
-            <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.studioName}</span>
+            <span className="truncate text-sm font-semibold text-white sm:text-base">{t.brand}</span>
+            <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.edition}</span>
           </span>
         </a>
         <div className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
@@ -464,43 +473,36 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
   );
 }
 
-function LogoMark() {
-  return (
-    <span className="logo-mark" aria-hidden="true">
-      <Pizza className="h-4 w-4 text-orange-300" />
-      <Code2 className="h-4 w-4 text-cyan-200" />
-    </span>
-  );
-}
-
 function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) => void }) {
   return (
     <div className="language-toggle" aria-label="Language switcher">
-      <button type="button" className={lang === 'de' ? 'active' : ''} onClick={() => setLang('de')}>
-        DE
-      </button>
       <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>
         EN
+      </button>
+      <button type="button" className={lang === 'de' ? 'active' : ''} onClick={() => setLang('de')}>
+        DE
       </button>
     </div>
   );
 }
 
-function Hero({ t, lang }: { t: typeof copy.de; lang: Lang }) {
+function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-16 pt-28 sm:px-5 sm:pb-20 sm:pt-32 lg:grid-cols-[1.02fr_0.98fr]">
       <div className="max-w-3xl">
-        <div className="eyebrow mb-6">
+        <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-hero mb-6" />
+        <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
         </div>
-        <h1 className="max-w-5xl text-[clamp(2.8rem,13vw,4.2rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-7xl">
+        <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-orange-200">{t.edition}</p>
+        <h1 className="max-w-5xl text-[clamp(2.7rem,12vw,4.15rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-7xl">
           {t.heroTitle}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
-          <HeroFact icon={Timer} label={EVENT.time} />
+          <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
           <HeroFact icon={MapPin} label={EVENT.location} />
         </div>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -520,7 +522,7 @@ function Hero({ t, lang }: { t: typeof copy.de; lang: Lang }) {
   );
 }
 
-function HeroVisual({ t }: { t: typeof copy.de }) {
+function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative">
       <div className="terminal-card">
@@ -530,18 +532,19 @@ function HeroVisual({ t }: { t: typeof copy.de }) {
             <span className="h-3 w-3 rounded-full bg-amber-300" />
             <span className="h-3 w-3 rounded-full bg-emerald-400" />
           </div>
-          <span className="text-xs text-slate-500">prototype-night.tsx</span>
+          <span className="text-xs text-slate-500">event-flow.ts</span>
         </div>
         <div className="space-y-5 p-5 font-mono text-xs sm:p-6 sm:text-sm">
-          <CodeLine muted value="const night = createEvent({" />
-          <CodeLine indent value='mode: "builder-first",' />
-          <CodeLine indent value='input: "real local problems",' />
-          <CodeLine indent value='output: ["workflow", "UI", "code demo"],' />
+          <CodeLine muted value="const session = mapNeedToOutput({" />
+          <CodeLine indent value='input: "real business needs",' />
+          <CodeLine indent value='people: ["developers", "makers", "HCI/UX"],' />
+          <CodeLine indent value='output: ["concept", "workflow", "mockup", "prototype"],' />
           <CodeLine indent value='avoid: ["pitch decks", "startup theatre"],' />
           <CodeLine muted value="});" />
-          <div className="grid gap-3 pt-3 sm:grid-cols-2">
-            {t.facts.map((item) => (
-              <div key={item} className="rounded-lg border border-cyan-300/20 bg-cyan-300/7 px-4 py-3 text-cyan-100">
+          <div className="flow-visual pt-3">
+            {t.facts.map((item, index) => (
+              <div key={item} className="flow-node">
+                <span>{String(index + 1).padStart(2, '0')}</span>
                 {item}
               </div>
             ))}
@@ -549,23 +552,16 @@ function HeroVisual({ t }: { t: typeof copy.de }) {
         </div>
       </div>
       <div className="floating-chip left-2 top-8">
-        <Network className="h-4 w-4" /> SME problem input
+        <Network className="h-4 w-4" /> real need
       </div>
       <div className="floating-chip bottom-10 right-0">
-        <WandSparkles className="h-4 w-4" /> 7-day test output
-      </div>
-      <div className="pop-stack" aria-hidden="true">
-        {t.motionCards.map((item, index) => (
-          <span key={item} style={{ '--delay': `${index * 180}ms` } as CSSProperties}>
-            {item}
-          </span>
-        ))}
+        <WandSparkles className="h-4 w-4" /> first test
       </div>
     </div>
   );
 }
 
-function ProblemSection({ t }: { t: typeof copy.de }) {
+function ProblemSection({ t }: { t: typeof copy.en }) {
   return (
     <Section id="problem" kicker={t.problemKicker} title={t.problemTitle}>
       <p className="section-lead">{t.problemLead}</p>
@@ -578,9 +574,10 @@ function ProblemSection({ t }: { t: typeof copy.de }) {
   );
 }
 
-function HowItWorks({ t }: { t: typeof copy.de }) {
+function HowItWorks({ t }: { t: typeof copy.en }) {
   return (
     <Section id="how" kicker={t.howKicker} title={t.howTitle}>
+      <p className="section-lead">{t.howLead}</p>
       <div className="mt-10 grid gap-4 lg:grid-cols-4">
         {t.steps.map((step, index) => (
           <div key={step} className="glass-card group relative p-5 sm:p-6">
@@ -596,23 +593,23 @@ function HowItWorks({ t }: { t: typeof copy.de }) {
   );
 }
 
-function ExampleProblems({ t }: { t: typeof copy.de }) {
+function ExampleProblems({ t }: { t: typeof copy.en }) {
   return (
     <Section id="cards" kicker={t.examplesKicker} title={t.examplesTitle}>
       <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {t.examples.map(([title, description, prototype]) => (
+        {t.examples.map(([title, description, angle]) => (
           <article key={title} className="problem-card">
             <div className="mb-5 flex items-center justify-between">
               <span className="rounded-md border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-cyan-200">
-                {t.examplesKicker}
+                Example
               </span>
               <Workflow className="h-5 w-5 text-orange-300" aria-hidden="true" />
             </div>
             <h3 className="text-xl font-semibold text-white sm:text-2xl">{title}</h3>
             <p className="mt-4 leading-7 text-slate-300">{description}</p>
             <div className="mt-6 rounded-lg border border-emerald-300/15 bg-emerald-300/8 p-4">
-              <p className="text-sm font-medium text-emerald-200">{t.prototypeIdea}</p>
-              <p className="mt-1 text-slate-300">{prototype}</p>
+              <p className="text-sm font-medium text-emerald-200">{t.angleLabel}</p>
+              <p className="mt-1 text-slate-300">{angle}</p>
             </div>
           </article>
         ))}
@@ -621,74 +618,7 @@ function ExampleProblems({ t }: { t: typeof copy.de }) {
   );
 }
 
-function VibeSection({ t }: { t: typeof copy.de }) {
-  return (
-    <Section id="vibe" kicker={t.vibeKicker} title={t.vibeTitle}>
-      <figure className="vibe-frame mt-10">
-        <img src={prototypeNightImage} alt="Generated preview of teams working together at Pizza & Prototypes" />
-        <figcaption>
-          <ImageIcon className="h-4 w-4" aria-hidden="true" />
-          {t.vibeText}
-        </figcaption>
-      </figure>
-    </Section>
-  );
-}
-
-function LocationSection({ t, lang }: { t: typeof copy.de; lang: Lang }) {
-  return (
-    <Section id="location" kicker={t.locationKicker} title={t.locationTitle}>
-      <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-white">{EVENT.location}</h3>
-          <div className="mt-6 space-y-4">
-            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
-            <InfoRow icon={Timer} label={EVENT.time} />
-            <InfoRow icon={MapPin} label={`${EVENT.locationFlexible[lang]} · ${EVENT.address}`} />
-          </div>
-        </div>
-        <div className="location-panel">
-          <p>{t.locationText}</p>
-          <a href="https://www.startpunkt57.de/in/haus-der-innovation" target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
-            {t.sourceLabel}
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
-          </a>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-function FoundersSection({ t }: { t: typeof copy.de }) {
-  const founderImages = [niklasImage, frederikImage];
-
-  return (
-    <Section id="founders" kicker={t.foundersKicker} title={t.foundersTitle}>
-      <div className="founders-panel mt-10">
-        <div>
-          <p className="section-lead mt-0">{t.foundersText}</p>
-          <div className="mt-7 rounded-xl border border-cyan-300/15 bg-cyan-300/8 p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-200">{t.studioName}</p>
-            <p className="mt-2 text-slate-300">{t.studioLine}</p>
-          </div>
-        </div>
-        <div className="founder-grid">
-          {t.founders.map(([name, description], index) => (
-            <article key={name} className="founder-card">
-              <img src={founderImages[index]} alt={name} />
-              <div>
-                <h3>{name}</h3>
-                <p>{description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-function WhoShouldCome({ t }: { t: typeof copy.de }) {
+function WhoShouldCome({ t }: { t: typeof copy.en }) {
   return (
     <Section id="who" kicker={t.whoKicker} title={t.whoTitle}>
       <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
@@ -714,7 +644,7 @@ function WhoShouldCome({ t }: { t: typeof copy.de }) {
   );
 }
 
-function Schedule({ t }: { t: typeof copy.de }) {
+function Schedule({ t }: { t: typeof copy.en }) {
   return (
     <Section id="schedule" kicker={t.scheduleKicker} title={t.scheduleTitle}>
       <div className="timeline mt-10">
@@ -729,8 +659,24 @@ function Schedule({ t }: { t: typeof copy.de }) {
   );
 }
 
+function FAQ({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="faq" kicker={t.faqKicker} title={t.faqTitle}>
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        {t.faqs.map(([question, answer]) => (
+          <details key={question} className="faq-card">
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 type RegistrationProps = {
-  t: typeof copy.de;
+  t: typeof copy.en;
+  lang: Lang;
   form: InterestForm;
   submitted: boolean;
   formError: string;
@@ -740,22 +686,21 @@ type RegistrationProps = {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-function Registration({ t, form, submitted, formError, isSubmitting, updateField, toggleInterest, handleSubmit }: RegistrationProps) {
+function Registration({ t, lang, form, submitted, formError, isSubmitting, updateField, toggleInterest, handleSubmit }: RegistrationProps) {
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="glass-card p-6 sm:p-8">
           <h3 className="text-2xl font-semibold text-white">{t.pilotDetails}</h3>
           <div className="mt-7 space-y-4">
-            <InfoRow icon={CalendarDays} label={EVENT.date.de} />
-            <InfoRow icon={Timer} label={EVENT.time} />
-            <InfoRow icon={MapPin} label={EVENT.locationFlexible.de} />
+            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
+            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} />
+            <InfoRow icon={Users} label={EVENT.size} />
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
-            <p className="font-medium text-cyan-100">Formspree</p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
-              {t.formDelivery}
-            </p>
+            <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{t.privacyNote}</p>
           </div>
         </div>
 
@@ -811,7 +756,7 @@ function Registration({ t, form, submitted, formError, isSubmitting, updateField
   );
 }
 
-function WhatsAppSection({ t }: { t: typeof copy.de }) {
+function WhatsAppSection({ t }: { t: typeof copy.en }) {
   return (
     <Section id="whatsapp" kicker={t.whatsappKicker} title={t.whatsappTitle}>
       <div className="cta-card">
@@ -831,7 +776,7 @@ function WhatsAppSection({ t }: { t: typeof copy.de }) {
   );
 }
 
-function ShareSection({ t, copyLink, nativeShare, shareMessage }: { t: typeof copy.de; copyLink: () => void; nativeShare: () => void; shareMessage: string }) {
+function ShareSection({ t, copyLink, nativeShare, shareMessage }: { t: typeof copy.en; copyLink: () => void; nativeShare: () => void; shareMessage: string }) {
   return (
     <Section id="share" kicker={t.shareKicker} title={t.shareTitle}>
       <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
@@ -852,28 +797,73 @@ function ShareSection({ t, copyLink, nativeShare, shareMessage }: { t: typeof co
   );
 }
 
-function FAQ({ t }: { t: typeof copy.de }) {
+function LocationSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
-    <Section id="faq" kicker={t.faqKicker} title={t.faqTitle}>
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {t.faqs.map(([question, answer]) => (
-          <details key={question} className="faq-card">
-            <summary>{question}</summary>
-            <p>{answer}</p>
-          </details>
-        ))}
+    <Section id="location" kicker={t.locationKicker} title={t.locationTitle}>
+      <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="glass-card p-6 sm:p-8">
+          <h3 className="text-2xl font-semibold text-white">{EVENT.location}</h3>
+          <div className="mt-6 space-y-4">
+            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
+            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+            <InfoRow icon={MapPin} label={EVENT.address} />
+          </div>
+        </div>
+        <div className="location-panel">
+          <p>{t.locationText}</p>
+          <a href="https://www.startpunkt57.de/in/haus-der-innovation" target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
+            {t.sourceLabel}
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </Section>
   );
 }
 
-function Footer({ t }: { t: typeof copy.de }) {
+function OrganizersSection({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="organizers" kicker={t.organizersKicker} title={t.organizersTitle}>
+      <div className="founders-panel mt-10">
+        <div>
+          <p className="section-lead mt-0">{t.organizersText}</p>
+          <div className="supporter-panel mt-7">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-200">{t.poweredBy}</p>
+            <div className="supporter-grid">
+              {t.supporters.map((name) => (
+                <div key={name} className="supporter-card">
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="founder-grid">
+          {t.organizers.map(([name, description], index) => (
+            <article key={name} className="founder-card compact-founder-card">
+              <img src={founderImages[index]} alt={name} />
+              <div>
+                <h3>{name}</h3>
+                <p>{description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Footer({ t }: { t: typeof copy.en }) {
   return (
     <footer className="relative mx-auto max-w-7xl border-t border-white/10 px-5 py-10 text-sm text-slate-400">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="font-semibold text-white">Pizza & Prototypes</p>
-          <p>{t.footerSub}</p>
+        <div className="flex items-center gap-3">
+          <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-footer" />
+          <div>
+            <p className="font-semibold text-white">{t.brand}</p>
+            <p>{t.footerSub}</p>
+          </div>
         </div>
         <p>{t.footerLine}</p>
       </div>
@@ -883,7 +873,7 @@ function Footer({ t }: { t: typeof copy.de }) {
 
 function Section({ id, kicker, title, children }: { id: string; kicker: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="relative mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
+    <section id={id} className="relative mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-20">
       <div className="max-w-3xl">
         <p className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
@@ -969,7 +959,7 @@ function CodeLine({ value, indent = false, muted = false }: { value: string; ind
 function BackgroundScene() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_80%_25%,rgba(251,146,60,0.12),transparent_25%),linear-gradient(180deg,#07080d_0%,#0b1020_50%,#07080d_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_80%_25%,rgba(251,146,60,0.10),transparent_25%),linear-gradient(180deg,#07080d_0%,#0b1020_50%,#07080d_100%)]" />
       <div className="grid-overlay" />
     </div>
   );
