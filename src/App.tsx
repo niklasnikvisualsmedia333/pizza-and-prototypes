@@ -22,6 +22,8 @@ type Lang = 'en' | 'de';
 const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
   logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
+  startpunkt57: `${import.meta.env.BASE_URL}assets/logo-startpunkt57.png`,
+  entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
   niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
   frederik: `${import.meta.env.BASE_URL}assets/frederik-krause.jpg`,
 };
@@ -76,15 +78,13 @@ const copy = {
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · First Edition',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first pilot in Siegen',
+    eyebrow: 'Builder-first event in Siegen',
     heroTitle: 'Build solutions for real-world problems.',
-    heroText: 'An innovation event for tech enthusiasts, builders, developers, and creative minds in Siegen.',
-    eventDescription:
-      'Our event brings together people interested in technology from fields such as HCI, computer science, mechatronics, AI, coding, and other technical disciplines. Together, participants work in teams on real-world problems and develop innovative solution ideas.',
+    heroText:
+      'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
     primaryCta: 'Join the interest list',
-    secondaryCta: 'Join the WhatsApp group',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
-    facts: ['Real business need', 'Builder team', 'Concept or prototype', 'Group share', 'Business opportunity'],
+    facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
@@ -214,16 +214,13 @@ const copy = {
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · Erste Ausgabe',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first Pilot in Siegen',
+    eyebrow: 'Builder-first Event in Siegen',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
     heroText:
-      'Ein Innovationsevent für Tech-Enthusiasten, Builder, Entwickler und kreative Köpfe in Siegen.',
-    eventDescription:
-      'Unser Event bringt Menschen zusammen, die sich für Technologie interessieren: aus Bereichen wie HCI, Informatik, Mechatronik, AI, Coding und anderen technischen Disziplinen. Gemeinsam arbeiten die Teilnehmenden in Teams an realen Problemen und entwickeln innovative Lösungsideen.',
+      'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
     primaryCta: 'Zur Interessentenliste',
-    secondaryCta: 'WhatsApp-Gruppe beitreten',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
-    facts: ['Echtes Business-Problem', 'Builder-Team', 'Konzept oder Prototyp', 'Kurz vorstellen', 'Business Opportunity'],
+    facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
     problemLead:
@@ -351,6 +348,10 @@ const copy = {
 
 const cardIcons = [Lightbulb, Users, Rocket, Code2];
 const founderImages = [ASSETS.niklas, ASSETS.frederik];
+const supporterLogos = [
+  { name: 'Startpunkt57', src: ASSETS.startpunkt57 },
+  { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter },
+];
 
 function App() {
   const [lang, setLang] = useState<Lang>('en');
@@ -509,18 +510,16 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
 
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
-    <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-16 pt-28 sm:px-5 sm:pb-20 sm:pt-32 lg:grid-cols-[1.02fr_0.98fr]">
+    <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-14 pt-24 sm:px-5 sm:pb-18 sm:pt-28 lg:grid-cols-[1.02fr_0.98fr]">
       <div className="max-w-3xl">
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
         </div>
-        <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-orange-200">{t.edition}</p>
         <h1 className="max-w-5xl text-[clamp(2.7rem,12vw,4.15rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-7xl">
           {t.heroTitle}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">{t.eventDescription}</p>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
           <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
@@ -530,10 +529,6 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           <a href="#register" className="btn btn-primary">
             {t.primaryCta}
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
-          </a>
-          <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
-            {t.secondaryCta}
-            <MessageCircle className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
@@ -548,8 +543,8 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
     <div className="relative">
       <div className="event-map-card">
         <div className="event-map-center">
-          <span>{t.edition}</span>
-          <strong>{t.brand}</strong>
+          <span>{t.tagline}</span>
+          <strong>{t.edition.split(' · ')[0]}</strong>
         </div>
         <div className="event-orbit event-orbit-one" />
         <div className="event-orbit event-orbit-two" />
@@ -568,15 +563,6 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
         <div className="event-node share-node">
           <MessageCircle className="h-5 w-5" aria-hidden="true" />
           <span>{t.facts[3]}</span>
-        </div>
-        <div className="event-node opportunity-node">
-          <Rocket className="h-5 w-5" aria-hidden="true" />
-          <span>{t.facts[4]}</span>
-        </div>
-        <div className="event-output-card">
-          <p>{t.opportunityPoints[0]}</p>
-          <p>{t.opportunityPoints[2]}</p>
-          <p>{t.opportunityPoints[3]}</p>
         </div>
       </div>
     </div>
@@ -819,7 +805,7 @@ function WhatsAppSection({ t }: { t: typeof copy.en }) {
           </p>
           <h3 className="text-2xl font-semibold leading-tight text-white sm:text-3xl">{t.whatsappTitle}</h3>
         </div>
-        <a href={EVENT.whatsappLink} className="btn btn-primary" target="_blank" rel="noreferrer">
+        <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
           {t.whatsappButton}
           <ExternalLink className="h-5 w-5" aria-hidden="true" />
         </a>
@@ -882,9 +868,9 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
           <div className="supporter-panel mt-7">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-200">{t.poweredBy}</p>
             <div className="supporter-grid">
-              {t.supporters.map((name) => (
-                <div key={name} className="supporter-card">
-                  <span>{name}</span>
+              {supporterLogos.map((supporter) => (
+                <div key={supporter.name} className="supporter-card">
+                  <img src={supporter.src} alt={supporter.name} />
                 </div>
               ))}
             </div>
