@@ -540,7 +540,6 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           ))}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
-        <HeroSupporters t={t} />
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <a href="#register" className="btn btn-primary">
             {t.primaryCta}
@@ -564,15 +563,8 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
     <div className="relative min-w-0">
       <div className="event-map-card hero-visual-card">
         <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" />
-        <div className="visual-sheen" aria-hidden="true" />
-        <div className="visual-glow visual-glow-blue" aria-hidden="true" />
-        <div className="visual-glow visual-glow-orange" aria-hidden="true" />
-        <div className="visual-layer-card visual-layer-need" aria-hidden="true" />
-        <div className="visual-layer-card visual-layer-team" aria-hidden="true" />
-        <div className="visual-layer-card visual-layer-concept" aria-hidden="true" />
-        <div className="visual-layer-card visual-layer-share" aria-hidden="true" />
-        <Rocket className="visual-rocket h-8 w-8" aria-hidden="true" />
       </div>
+      <HeroSupporters t={t} />
     </div>
   );
 }

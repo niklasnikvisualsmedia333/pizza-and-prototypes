@@ -229,15 +229,15 @@ main > header {
 
 .hero-supporters {
   display: flex;
-  width: max-content;
+  width: 100%;
   max-width: 100%;
   align-items: center;
-  gap: 0.55rem;
-  margin-top: 1.15rem;
+  gap: 0.7rem;
+  margin-top: 1rem;
   border: 1px solid rgba(56, 189, 248, 0.12);
   border-radius: 0.8rem;
-  background: rgba(7, 8, 13, 0.58);
-  padding: 0.45rem 0.55rem;
+  background: rgba(7, 8, 13, 0.5);
+  padding: 0.55rem;
   backdrop-filter: blur(18px);
 }
 
@@ -251,13 +251,13 @@ main > header {
 
 .hero-supporters img {
   display: block;
-  width: min(7.5rem, 30vw);
-  height: 1.65rem;
+  width: 100%;
+  height: 2.2rem;
   border-radius: 0.42rem;
-  background: rgba(255, 255, 255, 0.72);
+  background: #fff;
   object-fit: contain;
-  padding: 0.18rem 0.35rem;
-  opacity: 0.95;
+  padding: 0.28rem 0.5rem;
+  opacity: 1;
   filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.1));
 }
 
@@ -845,6 +845,8 @@ main > header {
   min-height: 0;
   aspect-ratio: 1365 / 1120;
   background: rgba(7, 8, 13, 0.68);
+  transform: scale(1.035);
+  transform-origin: center top;
 }
 
 .hero-visual-card::before,
@@ -859,96 +861,6 @@ main > header {
   height: 100%;
   object-fit: cover;
   transform: scale(1.01);
-}
-
-.visual-sheen {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 49% 46%, rgba(255, 255, 255, 0.1), transparent 22%),
-    linear-gradient(110deg, transparent 18%, rgba(255, 255, 255, 0.08) 43%, transparent 58%);
-  mix-blend-mode: screen;
-  opacity: 0.34;
-  animation: visualSheen 7s ease-in-out infinite;
-}
-
-.visual-glow {
-  position: absolute;
-  width: 20%;
-  aspect-ratio: 1;
-  border-radius: 999px;
-  filter: blur(18px);
-  opacity: 0.32;
-  animation: visualPulse 4.8s ease-in-out infinite;
-}
-
-.visual-glow-blue {
-  left: 31%;
-  top: 40%;
-  background: rgba(14, 165, 233, 0.72);
-}
-
-.visual-glow-orange {
-  right: 26%;
-  top: 39%;
-  background: rgba(249, 115, 22, 0.5);
-  animation-delay: -2.2s;
-}
-
-.visual-layer-card {
-  position: absolute;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.015);
-  box-shadow:
-    inset 0 0 28px rgba(255, 255, 255, 0.04),
-    0 0 28px rgba(14, 165, 233, 0.08);
-  animation: visualFloat 5.6s ease-in-out infinite;
-}
-
-.visual-layer-need {
-  left: 8%;
-  top: 8%;
-  width: 23%;
-  height: 24%;
-}
-
-.visual-layer-team {
-  right: 8%;
-  top: 8%;
-  width: 23%;
-  height: 24%;
-  border-color: rgba(249, 115, 22, 0.3);
-  animation-delay: -1.4s;
-}
-
-.visual-layer-concept {
-  left: 8%;
-  bottom: 16%;
-  width: 23%;
-  height: 25%;
-  animation-delay: -2.3s;
-}
-
-.visual-layer-share {
-  right: 8%;
-  bottom: 16%;
-  width: 23%;
-  height: 25%;
-  border-color: rgba(249, 115, 22, 0.3);
-  animation-delay: -3.2s;
-}
-
-.visual-rocket {
-  position: absolute;
-  left: 50%;
-  bottom: 13%;
-  z-index: 2;
-  color: #67e8f9;
-  transform: translateX(-50%);
-  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.65));
-  opacity: 0.88;
-  animation: visualRocket 3.4s ease-in-out infinite;
 }
 
 .opportunity-layout {
@@ -1154,15 +1066,19 @@ main > header {
 .founders-panel {
   display: grid;
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .founder-grid {
   display: grid;
   gap: 1rem;
+  height: 100%;
 }
 
 .founder-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 1rem;
@@ -1191,6 +1107,9 @@ main > header {
 }
 
 .founder-card div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 1.25rem;
 }
 
@@ -1217,6 +1136,7 @@ main > header {
 }
 
 .supporter-panel {
+  height: 100%;
   border: 1px solid rgba(103, 232, 249, 0.15);
   border-radius: 1rem;
   background: rgba(103, 232, 249, 0.07);
@@ -1236,7 +1156,7 @@ main > header {
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 0.85rem;
-  background: rgba(255, 255, 255, 0.88);
+  background: #fff;
   color: #f8fafc;
   font-weight: 750;
   letter-spacing: 0.01em;
@@ -1286,6 +1206,16 @@ main > header {
 
   .founder-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .founders-panel > div:first-child {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  .supporter-panel {
+    min-height: 11.4rem;
+    align-self: end;
   }
 }
 
@@ -1468,52 +1398,6 @@ main > header {
   }
 }
 
-@keyframes visualSheen {
-  0%,
-  100% {
-    transform: translateX(-8%);
-    opacity: 0.22;
-  }
-  50% {
-    transform: translateX(8%);
-    opacity: 0.42;
-  }
-}
-
-@keyframes visualPulse {
-  0%,
-  100% {
-    transform: scale(0.92);
-    opacity: 0.22;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.42;
-  }
-}
-
-@keyframes visualFloat {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -5px, 0);
-  }
-}
-
-@keyframes visualRocket {
-  0%,
-  100% {
-    transform: translate(-50%, 0);
-    opacity: 0.75;
-  }
-  50% {
-    transform: translate(-50%, -7px);
-    opacity: 1;
-  }
-}
-
 .field {
   display: flex;
   flex-direction: column;
@@ -1575,7 +1459,7 @@ fieldset legend {
 
 .cta-card {
   display: grid;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: center;
   padding: 1.5rem;
 }
@@ -1583,7 +1467,7 @@ fieldset legend {
 @media (min-width: 768px) {
   .cta-card {
     grid-template-columns: 1fr auto;
-    padding: 2rem;
+    padding: 2.25rem;
   }
 }
 
