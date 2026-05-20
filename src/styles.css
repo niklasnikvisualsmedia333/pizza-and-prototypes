@@ -242,11 +242,28 @@ main > header {
 }
 
 .hero-supporters span {
+  flex: 0 0 auto;
   color: #a5f3fc;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hero-supporters a {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  border-radius: 0.42rem;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.hero-supporters a:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
 }
 
 .hero-supporters img {
@@ -323,6 +340,13 @@ main > header {
   color: #dbeafe;
   font-size: 1.05rem;
   line-height: 1.8;
+}
+
+.location-panel p a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(103, 232, 249, 0.35);
+  text-underline-offset: 0.22rem;
 }
 
 .why-chip {
@@ -1136,7 +1160,9 @@ main > header {
 }
 
 .supporter-panel {
+  display: flex;
   height: 100%;
+  flex-direction: column;
   border: 1px solid rgba(103, 232, 249, 0.15);
   border-radius: 1rem;
   background: rgba(103, 232, 249, 0.07);
@@ -1146,7 +1172,8 @@ main > header {
 .supporter-grid {
   display: grid;
   gap: 0.75rem;
-  margin-top: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .supporter-card {
@@ -1161,6 +1188,14 @@ main > header {
   font-weight: 750;
   letter-spacing: 0.01em;
   text-align: center;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.supporter-card:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
 }
 
 .supporter-card img {
@@ -1286,6 +1321,10 @@ main > header {
 
   .brand-title-mobile {
     display: block;
+    max-width: 7rem;
+    font-size: 0.75rem;
+    line-height: 1.05;
+    white-space: normal;
   }
 
   .brand-logo-header {
@@ -1327,7 +1366,6 @@ main > header {
 
   .hero-supporters {
     width: 100%;
-    flex-wrap: wrap;
     justify-content: space-between;
     gap: 0.45rem;
   }
@@ -1337,7 +1375,8 @@ main > header {
   }
 
   .hero-supporters img {
-    width: min(5.8rem, 26vw);
+    height: 1.75rem;
+    padding-inline: 0.28rem;
   }
 
   .section-lead {
@@ -1355,17 +1394,19 @@ main > header {
 }
 
 @media (max-width: 360px) {
-  .brand-title-mobile {
-    display: none;
-  }
-
   .brand-logo-header {
     width: 2rem;
     height: 2rem;
   }
 
   .btn-compact {
-    padding-inline: 0.65rem;
+    padding-inline: 0.58rem;
+    font-size: 0.78rem;
+  }
+
+  .brand-title-mobile {
+    max-width: 4.9rem;
+    font-size: 0.66rem;
   }
 
   .hero-title {
@@ -1374,15 +1415,11 @@ main > header {
   }
 
   .hero-supporters {
-    flex-wrap: wrap;
-  }
-
-  .hero-supporters span {
-    width: 100%;
+    gap: 0.35rem;
   }
 
   .hero-supporters img {
-    width: calc(50% - 0.3rem);
+    height: 1.55rem;
   }
 }
 

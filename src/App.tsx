@@ -42,6 +42,7 @@ const EVENT = {
   size: '15 to 30 people',
   whatsappLink: 'https://wa.me/4917655263773',
   contactEmail: 'info@nikvisuals.de',
+  mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
 };
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
@@ -77,7 +78,7 @@ const initialForm: InterestForm = {
 const copy = {
   en: {
     nav: ['How it works', 'Problem cards', 'For companies', 'Register'],
-    joinShort: 'Join list',
+    joinShort: 'Join event',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · First Edition',
     tagline: 'Where builders work on real business needs.',
@@ -86,7 +87,7 @@ const copy = {
     heroTitleLines: ['Build solutions for', 'real-world problems.'],
     heroText:
       'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
-    primaryCta: 'Join the interest list',
+    primaryCta: 'Join the event',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
     facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
     problemKicker: 'Why this exists',
@@ -156,13 +157,13 @@ const copy = {
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
       ['Is this free?', 'Yes. We do not plan to charge participants for this format.'],
     ],
-    formKicker: 'Interest list',
+    formKicker: 'Event signup',
     formTitle: 'Save your spot for the first session.',
     pilotDetails: 'First pilot details',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you cannot make this date, join anyway and we will keep you posted about future sessions. No spam.',
-    successTitle: 'You are on the interest list.',
+    successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
-    error: 'Please fill in the required fields before joining the list.',
+    error: 'Please fill in the required fields before joining the event.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
       fullName: 'Full name',
@@ -198,7 +199,7 @@ const copy = {
     locationKicker: 'Location',
     locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
     locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
-    sourceLabel: 'Official Startpunkt57 info',
+    sourceLabel: 'Open in Google Maps',
     organizersKicker: 'About us',
     organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
     organizersText:
@@ -219,7 +220,7 @@ const copy = {
   },
   de: {
     nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Anmelden'],
-    joinShort: 'Liste',
+    joinShort: 'Event',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · Erste Ausgabe',
     tagline: 'Where builders work on real business needs.',
@@ -228,7 +229,7 @@ const copy = {
     heroTitleLines: ['Entwickle Lösungen', 'für echte Probleme.'],
     heroText:
       'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
-    primaryCta: 'Zur Interessentenliste',
+    primaryCta: 'Zum Event anmelden',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
     facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
     problemKicker: 'Warum das Format',
@@ -298,13 +299,13 @@ const copy = {
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
       ['Ist das kostenlos?', 'Ja. Wir planen nicht, von Teilnehmenden Geld für dieses Format zu nehmen.'],
     ],
-    formKicker: 'Interessentenliste',
+    formKicker: 'Event-Anmeldung',
     formTitle: 'Sichere dir einen Platz für die erste Session.',
     pilotDetails: 'Details zum ersten Pilot',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du am Termin nicht kannst, trag dich trotzdem ein und wir halten dich über nächste Sessions auf dem Laufenden. Kein Spam.',
-    successTitle: 'Du bist auf der Interessentenliste.',
+    successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
-    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
+    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
       fullName: 'Vollständiger Name',
@@ -340,7 +341,7 @@ const copy = {
     locationKicker: 'Ort',
     locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
     locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
-    sourceLabel: 'Offizielle Startpunkt57-Info',
+    sourceLabel: 'In Google Maps öffnen',
     organizersKicker: 'Über uns',
     organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
     organizersText:
@@ -364,8 +365,8 @@ const copy = {
 const cardIcons = [Lightbulb, Users, Rocket, Code2];
 const founderImages = [ASSETS.niklas, ASSETS.frederik];
 const supporterLogos = [
-  { name: 'Startpunkt57', src: ASSETS.startpunkt57 },
-  { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter },
+  { name: 'Startpunkt57', src: ASSETS.startpunkt57, href: 'https://www.startpunkt57.de/' },
+  { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter, href: 'https://www.ec.uni-siegen.de/' },
 ];
 
 function App() {
@@ -491,7 +492,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
           <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-header" />
           <span className="flex min-w-0 flex-col leading-tight">
             <span className="brand-title-full truncate text-sm font-semibold text-white sm:text-base">{t.brand}</span>
-            <span className="brand-title-mobile text-sm font-semibold text-white">Tech Meets</span>
+            <span className="brand-title-mobile text-sm font-semibold text-white">{t.brand}</span>
             <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.edition}</span>
           </span>
         </a>
@@ -549,7 +550,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
           <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-          <HeroFact icon={MapPin} label={EVENT.location} />
+          <HeroFact icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
       </div>
@@ -574,7 +575,9 @@ function HeroSupporters({ t }: { t: typeof copy.en }) {
     <div className="hero-supporters" aria-label={t.poweredBy}>
       <span>{t.poweredBy}</span>
       {supporterLogos.map((supporter) => (
-        <img key={supporter.name} src={supporter.src} alt={supporter.name} />
+        <a key={supporter.name} href={supporter.href} target="_blank" rel="noreferrer" aria-label={supporter.name}>
+          <img src={supporter.src} alt={supporter.name} />
+        </a>
       ))}
     </div>
   );
@@ -744,7 +747,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
           <div className="mt-7 space-y-4">
             <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
             <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} />
+            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
             <InfoRow icon={Users} label={EVENT.size} />
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
@@ -851,16 +854,23 @@ function LocationSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
     <Section id="location" kicker={t.locationKicker} title={t.locationTitle}>
       <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-white">{EVENT.location}</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            <a href={EVENT.mapsLink} target="_blank" rel="noreferrer" className="transition hover:text-cyan-100">
+              {EVENT.location}
+            </a>
+          </h3>
           <div className="mt-6 space-y-4">
             <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
             <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={EVENT.address} />
+            <InfoRow icon={MapPin} label={EVENT.address} href={EVENT.mapsLink} />
           </div>
         </div>
         <div className="location-panel">
-          <p>{t.locationText}</p>
-          <a href="https://www.startpunkt57.de/in/haus-der-innovation" target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
+          <p>
+            <a href={EVENT.mapsLink} target="_blank" rel="noreferrer">Startpunkt57 / Haus der Innovation</a>
+            {t.locationText.includes('Hosted') ? ' is hosting the event in central Siegen. Powered by Startpunkt57 and the Entrepreneurship Center.' : ' ist der Ort des Events in der Siegener Innenstadt. Unterstützt von Startpunkt57 und Entrepreneurship Center.'}
+          </p>
+          <a href={EVENT.mapsLink} target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
             {t.sourceLabel}
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </a>
@@ -880,9 +890,9 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-200">{t.poweredBy}</p>
             <div className="supporter-grid">
               {supporterLogos.map((supporter) => (
-                <div key={supporter.name} className="supporter-card">
+                <a key={supporter.name} href={supporter.href} target="_blank" rel="noreferrer" className="supporter-card" aria-label={supporter.name}>
                   <img src={supporter.src} alt={supporter.name} />
-                </div>
+                </a>
               ))}
             </div>
           </div>
@@ -950,11 +960,17 @@ function Section({ id, kicker, title, children }: { id: string; kicker: string; 
   );
 }
 
-function HeroFact({ icon: Icon, label }: { icon: typeof CalendarDays; label: string }) {
+function HeroFact({ icon: Icon, label, href }: { icon: typeof CalendarDays; label: string; href?: string }) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur">
       <Icon className="mb-3 h-5 w-5 text-cyan-300" aria-hidden="true" />
-      <p className="text-sm leading-6 text-slate-200">{label}</p>
+      {href ? (
+        <a href={href} target="_blank" rel="noreferrer" className="text-sm leading-6 text-slate-200 underline decoration-cyan-300/30 underline-offset-4 transition hover:text-white hover:decoration-cyan-200">
+          {label}
+        </a>
+      ) : (
+        <p className="text-sm leading-6 text-slate-200">{label}</p>
+      )}
     </div>
   );
 }
@@ -969,11 +985,17 @@ function FeatureCard({ title, text, icon: Icon }: { title: string; text: string;
   );
 }
 
-function InfoRow({ icon: Icon, label }: { icon: typeof CalendarDays; label: string }) {
+function InfoRow({ icon: Icon, label, href }: { icon: typeof CalendarDays; label: string; href?: string }) {
   return (
     <div className="flex items-start gap-3 text-slate-200">
       <Icon className="mt-1 h-5 w-5 shrink-0 text-cyan-300" aria-hidden="true" />
-      <span>{label}</span>
+      {href ? (
+        <a href={href} target="_blank" rel="noreferrer" className="text-slate-200 underline decoration-cyan-300/30 underline-offset-4 transition hover:text-white hover:decoration-cyan-200">
+          {label}
+        </a>
+      ) : (
+        <span>{label}</span>
+      )}
     </div>
   );
 }
