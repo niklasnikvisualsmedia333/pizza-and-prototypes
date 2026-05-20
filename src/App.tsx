@@ -73,13 +73,14 @@ const initialForm: InterestForm = {
 
 const copy = {
   en: {
-    nav: ['How it works', 'Problem cards', 'Register'],
+    nav: ['How it works', 'Problem cards', 'For companies', 'Register'],
     joinShort: 'Join list',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · First Edition',
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first event in Siegen',
     heroTitle: 'Build solutions for real-world problems.',
+    heroTitleLines: ['Build solutions for', 'real-world problems.'],
     heroText:
       'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
     primaryCta: 'Join the interest list',
@@ -94,8 +95,8 @@ const copy = {
     whyJoin: [
       'Work on real problems instead of theoretical cases',
       'Meet motivated builders and tech enthusiasts',
-      'Gain startup experience you can talk about later',
-      'Explore business model thinking with former founders',
+      'Gain practical problem-solving experience',
+      'Explore business model thinking with founder experience',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation happens when different perspectives come together.',
@@ -104,8 +105,8 @@ const copy = {
     opportunityKicker: 'What you take away',
     opportunityTitle: 'Not a full hackathon. A focused first step toward something real.',
     opportunityText:
-      'At the end, teams briefly share the concept, mockup, workflow or prototype they came up with. As former founders, we can help translate promising ideas into a first Business Model Canvas and discuss what a realistic next step could be. If useful, we can also send that follow-up summary afterwards.',
-    opportunityPoints: ['First concept or prototype', 'Short group share', 'Business Model Canvas angle', 'Startup experience for your CV'],
+      'At the end, teams briefly share the concept, mockup, workflow or prototype they came up with. With our founder perspective, we can help translate promising ideas into a first Business Model Canvas and discuss what a realistic next step could be. If useful, we can also send that follow-up summary afterwards.',
+    opportunityPoints: ['First concept or prototype', 'Short group share', 'Business Model Canvas angle', 'Practical problem-solving experience'],
     problemCards: [
       ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
       ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
@@ -150,7 +151,7 @@ const copy = {
       ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
       ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'For the first pilot, yes.'],
+      ['Is this free?', 'Yes. We do not plan to charge participants for this format.'],
     ],
     formKicker: 'Interest list',
     formTitle: 'Save your spot for the first session.',
@@ -198,24 +199,30 @@ const copy = {
     organizersKicker: 'About us',
     organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
     organizersText:
-      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management and both former founders. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
+      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
     organizers: [
-      ['Niklas Brüne', 'Event concept, communication and problem framing'],
-      ['Frederik Krause', 'Outreach, operations and participant experience'],
+      ['Niklas Brüne', 'Founder', 'Event concept, communication and problem framing'],
+      ['Frederik Krause', 'Former founder', 'Outreach, operations and participant experience'],
     ],
+    companiesKicker: 'For companies',
+    companiesTitle: 'Have a real problem or want to support the format?',
+    companiesText:
+      'If you are a local SME, craft business, club, institution or potential sponsor, reach out. We are looking for real problem spaces, cooperation partners and supporters who want to help technical talent work on useful challenges.',
+    companiesButton: 'Contact us',
     poweredBy: 'Supported by',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
   },
   de: {
-    nav: ['Ablauf', 'Problemkarten', 'Anmelden'],
+    nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Anmelden'],
     joinShort: 'Liste',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · Erste Ausgabe',
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first Event in Siegen',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
+    heroTitleLines: ['Entwickle Lösungen', 'für echte Probleme.'],
     heroText:
       'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
     primaryCta: 'Zur Interessentenliste',
@@ -230,8 +237,8 @@ const copy = {
     whyJoin: [
       'Arbeite an echten Problemen statt an theoretischen Cases',
       'Triff motivierte Builder und Tech-Enthusiasten',
-      'Sammle Startup-Erfahrung, die du später erwähnen kannst',
-      'Denke Geschäftsmodelle mit ehemaligen Gründern durch',
+      'Sammle praktische Erfahrung im Problemlösen',
+      'Denke Geschäftsmodelle mit Gründungserfahrung durch',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen.',
@@ -240,8 +247,8 @@ const copy = {
     opportunityKicker: 'Was du mitnimmst',
     opportunityTitle: 'Kein kompletter Hackathon. Ein fokussierter erster Schritt in Richtung echte Opportunity.',
     opportunityText:
-      'Am Ende stellen die Teams kurz ihr Konzept, Mockup, ihren Workflow oder Prototyp vor. Als ehemalige Gründer helfen wir dabei, vielversprechende Ideen in ein erstes Business Model Canvas zu übersetzen und realistische nächste Schritte zu besprechen. Wenn es sinnvoll ist, können wir eine kurze Zusammenfassung danach zusenden.',
-    opportunityPoints: ['Erstes Konzept oder Prototyp', 'Kurze Vorstellung in der Gruppe', 'Business-Model-Canvas-Perspektive', 'Startup-Erfahrung für den Lebenslauf'],
+      'Am Ende stellen die Teams kurz ihr Konzept, Mockup, ihren Workflow oder Prototyp vor. Mit unserer Gründungsperspektive helfen wir dabei, vielversprechende Ideen in ein erstes Business Model Canvas zu übersetzen und realistische nächste Schritte zu besprechen. Wenn es sinnvoll ist, können wir eine kurze Zusammenfassung danach zusenden.',
+    opportunityPoints: ['Erstes Konzept oder Prototyp', 'Kurze Vorstellung in der Gruppe', 'Business-Model-Canvas-Perspektive', 'Praktische Problemlösung'],
     problemCards: [
       ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
@@ -286,7 +293,7 @@ const copy = {
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Für den ersten Pilot ja.'],
+      ['Ist das kostenlos?', 'Ja. Wir planen nicht, von Teilnehmenden Geld für dieses Format zu nehmen.'],
     ],
     formKicker: 'Interessentenliste',
     formTitle: 'Sichere dir einen Platz für die erste Session.',
@@ -334,11 +341,16 @@ const copy = {
     organizersKicker: 'Über uns',
     organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
     organizersText:
-      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management und beide ehemalige Gründer. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
+      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
     organizers: [
-      ['Niklas Brüne', 'Eventkonzept, Kommunikation und Problem-Framing'],
-      ['Frederik Krause', 'Outreach, Operations und Teilnehmererlebnis'],
+      ['Niklas Brüne', 'Gründer', 'Eventkonzept, Kommunikation und Problem-Framing'],
+      ['Frederik Krause', 'Ehemaliger Gründer', 'Outreach, Operations und Teilnehmererlebnis'],
     ],
+    companiesKicker: 'Für Unternehmen',
+    companiesTitle: 'Habt ihr ein echtes Problem oder wollt das Format unterstützen?',
+    companiesText:
+      'Wenn ihr ein lokales KMU, ein Handwerksbetrieb, Verein, eine Institution oder potenzieller Sponsor seid, meldet euch gerne. Wir suchen reale Problemräume, Kooperationspartner und Unterstützer, die technische Talente an sinnvollen Herausforderungen arbeiten lassen wollen.',
+    companiesButton: 'Kontakt aufnehmen',
     poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
@@ -461,6 +473,7 @@ function App() {
       <WhatsAppSection t={t} />
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
       <LocationSection t={t} lang={lang} />
+      <CompaniesSection t={t} />
       <FAQ t={t} />
       <Footer t={t} />
     </main>
@@ -481,7 +494,8 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
         <div className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
           <a href="#how" className="hover:text-white">{t.nav[0]}</a>
           <a href="#cards" className="hover:text-white">{t.nav[1]}</a>
-          <a href="#register" className="hover:text-white">{t.nav[2]}</a>
+          <a href="#companies" className="hover:text-white">{t.nav[2]}</a>
+          <a href="#register" className="hover:text-white">{t.nav[3]}</a>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <LanguageToggle lang={lang} setLang={setLang} />
@@ -510,14 +524,16 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
 
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
-    <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-14 pt-24 sm:px-5 sm:pb-18 sm:pt-28 lg:grid-cols-[1.02fr_0.98fr]">
+    <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-14 pt-20 sm:px-5 sm:pb-18 sm:pt-24 lg:min-h-[calc(100vh-4rem)] lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
       <div className="max-w-3xl">
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
         </div>
-        <h1 className="max-w-5xl text-[clamp(2.7rem,12vw,4.15rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-7xl">
-          {t.heroTitle}
+        <h1 className="hero-title max-w-5xl text-[clamp(2.7rem,12vw,4.15rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-[4.25rem]">
+          {t.heroTitleLines.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
@@ -877,16 +893,31 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
           </div>
         </div>
         <div className="founder-grid">
-          {t.organizers.map(([name, description], index) => (
+          {t.organizers.map(([name, status, description], index) => (
             <article key={name} className="founder-card compact-founder-card">
               <img src={founderImages[index]} alt={name} />
               <div>
                 <h3>{name}</h3>
+                <p className="founder-status">{status}</p>
                 <p>{description}</p>
               </div>
             </article>
           ))}
         </div>
+      </div>
+    </Section>
+  );
+}
+
+function CompaniesSection({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="companies" kicker={t.companiesKicker} title={t.companiesTitle}>
+      <div className="company-contact mt-10">
+        <p>{t.companiesText}</p>
+        <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
+          {t.companiesButton}
+          <MessageCircle className="h-5 w-5" aria-hidden="true" />
+        </a>
       </div>
     </Section>
   );

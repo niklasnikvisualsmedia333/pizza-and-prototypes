@@ -198,6 +198,10 @@ main > header {
   line-height: 1.8;
 }
 
+.hero-title span {
+  display: block;
+}
+
 .vibe-frame {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.11);
@@ -739,6 +743,16 @@ main > header {
   line-height: 1.65;
 }
 
+.founder-card .founder-status {
+  margin-top: 0.35rem;
+  color: #67e8f9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 .supporter-panel {
   border: 1px solid rgba(103, 232, 249, 0.15);
   border-radius: 1rem;
@@ -754,9 +768,10 @@ main > header {
 
 .supporter-card {
   display: flex;
-  min-height: 5.25rem;
+  min-height: 6.25rem;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 0.85rem;
   background: rgba(255, 255, 255, 0.88);
@@ -768,9 +783,31 @@ main > header {
 
 .supporter-card img {
   display: block;
-  max-width: 82%;
-  max-height: 3.25rem;
+  width: min(18rem, 128%);
+  max-width: none;
   object-fit: contain;
+}
+
+.company-contact {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 1.25rem;
+}
+
+.company-contact p {
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+  .company-contact {
+    grid-template-columns: 1fr auto;
+    padding: 1.5rem;
+  }
 }
 
 @media (min-width: 640px) {
