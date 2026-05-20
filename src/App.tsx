@@ -1,4 +1,4 @@
-import { type CSSProperties, type FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -9,13 +9,11 @@ import {
   Lightbulb,
   MapPin,
   MessageCircle,
-  Network,
   Rocket,
   Share2,
   Sparkles,
   Timer,
   Users,
-  WandSparkles,
   Workflow,
 } from 'lucide-react';
 
@@ -33,8 +31,8 @@ const EVENT = {
     en: 'Friday, June 26, 2026',
     de: 'Freitag, 26. Juni 2026',
   },
-  time: '18:30 to 21:00',
-  timeDe: '18:30 bis 21:00',
+  time: '18:00 to 21:00',
+  timeDe: '18:00 bis 21:00',
   location: 'Startpunkt57 / Haus der Innovation, Siegen',
   address: 'Sandstraße 26, 57072 Siegen',
   size: '15 to 30 people',
@@ -80,30 +78,34 @@ const copy = {
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first pilot in Siegen',
     heroTitle: 'Build solutions for real-world problems.',
-    heroText:
-      'An innovation event for tech enthusiasts, builders, developers, and creative minds in Siegen.',
+    heroText: 'An innovation event for tech enthusiasts, builders, developers, and creative minds in Siegen.',
     eventDescription:
       'Our event brings together people interested in technology from fields such as HCI, computer science, mechatronics, AI, coding, and other technical disciplines. Together, participants work in teams on real-world problems and develop innovative solution ideas.',
     primaryCta: 'Join the interest list',
     secondaryCta: 'Join the WhatsApp group',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
-    facts: ['Real business needs', 'Builder team', 'First concept', 'Optional prototype', '7-day test'],
+    facts: ['Real business need', 'Builder team', 'Concept or prototype', 'Group share', 'Business opportunity'],
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
       'Many entrepreneurship formats attract business people first. This pilot flips the perspective: technical people first, real business needs as the starting point, and just enough startup context to make the work useful.',
     whyJoinKicker: 'Why join?',
+    whyJoinTitle: 'A compact evening for builders who want more than theory.',
     whyJoin: [
       'Work on real problems instead of theoretical cases',
       'Meet motivated builders and tech enthusiasts',
-      'Gain hands-on experience in interdisciplinary teams',
-      'Develop ideas with startup potential',
-      'Dive into the founder scene',
+      'Gain startup experience you can talk about later',
+      'Explore business model thinking with former founders',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation happens when different perspectives come together.',
     visionText:
       'We believe innovation happens when different perspectives come together. That’s why we connect students, hobby coders, creative minds, and tech enthusiasts from different disciplines.',
+    opportunityKicker: 'What you take away',
+    opportunityTitle: 'Not a full hackathon. A focused first step toward something real.',
+    opportunityText:
+      'At the end, teams briefly share the concept, mockup, workflow or prototype they came up with. As former founders, we can help translate promising ideas into a first Business Model Canvas and discuss what a realistic next step could be. If useful, we can also send that follow-up summary afterwards.',
+    opportunityPoints: ['First concept or prototype', 'Short group share', 'Business Model Canvas angle', 'Startup experience for your CV'],
     problemCards: [
       ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
       ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
@@ -118,7 +120,7 @@ const copy = {
       'Pick a real problem card',
       'Form a small builder team',
       'Build, sketch or automate for 60 to 90 minutes',
-      'Share the result or define a 7-day test',
+      'Share the result and discuss possible next steps',
     ],
     examplesKicker: 'Example problem spaces',
     examplesTitle: 'Examples only. Final cases may change.',
@@ -129,23 +131,15 @@ const copy = {
       ['Construction photo documentation', 'Photos are spread across phone galleries, chats and email.', 'Upload flow with project tagging.'],
       ['Maintenance and inspection reminders', 'Recurring appointments are tracked manually.', 'Automated reminder service.'],
     ],
-    whoKicker: 'Who should come',
-    whoTitle: 'Designed for people who like building, solving and thinking through real problems.',
-    mainly: 'Mainly for',
-    also: 'Helpful, not required',
-    whoNote:
-      'This is not a general networking event. It is designed for people who like building, solving and thinking through real problems.',
-    audienceMain: ['Programmers', 'Computer science students', 'Hobby developers', 'Makers', 'HCI / UX people', 'Data / AI enthusiasts', 'Technical problem solvers'],
-    audienceAlso: ['Startup interest', 'Product thinking', 'Real-world problem access', 'First project ideas'],
     scheduleKicker: 'Schedule',
     scheduleTitle: 'A compact evening sprint with enough room to meet good people.',
     schedule: [
-      ['18:30', 'Check-in, pizza and problem cards'],
-      ['18:45', 'Short intro and ground rules'],
-      ['18:55', 'Team formation'],
-      ['19:05', 'Problem sprint'],
+      ['18:00', 'Check-in, pizza and problem cards'],
+      ['18:15', 'Short intro and ground rules'],
+      ['18:25', 'Team formation'],
+      ['18:35', 'Problem sprint'],
       ['20:20', 'Demo walk / share results'],
-      ['20:45', 'Next steps and WhatsApp group'],
+      ['20:45', 'Business opportunity and next steps'],
       ['21:00', 'Open end'],
     ],
     faqKicker: 'FAQ',
@@ -163,7 +157,7 @@ const copy = {
     pilotDetails: 'First pilot details',
     privacyNote: 'We only use your data to organize this first event and send relevant updates. No spam.',
     successTitle: 'You are on the interest list.',
-    successText: 'Thanks. Your registration was sent through Formspree.',
+    successText: 'Thanks. Your registration was sent successfully.',
     error: 'Please fill in the required fields before joining the list.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -204,7 +198,7 @@ const copy = {
     organizersKicker: 'About us',
     organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
     organizersText:
-      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
+      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management and both former founders. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
     organizers: [
       ['Niklas Brüne', 'Event concept, communication and problem framing'],
       ['Frederik Krause', 'Outreach, operations and participant experience'],
@@ -218,7 +212,7 @@ const copy = {
     nav: ['Ablauf', 'Problemkarten', 'Anmelden'],
     joinShort: 'Liste',
     brand: 'Tech Meets Problems',
-    edition: 'Pizza & Prototypes · First Edition',
+    edition: 'Pizza & Prototypes · Erste Ausgabe',
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first Pilot in Siegen',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
@@ -229,23 +223,28 @@ const copy = {
     primaryCta: 'Zur Interessentenliste',
     secondaryCta: 'WhatsApp-Gruppe beitreten',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
-    facts: ['Echtes Business-Problem', 'Builder-Team', 'Erstes Konzept', 'Optionaler Prototyp', '7-Tage-Test'],
+    facts: ['Echtes Business-Problem', 'Builder-Team', 'Konzept oder Prototyp', 'Kurz vorstellen', 'Business Opportunity'],
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
     problemLead:
       'Viele Entrepreneurship-Formate ziehen Business-Leute zuerst an. Dieser Pilot dreht die Perspektive: technische Leute zuerst, echte Business-Probleme als Startpunkt und nur so viel Startup-Kontext, dass die Arbeit nützlich wird.',
     whyJoinKicker: 'Warum mitmachen?',
+    whyJoinTitle: 'Ein kompakter Abend für Builder, die mehr wollen als Theorie.',
     whyJoin: [
       'Arbeite an echten Problemen statt an theoretischen Cases',
       'Triff motivierte Builder und Tech-Enthusiasten',
-      'Sammle praktische Erfahrung in interdisziplinären Teams',
-      'Entwickle Ideen mit Startup-Potenzial',
-      'Tauche in die Gründerszene ein',
+      'Sammle Startup-Erfahrung, die du später erwähnen kannst',
+      'Denke Geschäftsmodelle mit ehemaligen Gründern durch',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen.',
     visionText:
       'Wir glauben, dass Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen. Deshalb vernetzen wir Studierende, Hobby-Coder, kreative Köpfe und Tech-Enthusiasten aus verschiedenen Disziplinen.',
+    opportunityKicker: 'Was du mitnimmst',
+    opportunityTitle: 'Kein kompletter Hackathon. Ein fokussierter erster Schritt in Richtung echte Opportunity.',
+    opportunityText:
+      'Am Ende stellen die Teams kurz ihr Konzept, Mockup, ihren Workflow oder Prototyp vor. Als ehemalige Gründer helfen wir dabei, vielversprechende Ideen in ein erstes Business Model Canvas zu übersetzen und realistische nächste Schritte zu besprechen. Wenn es sinnvoll ist, können wir eine kurze Zusammenfassung danach zusenden.',
+    opportunityPoints: ['Erstes Konzept oder Prototyp', 'Kurze Vorstellung in der Gruppe', 'Business-Model-Canvas-Perspektive', 'Startup-Erfahrung für den Lebenslauf'],
     problemCards: [
       ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
@@ -260,7 +259,7 @@ const copy = {
       'Echte Problemkarte wählen',
       'Kleines Builder-Team bilden',
       '60 bis 90 Minuten bauen, skizzieren oder automatisieren',
-      'Ergebnis teilen oder 7-Tage-Test definieren',
+      'Ergebnis vorstellen und mögliche nächste Schritte besprechen',
     ],
     examplesKicker: 'Beispiel-Problemräume',
     examplesTitle: 'Nur Beispiele. Die finalen Fälle können sich ändern.',
@@ -271,30 +270,22 @@ const copy = {
       ['Fotodokumentation auf Baustellen', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
       ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
     ],
-    whoKicker: 'Wer kommen sollte',
-    whoTitle: 'Für Menschen, die gerne bauen, lösen und echte Probleme durchdenken.',
-    mainly: 'Vor allem für',
-    also: 'Hilfreich, nicht notwendig',
-    whoNote:
-      'Das ist kein allgemeines Networking-Event. Es ist für Menschen gedacht, die gerne bauen, lösen und echte Probleme durchdenken.',
-    audienceMain: ['Programmierer', 'Informatikstudierende', 'Hobby-Entwickler', 'Maker', 'HCI / UX-Leute', 'Data / AI-Interessierte', 'Technische Problemlöser'],
-    audienceAlso: ['Startup-Interesse', 'Produktdenken', 'Zugang zu echten Problemen', 'Erste Projektideen'],
     scheduleKicker: 'Ablauf',
     scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
     schedule: [
-      ['18:30', 'Check-in, Pizza und Problemkarten'],
-      ['18:45', 'Kurze Einführung und Spielregeln'],
-      ['18:55', 'Teambildung'],
-      ['19:05', 'Problem-Sprint'],
+      ['18:00', 'Ankommen, Pizza und Problemkarten'],
+      ['18:15', 'Kurze Einführung und Spielregeln'],
+      ['18:25', 'Teambildung'],
+      ['18:35', 'Problem-Sprint'],
       ['20:20', 'Demo Walk / Ergebnisse teilen'],
-      ['20:45', 'Nächste Schritte und WhatsApp-Gruppe'],
+      ['20:45', 'Business Opportunity und nächste Schritte'],
       ['21:00', 'Open End'],
     ],
     faqKicker: 'FAQ',
     faqTitle: 'Kurze Antworten vor der Anmeldung.',
     faqs: [
       ['Muss ich eine Startup-Idee mitbringen?', 'Nein. Wir bringen Problemkarten mit. Du brauchst nur Neugier und Lust, an etwas Echtem zu arbeiten.'],
-      ['Muss ich Expert Programmer sein?', 'Nein. Du musst kein Experte sein. Aber du solltest Lust auf Bauen, Coden, Designen oder technische Problemlösung haben.'],
+      ['Muss ich ein Programmierprofi sein?', 'Nein. Du musst kein Experte sein. Aber du solltest Lust auf Bauen, Coden, Designen oder technische Problemlösung haben.'],
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
@@ -305,7 +296,7 @@ const copy = {
     pilotDetails: 'Details zum ersten Pilot',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses erste Event zu organisieren und relevante Updates zu senden. Kein Spam.',
     successTitle: 'Du bist auf der Interessentenliste.',
-    successText: 'Danke. Deine Anmeldung wurde über Formspree gesendet.',
+    successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
@@ -339,19 +330,19 @@ const copy = {
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
     shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Tech Meets Problems: Pizza & Prototypes weiter.',
-    locationKicker: 'Location',
+    locationKicker: 'Ort',
     locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
-    locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 und Entrepreneurship Center.',
+    locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
     sourceLabel: 'Offizielle Startpunkt57-Info',
     organizersKicker: 'Über uns',
     organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
     organizersText:
-      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
+      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management und beide ehemalige Gründer. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
     organizers: [
       ['Niklas Brüne', 'Eventkonzept, Kommunikation und Problem-Framing'],
-      ['Frederik Krause', 'Outreach, Operations und Participant Experience'],
+      ['Frederik Krause', 'Outreach, Operations und Teilnehmererlebnis'],
     ],
-    poweredBy: 'Supported by',
+    poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
@@ -450,11 +441,11 @@ function App() {
       <ProblemSection t={t} />
       <WhyJoinSection t={t} />
       <VisionSection t={t} />
+      <OrganizersSection t={t} />
+      <OpportunitySection t={t} />
       <HowItWorks t={t} />
       <ExampleProblems t={t} />
-      <WhoShouldCome t={t} />
       <Schedule t={t} />
-      <FAQ t={t} />
       <Registration
         t={t}
         lang={lang}
@@ -469,7 +460,7 @@ function App() {
       <WhatsAppSection t={t} />
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
       <LocationSection t={t} lang={lang} />
-      <OrganizersSection t={t} />
+      <FAQ t={t} />
       <Footer t={t} />
     </main>
   );
@@ -520,7 +511,6 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-16 pt-28 sm:px-5 sm:pb-20 sm:pt-32 lg:grid-cols-[1.02fr_0.98fr]">
       <div className="max-w-3xl">
-        <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-hero mb-6" />
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
@@ -556,39 +546,65 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
 function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative">
-      <div className="terminal-card">
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-          <div className="flex gap-2" aria-hidden="true">
-            <span className="h-3 w-3 rounded-full bg-rose-400" />
-            <span className="h-3 w-3 rounded-full bg-amber-300" />
-            <span className="h-3 w-3 rounded-full bg-emerald-400" />
-          </div>
-          <span className="text-xs text-slate-500">event-flow.ts</span>
+      <div className="event-map-card">
+        <div className="event-map-center">
+          <span>{t.edition}</span>
+          <strong>{t.brand}</strong>
         </div>
-        <div className="space-y-5 p-5 font-mono text-xs sm:p-6 sm:text-sm">
-          <CodeLine muted value="const session = mapNeedToOutput({" />
-          <CodeLine indent value='input: "real business needs",' />
-          <CodeLine indent value='people: ["developers", "makers", "HCI/UX"],' />
-          <CodeLine indent value='output: ["concept", "workflow", "mockup", "prototype"],' />
-          <CodeLine indent value='avoid: ["pitch decks", "startup theatre"],' />
-          <CodeLine muted value="});" />
-          <div className="flow-visual pt-3">
-            {t.facts.map((item, index) => (
-              <div key={item} className="flow-node">
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                {item}
-              </div>
-            ))}
-          </div>
+        <div className="event-orbit event-orbit-one" />
+        <div className="event-orbit event-orbit-two" />
+        <div className="event-node need-node">
+          <Lightbulb className="h-5 w-5" aria-hidden="true" />
+          <span>{t.facts[0]}</span>
         </div>
-      </div>
-      <div className="floating-chip left-2 top-8">
-        <Network className="h-4 w-4" /> real need
-      </div>
-      <div className="floating-chip bottom-10 right-0">
-        <WandSparkles className="h-4 w-4" /> first test
+        <div className="event-node team-node">
+          <Users className="h-5 w-5" aria-hidden="true" />
+          <span>{t.facts[1]}</span>
+        </div>
+        <div className="event-node concept-node">
+          <Workflow className="h-5 w-5" aria-hidden="true" />
+          <span>{t.facts[2]}</span>
+        </div>
+        <div className="event-node share-node">
+          <MessageCircle className="h-5 w-5" aria-hidden="true" />
+          <span>{t.facts[3]}</span>
+        </div>
+        <div className="event-node opportunity-node">
+          <Rocket className="h-5 w-5" aria-hidden="true" />
+          <span>{t.facts[4]}</span>
+        </div>
+        <div className="event-output-card">
+          <p>{t.opportunityPoints[0]}</p>
+          <p>{t.opportunityPoints[2]}</p>
+          <p>{t.opportunityPoints[3]}</p>
+        </div>
       </div>
     </div>
+  );
+}
+
+function OpportunitySection({ t }: { t: typeof copy.en }) {
+  return (
+    <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-5">
+      <div className="opportunity-layout">
+        <div>
+          <p className="eyebrow mb-5">
+            <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
+            {t.opportunityKicker}
+          </p>
+          <h2>{t.opportunityTitle}</h2>
+          <p>{t.opportunityText}</p>
+        </div>
+        <div className="opportunity-list">
+          {t.opportunityPoints.map((point) => (
+            <div key={point}>
+              <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" />
+              <span>{point}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -607,8 +623,8 @@ function ProblemSection({ t }: { t: typeof copy.en }) {
 
 function WhyJoinSection({ t }: { t: typeof copy.en }) {
   return (
-    <Section id="why-join" kicker={t.whyJoinKicker} title={t.whyJoin[0]}>
-      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <Section id="why-join" kicker={t.whyJoinKicker} title={t.whyJoinTitle}>
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {t.whyJoin.map((item) => (
           <div key={item} className="why-chip">
             <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" />
@@ -679,31 +695,6 @@ function ExampleProblems({ t }: { t: typeof copy.en }) {
   );
 }
 
-function WhoShouldCome({ t }: { t: typeof copy.en }) {
-  return (
-    <Section id="who" kicker={t.whoKicker} title={t.whoTitle}>
-      <div className="mt-10 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-xl font-semibold text-white">{t.mainly}</h3>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {t.audienceMain.map((item) => (
-              <CheckPill key={item}>{item}</CheckPill>
-            ))}
-          </div>
-        </div>
-        <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-xl font-semibold text-white">{t.also}</h3>
-          <div className="mt-6 space-y-3">
-            {t.audienceAlso.map((item) => (
-              <CheckPill key={item}>{item}</CheckPill>
-            ))}
-          </div>
-          <p className="mt-6 leading-7 text-slate-300">{t.whoNote}</p>
-        </div>
-      </div>
-    </Section>
-  );
-}
 
 function Schedule({ t }: { t: typeof copy.en }) {
   return (
@@ -966,15 +957,6 @@ function FeatureCard({ title, text, icon: Icon }: { title: string; text: string;
   );
 }
 
-function CheckPill({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-slate-200">
-      <Check className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
-      {children}
-    </div>
-  );
-}
-
 function InfoRow({ icon: Icon, label }: { icon: typeof CalendarDays; label: string }) {
   return (
     <div className="flex items-start gap-3 text-slate-200">
@@ -1006,14 +988,6 @@ function SelectInput({ label, value, options, placeholder, onChange, required = 
         ))}
       </select>
     </label>
-  );
-}
-
-function CodeLine({ value, indent = false, muted = false }: { value: string; indent?: boolean; muted?: boolean }) {
-  return (
-    <p className={`${indent ? 'pl-5 sm:pl-6' : ''} ${muted ? 'text-slate-500' : 'text-slate-200'}`}>
-      <span className="text-slate-600">›</span> {value}
-    </p>
   );
 }
 
