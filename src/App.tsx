@@ -120,7 +120,7 @@ const copy = {
     steps: [
       'Pick a real problem card',
       'Form a small builder team',
-      'Build, sketch or automate for 60 to 90 minutes',
+      'Prototype, sketch or automate during the evening',
       'Share the result and discuss possible next steps',
     ],
     examplesKicker: 'Example problem spaces',
@@ -135,10 +135,10 @@ const copy = {
     scheduleKicker: 'Schedule',
     scheduleTitle: 'A compact evening sprint with enough room to meet good people.',
     schedule: [
-      ['18:00', 'Check-in, pizza and problem cards'],
+      ['18:00', 'Arrive, grab pizza and pick problem cards'],
       ['18:15', 'Short intro and ground rules'],
       ['18:25', 'Team formation'],
-      ['18:35', 'Problem sprint'],
+      ['18:35', 'Prototype sprint with pizza on the side'],
       ['20:20', 'Demo walk / share results'],
       ['20:45', 'Business opportunity and next steps'],
       ['21:00', 'Open end'],
@@ -156,7 +156,7 @@ const copy = {
     formKicker: 'Interest list',
     formTitle: 'Save your spot for the first session.',
     pilotDetails: 'First pilot details',
-    privacyNote: 'We only use your data to organize this first event and send relevant updates. No spam.',
+    privacyNote: 'We only use your data to organize this event and send relevant updates. If you cannot make this date, join anyway and we will keep you posted about future sessions. No spam.',
     successTitle: 'You are on the interest list.',
     successText: 'Thanks. Your registration was sent successfully.',
     error: 'Please fill in the required fields before joining the list.',
@@ -182,7 +182,7 @@ const copy = {
     pizza: ['Yes, normal pizza', 'Vegetarian', 'Vegan', 'No pizza for me'],
     sending: 'Sending...',
     whatsappKicker: 'Builder group',
-    whatsappTitle: 'Get updates, problem cards and follow-up project threads.',
+    whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
     whatsappButton: 'Join WhatsApp',
     shareKicker: 'Share',
     shareTitle: 'Know someone who likes building? Send this to them.',
@@ -262,7 +262,7 @@ const copy = {
     steps: [
       'Echte Problemkarte wählen',
       'Kleines Builder-Team bilden',
-      '60 bis 90 Minuten bauen, skizzieren oder automatisieren',
+      'Über den Abend prototypen, skizzieren oder automatisieren',
       'Ergebnis vorstellen und mögliche nächste Schritte besprechen',
     ],
     examplesKicker: 'Beispiel-Problemräume',
@@ -277,10 +277,10 @@ const copy = {
     scheduleKicker: 'Ablauf',
     scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
     schedule: [
-      ['18:00', 'Ankommen, Pizza und Problemkarten'],
+      ['18:00', 'Ankommen, Pizza nehmen und Problemkarten wählen'],
       ['18:15', 'Kurze Einführung und Spielregeln'],
       ['18:25', 'Teambildung'],
-      ['18:35', 'Problem-Sprint'],
+      ['18:35', 'Prototype-Sprint mit Pizza nebenbei'],
       ['20:20', 'Demo Walk / Ergebnisse teilen'],
       ['20:45', 'Business Opportunity und nächste Schritte'],
       ['21:00', 'Open End'],
@@ -298,7 +298,7 @@ const copy = {
     formKicker: 'Interessentenliste',
     formTitle: 'Sichere dir einen Platz für die erste Session.',
     pilotDetails: 'Details zum ersten Pilot',
-    privacyNote: 'Wir nutzen deine Daten nur, um dieses erste Event zu organisieren und relevante Updates zu senden. Kein Spam.',
+    privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du am Termin nicht kannst, trag dich trotzdem ein und wir halten dich über nächste Sessions auf dem Laufenden. Kein Spam.',
     successTitle: 'Du bist auf der Interessentenliste.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich einträgst.',
@@ -324,7 +324,7 @@ const copy = {
     pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
     sending: 'Wird gesendet...',
     whatsappKicker: 'Builder-Gruppe',
-    whatsappTitle: 'Updates, Problemkarten und Follow-up-Projektthreads.',
+    whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
     whatsappButton: 'WhatsApp beitreten',
     shareKicker: 'Teilen',
     shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
@@ -494,10 +494,10 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
         <div className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
           <a href="#how" className="hover:text-white">{t.nav[0]}</a>
           <a href="#cards" className="hover:text-white">{t.nav[1]}</a>
-          <a href="#companies" className="hover:text-white">{t.nav[2]}</a>
           <a href="#register" className="hover:text-white">{t.nav[3]}</a>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          <a href="#companies" className="company-nav-link hidden xl:inline-flex">{t.nav[2]}</a>
           <LanguageToggle lang={lang} setLang={setLang} />
           <a href="#register" className="btn btn-compact hidden sm:inline-flex">
             {t.joinShort}
@@ -524,7 +524,7 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
 
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
-    <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-14 pt-20 sm:px-5 sm:pb-18 sm:pt-24 lg:min-h-[calc(100vh-4rem)] lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
+    <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
       <div className="max-w-3xl">
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
@@ -558,6 +558,8 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative">
       <div className="event-map-card">
+        <div className="event-beam event-beam-one" aria-hidden="true" />
+        <div className="event-beam event-beam-two" aria-hidden="true" />
         <div className="event-map-center">
           <span>{t.tagline}</span>
           <strong>{t.edition.split(' · ')[0]}</strong>
@@ -942,8 +944,8 @@ function Footer({ t }: { t: typeof copy.en }) {
 
 function Section({ id, kicker, title, children }: { id: string; kicker: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="relative mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-20">
-      <div className="max-w-3xl">
+    <section id={id} className="relative mx-auto max-w-7xl px-4 py-14 sm:px-5 sm:py-16">
+      <div className="max-w-4xl">
         <p className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {kicker}
