@@ -101,11 +101,13 @@ main > header {
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .brand-logo-hero {
   width: min(18rem, 72vw);
   height: auto;
+  border-radius: 1.25rem;
   filter: drop-shadow(0 18px 38px rgba(34, 211, 238, 0.12));
 }
 
@@ -259,6 +261,58 @@ main > header {
   color: #dbeafe;
   font-size: 1.05rem;
   line-height: 1.8;
+}
+
+.why-chip {
+  display: flex;
+  min-height: 100%;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.045);
+  padding: 1rem;
+  color: #dbeafe;
+  line-height: 1.55;
+}
+
+.why-chip svg {
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.vision-band {
+  overflow: hidden;
+  border: 1px solid rgba(103, 232, 249, 0.15);
+  border-radius: 1.15rem;
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(255, 255, 255, 0.035)),
+    rgba(10, 14, 25, 0.78);
+  padding: 1.5rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+}
+
+.vision-band h2 {
+  max-width: 52rem;
+  color: #fff;
+  font-size: clamp(1.8rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.vision-band p:last-child {
+  margin-top: 1rem;
+  max-width: 48rem;
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+@media (min-width: 640px) {
+  .vision-band {
+    padding: 2rem;
+  }
 }
 
 .glass-card,

@@ -22,10 +22,10 @@ import {
 type Lang = 'en' | 'de';
 
 const ASSETS = {
-  logoTransparent: '/assets/logo-tech-meets-problems-transparent.png',
-  logoDark: '/assets/logo-tech-meets-problems-dark.png',
-  niklas: '/assets/niklas-bruene.jpg',
-  frederik: '/assets/frederik-krause.jpg',
+  logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
+  logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
+  niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
+  frederik: `${import.meta.env.BASE_URL}assets/frederik-krause.jpg`,
 };
 
 const EVENT = {
@@ -79,9 +79,11 @@ const copy = {
     edition: 'Pizza & Prototypes · First Edition',
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first pilot in Siegen',
-    heroTitle: 'Work on real problems with people who build.',
+    heroTitle: 'Build solutions for real-world problems.',
     heroText:
-      'Tech Meets Problems is a builder-first event in Siegen where technical students, developers, makers and HCI/UX people explore real business needs and turn them into first concepts, workflows, mockups or optional prototypes.',
+      'An innovation event for tech enthusiasts, builders, developers, and creative minds in Siegen.',
+    eventDescription:
+      'Our event brings together people interested in technology from fields such as HCI, computer science, mechatronics, AI, coding, and other technical disciplines. Together, participants work in teams on real-world problems and develop innovative solution ideas.',
     primaryCta: 'Join the interest list',
     secondaryCta: 'Join the WhatsApp group',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
@@ -90,6 +92,18 @@ const copy = {
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
       'Many entrepreneurship formats attract business people first. This pilot flips the perspective: technical people first, real business needs as the starting point, and just enough startup context to make the work useful.',
+    whyJoinKicker: 'Why join?',
+    whyJoin: [
+      'Work on real problems instead of theoretical cases',
+      'Meet motivated builders and tech enthusiasts',
+      'Gain hands-on experience in interdisciplinary teams',
+      'Develop ideas with startup potential',
+      'Dive into the founder scene',
+    ],
+    visionKicker: 'Vision',
+    visionTitle: 'Innovation happens when different perspectives come together.',
+    visionText:
+      'We believe innovation happens when different perspectives come together. That’s why we connect students, hobby coders, creative minds, and tech enthusiasts from different disciplines.',
     problemCards: [
       ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
       ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
@@ -187,16 +201,16 @@ const copy = {
     locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
     locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
     sourceLabel: 'Official Startpunkt57 info',
-    organizersKicker: 'Organizers',
+    organizersKicker: 'About us',
     organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
     organizersText:
-      'We are two Entrepreneurship / SME Management master students who wanted this format to exist: a low-barrier place where technical people in Siegen can meet real business problems, explore first ideas and connect with people who like building.',
+      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
     organizers: [
       ['Niklas Brüne', 'Event concept, communication and problem framing'],
       ['Frederik Krause', 'Outreach, operations and participant experience'],
     ],
-    poweredBy: 'Powered by',
-    supporters: ['Startpunkt57', 'Entrepreneurship Center'],
+    poweredBy: 'Supported by',
+    supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
   },
@@ -207,9 +221,11 @@ const copy = {
     edition: 'Pizza & Prototypes · First Edition',
     tagline: 'Where builders work on real business needs.',
     eyebrow: 'Builder-first Pilot in Siegen',
-    heroTitle: 'Arbeite an echten Problemen mit Menschen, die bauen.',
+    heroTitle: 'Entwickle Lösungen für echte Probleme.',
     heroText:
-      'Tech Meets Problems ist ein builder-first Event in Siegen für technische Studierende, Entwickler, Maker und HCI/UX-Leute, die an echten Business-Problemen arbeiten und daraus erste Konzepte, Workflows, Mockups oder optionale Prototypen entwickeln wollen.',
+      'Ein Innovationsevent für Tech-Enthusiasten, Builder, Entwickler und kreative Köpfe in Siegen.',
+    eventDescription:
+      'Unser Event bringt Menschen zusammen, die sich für Technologie interessieren: aus Bereichen wie HCI, Informatik, Mechatronik, AI, Coding und anderen technischen Disziplinen. Gemeinsam arbeiten die Teilnehmenden in Teams an realen Problemen und entwickeln innovative Lösungsideen.',
     primaryCta: 'Zur Interessentenliste',
     secondaryCta: 'WhatsApp-Gruppe beitreten',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
@@ -218,6 +234,18 @@ const copy = {
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
     problemLead:
       'Viele Entrepreneurship-Formate ziehen Business-Leute zuerst an. Dieser Pilot dreht die Perspektive: technische Leute zuerst, echte Business-Probleme als Startpunkt und nur so viel Startup-Kontext, dass die Arbeit nützlich wird.',
+    whyJoinKicker: 'Warum mitmachen?',
+    whyJoin: [
+      'Arbeite an echten Problemen statt an theoretischen Cases',
+      'Triff motivierte Builder und Tech-Enthusiasten',
+      'Sammle praktische Erfahrung in interdisziplinären Teams',
+      'Entwickle Ideen mit Startup-Potenzial',
+      'Tauche in die Gründerszene ein',
+    ],
+    visionKicker: 'Vision',
+    visionTitle: 'Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen.',
+    visionText:
+      'Wir glauben, dass Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen. Deshalb vernetzen wir Studierende, Hobby-Coder, kreative Köpfe und Tech-Enthusiasten aus verschiedenen Disziplinen.',
     problemCards: [
       ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
@@ -315,16 +343,16 @@ const copy = {
     locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
     locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 und Entrepreneurship Center.',
     sourceLabel: 'Offizielle Startpunkt57-Info',
-    organizersKicker: 'Organisatoren',
+    organizersKicker: 'Über uns',
     organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
     organizersText:
-      'Wir sind zwei Entrepreneurship / SME Management Masterstudenten und wollten dieses Format selbst haben: einen niedrigschwelligen Ort, an dem technische Menschen in Siegen echte Business-Probleme kennenlernen, erste Ideen explorieren und Leute treffen, die gerne bauen.',
+      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
     organizers: [
       ['Niklas Brüne', 'Eventkonzept, Kommunikation und Problem-Framing'],
       ['Frederik Krause', 'Outreach, Operations und Participant Experience'],
     ],
-    poweredBy: 'Powered by',
-    supporters: ['Startpunkt57', 'Entrepreneurship Center'],
+    poweredBy: 'Supported by',
+    supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
   },
@@ -420,6 +448,8 @@ function App() {
       <Header lang={lang} setLang={setLang} t={t} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
+      <WhyJoinSection t={t} />
+      <VisionSection t={t} />
       <HowItWorks t={t} />
       <ExampleProblems t={t} />
       <WhoShouldCome t={t} />
@@ -450,7 +480,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#07080d]/75 backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
         <a href="#top" className="flex min-w-0 items-center gap-3">
-          <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-header" />
+          <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-header" />
           <span className="flex min-w-0 flex-col leading-tight">
             <span className="truncate text-sm font-semibold text-white sm:text-base">{t.brand}</span>
             <span className="hidden text-[0.68rem] font-medium text-cyan-200/80 sm:block">{t.edition}</span>
@@ -490,7 +520,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-4 pb-16 pt-28 sm:px-5 sm:pb-20 sm:pt-32 lg:grid-cols-[1.02fr_0.98fr]">
       <div className="max-w-3xl">
-        <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-hero mb-6" />
+        <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-hero mb-6" />
         <div className="eyebrow mb-5">
           <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
           {t.eyebrow}
@@ -500,6 +530,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           {t.heroTitle}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">{t.eventDescription}</p>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
           <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
@@ -571,6 +602,36 @@ function ProblemSection({ t }: { t: typeof copy.en }) {
         ))}
       </div>
     </Section>
+  );
+}
+
+function WhyJoinSection({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="why-join" kicker={t.whyJoinKicker} title={t.whyJoin[0]}>
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {t.whyJoin.map((item) => (
+          <div key={item} className="why-chip">
+            <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" />
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function VisionSection({ t }: { t: typeof copy.en }) {
+  return (
+    <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-5">
+      <div className="vision-band">
+        <p className="eyebrow mb-5">
+          <Sparkles className="h-4 w-4 text-cyan-300" aria-hidden="true" />
+          {t.visionKicker}
+        </p>
+        <h2>{t.visionTitle}</h2>
+        <p>{t.visionText}</p>
+      </div>
+    </section>
   );
 }
 
@@ -859,7 +920,7 @@ function Footer({ t }: { t: typeof copy.en }) {
     <footer className="relative mx-auto max-w-7xl border-t border-white/10 px-5 py-10 text-sm text-slate-400">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <img src={ASSETS.logoTransparent} alt="Tech Meets Problems" className="brand-logo brand-logo-footer" />
+          <img src={ASSETS.logoDark} alt="Tech Meets Problems" className="brand-logo brand-logo-footer" />
           <div>
             <p className="font-semibold text-white">{t.brand}</p>
             <p>{t.footerSub}</p>
