@@ -1,4 +1,4 @@
-import { type FormEvent, type PointerEvent, useEffect, useState } from 'react';
+import { type FormEvent, type PointerEvent, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowUp,
@@ -188,7 +188,7 @@ const copy = {
       'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
     capacityNote: 'Limited to around 30 people',
-    laptopNote: 'Laptop recommended. One per team is the minimum; ideally everyone brings one.',
+    laptopNote: 'Laptop recommended. eduroam and guest WiFi are available.',
     included: 'Pizza, non-alcoholic and alcoholic drinks included',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
     privacyKicker: 'Privacy',
@@ -378,7 +378,7 @@ const copy = {
       'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
     capacityNote: 'Auf etwa 30 Personen begrenzt',
-    laptopNote: 'Laptop empfohlen. Einer pro Team ist das Minimum, besser bringt jede Person einen mit.',
+    laptopNote: 'Laptop empfohlen. eduroam und Gast-WLAN sind verfügbar.',
     included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     privacyKicker: 'Datenschutz',
@@ -495,6 +495,8 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExitNudge, setShowExitNudge] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const pointerFrame = useRef<number | null>(null);
+  const pointerPosition = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -516,8 +518,14 @@ function App() {
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType === 'mouse') {
-      document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`);
-      document.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`);
+      pointerPosition.current = { x: event.clientX, y: event.clientY };
+      if (pointerFrame.current === null) {
+        pointerFrame.current = window.requestAnimationFrame(() => {
+          document.documentElement.style.setProperty('--cursor-x', `${pointerPosition.current.x}px`);
+          document.documentElement.style.setProperty('--cursor-y', `${pointerPosition.current.y}px`);
+          pointerFrame.current = null;
+        });
+      }
     }
   };
 

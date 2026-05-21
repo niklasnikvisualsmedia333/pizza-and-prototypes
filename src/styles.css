@@ -199,15 +199,16 @@ main > header {
 }
 
 .quick-menu > div {
-  position: absolute;
-  right: 0;
-  bottom: 3.25rem;
+  position: fixed;
+  left: max(0.625rem, calc((100vw - 21rem) / 2));
+  right: auto;
+  bottom: 5.15rem;
   display: grid;
-  width: min(18rem, calc(100vw - 2rem));
+  width: min(21rem, calc(100vw - 1.25rem));
   gap: 0.35rem;
   border: 1px solid rgba(125, 211, 252, 0.2);
   border-radius: 0.85rem;
-  background: rgba(7, 8, 13, 0.94);
+  background: rgba(7, 8, 13, 0.9);
   padding: 0.6rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(18px);
@@ -1914,6 +1915,8 @@ main > header {
 
 @media (max-width: 639px) {
   .mobile-quick-nav {
+    right: 0.85rem;
+    bottom: max(0.85rem, env(safe-area-inset-bottom));
     display: flex;
   }
 
