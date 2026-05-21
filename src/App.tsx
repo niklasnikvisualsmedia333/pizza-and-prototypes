@@ -24,7 +24,7 @@ const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
   logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
   heroMap: `${import.meta.env.BASE_URL}assets/hero-pizza-prototypes-map.png`,
-  roomPreview: `${import.meta.env.BASE_URL}assets/event-room-preview.png`,
+  roomPreview: `${import.meta.env.BASE_URL}assets/event-room-preview.jpg`,
   startpunkt57: `${import.meta.env.BASE_URL}assets/logo-startpunkt57.png`,
   entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
   niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
@@ -208,10 +208,10 @@ const copy = {
     requiredNote: '* Required fields',
     sending: 'Sending...',
     roomKicker: 'Event atmosphere',
-    roomTitle: 'A first visual idea of the room.',
+    roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'A realistic preview of how the evening could feel: small teams, laptops open, problem cards on the table and pizza in reach while people work through real business needs.',
-    roomCaption: 'Visualization of the room setup for Pizza & Prototypes.',
+      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards, pizza and people working through real business needs together.',
+    roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
     whatsappButton: 'Join WhatsApp',
@@ -240,6 +240,7 @@ const copy = {
     companiesText:
       'If you are a local SME, craft business, club, institution or potential sponsor, reach out. We are looking for real problem spaces, cooperation partners and supporters who want to help technical talent work on useful challenges.',
     companiesButton: 'Contact us',
+    companiesVisual: ['Problem', 'Builders', 'Output', 'SME need', 'Useful challenge'],
     poweredBy: 'Supported by',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
@@ -367,10 +368,10 @@ const copy = {
     requiredNote: '* Pflichtfelder',
     sending: 'Wird gesendet...',
     roomKicker: 'Event-Atmosphäre',
-    roomTitle: 'Eine erste Visualisierung des Raums.',
+    roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'So könnte sich der Abend anfühlen: kleine Teams, offene Laptops, Problemkarten auf den Tischen und Pizza in Reichweite, während an echten Business-Problemen gearbeitet wird.',
-    roomCaption: 'Visualisierung des Raum-Setups für Pizza & Prototypes.',
+      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten, Pizza und Menschen, die gemeinsam an echten Business-Problemen arbeiten.',
+    roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
     whatsappButton: 'WhatsApp beitreten',
@@ -399,6 +400,7 @@ const copy = {
     companiesText:
       'Wenn ihr ein lokales KMU, ein Handwerksbetrieb, Verein, eine Institution oder potenzieller Sponsor seid, meldet euch gerne. Wir suchen reale Problemräume, Kooperationspartner und Unterstützer, die technische Talente an sinnvollen Herausforderungen arbeiten lassen wollen.',
     companiesButton: 'Kontakt aufnehmen',
+    companiesVisual: ['Problem', 'Builder', 'Output', 'KMU-Bedarf', 'Sinnvolle Challenge'],
     poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
@@ -584,9 +586,8 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           {t.eyebrow}
         </div>
         <h1 className="hero-title max-w-5xl text-[clamp(2.7rem,12vw,4.15rem)] font-semibold leading-[0.98] tracking-tight text-white lg:text-[4.25rem]">
-          {t.heroTitleLines.map((line) => (
-            <span key={line}>{line}</span>
-          ))}
+          <span>{t.heroTitleLines[0]}</span>
+          <span className="hero-title-line-compact">{t.heroTitleLines[1]}</span>
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-xl">{t.heroText}</p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -995,11 +996,31 @@ function CompaniesSection({ t }: { t: typeof copy.en }) {
   return (
     <Section id="companies" kicker={t.companiesKicker} title={t.companiesTitle}>
       <div className="company-contact mt-10">
-        <p>{t.companiesText}</p>
-        <a href={`mailto:${EVENT.contactEmail}?subject=Tech%20Meets%20Problems%20cooperation`} className="btn btn-secondary">
-          {t.companiesButton}
-          <Mail className="h-5 w-5" aria-hidden="true" />
-        </a>
+        <div>
+          <p>{t.companiesText}</p>
+          <a href={`mailto:${EVENT.contactEmail}?subject=Tech%20Meets%20Problems%20cooperation`} className="btn btn-secondary mt-6">
+            {t.companiesButton}
+            <Mail className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
+        <div className="company-visual" aria-hidden="true">
+          <div className="company-node company-node-problem">
+            <Lightbulb className="h-5 w-5" />
+            <span>{t.companiesVisual[0]}</span>
+          </div>
+          <div className="company-node company-node-builders">
+            <Users className="h-5 w-5" />
+            <span>{t.companiesVisual[1]}</span>
+          </div>
+          <div className="company-node company-node-output">
+            <Workflow className="h-5 w-5" />
+            <span>{t.companiesVisual[2]}</span>
+          </div>
+          <div className="company-core">
+            <span>{t.companiesVisual[3]}</span>
+            <strong>{t.companiesVisual[4]}</strong>
+          </div>
+        </div>
       </div>
     </Section>
   );
