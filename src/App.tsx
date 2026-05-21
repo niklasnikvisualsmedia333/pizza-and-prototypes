@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, type PointerEvent, useEffect, useState } from 'react';
 import {
   ArrowRight,
   ArrowUp,
@@ -14,6 +14,7 @@ import {
   Menu,
   MapPin,
   MessageCircle,
+  Pizza,
   Rocket,
   Share2,
   Sparkles,
@@ -49,6 +50,7 @@ const EVENT = {
   whatsappLink: 'https://wa.me/4917655263773',
   contactEmail: 'info@nikvisuals.de',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
+  startsAt: '2026-06-26T18:00:00+02:00',
 };
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
@@ -108,6 +110,11 @@ const copy = {
       'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
     primaryCta: 'Join the event',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
+    countdownLabel: 'Event starts in',
+    countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
+    exitTitle: 'Leaving already?',
+    exitText: 'This is exactly the kind of evening you will wish you had joined. Save your spot before you forget.',
+    exitButton: 'I want in',
     facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
@@ -286,6 +293,11 @@ const copy = {
       'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
     primaryCta: 'Zum Event anmelden',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
+    countdownLabel: 'Event startet in',
+    countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
+    exitTitle: 'Schon weg?',
+    exitText: 'Das ist genau der Abend, über den man sich später ärgert, wenn man nicht dabei war. Sichere dir lieber kurz deinen Platz.',
+    exitButton: 'Bin dabei',
     facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
@@ -468,6 +480,31 @@ function App() {
   const [shareMessage, setShareMessage] = useState('');
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showExitNudge, setShowExitNudge] = useState(false);
+
+  useEffect(() => {
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+    if (!hasFinePointer || sessionStorage.getItem('tmp-exit-nudge-seen') === 'true') {
+      return;
+    }
+
+    const handleMouseLeave = (event: MouseEvent) => {
+      if (event.clientY <= 4) {
+        sessionStorage.setItem('tmp-exit-nudge-seen', 'true');
+        setShowExitNudge(true);
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, []);
+
+  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === 'mouse') {
+      document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`);
+      document.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`);
+    }
+  };
 
   const updateField = (field: keyof InterestForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -554,15 +591,16 @@ function App() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100">
+    <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100" onPointerMove={handlePointerMove}>
       <BackgroundScene />
       <Header lang={lang} setLang={setLang} t={t} />
       <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} />
+      <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
+      <RoomPreviewSection t={t} />
       <WhyJoinSection t={t} />
       <VisionSection t={t} />
-      <RoomPreviewSection t={t} />
       <OrganizersSection t={t} />
       <OpportunitySection t={t} />
       <HowItWorks t={t} />
@@ -687,6 +725,26 @@ function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; 
   );
 }
 
+function ExitNudge({ t, show, onClose }: { t: typeof copy.en; show: boolean; onClose: () => void }) {
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <aside className="exit-nudge" role="dialog" aria-label={t.exitTitle}>
+      <button type="button" onClick={onClose} aria-label="Close">
+        <X className="h-4 w-4" aria-hidden="true" />
+      </button>
+      <Rocket className="h-5 w-5 text-cyan-300" aria-hidden="true" />
+      <div>
+        <strong>{t.exitTitle}</strong>
+        <p>{t.exitText}</p>
+        <a href="#register" onClick={onClose}>{t.exitButton}</a>
+      </div>
+    </aside>
+  );
+}
+
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
@@ -706,6 +764,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
+        <Countdown t={t} />
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
           <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
@@ -718,11 +777,46 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   );
 }
 
+function Countdown({ t }: { t: typeof copy.en }) {
+  const [remaining, setRemaining] = useState(() => getTimeRemaining());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setRemaining(getTimeRemaining()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="countdown-strip" aria-label={t.countdownLabel}>
+      <span>{t.countdownLabel}</span>
+      <div>
+        {[remaining.days, remaining.hours, remaining.minutes, remaining.seconds].map((value, index) => (
+          <strong key={t.countdownUnits[index]}>
+            {String(value).padStart(2, '0')}
+            <small>{t.countdownUnits[index]}</small>
+          </strong>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function getTimeRemaining() {
+  const target = new Date(EVENT.startsAt).getTime();
+  const diff = Math.max(0, target - Date.now());
+
+  return {
+    days: Math.floor(diff / 86_400_000),
+    hours: Math.floor((diff / 3_600_000) % 24),
+    minutes: Math.floor((diff / 60_000) % 60),
+    seconds: Math.floor((diff / 1_000) % 60),
+  };
+}
+
 function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative min-w-0">
       <div className="event-map-card hero-visual-card">
-        <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" />
+        <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
       </div>
       <HeroSupporters t={t} />
     </div>
@@ -735,7 +829,7 @@ function HeroSupporters({ t }: { t: typeof copy.en }) {
       <span>{t.poweredBy}</span>
       {supporterLogos.map((supporter) => (
         <a key={supporter.name} href={supporter.href} target="_blank" rel="noreferrer" aria-label={supporter.name}>
-          <img src={supporter.src} alt={supporter.name} />
+          <img src={supporter.src} alt={supporter.name} loading="lazy" decoding="async" />
         </a>
       ))}
     </div>
@@ -819,7 +913,7 @@ function RoomPreviewSection({ t }: { t: typeof copy.en }) {
           <span>{t.roomCaption}</span>
         </div>
         <figure className="room-preview-media">
-          <img src={ASSETS.roomPreview} alt={t.roomCaption} loading="lazy" />
+          <img src={ASSETS.roomPreview} alt={t.roomCaption} loading="lazy" decoding="async" />
         </figure>
       </div>
     </Section>
@@ -1086,7 +1180,7 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
             <div className="supporter-grid">
               {supporterLogos.map((supporter) => (
                 <a key={supporter.name} href={supporter.href} target="_blank" rel="noreferrer" className="supporter-card" aria-label={supporter.name}>
-                  <img src={supporter.src} alt={supporter.name} />
+                  <img src={supporter.src} alt={supporter.name} loading="lazy" decoding="async" />
                 </a>
               ))}
             </div>
@@ -1095,7 +1189,7 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
         <div className="founder-grid">
           {t.organizers.map(([name, status, description], index) => (
             <article key={name} className="founder-card compact-founder-card">
-              <img src={founderImages[index]} alt={name} />
+              <img src={founderImages[index]} alt={name} loading="lazy" decoding="async" />
               <div>
                 <h3>{name}</h3>
                 <p className="founder-status">{status}</p>
@@ -1279,6 +1373,13 @@ function BackgroundScene() {
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_80%_25%,rgba(251,146,60,0.10),transparent_25%),linear-gradient(180deg,#07080d_0%,#0b1020_50%,#07080d_100%)]" />
       <div className="grid-overlay" />
+      <div className="cursor-glow" />
+      <div className="floating-token floating-token-rocket">
+        <Rocket className="h-5 w-5" />
+      </div>
+      <div className="floating-token floating-token-pizza">
+        <Pizza className="h-5 w-5" />
+      </div>
     </div>
   );
 }

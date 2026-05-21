@@ -40,6 +40,49 @@ main > header {
   mask-image: linear-gradient(to bottom, black, transparent 80%);
 }
 
+.cursor-glow {
+  position: fixed;
+  left: var(--cursor-x, 50vw);
+  top: var(--cursor-y, 45vh);
+  width: 22rem;
+  height: 22rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.13), rgba(37, 99, 235, 0.05) 35%, transparent 70%);
+  filter: blur(10px);
+  opacity: 0.65;
+  transform: translate(-50%, -50%);
+  transition: left 120ms linear, top 120ms linear, opacity 200ms ease;
+}
+
+.floating-token {
+  position: fixed;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgba(125, 211, 252, 0.24);
+  border-radius: 999px;
+  background: rgba(7, 8, 13, 0.48);
+  color: #7dd3fc;
+  box-shadow: 0 0 35px rgba(14, 165, 233, 0.12);
+  backdrop-filter: blur(12px);
+  opacity: 0.5;
+}
+
+.floating-token-rocket {
+  top: 24vh;
+  right: 6vw;
+  animation: driftRocket 16s ease-in-out infinite;
+}
+
+.floating-token-pizza {
+  left: 5vw;
+  bottom: 18vh;
+  border-color: rgba(251, 146, 60, 0.25);
+  color: #fdba74;
+  animation: driftPizza 18s ease-in-out infinite;
+}
+
 .language-toggle {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -184,12 +227,12 @@ main > header {
   display: none;
 }
 
-.quick-menu div {
+.quick-menu > div {
   position: absolute;
   right: 0;
   bottom: 3.25rem;
   display: grid;
-  min-width: 14rem;
+  width: min(18rem, calc(100vw - 2rem));
   gap: 0.35rem;
   border: 1px solid rgba(125, 211, 252, 0.2);
   border-radius: 0.85rem;
@@ -199,8 +242,8 @@ main > header {
   backdrop-filter: blur(18px);
 }
 
-.quick-menu div a,
-.quick-menu div button {
+.quick-menu > div > a,
+.quick-menu > div > button {
   display: inline-flex;
   min-height: 2.5rem;
   gap: 0.45rem;
@@ -218,15 +261,17 @@ main > header {
   white-space: nowrap;
 }
 
-.quick-menu div a:hover,
-.quick-menu div button:hover {
+.quick-menu > div > a:hover,
+.quick-menu > div > button:hover {
   background: rgba(125, 211, 252, 0.08);
 }
 
 .quick-language-block {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
+  position: static !important;
   min-width: 0 !important;
+  width: 100% !important;
   gap: 0.35rem !important;
   border: 0 !important;
   border-bottom: 1px solid rgba(125, 211, 252, 0.15) !important;
@@ -238,7 +283,9 @@ main > header {
 }
 
 .quick-language-block button {
+  min-width: 0;
   justify-content: center !important;
+  padding-inline: 0.55rem !important;
   background: rgba(255, 255, 255, 0.06) !important;
 }
 
@@ -250,6 +297,62 @@ main > header {
 
 .quick-share-button {
   border-top: 1px solid rgba(125, 211, 252, 0.15) !important;
+}
+
+.exit-nudge {
+  position: fixed;
+  right: 1.25rem;
+  top: 5.8rem;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  max-width: 22rem;
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 42%),
+    rgba(7, 8, 13, 0.92);
+  padding: 1rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px);
+  animation: popIn 260ms ease both;
+}
+
+.exit-nudge > button {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: grid;
+  width: 1.9rem;
+  height: 1.9rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+.exit-nudge strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.exit-nudge p {
+  margin-top: 0.35rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.exit-nudge a {
+  display: inline-flex;
+  margin-top: 0.7rem;
+  color: #7dd3fc;
+  font-size: 0.88rem;
+  font-weight: 850;
+  text-decoration: none;
 }
 
 .btn {
@@ -1154,6 +1257,53 @@ main > header {
   height: 100%;
   object-fit: cover;
   transform: scale(1.01);
+}
+
+.countdown-strip {
+  display: grid;
+  max-width: 32rem;
+  gap: 0.8rem;
+  margin-top: 1.25rem;
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 0.85rem;
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(251, 146, 60, 0.055)),
+    rgba(255, 255, 255, 0.035);
+  padding: 0.9rem;
+  box-shadow: 0 16px 45px rgba(14, 165, 233, 0.08);
+}
+
+.countdown-strip > span {
+  color: #bae6fd;
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.countdown-strip > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.countdown-strip strong {
+  display: grid;
+  gap: 0.12rem;
+  border-radius: 0.65rem;
+  background: rgba(7, 8, 13, 0.48);
+  padding: 0.65rem 0.45rem;
+  color: #fff;
+  font-size: clamp(1rem, 5vw, 1.35rem);
+  line-height: 1;
+  text-align: center;
+}
+
+.countdown-strip small {
+  color: #94a3b8;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0;
 }
 
 .opportunity-layout {
@@ -2099,5 +2249,37 @@ fieldset legend {
   70% {
     opacity: 1;
     transform: translateY(-8px) scale(1);
+  }
+}
+
+@keyframes driftRocket {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(-18px, -26px, 0) rotate(8deg);
+  }
+}
+
+@keyframes driftPizza {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(5deg);
+  }
+  50% {
+    transform: translate3d(16px, -18px, 0) rotate(-8deg);
+  }
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .cursor-glow,
+  .floating-token,
+  .exit-nudge {
+    display: none;
+  }
+
+  .floating-token {
+    animation: none;
   }
 }
