@@ -126,39 +126,39 @@ main > header {
 
 .mobile-quick-nav {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  right: 1.1rem;
+  bottom: 1.1rem;
   z-index: 45;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.42rem;
   border: 1px solid rgba(125, 211, 252, 0.28);
   border-radius: 999px;
   background: rgba(7, 8, 13, 0.82);
-  padding: 0.35rem;
+  padding: 0.42rem;
   box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(18px);
 }
 
 .mobile-quick-nav a {
   display: inline-flex;
-  min-height: 2.25rem;
+  min-height: 2.55rem;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
   color: #e0f2fe;
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 850;
   text-decoration: none;
 }
 
 .mobile-quick-nav > a:first-child {
-  width: 2.25rem;
+  width: 2.55rem;
   background: rgba(255, 255, 255, 0.08);
 }
 
 .mobile-quick-nav > a:last-child {
-  padding-inline: 0.8rem;
+  padding-inline: 1rem;
   background: linear-gradient(135deg, #46b7f0, #2458ee);
   color: #fff;
 }
@@ -169,8 +169,8 @@ main > header {
 
 .quick-menu summary {
   display: inline-flex;
-  min-height: 2.25rem;
-  width: 2.25rem;
+  min-height: 2.55rem;
+  width: 2.55rem;
   cursor: pointer;
   list-style: none;
   align-items: center;
@@ -187,14 +187,14 @@ main > header {
 .quick-menu div {
   position: absolute;
   right: 0;
-  bottom: 2.8rem;
+  bottom: 3.25rem;
   display: grid;
-  min-width: 11rem;
-  gap: 0.25rem;
+  min-width: 14rem;
+  gap: 0.35rem;
   border: 1px solid rgba(125, 211, 252, 0.2);
   border-radius: 0.85rem;
   background: rgba(7, 8, 13, 0.94);
-  padding: 0.45rem;
+  padding: 0.6rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(18px);
 }
@@ -202,15 +202,16 @@ main > header {
 .quick-menu div a,
 .quick-menu div button {
   display: inline-flex;
-  min-height: 2.25rem;
+  min-height: 2.5rem;
+  gap: 0.45rem;
   align-items: center;
   justify-content: flex-start;
   border: 0;
   border-radius: 0.55rem;
   background: transparent;
-  padding-inline: 0.75rem;
+  padding-inline: 0.9rem;
   color: #e0f2fe;
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 850;
   text-align: left;
   text-decoration: none;
@@ -220,6 +221,35 @@ main > header {
 .quick-menu div a:hover,
 .quick-menu div button:hover {
   background: rgba(125, 211, 252, 0.08);
+}
+
+.quick-language-block {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  min-width: 0 !important;
+  gap: 0.35rem !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(125, 211, 252, 0.15) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0 0 0.45rem !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.quick-language-block button {
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.quick-language-block button.active {
+  background: linear-gradient(135deg, #46b7f0, #2458ee) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 30px rgba(36, 88, 238, 0.25);
+}
+
+.quick-share-button {
+  border-top: 1px solid rgba(125, 211, 252, 0.15) !important;
 }
 
 .btn {
@@ -605,6 +635,76 @@ main > header {
 .problem-card:hover {
   transform: translateY(-3px);
   border-color: rgba(103, 232, 249, 0.28);
+}
+
+.event-alerts {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.event-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 0.85rem;
+  background: rgba(125, 211, 252, 0.06);
+  padding: 0.95rem 1rem;
+  color: #dbeafe;
+  font-weight: 750;
+}
+
+.event-alert svg {
+  flex: 0 0 auto;
+  color: #7dd3fc;
+}
+
+.event-alert-strong {
+  border-color: rgba(251, 146, 60, 0.36);
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.16), rgba(36, 88, 238, 0.08));
+  color: #fff7ed;
+  box-shadow: 0 14px 42px rgba(251, 146, 60, 0.12);
+}
+
+.event-alert-strong svg {
+  color: #fb923c;
+}
+
+.privacy-card {
+  display: grid;
+  gap: 1.3rem;
+  max-width: 58rem;
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  border-radius: 1rem;
+  background: rgba(10, 14, 25, 0.7);
+  padding: 1.4rem;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+}
+
+.privacy-card p {
+  max-width: 46rem;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.privacy-card ul {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.privacy-card li {
+  display: flex;
+  gap: 0.65rem;
+  color: #dbeafe;
+}
+
+.privacy-card li svg {
+  flex: 0 0 auto;
+  margin-top: 0.2rem;
+  color: #7dd3fc;
 }
 
 .terminal-card {

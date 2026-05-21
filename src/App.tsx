@@ -8,6 +8,7 @@ import {
   Code2,
   ExternalLink,
   Globe2,
+  Laptop,
   Lightbulb,
   Mail,
   Menu,
@@ -180,8 +181,19 @@ const copy = {
     formSubtitle:
       'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
+    capacityNote: 'Limited to around 30 people',
+    laptopNote: 'Laptop recommended, one per team is enough',
     included: 'Pizza, non-alcoholic and alcoholic drinks included',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
+    privacyKicker: 'Privacy',
+    privacyTitle: 'How we handle your data.',
+    privacyText:
+      'We keep this simple: your signup data is used to organize Pizza & Prototypes, send relevant updates and understand which channels worked. The form is processed through Formspree. No advertising tracking, no resale, no spam.',
+    privacyItems: [
+      'Registration details are used for event organization only.',
+      'Basic UTM/source parameters may be stored when you arrive through a QR code or campaign link.',
+      'Questions or deletion requests can go to info@nikvisuals.de.',
+    ],
     successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
     error: 'Please fill in the required fields before joining the event.',
@@ -233,6 +245,8 @@ const copy = {
     shareButton: 'Share',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
+    quickShare: 'Share event',
+    languageLabel: 'Language',
     shareNativeText: 'Tech Meets Problems: Pizza & Prototypes is a free builder-first evening in Siegen where developers, makers and technical students work on real business problems. Pizza, non-alcoholic drinks and alcoholic drinks are included. You can sign up here:',
     locationKicker: 'Location',
     locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
@@ -345,8 +359,19 @@ const copy = {
     formSubtitle:
       'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
+    capacityNote: 'Auf etwa 30 Personen begrenzt',
+    laptopNote: 'Laptop empfohlen, einer pro Team reicht',
     included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
+    privacyKicker: 'Datenschutz',
+    privacyTitle: 'So gehen wir mit deinen Daten um.',
+    privacyText:
+      'Wir halten es einfach: Deine Anmeldedaten nutzen wir nur, um Pizza & Prototypes zu organisieren, relevante Updates zu senden und zu verstehen, welche Kanäle funktioniert haben. Das Formular läuft über Formspree. Kein Werbe-Tracking, kein Weiterverkauf, kein Spam.',
+    privacyItems: [
+      'Anmeldedaten werden nur für die Organisation des Events genutzt.',
+      'Einfache UTM- oder Herkunftsparameter können gespeichert werden, wenn du über QR-Codes oder Kampagnenlinks kommst.',
+      'Fragen oder Löschanfragen kannst du an info@nikvisuals.de schicken.',
+    ],
     successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
@@ -398,6 +423,8 @@ const copy = {
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
+    quickShare: 'Event teilen',
+    languageLabel: 'Sprache',
     shareNativeText: 'Tech Meets Problems: Pizza & Prototypes ist ein kostenloser builder-first Abend in Siegen, bei dem Entwickler, Maker und technische Studierende an echten Business-Problemen arbeiten. Pizza, alkoholfreie und alkoholische Getränke sind inklusive. Hier kann man sich anmelden:',
     locationKicker: 'Ort',
     locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
@@ -556,6 +583,7 @@ function App() {
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
       <LocationSection t={t} lang={lang} />
       <CompaniesSection t={t} />
+      <PrivacySection t={t} />
       <FAQ t={t} />
       <Footer t={t} />
     </main>
@@ -632,16 +660,25 @@ function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; 
           {isMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
         </summary>
         <div>
+          <div className="quick-language-block" aria-label={t.languageLabel}>
+            <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => { setLang('en'); closeMenu(); }}>
+              <span aria-hidden="true">🇬🇧</span>
+              English
+            </button>
+            <button type="button" className={lang === 'de' ? 'active' : ''} onClick={() => { setLang('de'); closeMenu(); }}>
+              <span aria-hidden="true">🇩🇪</span>
+              Deutsch
+            </button>
+          </div>
           <a href="#top" onClick={closeMenu}>{t.topLink}</a>
           <a href="#how" onClick={closeMenu}>{t.nav[0]}</a>
           <a href="#cards" onClick={closeMenu}>{t.nav[1]}</a>
           <a href="#companies" onClick={closeMenu}>{t.nav[2]}</a>
           <a href="#register" onClick={closeMenu}>{t.nav[3]}</a>
-          <button type="button" onClick={() => { setLang(lang === 'en' ? 'de' : 'en'); closeMenu(); }}>
-            {lang === 'en' ? 'Deutsch' : 'English'}
-          </button>
-          <button type="button" onClick={() => { nativeShare(); closeMenu(); }}>
-            Share this event
+          <a href="#privacy" onClick={closeMenu}>{t.privacyKicker}</a>
+          <button type="button" className="quick-share-button" onClick={() => { nativeShare(); closeMenu(); }}>
+            <Share2 className="h-4 w-4" aria-hidden="true" />
+            {t.quickShare}
           </button>
         </div>
       </details>
@@ -887,8 +924,17 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
             <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
             <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
             <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
-            <InfoRow icon={Users} label={EVENT.size} />
             <InfoRow icon={Check} label={t.included} />
+          </div>
+          <div className="event-alerts mt-6">
+            <div className="event-alert event-alert-strong">
+              <Users className="h-5 w-5" aria-hidden="true" />
+              <span>{t.capacityNote}</span>
+            </div>
+            <div className="event-alert">
+              <Laptop className="h-5 w-5" aria-hidden="true" />
+              <span>{t.laptopNote}</span>
+            </div>
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
             <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
@@ -1101,6 +1147,24 @@ function CompaniesSection({ t }: { t: typeof copy.en }) {
   );
 }
 
+function PrivacySection({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="privacy" kicker={t.privacyKicker} title={t.privacyTitle}>
+      <div className="privacy-card mt-10">
+        <p>{t.privacyText}</p>
+        <ul>
+          {t.privacyItems.map((item) => (
+            <li key={item}>
+              <Check className="h-4 w-4" aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Section>
+  );
+}
+
 function Footer({ t }: { t: typeof copy.en }) {
   return (
     <footer className="relative mx-auto max-w-7xl border-t border-white/10 px-5 py-10 text-sm text-slate-400">
@@ -1114,6 +1178,7 @@ function Footer({ t }: { t: typeof copy.en }) {
         </div>
         <div className="footer-links">
           <p>{t.footerLine}</p>
+          <a href="#privacy">{t.privacyKicker}</a>
           <a href="https://nikvisuals.de/impressum" target="_blank" rel="noreferrer">
             {t.imprint}
           </a>
