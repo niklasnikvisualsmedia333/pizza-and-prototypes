@@ -735,11 +735,11 @@ function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; 
           <div className="quick-language-block" aria-label={t.languageLabel}>
             <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => { setLang('en'); closeMenu(); }}>
               <span aria-hidden="true">🇬🇧</span>
-              English
+              EN
             </button>
             <button type="button" className={lang === 'de' ? 'active' : ''} onClick={() => { setLang('de'); closeMenu(); }}>
               <span aria-hidden="true">🇩🇪</span>
-              Deutsch
+              DE
             </button>
           </div>
           <a href="#top" onClick={closeMenu}>{t.topLink}</a>
