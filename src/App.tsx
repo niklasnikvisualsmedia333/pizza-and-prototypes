@@ -24,6 +24,7 @@ const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
   logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
   heroMap: `${import.meta.env.BASE_URL}assets/hero-pizza-prototypes-map.png`,
+  roomPreview: `${import.meta.env.BASE_URL}assets/event-room-preview.png`,
   startpunkt57: `${import.meta.env.BASE_URL}assets/logo-startpunkt57.png`,
   entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
   niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
@@ -48,12 +49,14 @@ const EVENT = {
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 
 type InterestForm = {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   role: string;
   status: string;
   codingLevel: string;
+  startupInterest: string;
   interests: string[];
   followUp: string;
   link: string;
@@ -65,12 +68,14 @@ type InterestForm = {
 };
 
 const initialForm: InterestForm = {
-  fullName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   phone: '',
   role: '',
   status: '',
   codingLevel: '',
+  startupInterest: '',
   interests: [],
   followUp: '',
   link: '',
@@ -165,6 +170,8 @@ const copy = {
     ],
     formKicker: 'Event signup',
     formTitle: 'Save your spot for the first session.',
+    formSubtitle:
+      'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you cannot make this date, join anyway and we will keep you posted about future sessions. No spam.',
     successTitle: 'You are signed up for the event.',
@@ -172,12 +179,14 @@ const copy = {
     error: 'Please fill in the required fields before joining the event.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
-      fullName: 'Full name',
+      firstName: 'First name',
+      lastName: 'Last name',
       email: 'Email address',
       phone: 'Phone number, optional',
       role: 'What describes you best?',
       status: 'Current status, optional',
       coding: 'Can you code?',
+      startupInterest: 'Are you interested in startups or founding one yourself?',
       followUp: 'Time for a small follow-up project after the event?',
       link: 'GitHub, LinkedIn, portfolio or personal website, optional',
       pizza: 'Pizza preference',
@@ -191,11 +200,18 @@ const copy = {
     roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
     statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'No, but I can design, research or validate'],
+    startupInterestOptions: ['Yes, strong interest', 'Maybe someday', 'No, not really'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
     followUp: ['Yes', 'Maybe', 'Not right now'],
     pizza: ['Yes, normal pizza', 'Vegetarian', 'Vegan', 'No pizza for me'],
     sourceOptions: ['Word of mouth', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Lecture', 'Flyer', 'Mensa advertising', 'Other'],
+    requiredNote: '* Required fields',
     sending: 'Sending...',
+    roomKicker: 'Event atmosphere',
+    roomTitle: 'A first visual idea of the room.',
+    roomText:
+      'A realistic preview of how the evening could feel: small teams, laptops open, problem cards on the table and pizza in reach while people work through real business needs.',
+    roomCaption: 'Visualization of the room setup for Pizza & Prototypes.',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
     whatsappButton: 'Join WhatsApp',
@@ -313,6 +329,8 @@ const copy = {
     ],
     formKicker: 'Event-Anmeldung',
     formTitle: 'Sichere dir einen Platz für die erste Session.',
+    formSubtitle:
+      'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du am Termin nicht kannst, trag dich trotzdem ein und wir halten dich über nächste Sessions auf dem Laufenden. Kein Spam.',
     successTitle: 'Du bist für das Event angemeldet.',
@@ -320,12 +338,14 @@ const copy = {
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
-      fullName: 'Vollständiger Name',
+      firstName: 'Vorname',
+      lastName: 'Nachname',
       email: 'E-Mail-Adresse',
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
       status: 'Aktueller Status, optional',
       coding: 'Kannst du coden?',
+      startupInterest: 'Interessierst du dich für Startups oder dafür, selbst mal zu gründen?',
       followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
       link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
       pizza: 'Pizza-Präferenz',
@@ -339,11 +359,18 @@ const copy = {
     roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
     statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
+    startupInterestOptions: ['Ja, großes Interesse', 'Vielleicht irgendwann', 'Nein, eher nicht'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
     followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
     pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
     sourceOptions: ['Mund-zu-Mund-Propaganda', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Vorlesung', 'Flyer', 'Werbung in der Mensa', 'Sonstiges'],
+    requiredNote: '* Pflichtfelder',
     sending: 'Wird gesendet...',
+    roomKicker: 'Event-Atmosphäre',
+    roomTitle: 'Eine erste Visualisierung des Raums.',
+    roomText:
+      'So könnte sich der Abend anfühlen: kleine Teams, offene Laptops, Problemkarten auf den Tischen und Pizza in Reichweite, während an echten Business-Problemen gearbeitet wird.',
+    roomCaption: 'Visualisierung des Raum-Setups für Pizza & Prototypes.',
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
     whatsappButton: 'WhatsApp beitreten',
@@ -414,7 +441,7 @@ function App() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!form.fullName || !form.email || !form.role || !form.codingLevel || !form.followUp || !form.pizza) {
+    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.startupInterest || !form.followUp || !form.pizza) {
       setFormError(t.error);
       return;
     }
@@ -433,6 +460,7 @@ function App() {
         },
         body: JSON.stringify({
           ...submission,
+          fullName: `${submission.firstName} ${submission.lastName}`.trim(),
           interests: submission.interests.join(', '),
           event: 'Tech Meets Problems: Pizza & Prototypes',
         }),
@@ -477,6 +505,7 @@ function App() {
       <ProblemSection t={t} />
       <WhyJoinSection t={t} />
       <VisionSection t={t} />
+      <RoomPreviewSection t={t} />
       <OrganizersSection t={t} />
       <OpportunitySection t={t} />
       <HowItWorks t={t} />
@@ -670,6 +699,22 @@ function VisionSection({ t }: { t: typeof copy.en }) {
   );
 }
 
+function RoomPreviewSection({ t }: { t: typeof copy.en }) {
+  return (
+    <Section id="room-preview" kicker={t.roomKicker} title={t.roomTitle}>
+      <div className="room-preview-card mt-10">
+        <div className="room-preview-copy">
+          <p>{t.roomText}</p>
+          <span>{t.roomCaption}</span>
+        </div>
+        <figure className="room-preview-media">
+          <img src={ASSETS.roomPreview} alt={t.roomCaption} loading="lazy" />
+        </figure>
+      </div>
+    </Section>
+  );
+}
+
 function HowItWorks({ t }: { t: typeof copy.en }) {
   return (
     <Section id="how" kicker={t.howKicker} title={t.howTitle}>
@@ -760,6 +805,7 @@ type RegistrationProps = {
 function Registration({ t, lang, form, submitted, formError, isSubmitting, updateField, toggleInterest, handleSubmit }: RegistrationProps) {
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
+      <p className="section-lead">{t.formSubtitle}</p>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="glass-card p-6 sm:p-8">
           <h3 className="text-2xl font-semibold text-white">{t.pilotDetails}</h3>
@@ -788,12 +834,14 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
           {formError && <p className="mb-5 rounded-lg border border-rose-300/25 bg-rose-300/10 p-4 text-sm text-rose-100">{formError}</p>}
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <TextInput label={t.fields.fullName} required value={form.fullName} onChange={(value) => updateField('fullName', value)} />
+            <TextInput label={t.fields.firstName} required value={form.firstName} onChange={(value) => updateField('firstName', value)} />
+            <TextInput label={t.fields.lastName} required value={form.lastName} onChange={(value) => updateField('lastName', value)} />
             <TextInput label={t.fields.email} required type="email" value={form.email} onChange={(value) => updateField('email', value)} />
             <TextInput label={t.fields.phone} value={form.phone} onChange={(value) => updateField('phone', value)} />
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
             <SelectInput label={t.fields.status} value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
             <SelectInput label={t.fields.coding} required value={form.codingLevel} options={t.codingLevels} placeholder={t.fields.select} onChange={(value) => updateField('codingLevel', value)} />
+            <SelectInput label={t.fields.startupInterest} required value={form.startupInterest} options={t.startupInterestOptions} placeholder={t.fields.select} onChange={(value) => updateField('startupInterest', value)} />
             <SelectInput label={t.fields.followUp} required value={form.followUp} options={t.followUp} placeholder={t.fields.select} onChange={(value) => updateField('followUp', value)} />
             <TextInput label={t.fields.link} value={form.link} onChange={(value) => updateField('link', value)} />
             <SelectInput label={t.fields.pizza} required value={form.pizza} options={t.pizza} placeholder={t.fields.select} onChange={(value) => updateField('pizza', value)} />
@@ -826,6 +874,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
             {isSubmitting ? t.sending : t.primaryCta}
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </button>
+          <p className="required-note">{t.requiredNote}</p>
         </form>
       </div>
     </Section>
@@ -855,7 +904,7 @@ function WhatsAppSection({ t }: { t: typeof copy.en }) {
 function ShareSection({ t, copyLink, nativeShare, shareMessage }: { t: typeof copy.en; copyLink: () => void; nativeShare: () => void; shareMessage: string }) {
   return (
     <Section id="share" kicker={t.shareKicker} title={t.shareTitle}>
-      <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div className="share-card flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <p className="text-slate-300">{t.shareText}</p>
         <div className="flex flex-wrap gap-3">
           <button type="button" className="btn btn-secondary" onClick={copyLink}>
@@ -1036,7 +1085,10 @@ function InfoRow({ icon: Icon, label, href }: { icon: typeof CalendarDays; label
 function TextInput({ label, value, onChange, type = 'text', required = false }: { label: string; value: string; onChange: (value: string) => void; type?: string; required?: boolean }) {
   return (
     <label className="field">
-      <span>{label}</span>
+      <span>
+        {label}
+        {required && <strong aria-label="required">*</strong>}
+      </span>
       <input type={type} required={required} value={value} onChange={(event) => onChange(event.target.value)} />
     </label>
   );
@@ -1045,7 +1097,10 @@ function TextInput({ label, value, onChange, type = 'text', required = false }: 
 function SelectInput({ label, value, options, placeholder, onChange, required = false }: { label: string; value: string; options: string[]; placeholder: string; onChange: (value: string) => void; required?: boolean }) {
   return (
     <label className="field">
-      <span>{label}</span>
+      <span>
+        {label}
+        {required && <strong aria-label="required">*</strong>}
+      </span>
       <select required={required} value={value} onChange={(event) => onChange(event.target.value)}>
         <option value="">{placeholder}</option>
         {options.map((option) => (
