@@ -152,7 +152,7 @@ main > header {
   text-decoration: none;
 }
 
-.mobile-quick-nav a:first-child {
+.mobile-quick-nav > a:first-child {
   width: 2.25rem;
   background: rgba(255, 255, 255, 0.08);
 }
@@ -201,8 +201,13 @@ main > header {
 
 .quick-menu div a {
   justify-content: flex-start;
+  border-radius: 0.55rem;
   padding-inline: 0.75rem;
   white-space: nowrap;
+}
+
+.quick-menu div a:hover {
+  background: rgba(125, 211, 252, 0.08);
 }
 
 .btn {

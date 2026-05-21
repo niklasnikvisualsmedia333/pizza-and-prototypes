@@ -94,6 +94,7 @@ const initialForm: InterestForm = {
 const copy = {
   en: {
     nav: ['How it works', 'Problem cards', 'For companies', 'Register'],
+    topLink: 'Top of page',
     joinShort: 'Join event',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · First Edition',
@@ -179,7 +180,7 @@ const copy = {
       'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
     included: 'Pizza, non-alcoholic and alcoholic drinks included',
-    privacyNote: 'We only use your data to organize this event and send relevant updates. If you cannot make this date, join anyway and we will keep you posted about future sessions. No spam.',
+    privacyNote: 'We only use your data to organize this event and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
     successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
     error: 'Please fill in the required fields before joining the event.',
@@ -206,7 +207,7 @@ const copy = {
     },
     roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
     statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
-    codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'No, but I can design, research or validate'],
+    codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'I can only vibe-code', 'No, but I can design, research or validate'],
     eventLanguageOptions: ['English', 'German', 'No preference'],
     startupInterestOptions: ['Yes, strong interest', 'Maybe someday', 'No, not really'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
@@ -258,6 +259,7 @@ const copy = {
   },
   de: {
     nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Anmelden'],
+    topLink: 'Nach oben',
     joinShort: 'Event',
     brand: 'Tech Meets Problems',
     edition: 'Pizza & Prototypes · Erste Ausgabe',
@@ -343,7 +345,7 @@ const copy = {
       'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
     included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
-    privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du am Termin nicht kannst, trag dich trotzdem ein und wir halten dich über nächste Sessions auf dem Laufenden. Kein Spam.',
+    privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
@@ -370,7 +372,7 @@ const copy = {
     },
     roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
     statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
-    codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
+    codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Ich kann nur vibe-coden', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     eventLanguageOptions: ['Deutsch', 'Englisch', 'Egal'],
     startupInterestOptions: ['Ja, großes Interesse', 'Vielleicht irgendwann', 'Nein, eher nicht'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
@@ -614,6 +616,7 @@ function MobileQuickNav({ t }: { t: typeof copy.en }) {
           <Menu className="h-4 w-4" aria-hidden="true" />
         </summary>
         <div>
+          <a href="#top">{t.topLink}</a>
           <a href="#how">{t.nav[0]}</a>
           <a href="#cards">{t.nav[1]}</a>
           <a href="#companies">{t.nav[2]}</a>
