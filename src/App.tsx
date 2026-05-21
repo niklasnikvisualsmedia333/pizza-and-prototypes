@@ -52,11 +52,14 @@ type InterestForm = {
   email: string;
   phone: string;
   role: string;
+  status: string;
   codingLevel: string;
   interests: string[];
   followUp: string;
   link: string;
   pizza: string;
+  source: string;
+  sourceOther: string;
   foodNotes: string;
   notes: string;
 };
@@ -66,11 +69,14 @@ const initialForm: InterestForm = {
   email: '',
   phone: '',
   role: '',
+  status: '',
   codingLevel: '',
   interests: [],
   followUp: '',
   link: '',
   pizza: '',
+  source: '',
+  sourceOther: '',
   foodNotes: '',
   notes: '',
 };
@@ -170,20 +176,25 @@ const copy = {
       email: 'Email address',
       phone: 'Phone number, optional',
       role: 'What describes you best?',
+      status: 'Current status, optional',
       coding: 'Can you code?',
       followUp: 'Time for a small follow-up project after the event?',
       link: 'GitHub, LinkedIn, portfolio or personal website, optional',
       pizza: 'Pizza preference',
+      source: 'How did you hear about the event? optional',
+      sourceOther: 'Where exactly?',
       interests: 'What are you interested in?',
       foodNotes: 'Allergies or food notes, optional',
       notes: 'Anything we should know? Own project idea, question or context?',
       select: 'Select one',
     },
-    roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Other'],
+    roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
+    statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'No, but I can design, research or validate'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
     followUp: ['Yes', 'Maybe', 'Not right now'],
     pizza: ['Yes, normal pizza', 'Vegetarian', 'Vegan', 'No pizza for me'],
+    sourceOptions: ['Word of mouth', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Lecture', 'Flyer', 'Mensa advertising', 'Other'],
     sending: 'Sending...',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
@@ -217,6 +228,7 @@ const copy = {
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
+    imprint: 'Imprint',
   },
   de: {
     nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Anmelden'],
@@ -312,20 +324,25 @@ const copy = {
       email: 'E-Mail-Adresse',
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
+      status: 'Aktueller Status, optional',
       coding: 'Kannst du coden?',
       followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
       link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
       pizza: 'Pizza-Präferenz',
+      source: 'Woher hast du vom Event erfahren? optional',
+      sourceOther: 'Woher genau?',
       interests: 'Was interessiert dich?',
       foodNotes: 'Allergien oder Essenshinweise, optional',
       notes: 'Sonst noch etwas? Eigene Projektidee, Frage oder Kontext?',
       select: 'Auswählen',
     },
-    roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business / Product', 'Andere'],
+    roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
+    statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
     followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
     pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
+    sourceOptions: ['Mund-zu-Mund-Propaganda', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Vorlesung', 'Flyer', 'Werbung in der Mensa', 'Sonstiges'],
     sending: 'Wird gesendet...',
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
@@ -359,11 +376,13 @@ const copy = {
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
     footerLine: 'Tech Meets Problems: Pizza & Prototypes',
+    imprint: 'Impressum',
   },
 };
 
 const cardIcons = [Lightbulb, Users, Rocket, Code2];
 const founderImages = [ASSETS.niklas, ASSETS.frederik];
+const founderLinks = ['https://www.linkedin.com/in/niklas-bruene/', 'https://www.linkedin.com/in/frederik-krause-a80448277/'];
 const supporterLogos = [
   { name: 'Startpunkt57', src: ASSETS.startpunkt57, href: 'https://www.startpunkt57.de/' },
   { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter, href: 'https://www.ec.uni-siegen.de/' },
@@ -773,6 +792,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
             <TextInput label={t.fields.email} required type="email" value={form.email} onChange={(value) => updateField('email', value)} />
             <TextInput label={t.fields.phone} value={form.phone} onChange={(value) => updateField('phone', value)} />
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
+            <SelectInput label={t.fields.status} value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
             <SelectInput label={t.fields.coding} required value={form.codingLevel} options={t.codingLevels} placeholder={t.fields.select} onChange={(value) => updateField('codingLevel', value)} />
             <SelectInput label={t.fields.followUp} required value={form.followUp} options={t.followUp} placeholder={t.fields.select} onChange={(value) => updateField('followUp', value)} />
             <TextInput label={t.fields.link} value={form.link} onChange={(value) => updateField('link', value)} />
@@ -792,6 +812,10 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
           </fieldset>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <SelectInput label={t.fields.source} value={form.source} options={t.sourceOptions} placeholder={t.fields.select} onChange={(value) => updateField('source', value)} />
+            {(form.source === 'Other' || form.source === 'Sonstiges') && (
+              <TextInput label={t.fields.sourceOther} value={form.sourceOther} onChange={(value) => updateField('sourceOther', value)} />
+            )}
             <TextInput label={t.fields.foodNotes} value={form.foodNotes} onChange={(value) => updateField('foodNotes', value)} />
             <label className="field sm:row-span-2">
               <span>{t.fields.notes}</span>
@@ -905,6 +929,10 @@ function OrganizersSection({ t }: { t: typeof copy.en }) {
                 <h3>{name}</h3>
                 <p className="founder-status">{status}</p>
                 <p>{description}</p>
+                <a href={founderLinks[index]} target="_blank" rel="noreferrer" className="founder-link" aria-label={`${name} LinkedIn`}>
+                  LinkedIn
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                </a>
               </div>
             </article>
           ))}
@@ -939,7 +967,12 @@ function Footer({ t }: { t: typeof copy.en }) {
             <p>{t.footerSub}</p>
           </div>
         </div>
-        <p>{t.footerLine}</p>
+        <div className="footer-links">
+          <p>{t.footerLine}</p>
+          <a href="https://nikvisuals.de/impressum" target="_blank" rel="noreferrer">
+            {t.imprint}
+          </a>
+        </div>
       </div>
     </footer>
   );

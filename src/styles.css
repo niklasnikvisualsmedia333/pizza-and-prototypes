@@ -1159,6 +1159,26 @@ main > header {
   text-transform: uppercase;
 }
 
+.founder-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  color: #7dd3fc;
+  font-size: 0.9rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.founder-link:hover {
+  color: #fff;
+  transform: translateX(2px);
+}
+
 .supporter-panel {
   display: flex;
   height: 100%;
@@ -1219,6 +1239,22 @@ main > header {
 .company-contact p {
   color: #cbd5e1;
   line-height: 1.75;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.footer-links a {
+  color: #7dd3fc;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #fff;
 }
 
 @media (min-width: 768px) {
