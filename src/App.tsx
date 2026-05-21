@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import {
   ArrowRight,
   ArrowUp,
@@ -19,6 +19,7 @@ import {
   Timer,
   Users,
   Workflow,
+  X,
 } from 'lucide-react';
 
 type Lang = 'en' | 'de';
@@ -529,7 +530,7 @@ function App() {
     <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100">
       <BackgroundScene />
       <Header lang={lang} setLang={setLang} t={t} />
-      <MobileQuickNav t={t} />
+      <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
       <WhyJoinSection t={t} />
@@ -605,22 +606,43 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
   );
 }
 
-function MobileQuickNav({ t }: { t: typeof copy.en }) {
+function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; lang: Lang; setLang: (lang: Lang) => void; nativeShare: () => void }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    const closeMenu = () => setIsMenuOpen(false);
+    window.addEventListener('scroll', closeMenu, { passive: true });
+
+    return () => window.removeEventListener('scroll', closeMenu);
+  }, [isMenuOpen]);
+
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
     <nav className="mobile-quick-nav" aria-label="Quick navigation">
       <a href="#top" aria-label="Back to top">
         <ArrowUp className="h-4 w-4" aria-hidden="true" />
       </a>
-      <details className="quick-menu">
-        <summary aria-label="Open page navigation">
-          <Menu className="h-4 w-4" aria-hidden="true" />
+      <details className="quick-menu" open={isMenuOpen} onToggle={(event) => setIsMenuOpen(event.currentTarget.open)}>
+        <summary aria-label={isMenuOpen ? 'Close page navigation' : 'Open page navigation'}>
+          {isMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
         </summary>
         <div>
-          <a href="#top">{t.topLink}</a>
-          <a href="#how">{t.nav[0]}</a>
-          <a href="#cards">{t.nav[1]}</a>
-          <a href="#companies">{t.nav[2]}</a>
-          <a href="#register">{t.nav[3]}</a>
+          <a href="#top" onClick={closeMenu}>{t.topLink}</a>
+          <a href="#how" onClick={closeMenu}>{t.nav[0]}</a>
+          <a href="#cards" onClick={closeMenu}>{t.nav[1]}</a>
+          <a href="#companies" onClick={closeMenu}>{t.nav[2]}</a>
+          <a href="#register" onClick={closeMenu}>{t.nav[3]}</a>
+          <button type="button" onClick={() => { setLang(lang === 'en' ? 'de' : 'en'); closeMenu(); }}>
+            {lang === 'en' ? 'Deutsch' : 'English'}
+          </button>
+          <button type="button" onClick={() => { nativeShare(); closeMenu(); }}>
+            Share this event
+          </button>
         </div>
       </details>
       <a href="#register">{t.joinShort}</a>
