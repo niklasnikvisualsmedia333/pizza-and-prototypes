@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import {
   ArrowRight,
+  ArrowUp,
   CalendarDays,
   Check,
   ClipboardCopy,
@@ -150,7 +151,7 @@ const copy = {
     scheduleKicker: 'Schedule',
     scheduleTitle: 'A compact evening sprint with enough room to meet good people.',
     schedule: [
-      ['18:00', 'Arrive, grab pizza and pick problem cards'],
+      ['18:00', 'Arrive, grab pizza, drinks and pick problem cards'],
       ['18:15', 'Short intro and ground rules'],
       ['18:25', 'Team formation'],
       ['18:35', 'Prototype sprint with pizza on the side'],
@@ -166,13 +167,14 @@ const copy = {
       ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
       ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'Yes. We do not plan to charge participants for this format.'],
+      ['Is this free?', 'Yes. We do not plan to charge participants for this format. Pizza and drinks are included.'],
     ],
     formKicker: 'Event signup',
     formTitle: 'Save your spot for the first session.',
     formSubtitle:
       'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
+    included: 'Pizza, non-alcoholic and alcoholic drinks included',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you cannot make this date, join anyway and we will keep you posted about future sessions. No spam.',
     successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
@@ -210,7 +212,7 @@ const copy = {
     roomKicker: 'Event atmosphere',
     roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards, pizza and people working through real business needs together.',
+      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards, pizza, drinks and people working through real business needs together.',
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
@@ -238,9 +240,9 @@ const copy = {
     companiesKicker: 'For companies',
     companiesTitle: 'Have a real problem or want to support the format?',
     companiesText:
-      'If you are a local SME, craft business, club, institution or potential sponsor, reach out. We are looking for real problem spaces, cooperation partners and supporters who want to help technical talent work on useful challenges.',
+      'If you are a company, SME, craft business, club, institution, innovation team or potential sponsor, reach out. We are looking for real use cases, open innovation topics and supporters who want technical students and builders to explore useful challenges.',
     companiesButton: 'Contact us',
-    companiesVisual: ['Problem', 'Builders', 'Output', 'SME need', 'Useful challenge'],
+    companiesVisual: ['Use case', 'Builders', 'Output', 'Real need', 'Useful challenge'],
     poweredBy: 'Supported by',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
@@ -310,7 +312,7 @@ const copy = {
     scheduleKicker: 'Ablauf',
     scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
     schedule: [
-      ['18:00', 'Ankommen, Pizza nehmen und Problemkarten wählen'],
+      ['18:00', 'Ankommen, Pizza, Getränke und Problemkarten'],
       ['18:15', 'Kurze Einführung und Spielregeln'],
       ['18:25', 'Teambildung'],
       ['18:35', 'Prototype-Sprint mit Pizza nebenbei'],
@@ -326,13 +328,14 @@ const copy = {
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Ja. Wir planen nicht, von Teilnehmenden Geld für dieses Format zu nehmen.'],
+      ['Ist das kostenlos?', 'Ja. Wir planen nicht, von Teilnehmenden Geld für dieses Format zu nehmen. Pizza und Getränke sind inklusive.'],
     ],
     formKicker: 'Event-Anmeldung',
     formTitle: 'Sichere dir einen Platz für die erste Session.',
     formSubtitle:
       'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
+    included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du am Termin nicht kannst, trag dich trotzdem ein und wir halten dich über nächste Sessions auf dem Laufenden. Kein Spam.',
     successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
@@ -370,7 +373,7 @@ const copy = {
     roomKicker: 'Event-Atmosphäre',
     roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten, Pizza und Menschen, die gemeinsam an echten Business-Problemen arbeiten.',
+      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten, Pizza, Getränke und Menschen, die gemeinsam an echten Business-Problemen arbeiten.',
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
@@ -398,9 +401,9 @@ const copy = {
     companiesKicker: 'Für Unternehmen',
     companiesTitle: 'Habt ihr ein echtes Problem oder wollt das Format unterstützen?',
     companiesText:
-      'Wenn ihr ein lokales KMU, ein Handwerksbetrieb, Verein, eine Institution oder potenzieller Sponsor seid, meldet euch gerne. Wir suchen reale Problemräume, Kooperationspartner und Unterstützer, die technische Talente an sinnvollen Herausforderungen arbeiten lassen wollen.',
+      'Wenn ihr ein Unternehmen, KMU, Handwerksbetrieb, Verein, eine Institution, ein Innovationsteam oder potenzieller Sponsor seid, meldet euch gerne. Wir suchen reale Use Cases, Open-Innovation-Themen und Unterstützer, die technische Studierende und Builder an sinnvollen Herausforderungen arbeiten lassen wollen.',
     companiesButton: 'Kontakt aufnehmen',
-    companiesVisual: ['Problem', 'Builder', 'Output', 'KMU-Bedarf', 'Sinnvolle Challenge'],
+    companiesVisual: ['Use Case', 'Builder', 'Output', 'Echter Bedarf', 'Sinnvolle Challenge'],
     poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
@@ -503,6 +506,7 @@ function App() {
     <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100">
       <BackgroundScene />
       <Header lang={lang} setLang={setLang} t={t} />
+      <MobileQuickNav t={t} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
       <WhyJoinSection t={t} />
@@ -574,6 +578,17 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
         DE
       </button>
     </div>
+  );
+}
+
+function MobileQuickNav({ t }: { t: typeof copy.en }) {
+  return (
+    <nav className="mobile-quick-nav" aria-label="Mobile quick navigation">
+      <a href="#top" aria-label="Back to top">
+        <ArrowUp className="h-4 w-4" aria-hidden="true" />
+      </a>
+      <a href="#register">{t.joinShort}</a>
+    </nav>
   );
 }
 
@@ -815,6 +830,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
             <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
             <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
             <InfoRow icon={Users} label={EVENT.size} />
+            <InfoRow icon={Check} label={t.included} />
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
             <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
