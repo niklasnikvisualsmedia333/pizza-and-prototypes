@@ -14,7 +14,6 @@ import {
   Menu,
   MapPin,
   MessageCircle,
-  Pizza,
   Rocket,
   Share2,
   Sparkles,
@@ -189,7 +188,7 @@ const copy = {
       'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
     pilotDetails: 'First pilot details',
     capacityNote: 'Limited to around 30 people',
-    laptopNote: 'Laptop recommended, one per team is enough',
+    laptopNote: 'Laptop recommended. One per team is the minimum; ideally everyone brings one.',
     included: 'Pizza, non-alcoholic and alcoholic drinks included',
     privacyNote: 'We only use your data to organize this event and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
     privacyKicker: 'Privacy',
@@ -203,6 +202,13 @@ const copy = {
     ],
     successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
+    nextStepsTitle: 'Nice, you are on the list.',
+    nextStepsText: 'Join the WhatsApp group for updates and add the date to your calendar so it does not disappear in the week.',
+    addToCalendar: 'Add to calendar',
+    googleCalendar: 'Google',
+    outlookCalendar: 'Outlook',
+    appleCalendar: 'Apple / ICS',
+    whatsappAfterSubmit: 'Join WhatsApp group',
     error: 'Please fill in the required fields before joining the event.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -372,7 +378,7 @@ const copy = {
       'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
     pilotDetails: 'Details zum ersten Pilot',
     capacityNote: 'Auf etwa 30 Personen begrenzt',
-    laptopNote: 'Laptop empfohlen, einer pro Team reicht',
+    laptopNote: 'Laptop empfohlen. Einer pro Team ist das Minimum, besser bringt jede Person einen mit.',
     included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
     privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     privacyKicker: 'Datenschutz',
@@ -386,6 +392,13 @@ const copy = {
     ],
     successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
+    nextStepsTitle: 'Nice, du stehst auf der Liste.',
+    nextStepsText: 'Tritt gern der WhatsApp-Gruppe bei und speichere dir den Termin direkt im Kalender, damit er nicht in der Woche untergeht.',
+    addToCalendar: 'Zum Kalender hinzufügen',
+    googleCalendar: 'Google',
+    outlookCalendar: 'Outlook',
+    appleCalendar: 'Apple / ICS',
+    whatsappAfterSubmit: 'WhatsApp-Gruppe beitreten',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
@@ -484,12 +497,13 @@ function App() {
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+    const armedAt = Date.now() + 12_000;
     if (!hasFinePointer || sessionStorage.getItem('tmp-exit-nudge-seen') === 'true') {
       return;
     }
 
     const handleMouseLeave = (event: MouseEvent) => {
-      if (event.clientY <= 4) {
+      if (Date.now() >= armedAt && event.clientY <= 0 && event.relatedTarget === null) {
         sessionStorage.setItem('tmp-exit-nudge-seen', 'true');
         setShowExitNudge(true);
       }
@@ -541,8 +555,15 @@ function App() {
       referrer: document.referrer,
       landingPage: window.location.href,
     };
+    const trackingSummary = [
+      tracking.utmSource && `source:${tracking.utmSource}`,
+      tracking.utmMedium && `medium:${tracking.utmMedium}`,
+      tracking.utmCampaign && `campaign:${tracking.utmCampaign}`,
+      tracking.utmContent && `content:${tracking.utmContent}`,
+      tracking.utmTerm && `term:${tracking.utmTerm}`,
+    ].filter(Boolean).join(' | ');
 
-    const submission = { ...form, language: lang, submittedAt: new Date().toISOString(), ...tracking };
+    const submission = { ...form, language: lang, submittedAt: new Date().toISOString(), trackingSummary, ...tracking };
 
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
@@ -1044,6 +1065,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
                 {t.successTitle}
               </div>
               <p className="mt-2 text-sm text-emerald-100/80">{t.successText}</p>
+              <SuccessActions t={t} />
             </div>
           )}
           {formError && <p className="mb-5 rounded-lg border border-rose-300/25 bg-rose-300/10 p-4 text-sm text-rose-100">{formError}</p>}
@@ -1095,6 +1117,64 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
       </div>
     </Section>
   );
+}
+
+function SuccessActions({ t }: { t: typeof copy.en }) {
+  const calendarLinks = getCalendarLinks();
+
+  return (
+    <div className="success-actions">
+      <div>
+        <strong>{t.nextStepsTitle}</strong>
+        <p>{t.nextStepsText}</p>
+      </div>
+      <div className="success-action-grid">
+        <a href={EVENT.whatsappLink} target="_blank" rel="noreferrer">
+          <MessageCircle className="h-4 w-4" aria-hidden="true" />
+          {t.whatsappAfterSubmit}
+        </a>
+        <a href={calendarLinks.google} target="_blank" rel="noreferrer">
+          <CalendarDays className="h-4 w-4" aria-hidden="true" />
+          {t.googleCalendar}
+        </a>
+        <a href={calendarLinks.outlook} target="_blank" rel="noreferrer">
+          <CalendarDays className="h-4 w-4" aria-hidden="true" />
+          {t.outlookCalendar}
+        </a>
+        <a href={calendarLinks.ics} download="tech-meets-problems-pizza-prototypes.ics">
+          <CalendarDays className="h-4 w-4" aria-hidden="true" />
+          {t.appleCalendar}
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function getCalendarLinks() {
+  const title = 'Tech Meets Problems: Pizza & Prototypes';
+  const details = 'Builder-first prototype night in Siegen. Pizza, drinks, real problem cards and first concepts or prototypes.';
+  const location = `${EVENT.location}, ${EVENT.address}`;
+  const start = '20260626T160000Z';
+  const end = '20260626T190000Z';
+  const google = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+  const outlook = `https://outlook.live.com/calendar/0/action/compose?subject=${encodeURIComponent(title)}&startdt=2026-06-26T18%3A00%3A00%2B02%3A00&enddt=2026-06-26T21%3A00%3A00%2B02%3A00&body=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+  const ics = `data:text/calendar;charset=utf-8,${encodeURIComponent([
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Tech Meets Problems//Pizza and Prototypes//EN',
+    'BEGIN:VEVENT',
+    'UID:tech-meets-problems-pizza-prototypes-20260626',
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${details}`,
+    `LOCATION:${location}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n'))}`;
+
+  return { google, outlook, ics };
 }
 
 function WhatsAppSection({ t }: { t: typeof copy.en }) {
@@ -1374,12 +1454,6 @@ function BackgroundScene() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_80%_25%,rgba(251,146,60,0.10),transparent_25%),linear-gradient(180deg,#07080d_0%,#0b1020_50%,#07080d_100%)]" />
       <div className="grid-overlay" />
       <div className="cursor-glow" />
-      <div className="floating-token floating-token-rocket">
-        <Rocket className="h-5 w-5" />
-      </div>
-      <div className="floating-token floating-token-pizza">
-        <Pizza className="h-5 w-5" />
-      </div>
     </div>
   );
 }
