@@ -494,6 +494,7 @@ function App() {
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExitNudge, setShowExitNudge] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -574,6 +575,8 @@ function App() {
         },
         body: JSON.stringify({
           ...submission,
+          _subject: `New signup: ${submission.firstName} ${submission.lastName} - Pizza & Prototypes`,
+          _replyto: submission.email,
           fullName: `${submission.firstName} ${submission.lastName}`.trim(),
           interests: submission.interests.join(', '),
           event: 'Tech Meets Problems: Pizza & Prototypes',
@@ -585,6 +588,7 @@ function App() {
       }
 
       setSubmitted(true);
+      setShowSignupModal(true);
       setForm(initialForm);
     } catch {
       setFormError(t.sendError);
@@ -617,6 +621,7 @@ function App() {
       <Header lang={lang} setLang={setLang} t={t} />
       <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} />
       <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
+      <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
       <RoomPreviewSection t={t} />
@@ -766,6 +771,28 @@ function ExitNudge({ t, show, onClose }: { t: typeof copy.en; show: boolean; onC
   );
 }
 
+function SignupSuccessModal({ t, show, onClose }: { t: typeof copy.en; show: boolean; onClose: () => void }) {
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <div className="signup-modal-backdrop" role="presentation">
+      <section className="signup-modal" role="dialog" aria-modal="true" aria-label={t.successTitle}>
+        <button type="button" className="signup-modal-close" onClick={onClose} aria-label="Close">
+          <X className="h-4 w-4" aria-hidden="true" />
+        </button>
+        <div className="signup-modal-icon">
+          <Check className="h-5 w-5" aria-hidden="true" />
+        </div>
+        <h2>{t.successTitle}</h2>
+        <p>{t.successText}</p>
+        <SuccessActions t={t} />
+      </section>
+    </div>
+  );
+}
+
 function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
@@ -785,7 +812,6 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
-        <Countdown t={t} />
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
           <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
@@ -798,7 +824,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   );
 }
 
-function Countdown({ t }: { t: typeof copy.en }) {
+function Countdown({ t, compact = false }: { t: typeof copy.en; compact?: boolean }) {
   const [remaining, setRemaining] = useState(() => getTimeRemaining());
 
   useEffect(() => {
@@ -807,7 +833,7 @@ function Countdown({ t }: { t: typeof copy.en }) {
   }, []);
 
   return (
-    <div className="countdown-strip" aria-label={t.countdownLabel}>
+    <div className={compact ? 'countdown-strip countdown-strip-hero-visual' : 'countdown-strip'} aria-label={t.countdownLabel}>
       <span>{t.countdownLabel}</span>
       <div>
         {[remaining.days, remaining.hours, remaining.minutes, remaining.seconds].map((value, index) => (
@@ -840,6 +866,7 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
         <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
       </div>
       <HeroSupporters t={t} />
+      <Countdown t={t} compact />
     </div>
   );
 }
