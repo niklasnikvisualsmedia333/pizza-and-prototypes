@@ -42,13 +42,22 @@ main > header {
 
 .language-toggle {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
   gap: 0.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(103, 232, 249, 0.26);
   border-radius: 0.55rem;
-  background: rgba(255, 255, 255, 0.06);
+  background:
+    radial-gradient(circle at 12% 50%, rgba(56, 189, 248, 0.18), transparent 55%),
+    rgba(255, 255, 255, 0.06);
   padding: 0.2rem;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.08);
   backdrop-filter: blur(16px);
+}
+
+.language-toggle svg {
+  margin-left: 0.35rem;
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.35));
 }
 
 .language-toggle button {
@@ -120,7 +129,7 @@ main > header {
   right: 1rem;
   bottom: 1rem;
   z-index: 45;
-  display: none;
+  display: flex;
   align-items: center;
   gap: 0.35rem;
   border: 1px solid rgba(125, 211, 252, 0.28);
@@ -148,10 +157,52 @@ main > header {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.mobile-quick-nav a:last-child {
+.mobile-quick-nav > a:last-child {
   padding-inline: 0.8rem;
   background: linear-gradient(135deg, #46b7f0, #2458ee);
   color: #fff;
+}
+
+.quick-menu {
+  position: relative;
+}
+
+.quick-menu summary {
+  display: inline-flex;
+  min-height: 2.25rem;
+  width: 2.25rem;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0f2fe;
+}
+
+.quick-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.quick-menu div {
+  position: absolute;
+  right: 0;
+  bottom: 2.8rem;
+  display: grid;
+  min-width: 11rem;
+  gap: 0.25rem;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 0.85rem;
+  background: rgba(7, 8, 13, 0.94);
+  padding: 0.45rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(18px);
+}
+
+.quick-menu div a {
+  justify-content: flex-start;
+  padding-inline: 0.75rem;
+  white-space: nowrap;
 }
 
 .btn {
@@ -473,14 +524,15 @@ main > header {
 }
 
 .room-preview-media {
-  min-height: 17rem;
+  height: clamp(19rem, 28vw, 25rem);
+  min-height: 0;
 }
 
 .room-preview-media img {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 17rem;
+  min-height: 0;
   object-fit: cover;
   object-position: center 42%;
 }
@@ -1582,6 +1634,10 @@ main > header {
     padding: 0 0.5rem;
   }
 
+  .language-toggle svg {
+    margin-left: 0.25rem;
+  }
+
   .btn-compact {
     min-height: 40px;
     padding: 0.65rem 0.75rem;
@@ -1686,6 +1742,7 @@ main > header {
 
   .room-preview-media,
   .room-preview-media img {
+    height: auto;
     min-height: 24rem;
   }
 

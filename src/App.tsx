@@ -7,8 +7,10 @@ import {
   ClipboardCopy,
   Code2,
   ExternalLink,
+  Globe2,
   Lightbulb,
   Mail,
+  Menu,
   MapPin,
   MessageCircle,
   Rocket,
@@ -57,6 +59,7 @@ type InterestForm = {
   role: string;
   status: string;
   codingLevel: string;
+  eventLanguage: string;
   startupInterest: string;
   interests: string[];
   followUp: string;
@@ -76,6 +79,7 @@ const initialForm: InterestForm = {
   role: '',
   status: '',
   codingLevel: '',
+  eventLanguage: '',
   startupInterest: '',
   interests: [],
   followUp: '',
@@ -188,6 +192,7 @@ const copy = {
       role: 'What describes you best?',
       status: 'Current status, optional',
       coding: 'Can you code?',
+      eventLanguage: 'Preferred event language',
       startupInterest: 'Are you interested in startups or founding one yourself?',
       followUp: 'Time for a small follow-up project after the event?',
       link: 'GitHub, LinkedIn, portfolio or personal website, optional',
@@ -202,6 +207,7 @@ const copy = {
     roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
     statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'No, but I can design, research or validate'],
+    eventLanguageOptions: ['English', 'German', 'No preference'],
     startupInterestOptions: ['Yes, strong interest', 'Maybe someday', 'No, not really'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
     followUp: ['Yes', 'Maybe', 'Not right now'],
@@ -216,6 +222,7 @@ const copy = {
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Builder group',
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
+    whatsappCardTitle: 'Join the builder group',
     whatsappButton: 'Join WhatsApp',
     shareKicker: 'Share',
     shareTitle: 'Know someone who likes building? Send this to them.',
@@ -224,7 +231,7 @@ const copy = {
     shareButton: 'Share',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
-    shareNativeText: 'Know someone who likes building? Send them Tech Meets Problems: Pizza & Prototypes.',
+    shareNativeText: 'Tech Meets Problems: Pizza & Prototypes is a free builder-first evening in Siegen where developers, makers and technical students work on real business problems. Pizza, non-alcoholic drinks and alcoholic drinks are included. You can sign up here:',
     locationKicker: 'Location',
     locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
     locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
@@ -349,6 +356,7 @@ const copy = {
       role: 'Was beschreibt dich am besten?',
       status: 'Aktueller Status, optional',
       coding: 'Kannst du coden?',
+      eventLanguage: 'Bevorzugte Event-Sprache',
       startupInterest: 'Interessierst du dich für Startups oder dafür, selbst mal zu gründen?',
       followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
       link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
@@ -363,6 +371,7 @@ const copy = {
     roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
     statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Nein, aber ich kann designen, recherchieren oder validieren'],
+    eventLanguageOptions: ['Deutsch', 'Englisch', 'Egal'],
     startupInterestOptions: ['Ja, großes Interesse', 'Vielleicht irgendwann', 'Nein, eher nicht'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
     followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
@@ -377,6 +386,7 @@ const copy = {
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Builder-Gruppe',
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
+    whatsappCardTitle: 'Tritt der Builder-Gruppe bei',
     whatsappButton: 'WhatsApp beitreten',
     shareKicker: 'Teilen',
     shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
@@ -385,7 +395,7 @@ const copy = {
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
-    shareNativeText: 'Kennst du jemanden, der gerne baut? Schick Tech Meets Problems: Pizza & Prototypes weiter.',
+    shareNativeText: 'Tech Meets Problems: Pizza & Prototypes ist ein kostenloser builder-first Abend in Siegen, bei dem Entwickler, Maker und technische Studierende an echten Business-Problemen arbeiten. Pizza, alkoholfreie und alkoholische Getränke sind inklusive. Hier kann man sich anmelden:',
     locationKicker: 'Ort',
     locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
     locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
@@ -446,7 +456,7 @@ function App() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.startupInterest || !form.followUp || !form.pizza) {
+    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.pizza) {
       setFormError(t.error);
       return;
     }
@@ -454,7 +464,18 @@ function App() {
     setIsSubmitting(true);
     setFormError('');
 
-    const submission = { ...form, language: lang, submittedAt: new Date().toISOString() };
+    const urlParams = new URLSearchParams(window.location.search);
+    const tracking = {
+      utmSource: urlParams.get('utm_source') || '',
+      utmMedium: urlParams.get('utm_medium') || '',
+      utmCampaign: urlParams.get('utm_campaign') || '',
+      utmContent: urlParams.get('utm_content') || '',
+      utmTerm: urlParams.get('utm_term') || '',
+      referrer: document.referrer,
+      landingPage: window.location.href,
+    };
+
+    const submission = { ...form, language: lang, submittedAt: new Date().toISOString(), ...tracking };
 
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
@@ -571,6 +592,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (lang: Lang) => voi
 function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) => void }) {
   return (
     <div className="language-toggle" aria-label="Language switcher">
+      <Globe2 className="h-4 w-4 text-cyan-200" aria-hidden="true" />
       <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>
         EN
       </button>
@@ -583,10 +605,21 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
 
 function MobileQuickNav({ t }: { t: typeof copy.en }) {
   return (
-    <nav className="mobile-quick-nav" aria-label="Mobile quick navigation">
+    <nav className="mobile-quick-nav" aria-label="Quick navigation">
       <a href="#top" aria-label="Back to top">
         <ArrowUp className="h-4 w-4" aria-hidden="true" />
       </a>
+      <details className="quick-menu">
+        <summary aria-label="Open page navigation">
+          <Menu className="h-4 w-4" aria-hidden="true" />
+        </summary>
+        <div>
+          <a href="#how">{t.nav[0]}</a>
+          <a href="#cards">{t.nav[1]}</a>
+          <a href="#companies">{t.nav[2]}</a>
+          <a href="#register">{t.nav[3]}</a>
+        </div>
+      </details>
       <a href="#register">{t.joinShort}</a>
     </nav>
   );
@@ -858,6 +891,7 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
             <SelectInput label={t.fields.status} value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
             <SelectInput label={t.fields.coding} required value={form.codingLevel} options={t.codingLevels} placeholder={t.fields.select} onChange={(value) => updateField('codingLevel', value)} />
+            <SelectInput label={t.fields.eventLanguage} required value={form.eventLanguage} options={t.eventLanguageOptions} placeholder={t.fields.select} onChange={(value) => updateField('eventLanguage', value)} />
             <SelectInput label={t.fields.startupInterest} required value={form.startupInterest} options={t.startupInterestOptions} placeholder={t.fields.select} onChange={(value) => updateField('startupInterest', value)} />
             <SelectInput label={t.fields.followUp} required value={form.followUp} options={t.followUp} placeholder={t.fields.select} onChange={(value) => updateField('followUp', value)} />
             <TextInput label={t.fields.link} value={form.link} onChange={(value) => updateField('link', value)} />
@@ -907,7 +941,7 @@ function WhatsAppSection({ t }: { t: typeof copy.en }) {
             <MessageCircle className="h-4 w-4 text-emerald-300" aria-hidden="true" />
             {t.whatsappKicker}
           </p>
-          <h3 className="text-2xl font-semibold leading-tight text-white sm:text-3xl">{t.whatsappTitle}</h3>
+          <h3 className="text-2xl font-semibold leading-tight text-white sm:text-3xl">{t.whatsappCardTitle}</h3>
         </div>
         <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
           {t.whatsappButton}
