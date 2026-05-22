@@ -27,8 +27,8 @@ type Lang = 'en' | 'de';
 
 const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
-  logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark.png`,
-  heroMap: `${import.meta.env.BASE_URL}assets/hero-pizza-prototypes-map.png`,
+  logoDark: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-dark-optimized.jpg`,
+  heroMap: `${import.meta.env.BASE_URL}assets/hero-pizza-prototypes-map-optimized.jpg`,
   roomPreview: `${import.meta.env.BASE_URL}assets/event-room-preview.jpg`,
   startpunkt57: `${import.meta.env.BASE_URL}assets/logo-startpunkt57.png`,
   entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
