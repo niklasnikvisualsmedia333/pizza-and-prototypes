@@ -2204,6 +2204,15 @@ main > header {
   text-decoration: none;
 }
 
+.success-action-grid a svg {
+  flex: 0 0 auto;
+}
+
+.success-action-whatsapp span {
+  max-width: 8rem;
+  line-height: 1.2;
+}
+
 .field span,
 fieldset legend {
   display: flex;

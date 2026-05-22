@@ -46,7 +46,7 @@ const EVENT = {
   location: 'Startpunkt57 / Haus der Innovation, Siegen',
   address: 'Sandstraße 26, 57072 Siegen',
   size: '15 to 30 people',
-  whatsappLink: 'https://wa.me/4917655263773',
+  whatsappLink: 'https://chat.whatsapp.com/EpOzBHdqtyJIWC92mUnzCo?mode=gi_t',
   contactEmail: 'info@nikvisuals.de',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
   startsAt: '2026-06-26T18:00:00+02:00',
@@ -1164,9 +1164,9 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
         <p>{t.nextStepsText}</p>
       </div>
       <div className="success-action-grid">
-        <a href={EVENT.whatsappLink} target="_blank" rel="noreferrer">
+        <a href={EVENT.whatsappLink} className="success-action-whatsapp" target="_blank" rel="noreferrer">
           <MessageCircle className="h-4 w-4" aria-hidden="true" />
-          {t.whatsappAfterSubmit}
+          <span>{t.whatsappAfterSubmit}</span>
         </a>
         <a href={calendarLinks.google} target="_blank" rel="noreferrer">
           <CalendarDays className="h-4 w-4" aria-hidden="true" />
