@@ -3,4 +3,10 @@
   <url>
     <loc>https://techmeetsproblems.com/</loc>
   </url>
+  <url>
+    <loc>https://techmeetsproblems.com/?lang=de</loc>
+  </url>
+  <url>
+    <loc>https://techmeetsproblems.com/?lang=en</loc>
+  </url>
 </urlset>

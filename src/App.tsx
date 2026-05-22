@@ -487,6 +487,18 @@ const supporterLogos = [
 
 const LANGUAGE_STORAGE_KEY = 'tech-meets-problems-language';
 const SITE_URL = 'https://techmeetsproblems.com/';
+const seoByLang: Record<Lang, { title: string; description: string }> = {
+  de: {
+    title: 'Pizza & Prototypes Siegen | Tech Meets Problems',
+    description:
+      'Tech Meets Problems: Pizza & Prototypes ist ein builder-first Event in Siegen für Entwickler, technische Studierende und Maker, die an echten Problemräumen arbeiten.',
+  },
+  en: {
+    title: 'Tech Meets Problems: Pizza & Prototypes',
+    description:
+      'Tech Meets Problems: Pizza & Prototypes is a builder-first event in Siegen where technical people work on real business needs.',
+  },
+};
 
 function isLang(value: string | null): value is Lang {
   return value === 'en' || value === 'de';
@@ -521,6 +533,10 @@ function isLikelyMobileShare() {
   return navigator.share !== undefined || window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
 }
 
+function setMetaContent(selector: string, content: string) {
+  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
+}
+
 function App() {
   const [lang, setLangState] = useState<Lang>(() => getInitialLanguage());
   const t = copy[lang];
@@ -542,6 +558,17 @@ function App() {
     url.searchParams.set('lang', nextLang);
     window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   };
+
+  useEffect(() => {
+    const seo = seoByLang[lang];
+    document.documentElement.lang = lang;
+    document.title = seo.title;
+    setMetaContent('meta[name="description"]', seo.description);
+    setMetaContent('meta[property="og:title"]', seo.title);
+    setMetaContent('meta[property="og:description"]', seo.description);
+    setMetaContent('meta[name="twitter:title"]', seo.title);
+    setMetaContent('meta[name="twitter:description"]', seo.description);
+  }, [lang]);
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
