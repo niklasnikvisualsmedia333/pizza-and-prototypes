@@ -53,6 +53,7 @@ const EVENT = {
 };
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
+const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration';
 
 type InterestForm = {
   firstName: string;
@@ -204,6 +205,7 @@ const copy = {
     successText: 'Thanks. Your registration was sent successfully.',
     nextStepsTitle: 'Nice, you are on the list.',
     nextStepsText: 'Join the WhatsApp group for updates and add the date to your calendar so it does not disappear in the week.',
+    nextStepsEmailNote: 'You will also receive a confirmation email. Please also check your spam folder just in case.',
     addToCalendar: 'Add to calendar',
     googleCalendar: 'Google',
     outlookCalendar: 'Outlook',
@@ -394,6 +396,7 @@ const copy = {
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     nextStepsTitle: 'Nice, du stehst auf der Liste.',
     nextStepsText: 'Tritt gern der WhatsApp-Gruppe bei und speichere dir den Termin direkt im Kalender, damit er nicht in der Woche untergeht.',
+    nextStepsEmailNote: 'Du bekommst zusätzlich eine Bestätigung per E-Mail. Schau zur Sicherheit auch kurz im Spam-Ordner nach.',
     addToCalendar: 'Zum Kalender hinzufügen',
     googleCalendar: 'Google',
     outlookCalendar: 'Outlook',
@@ -645,6 +648,14 @@ function App() {
     ].filter(Boolean).join(' | ');
 
     const submission = { ...form, language: lang, submittedAt: new Date().toISOString(), trackingSummary, ...tracking };
+    const submissionPayload = {
+      ...submission,
+      _subject: `New signup: ${submission.firstName} ${submission.lastName} - Pizza & Prototypes`,
+      _replyto: submission.email,
+      fullName: `${submission.firstName} ${submission.lastName}`.trim(),
+      interests: submission.interests.join(', '),
+      event: 'Tech Meets Problems: Pizza & Prototypes',
+    };
 
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
@@ -653,19 +664,22 @@ function App() {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...submission,
-          _subject: `New signup: ${submission.firstName} ${submission.lastName} - Pizza & Prototypes`,
-          _replyto: submission.email,
-          fullName: `${submission.firstName} ${submission.lastName}`.trim(),
-          interests: submission.interests.join(', '),
-          event: 'Tech Meets Problems: Pizza & Prototypes',
-        }),
+        body: JSON.stringify(submissionPayload),
       });
 
       if (!response.ok) {
         throw new Error('Formspree request failed');
       }
+
+      void fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionPayload),
+      }).catch((error) => {
+        console.warn('n8n registration webhook failed', error);
+      });
 
       setSubmitted(true);
       setShowSignupModal(true);
@@ -1235,6 +1249,7 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
       <div>
         <strong>{t.nextStepsTitle}</strong>
         <p>{t.nextStepsText}</p>
+        <p className="mt-3 text-sm text-emerald-100/70">{t.nextStepsEmailNote}</p>
       </div>
       <div className="success-action-grid">
         <a href={EVENT.whatsappLink} className="success-action-whatsapp" target="_blank" rel="noreferrer">
@@ -1259,28 +1274,11 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
 }
 
 function getCalendarLinks() {
-  const title = 'Tech Meets Problems: Pizza & Prototypes';
-  const details = 'Builder-first prototype night in Siegen. Pizza, drinks, real problem cards and first concepts or prototypes.';
-  const location = `${EVENT.location}, ${EVENT.address}`;
-  const start = '20260626T160000Z';
-  const end = '20260626T190000Z';
-  const google = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
-  const outlook = `https://outlook.live.com/calendar/0/action/compose?subject=${encodeURIComponent(title)}&startdt=2026-06-26T18%3A00%3A00%2B02%3A00&enddt=2026-06-26T21%3A00%3A00%2B02%3A00&body=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
-  const ics = `data:text/calendar;charset=utf-8,${encodeURIComponent([
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Tech Meets Problems//Pizza and Prototypes//EN',
-    'BEGIN:VEVENT',
-    'UID:tech-meets-problems-pizza-prototypes-20260626',
-    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
-    `DTSTART:${start}`,
-    `DTEND:${end}`,
-    `SUMMARY:${title}`,
-    `DESCRIPTION:${details}`,
-    `LOCATION:${location}`,
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n'))}`;
+  const google =
+    'https://calendar.google.com/calendar/u/0/r/eventedit?text=Tech+Meets+Problems:+Pizza+%26+Prototypes&dates=20260626T160000Z/20260626T190000Z&details=Builder-first+prototype+night+in+Siegen.+Pizza,+drinks,+real+problem+cards+and+first+concepts+or+prototypes.&location=Startpunkt57+/+Haus+der+Innovation,+Siegen,+Sandstra%C3%9Fe+26,+57072+Siegen';
+  const outlook =
+    'https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=Tech%20Meets%20Problems%3A%20Pizza%20%26%20Prototypes&startdt=2026-06-26T18%3A00%3A00%2B02%3A00&enddt=2026-06-26T21%3A00%3A00%2B02%3A00&body=Builder-first%20prototype%20night%20in%20Siegen.%20Pizza%2C%20drinks%2C%20real%20problem%20cards%20and%20first%20concepts%20or%20prototypes.&location=Startpunkt57%20%2F%20Haus%20der%20Innovation%2C%20Siegen%2C%20Sandstra%C3%9Fe%2026%2C%2057072%20Siegen';
+  const ics = '/calendar/pizza-and-prototypes.ics';
 
   return { google, outlook, ics };
 }

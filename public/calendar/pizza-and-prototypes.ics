@@ -1,0 +1,13 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tech Meets Problems//Pizza and Prototypes//EN
+BEGIN:VEVENT
+UID:tech-meets-problems-pizza-prototypes-20260626
+DTSTAMP:20260522T154639Z
+DTSTART:20260626T160000Z
+DTEND:20260626T190000Z
+SUMMARY:Tech Meets Problems: Pizza & Prototypes
+DESCRIPTION:Builder-first prototype night in Siegen. Pizza, drinks, real problem cards and first concepts or prototypes.
+LOCATION:Startpunkt57 / Haus der Innovation, Siegen, Sandstraße 26, 57072 Siegen
+END:VEVENT
+END:VCALENDAR
