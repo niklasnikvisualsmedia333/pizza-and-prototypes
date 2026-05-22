@@ -524,11 +524,24 @@ function getInitialLanguage(): Lang {
 
 function getShareUrl(lang: Lang) {
   const url = new URL(SITE_URL);
+  const currentParams = new URLSearchParams(window.location.search);
+  currentParams.forEach((value, key) => {
+    url.searchParams.set(key, value);
+  });
+
   url.searchParams.set('lang', lang);
-  url.searchParams.set('utm_source', 'website');
-  url.searchParams.set('utm_medium', 'share');
-  url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
-  url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
+  if (!url.searchParams.has('utm_source')) {
+    url.searchParams.set('utm_source', 'website');
+  }
+  if (!url.searchParams.has('utm_medium')) {
+    url.searchParams.set('utm_medium', 'share');
+  }
+  if (!url.searchParams.has('utm_campaign')) {
+    url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+  }
+  if (!url.searchParams.has('utm_content')) {
+    url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
+  }
   return url.toString();
 }
 
