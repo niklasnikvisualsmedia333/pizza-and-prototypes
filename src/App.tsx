@@ -485,8 +485,44 @@ const supporterLogos = [
   { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter, href: 'https://www.ec.uni-siegen.de/' },
 ];
 
+const LANGUAGE_STORAGE_KEY = 'tech-meets-problems-language';
+const SITE_URL = 'https://techmeetsproblems.com/';
+
+function isLang(value: string | null): value is Lang {
+  return value === 'en' || value === 'de';
+}
+
+function getInitialLanguage(): Lang {
+  const params = new URLSearchParams(window.location.search);
+  const urlLang = params.get('lang');
+  if (isLang(urlLang)) {
+    return urlLang;
+  }
+
+  const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (isLang(storedLang)) {
+    return storedLang;
+  }
+
+  return 'de';
+}
+
+function getShareUrl(lang: Lang) {
+  const url = new URL(SITE_URL);
+  url.searchParams.set('lang', lang);
+  url.searchParams.set('utm_source', 'website');
+  url.searchParams.set('utm_medium', 'share');
+  url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+  url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
+  return url.toString();
+}
+
+function isLikelyMobileShare() {
+  return navigator.share !== undefined || window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+}
+
 function App() {
-  const [lang, setLang] = useState<Lang>('en');
+  const [lang, setLangState] = useState<Lang>(() => getInitialLanguage());
   const t = copy[lang];
   const [form, setForm] = useState<InterestForm>(initialForm);
   const [submitted, setSubmitted] = useState(false);
@@ -497,6 +533,15 @@ function App() {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const pointerFrame = useRef<number | null>(null);
   const pointerPosition = useRef({ x: 0, y: 0 });
+
+  const setLang = (nextLang: Lang) => {
+    setLangState(nextLang);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', nextLang);
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  };
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -606,12 +651,13 @@ function App() {
   };
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(getShareUrl(lang));
     setShareMessage(t.copied);
   };
 
   const nativeShare = async () => {
     if (!navigator.share) {
+      await navigator.clipboard.writeText(getShareUrl(lang));
       setShareMessage(t.noShare);
       return;
     }
@@ -619,7 +665,7 @@ function App() {
     await navigator.share({
       title: 'Tech Meets Problems: Pizza & Prototypes',
       text: t.shareNativeText,
-      url: window.location.href,
+      url: getShareUrl(lang),
     });
   };
 
