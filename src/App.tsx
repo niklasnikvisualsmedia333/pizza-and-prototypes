@@ -24,6 +24,14 @@ import {
 } from 'lucide-react';
 
 type Lang = 'en' | 'de';
+type AnalyticsConsent = 'accepted' | 'declined';
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
 const ASSETS = {
   logoTransparent: `${import.meta.env.BASE_URL}assets/logo-tech-meets-problems-transparent.png`,
@@ -54,6 +62,8 @@ const EVENT = {
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration';
+const ANALYTICS_CONSENT_KEY = 'tmp_analytics_consent';
+const GA_MEASUREMENT_ID = 'G-SQXS1M7GYN';
 
 type InterestForm = {
   firstName: string;
@@ -553,6 +563,30 @@ function setMetaContent(selector: string, content: string) {
   document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
 }
 
+function getStoredAnalyticsConsent(): AnalyticsConsent | null {
+  const storedConsent = localStorage.getItem(ANALYTICS_CONSENT_KEY);
+  return storedConsent === 'accepted' || storedConsent === 'declined' ? storedConsent : null;
+}
+
+function loadGoogleAnalytics() {
+  if (document.querySelector(`script[data-ga4-id="${GA_MEASUREMENT_ID}"]`)) {
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer?.push(args);
+  };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID);
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  script.dataset.ga4Id = GA_MEASUREMENT_ID;
+  document.head.appendChild(script);
+}
+
 function App() {
   const [lang, setLangState] = useState<Lang>(() => getInitialLanguage());
   const t = copy[lang];
@@ -563,6 +597,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExitNudge, setShowExitNudge] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [analyticsConsent, setAnalyticsConsent] = useState<AnalyticsConsent | null>(() => getStoredAnalyticsConsent());
   const pointerFrame = useRef<number | null>(null);
   const pointerPosition = useRef({ x: 0, y: 0 });
 
@@ -585,6 +620,17 @@ function App() {
     setMetaContent('meta[name="twitter:title"]', seo.title);
     setMetaContent('meta[name="twitter:description"]', seo.description);
   }, [lang]);
+
+  useEffect(() => {
+    if (analyticsConsent === 'accepted') {
+      loadGoogleAnalytics();
+    }
+  }, [analyticsConsent]);
+
+  const updateAnalyticsConsent = (nextConsent: AnalyticsConsent) => {
+    localStorage.setItem(ANALYTICS_CONSENT_KEY, nextConsent);
+    setAnalyticsConsent(nextConsent);
+  };
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -730,6 +776,7 @@ function App() {
       <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} />
       <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
+      <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
       <Hero t={t} lang={lang} />
       <ProblemSection t={t} />
       <RoomPreviewSection t={t} />
@@ -759,6 +806,39 @@ function App() {
       <FAQ t={t} />
       <Footer t={t} />
     </main>
+  );
+}
+
+function AnalyticsConsentBanner({
+  lang,
+  consent,
+  onChoice,
+}: {
+  lang: Lang;
+  consent: AnalyticsConsent | null;
+  onChoice: (nextConsent: AnalyticsConsent) => void;
+}) {
+  if (consent !== null) {
+    return null;
+  }
+
+  const isGerman = lang === 'de';
+  return (
+    <aside className="analytics-consent" aria-label={isGerman ? 'Analytics Zustimmung' : 'Analytics consent'}>
+      <p>
+        {isGerman
+          ? 'Wir nutzen optional Google Analytics, um zu verstehen, welche Kanäle funktionieren. Cloudflare Web Analytics bleibt als privacy-freundliche Basis aktiv.'
+          : 'We optionally use Google Analytics to understand which channels work. Cloudflare Web Analytics remains active as a privacy-friendly baseline.'}
+      </p>
+      <div>
+        <button type="button" className="analytics-consent-accept" onClick={() => onChoice('accepted')}>
+          {isGerman ? 'Analytics akzeptieren' : 'Accept analytics'}
+        </button>
+        <button type="button" className="analytics-consent-decline" onClick={() => onChoice('declined')}>
+          {isGerman ? 'Ablehnen' : 'Decline'}
+        </button>
+      </div>
+    </aside>
   );
 }
 
