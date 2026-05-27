@@ -64,6 +64,8 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration';
 const ANALYTICS_CONSENT_KEY = 'tmp_analytics_consent';
 const GA_MEASUREMENT_ID = 'G-SQXS1M7GYN';
+let gaLoadPromise: Promise<void> | null = null;
+let gaPageViewSent = false;
 
 type InterestForm = {
   firstName: string;
@@ -568,23 +570,61 @@ function getStoredAnalyticsConsent(): AnalyticsConsent | null {
   return storedConsent === 'accepted' || storedConsent === 'declined' ? storedConsent : null;
 }
 
-function loadGoogleAnalytics() {
-  if (document.querySelector(`script[data-ga4-id="${GA_MEASUREMENT_ID}"]`)) {
+function ensureGtag() {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag =
+    window.gtag ||
+    function gtag(...args: unknown[]) {
+      window.dataLayer?.push(args);
+    };
+}
+
+function loadGoogleAnalyticsScript() {
+  if (gaLoadPromise) {
+    return gaLoadPromise;
+  }
+
+  ensureGtag();
+
+  const existingScript = document.querySelector<HTMLScriptElement>(`script[data-ga4-id="${GA_MEASUREMENT_ID}"]`);
+  if (existingScript) {
+    gaLoadPromise = Promise.resolve();
+    return gaLoadPromise;
+  }
+
+  gaLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    script.dataset.ga4Id = GA_MEASUREMENT_ID;
+    script.addEventListener('load', () => resolve(), { once: true });
+    script.addEventListener('error', () => reject(new Error('GA4 script failed to load')), { once: true });
+    document.head.appendChild(script);
+  });
+
+  return gaLoadPromise;
+}
+
+async function loadGoogleAnalyticsAndSendPageView() {
+  if (gaPageViewSent) {
     return;
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
-  };
-  window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID);
-
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  script.dataset.ga4Id = GA_MEASUREMENT_ID;
-  document.head.appendChild(script);
+  try {
+    await loadGoogleAnalyticsScript();
+    ensureGtag();
+    if (gaPageViewSent) {
+      return;
+    }
+    window.gtag?.('js', new Date());
+    window.gtag?.('config', GA_MEASUREMENT_ID, {
+      page_path: window.location.pathname + window.location.search,
+      page_location: window.location.href,
+    });
+    gaPageViewSent = true;
+  } catch (error) {
+    console.warn('GA4 analytics failed to load', error);
+  }
 }
 
 function App() {
@@ -623,7 +663,7 @@ function App() {
 
   useEffect(() => {
     if (analyticsConsent === 'accepted') {
-      loadGoogleAnalytics();
+      void loadGoogleAnalyticsAndSendPageView();
     }
   }, [analyticsConsent]);
 
@@ -827,8 +867,8 @@ function AnalyticsConsentBanner({
     <aside className="analytics-consent" aria-label={isGerman ? 'Analytics Zustimmung' : 'Analytics consent'}>
       <p>
         {isGerman
-          ? 'Wir nutzen optional Google Analytics, um zu verstehen, welche Kanäle funktionieren. Cloudflare Web Analytics bleibt als privacy-freundliche Basis aktiv.'
-          : 'We optionally use Google Analytics to understand which channels work. Cloudflare Web Analytics remains active as a privacy-friendly baseline.'}
+          ? 'Hilf uns kurz zu verstehen, welche Kanäle funktionieren. Dafür nutzen wir optional Google Analytics.'
+          : 'Help us understand which channels work. We optionally use Google Analytics for this.'}
       </p>
       <div>
         <button type="button" className="analytics-consent-accept" onClick={() => onChoice('accepted')}>
