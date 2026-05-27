@@ -29,7 +29,10 @@ type AnalyticsConsent = 'accepted' | 'declined';
 declare global {
   interface Window {
     dataLayer?: unknown[];
-    gtag?: (...args: unknown[]) => void;
+    gtag?: {
+      (...args: unknown[]): void;
+      initialized?: boolean;
+    };
   }
 }
 
@@ -572,11 +575,11 @@ function getStoredAnalyticsConsent(): AnalyticsConsent | null {
 
 function ensureGtag() {
   window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function gtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
+  if (!window.gtag) {
+    window.gtag = function gtag() {
+      window.dataLayer?.push(arguments);
     };
+  }
 }
 
 function loadGoogleAnalyticsScript() {
@@ -616,8 +619,17 @@ async function loadGoogleAnalyticsAndSendPageView() {
     if (gaPageViewSent) {
       return;
     }
-    window.gtag?.('js', new Date());
+    if (!window.gtag?.initialized) {
+      window.gtag?.('js', new Date());
+      window.gtag!.initialized = true;
+    }
     window.gtag?.('config', GA_MEASUREMENT_ID, {
+      send_page_view: false,
+      page_path: window.location.pathname + window.location.search,
+      page_location: window.location.href,
+    });
+    window.gtag?.('event', 'page_view', {
+      send_to: GA_MEASUREMENT_ID,
       page_path: window.location.pathname + window.location.search,
       page_location: window.location.href,
     });
