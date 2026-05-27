@@ -71,8 +71,11 @@ const ANALYTICS_CONSENT_KEY = 'tmp_analytics_consent';
 const GA_MEASUREMENT_ID = 'G-SQXS1M7GYN';
 const PRIVACY_NOTICE_VERSION = '2026-05-27';
 const PHOTO_VIDEO_NOTICE_VERSION = '2026-05-27';
+const PENDING_N8N_STORAGE_KEY = 'tmp_pending_n8n_registration';
+const N8N_SUBMIT_TIMEOUT_MS = 2000;
 let gaLoadPromise: Promise<void> | null = null;
 let gaPageViewSent = false;
+let pendingN8nRetryStarted = false;
 
 type InterestForm = {
   firstName: string;
@@ -687,6 +690,86 @@ async function loadGoogleAnalyticsAndSendPageView() {
   }
 }
 
+type RegistrationPayload = Record<string, unknown>;
+
+function storePendingN8nRegistration(payload: RegistrationPayload) {
+  try {
+    localStorage.setItem(PENDING_N8N_STORAGE_KEY, JSON.stringify({ payload, savedAt: new Date().toISOString() }));
+  } catch (error) {
+    console.warn('Unable to store pending n8n registration payload', error);
+  }
+}
+
+function clearPendingN8nRegistration() {
+  try {
+    localStorage.removeItem(PENDING_N8N_STORAGE_KEY);
+  } catch (error) {
+    console.warn('Unable to clear pending n8n registration payload', error);
+  }
+}
+
+async function submitN8nRegistration(payload: RegistrationPayload, storeOnFailure = false) {
+  const body = JSON.stringify(payload);
+  const request = fetch(N8N_WEBHOOK_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body,
+    keepalive: body.length < 60_000,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`n8n registration webhook failed with ${response.status}`);
+      }
+      clearPendingN8nRegistration();
+      return true;
+    })
+    .catch((error) => {
+      console.warn('n8n registration webhook failed', error);
+      if (storeOnFailure) {
+        storePendingN8nRegistration(payload);
+      }
+      return false;
+    });
+
+  const result = await Promise.race([
+    request,
+    new Promise<'timeout'>((resolve) => window.setTimeout(() => resolve('timeout'), N8N_SUBMIT_TIMEOUT_MS)),
+  ]);
+
+  if (result === 'timeout') {
+    console.warn('n8n registration webhook timed out; storing payload for retry');
+    if (storeOnFailure) {
+      storePendingN8nRegistration(payload);
+    }
+    return false;
+  }
+
+  return result;
+}
+
+function retryPendingN8nRegistration() {
+  if (pendingN8nRetryStarted) {
+    return;
+  }
+  pendingN8nRetryStarted = true;
+
+  try {
+    const raw = localStorage.getItem(PENDING_N8N_STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    const parsed = JSON.parse(raw) as { payload?: RegistrationPayload };
+    if (parsed.payload) {
+      void submitN8nRegistration(parsed.payload, true);
+    }
+  } catch (error) {
+    console.warn('Unable to retry pending n8n registration payload', error);
+  }
+}
+
 function App() {
   const [lang, setLangState] = useState<Lang>(() => getInitialLanguage());
   const t = copy[lang];
@@ -728,6 +811,10 @@ function App() {
       void loadGoogleAnalyticsAndSendPageView();
     }
   }, [analyticsConsent]);
+
+  useEffect(() => {
+    retryPendingN8nRegistration();
+  }, []);
 
   const updateAnalyticsConsent = (nextConsent: AnalyticsConsent) => {
     localStorage.setItem(ANALYTICS_CONSENT_KEY, nextConsent);
@@ -858,15 +945,7 @@ function App() {
         throw new Error('Formspree request failed');
       }
 
-      void fetch(N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionPayload),
-      }).catch((error) => {
-        console.warn('n8n registration webhook failed', error);
-      });
+      await submitN8nRegistration(submissionPayload, true);
 
       setSubmitted(true);
       setShowSignupModal(true);
