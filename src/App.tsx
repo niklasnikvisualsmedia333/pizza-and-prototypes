@@ -6,6 +6,7 @@ import {
   Check,
   ClipboardCopy,
   Code2,
+  CupSoda,
   ExternalLink,
   Globe2,
   Laptop,
@@ -15,6 +16,7 @@ import {
   MapPin,
   MessageCircle,
   Rocket,
+  Pizza,
   Share2,
   Sparkles,
   Timer,
@@ -124,6 +126,8 @@ const copy = {
     heroText:
       'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
     primaryCta: 'Join the event',
+    freeBadgeLine1: 'Completely free',
+    freeBadgeLine2: 'incl. pizza & drinks',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
     countdownLabel: 'Event starts in',
     countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
@@ -315,6 +319,8 @@ const copy = {
     heroText:
       'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
     primaryCta: 'Zum Event anmelden',
+    freeBadgeLine1: 'Komplett kostenlos',
+    freeBadgeLine2: 'inkl. Pizza & Drinks',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
     countdownLabel: 'Event startet in',
     countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
@@ -557,6 +563,16 @@ function getShareUrl(lang: Lang) {
   if (!url.searchParams.has('utm_content')) {
     url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
   }
+  return url.toString();
+}
+
+function getWhatsAppShareUrl(lang: Lang) {
+  const url = new URL(SITE_URL);
+  url.searchParams.set('lang', lang);
+  url.searchParams.set('utm_source', 'whatsapp');
+  url.searchParams.set('utm_medium', 'share');
+  url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+  url.searchParams.set('utm_content', lang === 'de' ? 'website_share' : 'website_share_en');
   return url.toString();
 }
 
@@ -808,8 +824,10 @@ function App() {
   };
 
   const nativeShare = async () => {
+    const shareUrl = getWhatsAppShareUrl(lang);
+
     if (!navigator.share) {
-      await navigator.clipboard.writeText(getShareUrl(lang));
+      await navigator.clipboard.writeText(shareUrl);
       setShareMessage(t.noShare);
       return;
     }
@@ -817,7 +835,7 @@ function App() {
     await navigator.share({
       title: 'Tech Meets Problems: Pizza & Prototypes',
       text: t.shareNativeText,
-      url: getShareUrl(lang),
+      url: shareUrl,
     });
   };
 
@@ -1051,6 +1069,16 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
             {t.primaryCta}
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </a>
+          <div className="hero-free-badge" aria-label={`${t.freeBadgeLine1}, ${t.freeBadgeLine2}`}>
+            <span className="hero-free-badge-icons" aria-hidden="true">
+              <Pizza className="h-4 w-4" />
+              <CupSoda className="h-4 w-4" />
+            </span>
+            <span>
+              <strong>{t.freeBadgeLine1}</strong>
+              <small>{t.freeBadgeLine2}</small>
+            </span>
+          </div>
         </div>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
           <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
