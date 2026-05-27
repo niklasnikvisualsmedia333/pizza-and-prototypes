@@ -302,6 +302,7 @@ main > header {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .analytics-consent button {
@@ -310,17 +311,24 @@ main > header {
   padding: 0 0.75rem;
   font-size: 0.78rem;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .analytics-consent-accept {
   border: 1px solid rgba(56, 189, 248, 0.44);
   background: linear-gradient(135deg, #0ea5e9, #2563eb);
   color: #fff;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.24);
 }
 
 .analytics-consent-decline {
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.025);
+  color: #94a3b8;
+}
+
+.analytics-consent-decline:hover {
+  border-color: rgba(255, 255, 255, 0.18);
   color: #e2e8f0;
 }
 
@@ -2424,6 +2432,12 @@ fieldset legend {
 .privacy-link-button:hover {
   color: #ffffff;
   text-decoration-color: rgba(103, 232, 249, 0.9);
+}
+
+.required-star {
+  margin-left: 0.18rem;
+  color: #fb923c;
+  font-weight: 900;
 }
 
 .photo-video-note {

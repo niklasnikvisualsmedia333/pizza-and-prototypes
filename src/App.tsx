@@ -962,15 +962,15 @@ function AnalyticsConsentBanner({
     <aside className="analytics-consent" aria-label={isGerman ? 'Analytics Zustimmung' : 'Analytics consent'}>
       <p>
         {isGerman
-          ? 'Hilf uns kurz zu verstehen, welche Kanäle funktionieren. Dafür nutzen wir optional Google Analytics.'
-          : 'Help us understand which channels work. We optionally use Google Analytics for this.'}
+          ? 'Wir nutzen Cookies, um die Nutzung der Website zu analysieren und das Erlebnis zu verbessern. Du kannst ablehnen. Dann erfassen wir weiterhin nur anonyme Basisdaten ohne Google Analytics.'
+          : 'We use cookies to analyze site usage and improve your experience. You can decline. We will still collect anonymous baseline analytics without Google Analytics.'}
       </p>
       <div>
-        <button type="button" className="analytics-consent-accept" onClick={() => onChoice('accepted')}>
-          {isGerman ? 'Analytics akzeptieren' : 'Accept analytics'}
-        </button>
         <button type="button" className="analytics-consent-decline" onClick={() => onChoice('declined')}>
           {isGerman ? 'Ablehnen' : 'Decline'}
+        </button>
+        <button type="button" className="analytics-consent-accept" onClick={() => onChoice('accepted')}>
+          {isGerman ? 'Akzeptieren' : 'Accept'}
         </button>
       </div>
     </aside>
@@ -1524,6 +1524,7 @@ function Registration({
                 >
                   {t.privacyConsentLink}
                 </a>
+                <strong className="required-star" aria-label="required">*</strong>
                 {t.privacyConsentEnd}
               </span>
             </label>
