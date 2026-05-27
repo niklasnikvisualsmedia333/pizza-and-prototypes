@@ -69,6 +69,8 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
 const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration';
 const ANALYTICS_CONSENT_KEY = 'tmp_analytics_consent';
 const GA_MEASUREMENT_ID = 'G-SQXS1M7GYN';
+const PRIVACY_NOTICE_VERSION = '2026-05-27';
+const PHOTO_VIDEO_NOTICE_VERSION = '2026-05-27';
 let gaLoadPromise: Promise<void> | null = null;
 let gaPageViewSent = false;
 
@@ -210,16 +212,31 @@ const copy = {
     capacityNote: 'Limited to around 30 people',
     laptopNote: 'Laptop recommended. eduroam and guest WiFi are available.',
     included: 'Pizza, non-alcoholic and alcoholic drinks included',
-    privacyNote: 'We only use your data to organize this event and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
+    privacyNote: 'We only use your data to organize Tech Meets Problems and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
     privacyKicker: 'Privacy',
-    privacyTitle: 'How we handle your data.',
+    privacyTitle: 'Privacy notice',
     privacyText:
-      'We keep this simple: your signup data is used to organize Pizza & Prototypes, send relevant updates and understand which channels worked. The form is processed through Formspree. No advertising tracking, no resale, no spam.',
-    privacyItems: [
-      'Registration details are used for event organization only.',
-      'Basic UTM/source parameters may be stored when you arrive through a QR code or campaign link.',
-      'Questions or deletion requests can go to info@nikvisuals.de.',
+      'We keep it simple: we use your information to organize Tech Meets Problems, manage your registration, send confirmation, calendar invite and relevant event updates, and understand which channels worked. This may include name, email address, phone number, profile information, interests, pizza/food notes, free-text information, language, timestamp, landing page and UTM parameters.',
+    privacyDetails: [
+      'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store registrations, send confirmation emails and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
+      'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
+      'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@nikvisuals.de.',
     ],
+    privacyItems: [
+      'Responsible: Niklas Brüne and Frederik Krause.',
+      'Purpose: organization, registration, communication, catering, channel evaluation and event documentation.',
+      'Tools/recipients: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics and GA4 after consent.',
+      'Withdrawal, objection or deletion request: info@nikvisuals.de.',
+    ],
+    privacyConsentStart: 'I have read the ',
+    privacyConsentLink: 'privacy notice',
+    privacyConsentEnd:
+      ' and want to submit my registration. I will receive the confirmation, calendar invite and important updates about Tech Meets Problems by email. No spam, revocable at any time.',
+    privacyAndUpdatesText:
+      'I have read the privacy notice and want to submit my registration. I will receive the confirmation, calendar invite and important updates about Tech Meets Problems by email. No spam, revocable at any time.',
+    privacyRequired: 'Please accept the privacy notice and necessary event updates before submitting.',
+    photoVideoNotice:
+      'Note: Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
     successTitle: 'You are signed up for the event.',
     successText: 'Thanks. Your registration was sent successfully.',
     nextStepsTitle: 'Nice, you are on the list.',
@@ -403,16 +420,31 @@ const copy = {
     capacityNote: 'Auf etwa 30 Personen begrenzt',
     laptopNote: 'Laptop empfohlen. eduroam und Gast-WLAN sind verfügbar.',
     included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
-    privacyNote: 'Wir nutzen deine Daten nur, um dieses Event zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
+    privacyNote: 'Wir nutzen deine Daten nur, um Tech Meets Problems zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     privacyKicker: 'Datenschutz',
-    privacyTitle: 'So gehen wir mit deinen Daten um.',
+    privacyTitle: 'Datenschutzhinweise',
     privacyText:
-      'Wir halten es einfach: Deine Anmeldedaten nutzen wir nur, um Pizza & Prototypes zu organisieren, relevante Updates zu senden und zu verstehen, welche Kanäle funktioniert haben. Das Formular läuft über Formspree. Kein Werbe-Tracking, kein Weiterverkauf, kein Spam.',
-    privacyItems: [
-      'Anmeldedaten werden nur für die Organisation des Events genutzt.',
-      'Einfache UTM- oder Herkunftsparameter können gespeichert werden, wenn du über QR-Codes oder Kampagnenlinks kommst.',
-      'Fragen oder Löschanfragen kannst du an info@nikvisuals.de schicken.',
+      'Wir halten es einfach: Deine Angaben nutzen wir, um Tech Meets Problems zu organisieren, deine Anmeldung zu verwalten, dir Bestätigung, Kalenderblocker und relevante Event-Updates zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Telefonnummer, Profilangaben, Interessen, Pizza-/Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
+    privacyDetails: [
+      'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Anmeldungen zu speichern, Bestätigungsmails zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
+      'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
+      'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@nikvisuals.de.',
     ],
+    privacyItems: [
+      'Verantwortlich: Niklas Brüne und Frederik Krause.',
+      'Zweck: Organisation, Anmeldung, Kommunikation, Catering, Kanalauswertung und Eventdokumentation.',
+      'Tools/Empfänger: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics und GA4 nach Consent.',
+      'Widerruf, Widerspruch oder Löschanfrage: info@nikvisuals.de.',
+    ],
+    privacyConsentStart: 'Ich habe die ',
+    privacyConsentLink: 'Datenschutzhinweise',
+    privacyConsentEnd:
+      ' gelesen und möchte meine Anmeldung abschicken. Ich erhalte per E-Mail die Bestätigung, den Kalenderblocker und wichtige Updates zu Tech Meets Problems. Kein Spam, jederzeit widerrufbar.',
+    privacyAndUpdatesText:
+      'Ich habe die Datenschutzhinweise gelesen und möchte meine Anmeldung abschicken. Ich erhalte per E-Mail die Bestätigung, den Kalenderblocker und wichtige Updates zu Tech Meets Problems. Kein Spam, jederzeit widerrufbar.',
+    privacyRequired: 'Bitte bestätige die Datenschutzhinweise und notwendigen Event-Updates vor dem Absenden.',
+    photoVideoNotice:
+      'Hinweis: Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
     successTitle: 'Du bist für das Event angemeldet.',
     successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
     nextStepsTitle: 'Nice, du stehst auf der Liste.',
@@ -666,6 +698,8 @@ function App() {
   const [showExitNudge, setShowExitNudge] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [analyticsConsent, setAnalyticsConsent] = useState<AnalyticsConsent | null>(() => getStoredAnalyticsConsent());
+  const [privacyNoticeOpen, setPrivacyNoticeOpen] = useState(false);
+  const [privacyAndUpdatesAccepted, setPrivacyAndUpdatesAccepted] = useState(false);
   const pointerFrame = useRef<number | null>(null);
   const pointerPosition = useRef({ x: 0, y: 0 });
 
@@ -745,11 +779,23 @@ function App() {
     }));
   };
 
+  const openPrivacyNotice = () => {
+    setPrivacyNoticeOpen(true);
+    window.requestAnimationFrame(() => {
+      document.getElementById('privacy')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.pizza) {
       setFormError(t.error);
+      return;
+    }
+
+    if (!privacyAndUpdatesAccepted) {
+      setFormError(t.privacyRequired);
       return;
     }
 
@@ -774,7 +820,21 @@ function App() {
       tracking.utmTerm && `term:${tracking.utmTerm}`,
     ].filter(Boolean).join(' | ');
 
-    const submission = { ...form, language: lang, submittedAt: new Date().toISOString(), trackingSummary, ...tracking };
+    const submittedAt = new Date().toISOString();
+    const submission = {
+      ...form,
+      language: lang,
+      submittedAt,
+      trackingSummary,
+      privacyAndUpdatesAccepted,
+      privacyAndUpdatesAcceptedAt: submittedAt,
+      privacyAndUpdatesVersion: PRIVACY_NOTICE_VERSION,
+      privacyAndUpdatesText: t.privacyAndUpdatesText,
+      photoVideoNoticeShown: true,
+      photoVideoNoticeVersion: PHOTO_VIDEO_NOTICE_VERSION,
+      photoVideoNoticeText: t.photoVideoNotice,
+      ...tracking,
+    };
     const submissionPayload = {
       ...submission,
       _subject: `New signup: ${submission.firstName} ${submission.lastName} - Pizza & Prototypes`,
@@ -811,6 +871,7 @@ function App() {
       setSubmitted(true);
       setShowSignupModal(true);
       setForm(initialForm);
+      setPrivacyAndUpdatesAccepted(false);
     } catch {
       setFormError(t.sendError);
     } finally {
@@ -843,7 +904,7 @@ function App() {
     <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100" onPointerMove={handlePointerMove}>
       <BackgroundScene />
       <Header lang={lang} setLang={setLang} t={t} />
-      <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} />
+      <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} openPrivacyNotice={openPrivacyNotice} />
       <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
@@ -864,6 +925,10 @@ function App() {
         submitted={submitted}
         formError={formError}
         isSubmitting={isSubmitting}
+        privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
+        setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
+        setFormError={setFormError}
+        openPrivacyNotice={openPrivacyNotice}
         updateField={updateField}
         toggleInterest={toggleInterest}
         handleSubmit={handleSubmit}
@@ -872,9 +937,9 @@ function App() {
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
       <LocationSection t={t} lang={lang} />
       <CompaniesSection t={t} />
-      <PrivacySection t={t} />
+      <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
       <FAQ t={t} />
-      <Footer t={t} />
+      <Footer t={t} openPrivacyNotice={openPrivacyNotice} />
     </main>
   );
 }
@@ -956,7 +1021,19 @@ function LanguageToggle({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) =
   );
 }
 
-function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; lang: Lang; setLang: (lang: Lang) => void; nativeShare: () => void }) {
+function MobileQuickNav({
+  t,
+  lang,
+  setLang,
+  nativeShare,
+  openPrivacyNotice,
+}: {
+  t: typeof copy.en;
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  nativeShare: () => void;
+  openPrivacyNotice: () => void;
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -997,7 +1074,7 @@ function MobileQuickNav({ t, lang, setLang, nativeShare }: { t: typeof copy.en; 
           <a href="#cards" onClick={closeMenu}>{t.nav[1]}</a>
           <a href="#companies" onClick={closeMenu}>{t.nav[2]}</a>
           <a href="#register" onClick={closeMenu}>{t.nav[3]}</a>
-          <a href="#privacy" onClick={closeMenu}>{t.privacyKicker}</a>
+          <a href="#privacy" onClick={() => { openPrivacyNotice(); closeMenu(); }}>{t.privacyKicker}</a>
           <button type="button" className="quick-share-button" onClick={() => { nativeShare(); closeMenu(); }}>
             <Share2 className="h-4 w-4" aria-hidden="true" />
             {t.quickShare}
@@ -1318,12 +1395,30 @@ type RegistrationProps = {
   submitted: boolean;
   formError: string;
   isSubmitting: boolean;
+  privacyAndUpdatesAccepted: boolean;
+  setPrivacyAndUpdatesAccepted: (accepted: boolean) => void;
+  setFormError: (message: string) => void;
+  openPrivacyNotice: () => void;
   updateField: (field: keyof InterestForm, value: string) => void;
   toggleInterest: (interest: string) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-function Registration({ t, lang, form, submitted, formError, isSubmitting, updateField, toggleInterest, handleSubmit }: RegistrationProps) {
+function Registration({
+  t,
+  lang,
+  form,
+  submitted,
+  formError,
+  isSubmitting,
+  privacyAndUpdatesAccepted,
+  setPrivacyAndUpdatesAccepted,
+  setFormError,
+  openPrivacyNotice,
+  updateField,
+  toggleInterest,
+  handleSubmit,
+}: RegistrationProps) {
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <p className="section-lead">{t.formSubtitle}</p>
@@ -1402,6 +1497,37 @@ function Registration({ t, lang, form, submitted, formError, isSubmitting, updat
               <span>{t.fields.notes}</span>
               <textarea value={form.notes} onChange={(event) => updateField('notes', event.target.value)} rows={5} />
             </label>
+          </div>
+          <div className="legal-consent mt-7">
+            <label className="legal-checkbox">
+              <input
+                type="checkbox"
+                required
+                checked={privacyAndUpdatesAccepted}
+                onChange={(event) => {
+                  setPrivacyAndUpdatesAccepted(event.target.checked);
+                  if (event.target.checked) {
+                    setFormError('');
+                  }
+                }}
+                onInvalid={() => setFormError(t.privacyRequired)}
+              />
+              <span>
+                {t.privacyConsentStart}
+                <a
+                  href="#privacy"
+                  className="privacy-link-button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    openPrivacyNotice();
+                  }}
+                >
+                  {t.privacyConsentLink}
+                </a>
+                {t.privacyConsentEnd}
+              </span>
+            </label>
+            <p className="photo-video-note">{t.photoVideoNotice}</p>
           </div>
           <button type="submit" className="btn btn-primary mt-7 w-full justify-center" disabled={isSubmitting}>
             {isSubmitting ? t.sending : t.primaryCta}
@@ -1600,25 +1726,39 @@ function CompaniesSection({ t }: { t: typeof copy.en }) {
   );
 }
 
-function PrivacySection({ t }: { t: typeof copy.en }) {
+function PrivacySection({
+  t,
+  isOpen,
+  setIsOpen,
+}: {
+  t: typeof copy.en;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}) {
   return (
     <Section id="privacy" kicker={t.privacyKicker} title={t.privacyTitle}>
       <div className="privacy-card mt-10">
         <p>{t.privacyText}</p>
-        <ul>
-          {t.privacyItems.map((item) => (
-            <li key={item}>
-              <Check className="h-4 w-4" aria-hidden="true" />
-              <span>{item}</span>
-            </li>
+        <details className="privacy-details" open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
+          <summary>{t.privacyKicker}</summary>
+          {t.privacyDetails.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
           ))}
-        </ul>
+          <ul>
+            {t.privacyItems.map((item) => (
+              <li key={item}>
+                <Check className="h-4 w-4" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
       </div>
     </Section>
   );
 }
 
-function Footer({ t }: { t: typeof copy.en }) {
+function Footer({ t, openPrivacyNotice }: { t: typeof copy.en; openPrivacyNotice: () => void }) {
   return (
     <footer className="relative mx-auto max-w-7xl border-t border-white/10 px-5 py-10 text-sm text-slate-400">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -1631,7 +1771,7 @@ function Footer({ t }: { t: typeof copy.en }) {
         </div>
         <div className="footer-links">
           <p>{t.footerLine}</p>
-          <a href="#privacy">{t.privacyKicker}</a>
+          <a href="#privacy" onClick={openPrivacyNotice}>{t.privacyKicker}</a>
           <a href="https://nikvisuals.de/impressum" target="_blank" rel="noreferrer">
             {t.imprint}
           </a>
