@@ -9,6 +9,7 @@ import {
   CupSoda,
   ExternalLink,
   Globe2,
+  Instagram,
   Laptop,
   Lightbulb,
   Mail,
@@ -60,6 +61,7 @@ const EVENT = {
   address: 'Sandstraße 26, 57072 Siegen',
   size: '15 to 30 people',
   whatsappLink: 'https://chat.whatsapp.com/EpOzBHdqtyJIWC92mUnzCo?mode=gi_t',
+  instagramLink: 'https://www.instagram.com/techmeetsproblems/',
   contactEmail: 'info@nikvisuals.de',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
   startsAt: '2026-06-26T18:00:00+02:00',
@@ -250,6 +252,8 @@ const copy = {
     outlookCalendar: 'Outlook',
     appleCalendar: 'Apple / ICS',
     whatsappAfterSubmit: 'Join WhatsApp group',
+    instagramAfterSubmitText: 'For updates and future events, you can also follow us on Instagram.',
+    instagramAfterSubmitButton: 'Open Instagram',
     error: 'Please fill in the required fields before joining the event.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -292,6 +296,10 @@ const copy = {
     whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
     whatsappCardTitle: 'Join the builder group',
     whatsappButton: 'Join WhatsApp',
+    instagramCommunityLabel: 'Updates & impressions on Instagram',
+    instagramCommunityHelper: 'For future events and behind-the-scenes updates.',
+    instagramFooter: 'Follow us on Instagram',
+    instagramAria: 'Open Tech Meets Problems on Instagram',
     shareKicker: 'Share',
     shareTitle: 'Know someone who likes building? Send this to them.',
     shareText: 'A good room starts with the right people.',
@@ -458,6 +466,8 @@ const copy = {
     outlookCalendar: 'Outlook',
     appleCalendar: 'Apple / ICS',
     whatsappAfterSubmit: 'WhatsApp-Gruppe beitreten',
+    instagramAfterSubmitText: 'Für Updates und zukünftige Events kannst du uns auch auf Instagram folgen.',
+    instagramAfterSubmitButton: 'Instagram öffnen',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
@@ -500,6 +510,10 @@ const copy = {
     whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
     whatsappCardTitle: 'Tritt der Builder-Gruppe bei',
     whatsappButton: 'WhatsApp beitreten',
+    instagramCommunityLabel: 'Updates & Eindrücke auf Instagram',
+    instagramCommunityHelper: 'Für zukünftige Events und Einblicke.',
+    instagramFooter: 'Folge uns auf Instagram',
+    instagramAria: 'Tech Meets Problems auf Instagram öffnen',
     shareKicker: 'Teilen',
     shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
     shareText: 'Ein guter Raum startet mit den richtigen Leuten.',
@@ -1648,6 +1662,13 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
           {t.appleCalendar}
         </a>
       </div>
+      <div className="success-instagram">
+        <p>{t.instagramAfterSubmitText}</p>
+        <a href={EVENT.instagramLink} target="_blank" rel="noopener noreferrer" aria-label={t.instagramAria}>
+          <Instagram className="h-4 w-4" aria-hidden="true" />
+          {t.instagramAfterSubmitButton}
+        </a>
+      </div>
     </div>
   );
 }
@@ -1673,10 +1694,25 @@ function WhatsAppSection({ t }: { t: typeof copy.en }) {
           </p>
           <h3 className="text-2xl font-semibold leading-tight text-white sm:text-3xl">{t.whatsappCardTitle}</h3>
         </div>
-        <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
-          {t.whatsappButton}
-          <ExternalLink className="h-5 w-5" aria-hidden="true" />
-        </a>
+        <div className="community-actions">
+          <a href={EVENT.whatsappLink} className="btn btn-secondary" target="_blank" rel="noreferrer">
+            {t.whatsappButton}
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          </a>
+          <a
+            href={EVENT.instagramLink}
+            className="community-instagram-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t.instagramAria}
+          >
+            <Instagram className="h-4 w-4" aria-hidden="true" />
+            <span>
+              <strong>{t.instagramCommunityLabel}</strong>
+              <small>{t.instagramCommunityHelper}</small>
+            </span>
+          </a>
+        </div>
       </div>
     </Section>
   );
@@ -1852,6 +1888,10 @@ function Footer({ t, openPrivacyNotice }: { t: typeof copy.en; openPrivacyNotice
         <div className="footer-links">
           <p>{t.footerLine}</p>
           <a href="#privacy" onClick={openPrivacyNotice}>{t.privacyKicker}</a>
+          <a href={EVENT.instagramLink} target="_blank" rel="noopener noreferrer" aria-label={t.instagramAria}>
+            <Instagram className="h-4 w-4" aria-hidden="true" />
+            {t.instagramFooter}
+          </a>
           <a href="https://nikvisuals.de/impressum" target="_blank" rel="noreferrer">
             {t.imprint}
           </a>

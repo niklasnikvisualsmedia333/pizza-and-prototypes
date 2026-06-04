@@ -1916,6 +1916,9 @@ main > header {
 }
 
 .footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: #7dd3fc;
   font-weight: 700;
   text-decoration: none;
@@ -2327,6 +2330,76 @@ main > header {
 .success-action-whatsapp span {
   max-width: 8rem;
   line-height: 1.2;
+}
+
+.success-instagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  border-top: 1px solid rgba(167, 243, 208, 0.12);
+  padding-top: 0.8rem;
+}
+
+.success-instagram p {
+  max-width: 20rem;
+  margin: 0;
+  color: rgba(209, 250, 229, 0.68);
+  font-size: 0.78rem;
+}
+
+.success-instagram a,
+.community-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #bae6fd;
+  text-decoration: none;
+}
+
+.success-instagram a {
+  min-height: 2.35rem;
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.community-actions {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.community-instagram-link {
+  max-width: 18rem;
+  padding: 0.2rem 0.25rem;
+}
+
+.community-instagram-link span,
+.community-instagram-link strong,
+.community-instagram-link small {
+  display: block;
+}
+
+.community-instagram-link strong {
+  color: #bae6fd;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.community-instagram-link small {
+  margin-top: 0.12rem;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.success-instagram a:hover,
+.community-instagram-link:hover,
+.footer-links a:hover {
+  color: #fff;
 }
 
 .field span,
