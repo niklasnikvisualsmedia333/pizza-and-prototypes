@@ -9,7 +9,6 @@ import {
   ExternalLink,
   Globe2,
   Instagram,
-  Laptop,
   Lightbulb,
   Mail,
   Menu,
@@ -125,42 +124,47 @@ const copy = {
     brand: 'Tech Meets Problems',
     edition: 'Community · Future sessions · Real problems',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first event in Siegen',
+    eyebrow: 'Builder-first tech community in Siegen',
     heroTitle: 'Build solutions for real-world problems.',
     heroTitleLines: ['Build solutions for', 'real-world problems.'],
     heroText:
-      'A focused evening for developers, technical students, HCI/UX people and tech-minded builders to explore real business needs and shape first concepts or prototypes.',
+      'Join a community of developers, technical students, HCI/UX people, AI/Data profiles and builders working on real business needs, future sessions and practical projects.',
     primaryCta: 'Join the community',
     freeBadgeLine1: 'Free to join',
     freeBadgeLine2: 'Future sessions & projects',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
-    countdownLabel: 'Event starts in',
+    countdownLabel: 'First pilot starts in',
     countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
     exitTitle: 'Leaving already?',
     exitText: 'Get on the community list and hear about future sessions, project opportunities and possible waitlist spots.',
     exitButton: 'Join community',
     facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
+    communityFacts: ['Future sessions', 'Real problem spaces', 'Projects & exchange'],
+    pilotContextTitle: 'First pilot event: Pizza & Prototypes',
+    pilotContextText:
+      'The first pilot is already in selection. The first group has been contacted separately. New signups join the community list for future sessions, possible waitlist spots and project opportunities.',
+    pilotIncluded: 'Pilot detail: pizza, non-alcoholic and alcoholic drinks included.',
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
       'Many entrepreneurship formats attract business people first. This pilot flips the perspective: technical people first, real business needs as the starting point, and just enough startup context to make the work useful.',
     whyJoinKicker: 'Why join?',
-    whyJoinTitle: 'A compact evening for builders who want more than theory.',
+    whyJoinTitle: 'A community for builders who want more than theory.',
     whyJoin: [
       'Work on real problems instead of theoretical cases',
-      'Meet motivated builders and tech enthusiasts',
-      'Gain practical problem-solving experience',
-      'Explore business model thinking with founder experience',
+      'Meet motivated builders and tech-minded people',
+      'Hear about future sessions and project opportunities',
+      'Turn ideas into workflows, mockups or first prototypes',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation happens when different perspectives come together.',
     visionText:
       'We believe innovation happens when different perspectives come together. That’s why we connect students, hobby coders, creative minds, and tech enthusiasts from different disciplines.',
     opportunityKicker: 'What you take away',
-    opportunityTitle: 'Not a full hackathon. A focused first step toward something real.',
+    opportunityTitle: 'From real problems to practical next steps.',
     opportunityText:
-      'At the end, teams briefly share the concept, mockup, workflow or prototype they came up with. With our founder perspective, we can help translate promising ideas into a simple TMP Canvas and discuss what a realistic next step could be. If useful, we can also send that follow-up summary afterwards.',
-    opportunityPoints: ['First concept or prototype', 'Short group share', 'Simple TMP Canvas', 'Practical problem-solving experience'],
+      'Across sessions and projects, the goal is to turn real needs into clear workflows, mockups, prototypes or next-step plans. A simple TMP Canvas can help make promising ideas easier to discuss and continue.',
+    opportunityPoints: ['Clear problem framing', 'Workflows or mockups', 'Simple TMP Canvas', 'Practical next steps'],
     problemCards: [
       ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
       ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
@@ -187,14 +191,14 @@ const copy = {
       ['Maintenance and inspection reminders', 'Recurring appointments are tracked manually.', 'Automated reminder service.'],
     ],
     scheduleKicker: 'Schedule',
-    scheduleTitle: 'Example flow for the first pilot.',
+    scheduleTitle: 'First pilot event flow.',
     schedule: [
       ['18:00', 'Arrive, grab pizza, drinks and pick problem cards'],
       ['18:15', 'Short intro and ground rules'],
       ['18:25', 'Team formation'],
       ['18:35', 'Prototype sprint with pizza on the side'],
       ['20:20', 'Demo walk / share results'],
-      ['20:45', 'Business opportunity and next steps'],
+      ['20:45', 'Share results and possible next steps'],
       ['21:00', 'Open end'],
     ],
     faqKicker: 'FAQ',
@@ -211,10 +215,8 @@ const copy = {
     formTitle: 'Join the Tech Meets Problems community.',
     formSubtitle:
       'Submissions for the first pilot are closed or already in selection. Join the community list for updates about future sessions, project opportunities and possible waitlist spots. Submitting this form does not guarantee a place on 26 June.',
-    pilotDetails: 'First pilot: Pizza & Prototypes',
-    capacityNote: 'Selection phase · around 30 people',
-    laptopNote: 'Laptop recommended. eduroam and guest WiFi are available.',
-    included: 'Pizza, non-alcoholic and alcoholic drinks included',
+    communityCardTitle: 'What you join',
+    communityInfo: ['Community updates', 'Future sessions and project opportunities', 'Possible waitlist spots for selected formats', 'WhatsApp community hub available'],
     privacyNote: 'We use your data for Tech Meets Problems community and future-event updates. If you arrive through a campaign link, we also store basic source parameters so we know which channels worked. No spam.',
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
@@ -305,7 +307,7 @@ const copy = {
     shareButton: 'Share',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
-    quickShare: 'Share event',
+    quickShare: 'Share community',
     languageLabel: 'Language',
     shareNativeText: 'Tech Meets Problems is a builder-first community in Siegen for developers, technical students and tech-minded people who want to work on real business needs. Join the community list for future sessions and project opportunities:',
     locationKicker: 'Location',
@@ -337,44 +339,49 @@ const copy = {
     topLink: 'Nach oben',
     joinShort: 'Community',
     brand: 'Tech Meets Problems',
-    edition: 'Community · Future Sessions · Echte Probleme',
+    edition: 'Community · Zukünftige Sessions · Echte Probleme',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first Event in Siegen',
+    eyebrow: 'Builder-first Tech-Community in Siegen',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
     heroTitleLines: ['Entwickle Lösungen', 'für echte Probleme.'],
     heroText:
-      'Ein fokussierter Abend für Entwickler, technische Studierende, HCI/UX-Leute und technikaffine Builder, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
+      'Werde Teil einer Community aus Entwicklern, technischen Studierenden, HCI/UX-nahen Profilen, AI/Data-Leuten und Buildern, die an echten Business-Problemen, zukünftigen Sessions und praktischen Projekten arbeiten.',
     primaryCta: 'Community beitreten',
     freeBadgeLine1: 'Kostenlos eintragen',
     freeBadgeLine2: 'Sessions & Projekte',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
-    countdownLabel: 'Event startet in',
+    countdownLabel: 'Erster Pilot startet in',
     countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
     exitTitle: 'Schon weg?',
     exitText: 'Trag dich in die Community-Liste ein und erfahre von zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen.',
     exitButton: 'Community beitreten',
     facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
+    communityFacts: ['Zukünftige Sessions', 'Echte Problemräume', 'Projekte & Austausch'],
+    pilotContextTitle: 'Erstes Pilot-Event: Pizza & Prototypes',
+    pilotContextText:
+      'Der erste Pilot ist bereits in der Auswahl. Die erste Gruppe wurde separat kontaktiert. Neue Eintragungen landen auf der Community-Liste für zukünftige Sessions, mögliche Nachrückplätze und Projektmöglichkeiten.',
+    pilotIncluded: 'Pilot-Detail: Pizza, alkoholfreie und alkoholische Getränke inklusive.',
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
     problemLead:
       'Viele Entrepreneurship-Formate ziehen Business-Leute zuerst an. Dieser Pilot dreht die Perspektive: technische Leute zuerst, echte Business-Probleme als Startpunkt und nur so viel Startup-Kontext, dass die Arbeit nützlich wird.',
     whyJoinKicker: 'Warum mitmachen?',
-    whyJoinTitle: 'Ein kompakter Abend für Builder, die mehr wollen als Theorie.',
+    whyJoinTitle: 'Eine Community für Builder, die mehr wollen als Theorie.',
     whyJoin: [
       'Arbeite an echten Problemen statt an theoretischen Cases',
-      'Triff motivierte Builder und Tech-Enthusiasten',
-      'Sammle praktische Erfahrung im Problemlösen',
-      'Denke Geschäftsmodelle mit Gründungserfahrung durch',
+      'Triff motivierte Builder und technikaffine Menschen',
+      'Erhalte Updates zu zukünftigen Sessions und Projektmöglichkeiten',
+      'Übersetze Ideen in Workflows, Mockups oder erste Prototypen',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen.',
     visionText:
       'Wir glauben, dass Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen. Deshalb vernetzen wir Studierende, Hobby-Coder, kreative Köpfe und Tech-Enthusiasten aus verschiedenen Disziplinen.',
     opportunityKicker: 'Was du mitnimmst',
-    opportunityTitle: 'Kein kompletter Hackathon. Ein fokussierter erster Schritt in Richtung echte Opportunity.',
+    opportunityTitle: 'Von echten Problemen zu konkreten nächsten Schritten.',
     opportunityText:
-      'Am Ende stellen die Teams kurz ihr Konzept, Mockup, ihren Workflow oder Prototyp vor. Mit unserer Gründungsperspektive helfen wir dabei, vielversprechende Ideen in einen einfachen TMP Canvas zu übersetzen und realistische nächste Schritte zu besprechen. Wenn es sinnvoll ist, können wir eine kurze Zusammenfassung danach zusenden.',
-    opportunityPoints: ['Erstes Konzept oder Prototyp', 'Kurze Vorstellung in der Gruppe', 'Einfacher TMP Canvas', 'Praktische Problemlösung'],
+      'Über Sessions und Projekte hinweg geht es darum, reale Bedarfe in klare Workflows, Mockups, Prototypen oder nächste Schritte zu übersetzen. Ein einfacher TMP Canvas kann helfen, vielversprechende Ideen greifbar zu machen und weiterzudenken.',
+    opportunityPoints: ['Klares Problemverständnis', 'Workflows oder Mockups', 'Einfacher TMP Canvas', 'Konkrete nächste Schritte'],
     problemCards: [
       ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
@@ -401,14 +408,14 @@ const copy = {
       ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
     ],
     scheduleKicker: 'Ablauf',
-    scheduleTitle: 'Beispielhafter Ablauf des ersten Piloten.',
+    scheduleTitle: 'Ablauf des ersten Pilot-Events.',
     schedule: [
       ['18:00', 'Ankommen, Pizza, Getränke und Problemkarten'],
       ['18:15', 'Kurze Einführung und Spielregeln'],
       ['18:25', 'Teambildung'],
       ['18:35', 'Prototype-Sprint mit Pizza nebenbei'],
       ['20:20', 'Demo Walk / Ergebnisse teilen'],
-      ['20:45', 'Business Opportunity und nächste Schritte'],
+      ['20:45', 'Ergebnisse teilen und mögliche nächste Schritte'],
       ['21:00', 'Open End'],
     ],
     faqKicker: 'FAQ',
@@ -425,10 +432,8 @@ const copy = {
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
     formSubtitle:
       'Die Einreichungen für den ersten Pilot sind geschlossen bzw. bereits in der Auswahl. Trag dich in die Community-Liste ein, wenn du Updates zu zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen bekommen möchtest. Die Eintragung garantiert keinen Platz am 26. Juni.',
-    pilotDetails: 'Erster Pilot: Pizza & Prototypes',
-    capacityNote: 'Auswahlphase · etwa 30 Personen',
-    laptopNote: 'Laptop empfohlen. eduroam und Gast-WLAN sind verfügbar.',
-    included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
+    communityCardTitle: 'Wofür du dich einträgst',
+    communityInfo: ['Community-Updates', 'Zukünftige Sessions und Projektmöglichkeiten', 'Mögliche Nachrückplätze für ausgewählte Formate', 'WhatsApp-Community-Hub verfügbar'],
     privacyNote: 'Wir nutzen deine Daten für Community- und zukünftige Event-Updates von Tech Meets Problems. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
@@ -519,7 +524,7 @@ const copy = {
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
-    quickShare: 'Event teilen',
+    quickShare: 'Community teilen',
     languageLabel: 'Sprache',
     shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
     locationKicker: 'Ort',
@@ -1252,13 +1257,13 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           </div>
         </div>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
-          <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
-          <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-          <HeroFact icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+          <HeroFact icon={CalendarDays} label={t.communityFacts[0]} />
+          <HeroFact icon={Lightbulb} label={t.communityFacts[1]} />
+          <HeroFact icon={Workflow} label={t.communityFacts[2]} />
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
       </div>
-      <HeroVisual t={t} />
+      <HeroVisual t={t} lang={lang} />
     </section>
   );
 }
@@ -1298,14 +1303,24 @@ function getTimeRemaining() {
   };
 }
 
-function HeroVisual({ t }: { t: typeof copy.en }) {
+function HeroVisual({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <div className="relative min-w-0">
       <div className="event-map-card hero-visual-card">
-        <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
+        <img src={ASSETS.heroMap} alt={`${t.pilotContextTitle} flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
       </div>
       <HeroSupporters t={t} />
       <Countdown t={t} compact />
+      <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur">
+        <p className="text-sm font-semibold text-white">{t.pilotContextTitle}</p>
+        <p className="mt-2 text-sm leading-6 text-slate-300">{t.pilotContextText}</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
+          <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+          <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+        </div>
+        <p className="mt-3 text-xs leading-5 text-slate-400">{t.pilotIncluded}</p>
+      </div>
     </div>
   );
 }
@@ -1518,22 +1533,12 @@ function Registration({
       <p className="section-lead">{t.formSubtitle}</p>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-white">{t.pilotDetails}</h3>
+          <h3 className="text-2xl font-semibold text-white">{t.communityCardTitle}</h3>
           <div className="mt-7 space-y-4">
-            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
-            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
-            <InfoRow icon={Check} label={t.included} />
-          </div>
-          <div className="event-alerts mt-6">
-            <div className="event-alert event-alert-strong">
-              <Users className="h-5 w-5" aria-hidden="true" />
-              <span>{t.capacityNote}</span>
-            </div>
-            <div className="event-alert">
-              <Laptop className="h-5 w-5" aria-hidden="true" />
-              <span>{t.laptopNote}</span>
-            </div>
+            <InfoRow icon={MessageCircle} label={t.communityInfo[0]} />
+            <InfoRow icon={CalendarDays} label={t.communityInfo[1]} />
+            <InfoRow icon={Users} label={t.communityInfo[2]} />
+            <InfoRow icon={MessageCircle} label={t.communityInfo[3]} />
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
             <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
