@@ -232,6 +232,8 @@ const copy = {
     formTitle: 'Join the Tech Meets Problems community.',
     formSubtitle:
       'Submissions for the first pilot are closed or already in selection. Join the community list for updates about future sessions, project opportunities and possible waitlist spots. Submitting this form does not guarantee a place on 26 June.',
+    formInstruction: 'Fill out the form below to join the community list.',
+    formDetailsNote: 'We use your answers to understand your background, plan future sessions and invite fitting people when a format has limited spots.',
     communityCardTitle: 'What you join',
     communityInfo: ['Community updates', 'Future sessions and project opportunities', 'Possible waitlist spots for selected formats', 'WhatsApp community hub available'],
     privacyNote: 'We use your data for Tech Meets Problems community and future-event updates. If you arrive through a campaign link, we also store basic source parameters so we know which channels worked. No spam.',
@@ -462,6 +464,8 @@ const copy = {
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
     formSubtitle:
       'Die Einreichungen für den ersten Pilot sind geschlossen bzw. bereits in der Auswahl. Trag dich in die Community-Liste ein, wenn du Updates zu zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen bekommen möchtest. Die Eintragung garantiert keinen Platz am 26. Juni.',
+    formInstruction: 'Füll das Formular unten aus, um auf die Community-Liste zu kommen.',
+    formDetailsNote: 'Wir nutzen deine Angaben, um deinen Hintergrund besser einzuschätzen, zukünftige Sessions zu planen und bei begrenzten Formaten passende Leute einzuladen.',
     communityCardTitle: 'Wofür du dich einträgst',
     communityInfo: ['Community-Updates', 'Zukünftige Sessions und Projektmöglichkeiten', 'Mögliche Nachrückplätze für ausgewählte Formate', 'WhatsApp-Community-Hub verfügbar'],
     privacyNote: 'Wir nutzen deine Daten für Community- und zukünftige Event-Updates von Tech Meets Problems. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
@@ -1604,6 +1608,10 @@ function Registration({
         </div>
 
         <form className="form-card" onSubmit={handleSubmit}>
+          <div className="mb-6 rounded-xl border border-white/10 bg-white/[0.035] p-4">
+            <p className="font-medium text-white">{t.formInstruction}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-400">{t.formDetailsNote}</p>
+          </div>
           {submitted && (
             <div className="mb-6 rounded-xl border border-emerald-300/25 bg-emerald-300/10 p-5 text-emerald-100">
               <div className="flex items-center gap-3 font-semibold">
