@@ -83,6 +83,8 @@ type InterestForm = {
   phone: string;
   role: string;
   status: string;
+  university: string;
+  universityOther: string;
   studyField: string;
   studyFieldOther: string;
   codingLevel: string;
@@ -108,6 +110,8 @@ const initialForm: InterestForm = {
   phone: '',
   role: '',
   status: '',
+  university: '',
+  universityOther: '',
   studyField: '',
   studyFieldOther: '',
   codingLevel: '',
@@ -234,7 +238,7 @@ const copy = {
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
     privacyText:
-      'We keep it simple: we use your information to manage the Tech Meets Problems community list, send relevant future-event and project updates, and understand which channels worked. This may include name, email address, status, study or professional background, profile links, interests, food notes, free-text information, language, timestamp, landing page and UTM parameters.',
+      'We keep it simple: we use your information to manage the Tech Meets Problems community list, send relevant future-event and project updates, and understand which channels worked. This may include name, email address, status, university or institution, study or professional background, profile links, interests, food notes, free-text information, language, timestamp, landing page and UTM parameters.',
     privacyDetails: [
       'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store community signups, send relevant updates and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
@@ -276,6 +280,8 @@ const copy = {
       phone: 'Phone number, optional',
       role: 'What describes you best?',
       status: 'Current status',
+      university: 'University or institution',
+      universityOther: 'Please specify university or institution',
       studyField: 'Field of study or professional background',
       studyFieldOther: 'Please specify, optional',
       coding: 'Can you code?',
@@ -297,6 +303,7 @@ const copy = {
     },
     roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
     statusOptions: ['Bachelor student', 'Master student', 'PhD / researcher', 'Working professional', 'Founder / self-employed', 'Not currently studying', 'Other'],
+    universityOptions: ['University of Siegen', 'TH Köln / Campus Gummersbach', 'South Westphalia University of Applied Sciences', 'University of Bonn', 'Hochschule Bonn-Rhein-Sieg', 'University of Koblenz', 'Koblenz University of Applied Sciences', 'University of Marburg', 'Justus Liebig University Giessen', 'Technische Hochschule Mittelhessen', 'FOM University of Applied Sciences', 'IU International University', 'Other'],
     studyFieldOptions: ['Computer Science', 'Business Informatics', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Electrical Engineering', 'Mechanical Engineering', 'Mechatronics', 'Industrial Engineering', 'Media / Communication', 'Business Administration / Management', 'Entrepreneurship / SME Management', 'Engineering, other', 'Tech, other', 'Business, other', 'Not currently studying', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'I can only vibe-code', 'No, but I can design, research or validate'],
     eventLanguageOptions: ['English', 'German', 'No preference'],
@@ -461,7 +468,7 @@ const copy = {
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
     privacyText:
-      'Wir halten es einfach: Deine Angaben nutzen wir, um die Tech Meets Problems Community-Liste zu verwalten, dir relevante Updates zu zukünftigen Sessions und Projekten zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Status, Studien- oder beruflicher Hintergrund, Profil-Links, Interessen, Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
+      'Wir halten es einfach: Deine Angaben nutzen wir, um die Tech Meets Problems Community-Liste zu verwalten, dir relevante Updates zu zukünftigen Sessions und Projekten zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Status, Universität oder Hochschule, Studien- oder beruflicher Hintergrund, Profil-Links, Interessen, Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
     privacyDetails: [
       'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Community-Eintragungen zu speichern, relevante Updates zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
@@ -503,6 +510,8 @@ const copy = {
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
       status: 'Aktueller Status',
+      university: 'Universität oder Hochschule',
+      universityOther: 'Universität oder Hochschule angeben',
       studyField: 'Studienfach oder beruflicher Hintergrund',
       studyFieldOther: 'Bitte genauer angeben, optional',
       coding: 'Kannst du coden?',
@@ -524,6 +533,7 @@ const copy = {
     },
     roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
     statusOptions: ['Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung', 'Berufstätig', 'Gründer/in / selbstständig', 'Aktuell nicht im Studium', 'Sonstiges'],
+    universityOptions: ['Universität Siegen', 'TH Köln / Campus Gummersbach', 'Fachhochschule Südwestfalen', 'Universität Bonn', 'Hochschule Bonn-Rhein-Sieg', 'Universität Koblenz', 'Hochschule Koblenz', 'Philipps-Universität Marburg', 'Justus-Liebig-Universität Gießen', 'Technische Hochschule Mittelhessen', 'FOM Hochschule', 'IU Internationale Hochschule', 'Sonstiges'],
     studyFieldOptions: ['Informatik', 'Wirtschaftsinformatik', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Elektrotechnik', 'Maschinenbau', 'Mechatronik', 'Wirtschaftsingenieurwesen', 'Medien / Kommunikation', 'BWL / Management', 'Entrepreneurship / SME Management', 'Ingenieurwesen, anderes', 'Tech, anderes', 'Business, anderes', 'Aktuell nicht im Studium', 'Sonstiges'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Ich kann nur vibe-coden', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     eventLanguageOptions: ['Deutsch', 'Englisch', 'Egal'],
@@ -924,8 +934,10 @@ function App() {
     event.preventDefault();
 
     const needsSourceDetail = form.source === 'Other' || form.source === 'Sonstiges';
+    const isStudentStatus = ['Bachelor student', 'Master student', 'PhD / researcher', 'Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung'].includes(form.status);
+    const needsUniversityDetail = form.university === 'Other' || form.university === 'Sonstiges';
 
-    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.status || !form.studyField || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.source || (needsSourceDetail && !form.sourceOther)) {
+    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.status || !form.studyField || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.source || (isStudentStatus && !form.university) || (isStudentStatus && needsUniversityDetail && !form.universityOther) || (needsSourceDetail && !form.sourceOther)) {
       setFormError(t.error);
       return;
     }
@@ -1491,8 +1503,7 @@ function ExampleProblems({ t }: { t: typeof copy.en }) {
 function FirstPilotSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
   return (
     <Section id="first-pilot" kicker={t.pilotKicker} title={t.pilotContextTitle}>
-      <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="glass-card p-6 sm:p-8">
+      <div className="glass-card mt-10 p-6 sm:p-8">
           <p className="section-lead mt-0">{t.pilotContextText}</p>
           <p className="mt-5 text-sm leading-6 text-cyan-100">{t.pilotEligibility}</p>
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
@@ -1501,8 +1512,9 @@ function FirstPilotSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
             <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
           </div>
           <p className="mt-5 text-sm text-slate-400">{t.pilotIncluded}</p>
-        </div>
-        <Countdown t={t} />
+          <div className="mt-5 max-w-xl">
+            <Countdown t={t} />
+          </div>
       </div>
     </Section>
   );
@@ -1571,6 +1583,8 @@ function Registration({
   toggleInterest,
   handleSubmit,
 }: RegistrationProps) {
+  const showUniversity = ['Bachelor student', 'Master student', 'PhD / researcher', 'Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung'].includes(form.status);
+
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <p className="section-lead">{t.formSubtitle}</p>
@@ -1609,6 +1623,12 @@ function Registration({
             <TextInput label={t.fields.phone} value={form.phone} onChange={(value) => updateField('phone', value)} />
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
             <SelectInput label={t.fields.status} required value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
+            {showUniversity && (
+              <SelectInput label={t.fields.university} required value={form.university} options={t.universityOptions} placeholder={t.fields.select} onChange={(value) => updateField('university', value)} />
+            )}
+            {showUniversity && (form.university === 'Other' || form.university === 'Sonstiges') && (
+              <TextInput label={t.fields.universityOther} required value={form.universityOther} onChange={(value) => updateField('universityOther', value)} />
+            )}
             <SelectInput label={t.fields.studyField} required value={form.studyField} options={t.studyFieldOptions} placeholder={t.fields.select} onChange={(value) => updateField('studyField', value)} />
             {(form.studyField === 'Other' || form.studyField === 'Sonstiges') && (
               <TextInput label={t.fields.studyFieldOther} value={form.studyFieldOther} onChange={(value) => updateField('studyFieldOther', value)} />
