@@ -83,12 +83,17 @@ type InterestForm = {
   phone: string;
   role: string;
   status: string;
+  studyField: string;
+  studyFieldOther: string;
   codingLevel: string;
   eventLanguage: string;
   startupInterest: string;
   interests: string[];
   followUp: string;
   link: string;
+  githubLink: string;
+  linkedinLink: string;
+  portfolioLink: string;
   pizza: string;
   source: string;
   sourceOther: string;
@@ -103,12 +108,17 @@ const initialForm: InterestForm = {
   phone: '',
   role: '',
   status: '',
+  studyField: '',
+  studyFieldOther: '',
   codingLevel: '',
   eventLanguage: '',
   startupInterest: '',
   interests: [],
   followUp: '',
   link: '',
+  githubLink: '',
+  linkedinLink: '',
+  portfolioLink: '',
   pizza: '',
   source: '',
   sourceOther: '',
@@ -140,9 +150,11 @@ const copy = {
     exitButton: 'Join community',
     facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
     communityFacts: ['Future sessions', 'Real problem spaces', 'Projects & exchange'],
+    pilotKicker: 'First pilot',
     pilotContextTitle: 'First pilot event: Pizza & Prototypes',
     pilotContextText:
-      'The first pilot is already in selection. The first group has been contacted separately. New signups join the community list for future sessions, possible waitlist spots and project opportunities.',
+      'The first pilot is already in selection and limited to around 30 people. Only people with a separate selection confirmation can join on 26 June. New signups join the community list for future sessions, possible waitlist spots and project opportunities.',
+    pilotEligibility: 'Because capacity is limited, only selected people with a separate confirmation can join the first pilot.',
     pilotIncluded: 'Pilot detail: pizza, non-alcoholic and alcoholic drinks included.',
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
@@ -182,7 +194,7 @@ const copy = {
       'Share the result and discuss possible next steps',
     ],
     examplesKicker: 'Example problem spaces',
-    examplesTitle: 'Examples only. Final cases may change.',
+    examplesTitle: 'Example problem spaces for future sessions.',
     angleLabel: 'Possible angle',
     examples: [
       ['Craft business follow-up chaos', 'Offers are sent, but follow-ups happen manually or not at all.', 'Lightweight CRM or reminder workflow.'],
@@ -192,6 +204,7 @@ const copy = {
     ],
     scheduleKicker: 'Schedule',
     scheduleTitle: 'First pilot event flow.',
+    scheduleLead: 'This is the flow for Pizza & Prototypes on 26 June. Future formats may look different.',
     schedule: [
       ['18:00', 'Arrive, grab pizza, drinks and pick problem cards'],
       ['18:15', 'Short intro and ground rules'],
@@ -221,7 +234,7 @@ const copy = {
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
     privacyText:
-      'We keep it simple: we use your information to manage the Tech Meets Problems community list, send relevant future-event and project updates, and understand which channels worked. This may include name, email address, phone number, profile information, interests, food notes, free-text information, language, timestamp, landing page and UTM parameters.',
+      'We keep it simple: we use your information to manage the Tech Meets Problems community list, send relevant future-event and project updates, and understand which channels worked. This may include name, email address, status, study or professional background, profile links, interests, food notes, free-text information, language, timestamp, landing page and UTM parameters.',
     privacyDetails: [
       'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store community signups, send relevant updates and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
@@ -262,14 +275,20 @@ const copy = {
       email: 'Email address',
       phone: 'Phone number, optional',
       role: 'What describes you best?',
-      status: 'Current status, optional',
+      status: 'Current status',
+      studyField: 'Field of study or professional background',
+      studyFieldOther: 'Please specify, optional',
       coding: 'Can you code?',
-      eventLanguage: 'Preferred event language',
+      eventLanguage: 'Preferred language for future formats',
       startupInterest: 'Are you interested in startups or founding one yourself?',
       followUp: 'Interested in future projects or follow-up formats?',
-      link: 'GitHub, LinkedIn, portfolio or personal website, optional',
+      githubLink: 'GitHub profile, optional',
+      linkedinLink: 'LinkedIn profile, optional',
+      portfolioLink: 'Portfolio or personal website, optional',
+      profileLinks: 'Optional profile links',
+      linksHelper: 'Optional links help us understand your background and can improve selection chances for limited formats.',
       pizza: 'Food preference for future events, optional',
-      source: 'How did you hear about the event? optional',
+      source: 'How did you hear about Tech Meets Problems?',
       sourceOther: 'Where exactly?',
       interests: 'What are you interested in?',
       foodNotes: 'Allergies or food notes, optional',
@@ -277,7 +296,8 @@ const copy = {
       select: 'Select one',
     },
     roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
-    statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
+    statusOptions: ['Bachelor student', 'Master student', 'PhD / researcher', 'Working professional', 'Founder / self-employed', 'Not currently studying', 'Other'],
+    studyFieldOptions: ['Computer Science', 'Business Informatics', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Electrical Engineering', 'Mechanical Engineering', 'Mechatronics', 'Industrial Engineering', 'Media / Communication', 'Business Administration / Management', 'Entrepreneurship / SME Management', 'Engineering, other', 'Tech, other', 'Business, other', 'Not currently studying', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'I can only vibe-code', 'No, but I can design, research or validate'],
     eventLanguageOptions: ['English', 'German', 'No preference'],
     startupInterestOptions: ['Yes, strong interest', 'Maybe someday', 'No, not really'],
@@ -287,10 +307,10 @@ const copy = {
     sourceOptions: ['Word of mouth', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Lecture', 'Flyer', 'Mensa advertising', 'Other'],
     requiredNote: '* Required fields',
     sending: 'Sending...',
-    roomKicker: 'Event atmosphere',
+    roomKicker: 'First pilot atmosphere',
     roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards, pizza, drinks and people working through real business needs together.',
+      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards and people working through real business needs together. The first pilot includes pizza and drinks; future formats may vary.',
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Community hub',
     whatsappTitle: 'Join the Tech Meets Problems WhatsApp community.',
@@ -357,9 +377,11 @@ const copy = {
     exitButton: 'Community beitreten',
     facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
     communityFacts: ['Zukünftige Sessions', 'Echte Problemräume', 'Projekte & Austausch'],
+    pilotKicker: 'Erster Pilot',
     pilotContextTitle: 'Erstes Pilot-Event: Pizza & Prototypes',
     pilotContextText:
-      'Der erste Pilot ist bereits in der Auswahl. Die erste Gruppe wurde separat kontaktiert. Neue Eintragungen landen auf der Community-Liste für zukünftige Sessions, mögliche Nachrückplätze und Projektmöglichkeiten.',
+      'Der erste Pilot ist bereits in der Auswahl und auf rund 30 Personen begrenzt. Teilnehmen können nur Personen mit separater Auswahlbestätigung. Neue Eintragungen landen auf der Community-Liste für zukünftige Sessions, mögliche Nachrückplätze und Projektmöglichkeiten.',
+    pilotEligibility: 'Da die Kapazität begrenzt ist, können beim ersten Pilot-Event nur ausgewählte Personen mit separater Bestätigung teilnehmen.',
     pilotIncluded: 'Pilot-Detail: Pizza, alkoholfreie und alkoholische Getränke inklusive.',
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
@@ -399,7 +421,7 @@ const copy = {
       'Ergebnis vorstellen und mögliche nächste Schritte besprechen',
     ],
     examplesKicker: 'Beispiel-Problemräume',
-    examplesTitle: 'Nur Beispiele. Die finalen Fälle können sich ändern.',
+    examplesTitle: 'Beispiel-Problemräume für zukünftige Sessions.',
     angleLabel: 'Möglicher Ansatz',
     examples: [
       ['Follow-up-Chaos im Handwerk', 'Angebote werden verschickt, aber Follow-ups passieren manuell oder gar nicht.', 'Leichtes CRM oder Reminder-Workflow.'],
@@ -409,6 +431,7 @@ const copy = {
     ],
     scheduleKicker: 'Ablauf',
     scheduleTitle: 'Ablauf des ersten Pilot-Events.',
+    scheduleLead: 'Das ist der Ablauf für Pizza & Prototypes am 26. Juni. Zukünftige Formate können anders aussehen.',
     schedule: [
       ['18:00', 'Ankommen, Pizza, Getränke und Problemkarten'],
       ['18:15', 'Kurze Einführung und Spielregeln'],
@@ -438,7 +461,7 @@ const copy = {
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
     privacyText:
-      'Wir halten es einfach: Deine Angaben nutzen wir, um die Tech Meets Problems Community-Liste zu verwalten, dir relevante Updates zu zukünftigen Sessions und Projekten zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Telefonnummer, Profilangaben, Interessen, Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
+      'Wir halten es einfach: Deine Angaben nutzen wir, um die Tech Meets Problems Community-Liste zu verwalten, dir relevante Updates zu zukünftigen Sessions und Projekten zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Status, Studien- oder beruflicher Hintergrund, Profil-Links, Interessen, Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
     privacyDetails: [
       'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Community-Eintragungen zu speichern, relevante Updates zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
@@ -479,14 +502,20 @@ const copy = {
       email: 'E-Mail-Adresse',
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
-      status: 'Aktueller Status, optional',
+      status: 'Aktueller Status',
+      studyField: 'Studienfach oder beruflicher Hintergrund',
+      studyFieldOther: 'Bitte genauer angeben, optional',
       coding: 'Kannst du coden?',
-      eventLanguage: 'Bevorzugte Event-Sprache',
+      eventLanguage: 'Bevorzugte Sprache für zukünftige Formate',
       startupInterest: 'Interessierst du dich für Startups oder dafür, selbst mal zu gründen?',
       followUp: 'Interesse an zukünftigen Projekten oder Folgeformaten?',
-      link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
+      githubLink: 'GitHub-Profil, optional',
+      linkedinLink: 'LinkedIn-Profil, optional',
+      portfolioLink: 'Portfolio oder eigene Website, optional',
+      profileLinks: 'Optionale Profil-Links',
+      linksHelper: 'Optionale Links helfen uns, deinen Hintergrund besser einzuschätzen und können die Auswahlchancen bei begrenzten Formaten verbessern.',
       pizza: 'Essenspräferenz für zukünftige Events, optional',
-      source: 'Woher hast du vom Event erfahren? optional',
+      source: 'Wie hast du von Tech Meets Problems erfahren?',
       sourceOther: 'Woher genau?',
       interests: 'Was interessiert dich?',
       foodNotes: 'Allergien oder Essenshinweise, optional',
@@ -494,7 +523,8 @@ const copy = {
       select: 'Auswählen',
     },
     roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
-    statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
+    statusOptions: ['Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung', 'Berufstätig', 'Gründer/in / selbstständig', 'Aktuell nicht im Studium', 'Sonstiges'],
+    studyFieldOptions: ['Informatik', 'Wirtschaftsinformatik', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Elektrotechnik', 'Maschinenbau', 'Mechatronik', 'Wirtschaftsingenieurwesen', 'Medien / Kommunikation', 'BWL / Management', 'Entrepreneurship / SME Management', 'Ingenieurwesen, anderes', 'Tech, anderes', 'Business, anderes', 'Aktuell nicht im Studium', 'Sonstiges'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Ich kann nur vibe-coden', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     eventLanguageOptions: ['Deutsch', 'Englisch', 'Egal'],
     startupInterestOptions: ['Ja, großes Interesse', 'Vielleicht irgendwann', 'Nein, eher nicht'],
@@ -504,10 +534,10 @@ const copy = {
     sourceOptions: ['Mund-zu-Mund-Propaganda', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Vorlesung', 'Flyer', 'Werbung in der Mensa', 'Sonstiges'],
     requiredNote: '* Pflichtfelder',
     sending: 'Wird gesendet...',
-    roomKicker: 'Event-Atmosphäre',
+    roomKicker: 'Atmosphäre im ersten Piloten',
     roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten, Pizza, Getränke und Menschen, die gemeinsam an echten Business-Problemen arbeiten.',
+      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Beim ersten Piloten gibt es Pizza und Getränke, zukünftige Formate können anders aussehen.',
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Community-Hub',
     whatsappTitle: 'Tritt der Tech Meets Problems WhatsApp-Community bei.',
@@ -528,7 +558,7 @@ const copy = {
     languageLabel: 'Sprache',
     shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
     locationKicker: 'Ort',
-    locationTitle: 'Ort des ersten Piloten: Haus der Innovation in der Siegener Innenstadt.',
+    locationTitle: 'Ort des ersten Pilot-Events: Haus der Innovation in der Siegener Innenstadt.',
     locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
     sourceLabel: 'In Google Maps öffnen',
     organizersKicker: 'Über uns',
@@ -610,7 +640,7 @@ function getShareUrl(lang: Lang) {
     url.searchParams.set('utm_medium', 'share');
   }
   if (!url.searchParams.has('utm_campaign')) {
-    url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+    url.searchParams.set('utm_campaign', 'tech_meets_problems_community');
   }
   if (!url.searchParams.has('utm_content')) {
     url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
@@ -623,7 +653,7 @@ function getWhatsAppShareUrl(lang: Lang) {
   url.searchParams.set('lang', lang);
   url.searchParams.set('utm_source', 'whatsapp');
   url.searchParams.set('utm_medium', 'share');
-  url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+  url.searchParams.set('utm_campaign', 'tech_meets_problems_community');
   url.searchParams.set('utm_content', lang === 'de' ? 'website_share' : 'website_share_en');
   return url.toString();
 }
@@ -893,7 +923,9 @@ function App() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp) {
+    const needsSourceDetail = form.source === 'Other' || form.source === 'Sonstiges';
+
+    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.status || !form.studyField || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.source || (needsSourceDetail && !form.sourceOther)) {
       setFormError(t.error);
       return;
     }
@@ -1007,7 +1039,7 @@ function App() {
       <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
-      <Hero t={t} lang={lang} />
+      <Hero t={t} />
       <ProblemSection t={t} />
       <RoomPreviewSection t={t} />
       <WhyJoinSection t={t} />
@@ -1016,6 +1048,7 @@ function App() {
       <OpportunitySection t={t} />
       <HowItWorks t={t} />
       <ExampleProblems t={t} />
+      <FirstPilotSection t={t} lang={lang} />
       <Schedule t={t} />
       <Registration
         t={t}
@@ -1227,7 +1260,7 @@ function SignupSuccessModal({ t, show, onClose }: { t: typeof copy.en; show: boo
   );
 }
 
-function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
+function Hero({ t }: { t: typeof copy.en }) {
   return (
     <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
       <div className="min-w-0 max-w-3xl">
@@ -1263,7 +1296,7 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
       </div>
-      <HeroVisual t={t} lang={lang} />
+      <HeroVisual t={t} />
     </section>
   );
 }
@@ -1303,24 +1336,13 @@ function getTimeRemaining() {
   };
 }
 
-function HeroVisual({ t, lang }: { t: typeof copy.en; lang: Lang }) {
+function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative min-w-0">
       <div className="event-map-card hero-visual-card">
         <img src={ASSETS.heroMap} alt={`${t.pilotContextTitle} flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
       </div>
       <HeroSupporters t={t} />
-      <Countdown t={t} compact />
-      <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur">
-        <p className="text-sm font-semibold text-white">{t.pilotContextTitle}</p>
-        <p className="mt-2 text-sm leading-6 text-slate-300">{t.pilotContextText}</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
-          <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-          <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
-        </div>
-        <p className="mt-3 text-xs leading-5 text-slate-400">{t.pilotIncluded}</p>
-      </div>
     </div>
   );
 }
@@ -1466,10 +1488,31 @@ function ExampleProblems({ t }: { t: typeof copy.en }) {
   );
 }
 
+function FirstPilotSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
+  return (
+    <Section id="first-pilot" kicker={t.pilotKicker} title={t.pilotContextTitle}>
+      <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="glass-card p-6 sm:p-8">
+          <p className="section-lead mt-0">{t.pilotContextText}</p>
+          <p className="mt-5 text-sm leading-6 text-cyan-100">{t.pilotEligibility}</p>
+          <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
+            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+            <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+          </div>
+          <p className="mt-5 text-sm text-slate-400">{t.pilotIncluded}</p>
+        </div>
+        <Countdown t={t} />
+      </div>
+    </Section>
+  );
+}
+
 
 function Schedule({ t }: { t: typeof copy.en }) {
   return (
     <Section id="schedule" kicker={t.scheduleKicker} title={t.scheduleTitle}>
+      <p className="section-lead">{t.scheduleLead}</p>
       <div className="timeline mt-10">
         {t.schedule.map(([time, item]) => (
           <div key={time} className="timeline-row">
@@ -1565,14 +1608,27 @@ function Registration({
             <TextInput label={t.fields.email} required type="email" value={form.email} onChange={(value) => updateField('email', value)} />
             <TextInput label={t.fields.phone} value={form.phone} onChange={(value) => updateField('phone', value)} />
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
-            <SelectInput label={t.fields.status} value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
+            <SelectInput label={t.fields.status} required value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
+            <SelectInput label={t.fields.studyField} required value={form.studyField} options={t.studyFieldOptions} placeholder={t.fields.select} onChange={(value) => updateField('studyField', value)} />
+            {(form.studyField === 'Other' || form.studyField === 'Sonstiges') && (
+              <TextInput label={t.fields.studyFieldOther} value={form.studyFieldOther} onChange={(value) => updateField('studyFieldOther', value)} />
+            )}
             <SelectInput label={t.fields.coding} required value={form.codingLevel} options={t.codingLevels} placeholder={t.fields.select} onChange={(value) => updateField('codingLevel', value)} />
             <SelectInput label={t.fields.eventLanguage} required value={form.eventLanguage} options={t.eventLanguageOptions} placeholder={t.fields.select} onChange={(value) => updateField('eventLanguage', value)} />
             <SelectInput label={t.fields.startupInterest} required value={form.startupInterest} options={t.startupInterestOptions} placeholder={t.fields.select} onChange={(value) => updateField('startupInterest', value)} />
             <SelectInput label={t.fields.followUp} required value={form.followUp} options={t.followUp} placeholder={t.fields.select} onChange={(value) => updateField('followUp', value)} />
-            <TextInput label={t.fields.link} value={form.link} onChange={(value) => updateField('link', value)} />
             <SelectInput label={t.fields.pizza} value={form.pizza} options={t.pizza} placeholder={t.fields.select} onChange={(value) => updateField('pizza', value)} />
           </div>
+
+          <fieldset className="mt-6">
+            <legend className="text-sm font-medium text-slate-200">{t.fields.profileLinks}</legend>
+            <p className="mt-2 text-sm leading-6 text-slate-400">{t.fields.linksHelper}</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <TextInput label={t.fields.githubLink} value={form.githubLink} onChange={(value) => updateField('githubLink', value)} />
+              <TextInput label={t.fields.linkedinLink} value={form.linkedinLink} onChange={(value) => updateField('linkedinLink', value)} />
+              <TextInput label={t.fields.portfolioLink} value={form.portfolioLink} onChange={(value) => updateField('portfolioLink', value)} />
+            </div>
+          </fieldset>
 
           <fieldset className="mt-6">
             <legend className="mb-3 text-sm font-medium text-slate-200">{t.fields.interests}</legend>
@@ -1587,9 +1643,9 @@ function Registration({
           </fieldset>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <SelectInput label={t.fields.source} value={form.source} options={t.sourceOptions} placeholder={t.fields.select} onChange={(value) => updateField('source', value)} />
+            <SelectInput label={t.fields.source} required value={form.source} options={t.sourceOptions} placeholder={t.fields.select} onChange={(value) => updateField('source', value)} />
             {(form.source === 'Other' || form.source === 'Sonstiges') && (
-              <TextInput label={t.fields.sourceOther} value={form.sourceOther} onChange={(value) => updateField('sourceOther', value)} />
+              <TextInput label={t.fields.sourceOther} required value={form.sourceOther} onChange={(value) => updateField('sourceOther', value)} />
             )}
             <TextInput label={t.fields.foodNotes} value={form.foodNotes} onChange={(value) => updateField('foodNotes', value)} />
             <label className="field sm:row-span-2">
