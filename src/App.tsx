@@ -6,18 +6,15 @@ import {
   Check,
   ClipboardCopy,
   Code2,
-  CupSoda,
   ExternalLink,
   Globe2,
   Instagram,
-  Laptop,
   Lightbulb,
   Mail,
   Menu,
   MapPin,
   MessageCircle,
   Rocket,
-  Pizza,
   Share2,
   Sparkles,
   Timer,
@@ -60,7 +57,7 @@ const EVENT = {
   location: 'Startpunkt57 / Haus der Innovation, Siegen',
   address: 'Sandstraße 26, 57072 Siegen',
   size: '15 to 30 people',
-  whatsappLink: 'https://chat.whatsapp.com/EpOzBHdqtyJIWC92mUnzCo?mode=gi_t',
+  whatsappLink: 'https://chat.whatsapp.com/Is1hh61VskMLHRgjqgJNUH',
   instagramLink: 'https://www.instagram.com/techmeetsproblems/',
   contactEmail: 'info@nikvisuals.de',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
@@ -86,12 +83,19 @@ type InterestForm = {
   phone: string;
   role: string;
   status: string;
+  university: string;
+  universityOther: string;
+  studyField: string;
+  studyFieldOther: string;
   codingLevel: string;
   eventLanguage: string;
   startupInterest: string;
   interests: string[];
   followUp: string;
   link: string;
+  githubLink: string;
+  linkedinLink: string;
+  portfolioLink: string;
   pizza: string;
   source: string;
   sourceOther: string;
@@ -106,12 +110,19 @@ const initialForm: InterestForm = {
   phone: '',
   role: '',
   status: '',
+  university: '',
+  universityOther: '',
+  studyField: '',
+  studyFieldOther: '',
   codingLevel: '',
   eventLanguage: '',
   startupInterest: '',
   interests: [],
   followUp: '',
   link: '',
+  githubLink: '',
+  linkedinLink: '',
+  portfolioLink: '',
   pizza: '',
   source: '',
   sourceOther: '',
@@ -121,48 +132,55 @@ const initialForm: InterestForm = {
 
 const copy = {
   en: {
-    nav: ['How it works', 'Problem cards', 'For companies', 'Register'],
+    nav: ['How it works', 'Problem cards', 'For companies', 'Join community'],
     topLink: 'Top of page',
-    joinShort: 'Join event',
+    joinShort: 'Community',
     brand: 'Tech Meets Problems',
-    edition: 'Pizza & Prototypes · First Edition',
+    edition: 'Community · Future sessions · Real problems',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first event in Siegen',
+    eyebrow: 'Builder-first tech community in Siegen',
     heroTitle: 'Build solutions for real-world problems.',
     heroTitleLines: ['Build solutions for', 'real-world problems.'],
     heroText:
-      'A focused evening for developers, makers and technical students to explore real business needs and shape first concepts or prototypes.',
-    primaryCta: 'Join the event',
-    freeBadgeLine1: 'Completely free',
-    freeBadgeLine2: 'incl. pizza & drinks',
+      'Join a community of developers, technical students, HCI/UX people, AI/Data profiles and builders working on real business needs, future sessions and practical projects.',
+    primaryCta: 'Join the community',
+    freeBadgeLine1: 'Free to join',
+    freeBadgeLine2: 'Future sessions & projects',
     note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
-    countdownLabel: 'Event starts in',
+    countdownLabel: 'First pilot starts in',
     countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
     exitTitle: 'Leaving already?',
-    exitText: 'This is exactly the kind of evening you will wish you had joined. Save your spot before you forget.',
-    exitButton: 'I want in',
+    exitText: 'Get on the community list and hear about future sessions, project opportunities and possible waitlist spots.',
+    exitButton: 'Join community',
     facts: ['Real need', 'Builder team', 'Concept / prototype', 'Group share'],
+    communityFacts: ['Future sessions', 'Real problem spaces', 'Projects & exchange'],
+    pilotKicker: 'First pilot',
+    pilotContextTitle: 'First pilot event: Pizza & Prototypes',
+    pilotContextText:
+      'The first pilot is already in selection and limited to around 30 people. Only people with a separate selection confirmation can join on 26 June. New signups join the community list for future sessions, possible waitlist spots and project opportunities.',
+    pilotEligibility: 'Because capacity is limited, only selected people with a separate confirmation can join the first pilot.',
+    pilotIncluded: 'Pilot detail: pizza, non-alcoholic and alcoholic drinks included.',
     problemKicker: 'Why this exists',
     problemTitle: 'Most formats start with business theatre. This one starts with builders.',
     problemLead:
       'Many entrepreneurship formats attract business people first. This pilot flips the perspective: technical people first, real business needs as the starting point, and just enough startup context to make the work useful.',
     whyJoinKicker: 'Why join?',
-    whyJoinTitle: 'A compact evening for builders who want more than theory.',
+    whyJoinTitle: 'A community for builders who want more than theory.',
     whyJoin: [
       'Work on real problems instead of theoretical cases',
-      'Meet motivated builders and tech enthusiasts',
-      'Gain practical problem-solving experience',
-      'Explore business model thinking with founder experience',
+      'Meet motivated builders and tech-minded people',
+      'Hear about future sessions and project opportunities',
+      'Turn ideas into workflows, mockups or first prototypes',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation happens when different perspectives come together.',
     visionText:
       'We believe innovation happens when different perspectives come together. That’s why we connect students, hobby coders, creative minds, and tech enthusiasts from different disciplines.',
     opportunityKicker: 'What you take away',
-    opportunityTitle: 'Not a full hackathon. A focused first step toward something real.',
+    opportunityTitle: 'From real problems to practical next steps.',
     opportunityText:
-      'At the end, teams briefly share the concept, mockup, workflow or prototype they came up with. With our founder perspective, we can help translate promising ideas into a first Business Model Canvas and discuss what a realistic next step could be. If useful, we can also send that follow-up summary afterwards.',
-    opportunityPoints: ['First concept or prototype', 'Short group share', 'Business Model Canvas angle', 'Practical problem-solving experience'],
+      'Across sessions and projects, the goal is to turn real needs into clear workflows, mockups, prototypes or next-step plans. A simple TMP Canvas can help make promising ideas easier to discuss and continue.',
+    opportunityPoints: ['Clear problem framing', 'Workflows or mockups', 'Simple TMP Canvas', 'Practical next steps'],
     problemCards: [
       ['Real problems, not fake startup ideas', 'Work starts from concrete needs from SMEs, crafts businesses, clubs or niche industries.'],
       ['Small teams, not random networking', 'You work in a focused group around one problem space and a realistic sprint window.'],
@@ -180,81 +198,82 @@ const copy = {
       'Share the result and discuss possible next steps',
     ],
     examplesKicker: 'Example problem spaces',
-    examplesTitle: 'Examples only. Final cases may change.',
+    examplesTitle: 'Example problem spaces for future sessions.',
     angleLabel: 'Possible angle',
     examples: [
       ['Craft business follow-up chaos', 'Offers are sent, but follow-ups happen manually or not at all.', 'Lightweight CRM or reminder workflow.'],
       ['Club organization via WhatsApp', 'Volunteers, shifts and commitments disappear in group chats.', 'Simple helper planner or form-based workflow.'],
-      ['Construction photo documentation', 'Photos are spread across phone galleries, chats and email.', 'Upload flow with project tagging.'],
+      ['Project photo documentation', 'Photos are spread across phone galleries, chats and email.', 'Upload flow with project tagging.'],
       ['Maintenance and inspection reminders', 'Recurring appointments are tracked manually.', 'Automated reminder service.'],
     ],
     scheduleKicker: 'Schedule',
-    scheduleTitle: 'A compact evening sprint with enough room to meet good people.',
+    scheduleTitle: 'First pilot event flow.',
+    scheduleLead: 'This is the flow for Pizza & Prototypes on 26 June. Future formats may look different.',
     schedule: [
       ['18:00', 'Arrive, grab pizza, drinks and pick problem cards'],
       ['18:15', 'Short intro and ground rules'],
       ['18:25', 'Team formation'],
       ['18:35', 'Prototype sprint with pizza on the side'],
       ['20:20', 'Demo walk / share results'],
-      ['20:45', 'Business opportunity and next steps'],
+      ['20:45', 'Share results and possible next steps'],
       ['21:00', 'Open end'],
     ],
     faqKicker: 'FAQ',
-    faqTitle: 'Small answers before you sign up.',
+    faqTitle: 'Small answers before you join the community.',
     faqs: [
       ['Do I need to bring a startup idea?', 'No. We bring problem cards. You only need curiosity and a willingness to work on something real.'],
       ['Do I need to be an expert programmer?', 'No. You do not need to be an expert. But you should be curious about building, coding, designing or solving technical problems.'],
       ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
       ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'Yes. We do not plan to charge participants for this format. Pizza and drinks are included.'],
+      ['Is this free?', 'Joining the community is free, and the first Pizza & Prototypes pilot is free too. Future formats may vary.'],
     ],
-    formKicker: 'Event signup',
-    formTitle: 'Save your spot for the first session.',
+    formKicker: 'Community signup',
+    formTitle: 'Join the Tech Meets Problems community.',
     formSubtitle:
-      'Sign up even if you cannot make this date. The first session is limited to around 30 people, so spots are handled first come, first served and we will keep you posted about future events.',
-    pilotDetails: 'First pilot details',
-    capacityNote: 'Limited to around 30 people',
-    laptopNote: 'Laptop recommended. eduroam and guest WiFi are available.',
-    included: 'Pizza, non-alcoholic and alcoholic drinks included',
-    privacyNote: 'We only use your data to organize Tech Meets Problems and send relevant updates. If you arrive through a campaign link, we also store basic source parameters with your signup so we know which channels worked. No spam.',
+      'Submissions for the first pilot are closed or already in selection. Join the community list for updates about future sessions, project opportunities and possible waitlist spots. Submitting this form does not guarantee a place on 26 June.',
+    formInstruction: 'Fill out the form below to join the community list.',
+    formDetailsNote: 'We use your answers to understand your background, plan future sessions and invite fitting people when a format has limited spots.',
+    communityCardTitle: 'What you join',
+    communityInfo: ['Community updates', 'Future sessions and project opportunities', 'Possible waitlist spots for selected formats', 'WhatsApp community hub available'],
+    privacyNote: 'We use your data for Tech Meets Problems community and future-event updates. If you arrive through a campaign link, we also store basic source parameters so we know which channels worked. No spam.',
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
     privacyText:
-      'We keep it simple: we use your information to organize Tech Meets Problems, manage your registration, send confirmation, calendar invite and relevant event updates, and understand which channels worked. This may include name, email address, phone number, profile information, interests, pizza/food notes, free-text information, language, timestamp, landing page and UTM parameters.',
+      'We keep it simple: we use your information to manage the Tech Meets Problems community list, send relevant future-event and project updates, and understand which channels worked. This may include name, email address, status, university or institution, study or professional background, profile links, interests, food notes, free-text information, language, timestamp, landing page and UTM parameters.',
     privacyDetails: [
-      'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store registrations, send confirmation emails and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
+      'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store community signups, send relevant updates and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
       'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@nikvisuals.de.',
     ],
     privacyItems: [
       'Responsible: Niklas Brüne and Frederik Krause.',
-      'Purpose: organization, registration, communication, catering, channel evaluation and event documentation.',
+      'Purpose: community communication, future-event planning, optional catering for future formats, channel evaluation and event documentation.',
       'Tools/recipients: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics and GA4 after consent.',
       'Withdrawal, objection or deletion request: info@nikvisuals.de.',
     ],
     privacyConsentStart: 'I have read the ',
     privacyConsentLink: 'privacy notice',
     privacyConsentEnd:
-      ' and want to submit my registration. I will receive the confirmation, calendar invite and important updates about Tech Meets Problems by email. No spam, revocable at any time.',
+      ' and want to join the Tech Meets Problems community list. I may receive relevant future-event and project updates by email. No spam, revocable at any time.',
     privacyAndUpdatesText:
-      'I have read the privacy notice and want to submit my registration. I will receive the confirmation, calendar invite and important updates about Tech Meets Problems by email. No spam, revocable at any time.',
-    privacyRequired: 'Please accept the privacy notice and necessary event updates before submitting.',
+      'I have read the privacy notice and want to join the Tech Meets Problems community list. I may receive relevant future-event and project updates by email. No spam, revocable at any time.',
+    privacyRequired: 'Please accept the privacy notice and community updates before submitting.',
     photoVideoNotice:
       'Note: Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
-    successTitle: 'You are signed up for the event.',
-    successText: 'Thanks. Your registration was sent successfully.',
-    nextStepsTitle: 'Nice, you are on the list.',
-    nextStepsText: 'Join the WhatsApp group for updates and add the date to your calendar so it does not disappear in the week.',
-    nextStepsEmailNote: 'You will also receive a confirmation email. Please also check your spam folder just in case.',
+    successTitle: 'You are on the community list.',
+    successText: 'Thanks. Your community interest was sent successfully.',
+    nextStepsTitle: 'Thanks, you are on the Tech Meets Problems community list.',
+    nextStepsText: 'We’ll keep you posted about future sessions, possible waitlist spots and project opportunities. You can also join the WhatsApp community hub for updates and exchange.',
+    nextStepsEmailNote: 'We’ll use your email only for relevant Tech Meets Problems updates. Please also check your spam folder just in case.',
     addToCalendar: 'Add to calendar',
     googleCalendar: 'Google',
     outlookCalendar: 'Outlook',
     appleCalendar: 'Apple / ICS',
-    whatsappAfterSubmit: 'Join WhatsApp group',
+    whatsappAfterSubmit: 'Join WhatsApp community',
     instagramAfterSubmitText: 'For updates and future events, you can also follow us on Instagram.',
     instagramAfterSubmitButton: 'Open Instagram',
-    error: 'Please fill in the required fields before joining the event.',
+    error: 'Please fill in the required fields before joining the community.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
       firstName: 'First name',
@@ -262,40 +281,50 @@ const copy = {
       email: 'Email address',
       phone: 'Phone number, optional',
       role: 'What describes you best?',
-      status: 'Current status, optional',
+      status: 'Current status',
+      university: 'University or institution',
+      universityOther: 'Please specify university or institution',
+      studyField: 'Field of study or professional background',
+      studyFieldOther: 'Please specify, optional',
       coding: 'Can you code?',
-      eventLanguage: 'Preferred event language',
+      eventLanguage: 'Preferred language for future formats',
       startupInterest: 'Are you interested in startups or founding one yourself?',
-      followUp: 'Time for a small follow-up project after the event?',
-      link: 'GitHub, LinkedIn, portfolio or personal website, optional',
-      pizza: 'Pizza preference',
-      source: 'How did you hear about the event? optional',
+      followUp: 'Interested in future projects or follow-up formats?',
+      githubLink: 'GitHub profile, optional',
+      linkedinLink: 'LinkedIn profile, optional',
+      portfolioLink: 'Portfolio or personal website, optional',
+      profileLinks: 'Optional profile links',
+      linksHelper: 'Optional links help us understand your background and can improve selection chances for limited formats.',
+      pizza: 'Food preference for future events, optional',
+      source: 'How did you hear about Tech Meets Problems?',
       sourceOther: 'Where exactly?',
       interests: 'What are you interested in?',
       foodNotes: 'Allergies or food notes, optional',
       notes: 'Anything we should know? Own project idea, question or context?',
       select: 'Select one',
     },
-    roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
-    statusOptions: ['Student at University of Siegen', 'Student at another university', 'Working professional', 'Founder / self-employed', 'Other'],
+    roles: ['Programmer', 'Computer Science Student', 'Technical Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Business Informatics Student', 'Business Student', 'Business / Product', 'Other'],
+    statusOptions: ['Bachelor student', 'Master student', 'PhD / researcher', 'Working professional', 'Founder / self-employed', 'Not currently studying', 'Other'],
+    universityOptions: ['University of Siegen', 'TH Köln / Campus Gummersbach', 'South Westphalia University of Applied Sciences', 'University of Bonn', 'Hochschule Bonn-Rhein-Sieg', 'University of Koblenz', 'Koblenz University of Applied Sciences', 'University of Marburg', 'Justus Liebig University Giessen', 'Technische Hochschule Mittelhessen', 'FOM University of Applied Sciences', 'IU International University', 'Other'],
+    studyFieldOptions: ['Computer Science', 'Business Informatics', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Electrical Engineering', 'Mechanical Engineering', 'Mechatronics', 'Industrial Engineering', 'Media / Communication', 'Business Administration / Management', 'Entrepreneurship / SME Management', 'Engineering, other', 'Tech, other', 'Business, other', 'Not currently studying', 'Other'],
     codingLevels: ['Yes, confidently', 'Yes, a bit', 'I am learning', 'I can only vibe-code', 'No, but I can design, research or validate'],
     eventLanguageOptions: ['English', 'German', 'No preference'],
     startupInterestOptions: ['Yes, strong interest', 'Maybe someday', 'No, not really'],
     interests: ['Web apps', 'AI tools', 'Automation', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Local business problems', 'Startup ideas', 'Just meeting good people'],
     followUp: ['Yes', 'Maybe', 'Not right now'],
-    pizza: ['Yes, normal pizza', 'Vegetarian', 'Vegan', 'No pizza for me'],
+    pizza: ['No preference', 'Vegetarian', 'Vegan', 'Other / tell us later'],
     sourceOptions: ['Word of mouth', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Lecture', 'Flyer', 'Mensa advertising', 'Other'],
     requiredNote: '* Required fields',
     sending: 'Sending...',
-    roomKicker: 'Event atmosphere',
+    roomKicker: 'First pilot atmosphere',
     roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards, pizza, drinks and people working through real business needs together.',
+      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards and people working through real business needs together. The first pilot includes pizza and drinks; future formats may vary.',
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
-    whatsappKicker: 'Builder group',
-    whatsappTitle: 'Get updates, problem cards and a place to connect even if you cannot make this date.',
-    whatsappCardTitle: 'Join the builder group',
-    whatsappButton: 'Join WhatsApp',
+    whatsappKicker: 'Community hub',
+    whatsappTitle: 'Join the Tech Meets Problems WhatsApp community.',
+    whatsappCardTitle: 'General updates, problem cards, project ideas and exchange around real problems, tech, workflows and prototypes.',
+    whatsappButton: 'Join WhatsApp community',
     instagramCommunityLabel: 'Updates & impressions on Instagram',
     instagramCommunityHelper: 'For future events and behind-the-scenes updates.',
     instagramFooter: 'Follow us on Instagram',
@@ -307,11 +336,11 @@ const copy = {
     shareButton: 'Share',
     copied: 'Page link copied.',
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
-    quickShare: 'Share event',
+    quickShare: 'Share community',
     languageLabel: 'Language',
-    shareNativeText: 'Tech Meets Problems: Pizza & Prototypes is a free builder-first evening in Siegen where developers, makers and technical students work on real business problems. Pizza, non-alcoholic drinks and alcoholic drinks are included. You can sign up here:',
+    shareNativeText: 'Tech Meets Problems is a builder-first community in Siegen for developers, technical students and tech-minded people who want to work on real business needs. Join the community list for future sessions and project opportunities:',
     locationKicker: 'Location',
-    locationTitle: 'Taking place at Haus der Innovation in central Siegen.',
+    locationTitle: 'First pilot location: Haus der Innovation in central Siegen.',
     locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
     sourceLabel: 'Open in Google Maps',
     organizersKicker: 'About us',
@@ -325,58 +354,65 @@ const copy = {
     companiesKicker: 'For companies',
     companiesTitle: 'Have a real problem or want to support the format?',
     companiesText:
-      'If you are a company, SME, craft business, club, institution, innovation team or potential sponsor, reach out. We are looking for real use cases, open innovation topics and supporters who want technical students and builders to explore useful challenges.',
+      'If you are a company, SME, craft business, club, institution, innovation team or potential supporter, reach out. We are looking for real use cases, open innovation topics and partners who want the community to explore useful challenges over time.',
     companiesButton: 'Contact us',
     companiesVisual: ['Use case', 'Builders', 'Output', 'Real need', 'Useful challenge'],
     poweredBy: 'Supported by',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
-    footerLine: 'Tech Meets Problems: Pizza & Prototypes',
+    footerLine: 'Tech Meets Problems Community · First pilot: Pizza & Prototypes',
     imprint: 'Imprint',
   },
   de: {
-    nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Anmelden'],
+    nav: ['Ablauf', 'Problemkarten', 'Für Unternehmen', 'Community'],
     topLink: 'Nach oben',
-    joinShort: 'Event',
+    joinShort: 'Community',
     brand: 'Tech Meets Problems',
-    edition: 'Pizza & Prototypes · Erste Ausgabe',
+    edition: 'Community · Zukünftige Sessions · Echte Probleme',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first Event in Siegen',
+    eyebrow: 'Builder-first Tech-Community in Siegen',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
     heroTitleLines: ['Entwickle Lösungen', 'für echte Probleme.'],
     heroText:
-      'Ein fokussierter Abend für Entwickler, Maker und technische Studierende, um echte Business-Probleme in erste Konzepte oder Prototypen zu übersetzen.',
-    primaryCta: 'Zum Event anmelden',
-    freeBadgeLine1: 'Komplett kostenlos',
-    freeBadgeLine2: 'inkl. Pizza & Drinks',
+      'Werde Teil einer Community aus Entwicklern, technischen Studierenden, HCI/UX-nahen Profilen, AI/Data-Leuten und Buildern, die an echten Business-Problemen, zukünftigen Sessions und praktischen Projekten arbeiten.',
+    primaryCta: 'Community beitreten',
+    freeBadgeLine1: 'Kostenlos eintragen',
+    freeBadgeLine2: 'Sessions & Projekte',
     note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
-    countdownLabel: 'Event startet in',
+    countdownLabel: 'Erster Pilot startet in',
     countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
     exitTitle: 'Schon weg?',
-    exitText: 'Das ist genau der Abend, über den man sich später ärgert, wenn man nicht dabei war. Sichere dir lieber kurz deinen Platz.',
-    exitButton: 'Bin dabei',
+    exitText: 'Trag dich in die Community-Liste ein und erfahre von zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen.',
+    exitButton: 'Community beitreten',
     facts: ['Echtes Problem', 'Builder-Team', 'Konzept / Prototyp', 'Kurz vorstellen'],
+    communityFacts: ['Zukünftige Sessions', 'Echte Problemräume', 'Projekte & Austausch'],
+    pilotKicker: 'Erster Pilot',
+    pilotContextTitle: 'Erstes Pilot-Event: Pizza & Prototypes',
+    pilotContextText:
+      'Der erste Pilot ist bereits in der Auswahl und auf rund 30 Personen begrenzt. Teilnehmen können nur Personen mit separater Auswahlbestätigung. Neue Eintragungen landen auf der Community-Liste für zukünftige Sessions, mögliche Nachrückplätze und Projektmöglichkeiten.',
+    pilotEligibility: 'Da die Kapazität begrenzt ist, können beim ersten Pilot-Event nur ausgewählte Personen mit separater Bestätigung teilnehmen.',
+    pilotIncluded: 'Pilot-Detail: Pizza, alkoholfreie und alkoholische Getränke inklusive.',
     problemKicker: 'Warum das Format',
     problemTitle: 'Viele Formate starten mit Business-Theater. Dieses startet mit Buildern.',
     problemLead:
       'Viele Entrepreneurship-Formate ziehen Business-Leute zuerst an. Dieser Pilot dreht die Perspektive: technische Leute zuerst, echte Business-Probleme als Startpunkt und nur so viel Startup-Kontext, dass die Arbeit nützlich wird.',
     whyJoinKicker: 'Warum mitmachen?',
-    whyJoinTitle: 'Ein kompakter Abend für Builder, die mehr wollen als Theorie.',
+    whyJoinTitle: 'Eine Community für Builder, die mehr wollen als Theorie.',
     whyJoin: [
       'Arbeite an echten Problemen statt an theoretischen Cases',
-      'Triff motivierte Builder und Tech-Enthusiasten',
-      'Sammle praktische Erfahrung im Problemlösen',
-      'Denke Geschäftsmodelle mit Gründungserfahrung durch',
+      'Triff motivierte Builder und technikaffine Menschen',
+      'Erhalte Updates zu zukünftigen Sessions und Projektmöglichkeiten',
+      'Übersetze Ideen in Workflows, Mockups oder erste Prototypen',
     ],
     visionKicker: 'Vision',
     visionTitle: 'Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen.',
     visionText:
       'Wir glauben, dass Innovation entsteht, wenn unterschiedliche Perspektiven zusammenkommen. Deshalb vernetzen wir Studierende, Hobby-Coder, kreative Köpfe und Tech-Enthusiasten aus verschiedenen Disziplinen.',
     opportunityKicker: 'Was du mitnimmst',
-    opportunityTitle: 'Kein kompletter Hackathon. Ein fokussierter erster Schritt in Richtung echte Opportunity.',
+    opportunityTitle: 'Von echten Problemen zu konkreten nächsten Schritten.',
     opportunityText:
-      'Am Ende stellen die Teams kurz ihr Konzept, Mockup, ihren Workflow oder Prototyp vor. Mit unserer Gründungsperspektive helfen wir dabei, vielversprechende Ideen in ein erstes Business Model Canvas zu übersetzen und realistische nächste Schritte zu besprechen. Wenn es sinnvoll ist, können wir eine kurze Zusammenfassung danach zusenden.',
-    opportunityPoints: ['Erstes Konzept oder Prototyp', 'Kurze Vorstellung in der Gruppe', 'Business-Model-Canvas-Perspektive', 'Praktische Problemlösung'],
+      'Über Sessions und Projekte hinweg geht es darum, reale Bedarfe in klare Workflows, Mockups, Prototypen oder nächste Schritte zu übersetzen. Ein einfacher TMP Canvas kann helfen, vielversprechende Ideen greifbar zu machen und weiterzudenken.',
+    opportunityPoints: ['Klares Problemverständnis', 'Workflows oder Mockups', 'Einfacher TMP Canvas', 'Konkrete nächste Schritte'],
     problemCards: [
       ['Echte Probleme, keine Fake-Startup-Ideen', 'Der Abend startet mit konkreten Bedürfnissen von KMU, Handwerk, Vereinen oder Nischenbranchen.'],
       ['Kleine Teams, kein Zufallsnetworking', 'Du arbeitest in einer fokussierten Gruppe an einem Problemraum und einem realistischen Sprintfenster.'],
@@ -394,81 +430,82 @@ const copy = {
       'Ergebnis vorstellen und mögliche nächste Schritte besprechen',
     ],
     examplesKicker: 'Beispiel-Problemräume',
-    examplesTitle: 'Nur Beispiele. Die finalen Fälle können sich ändern.',
+    examplesTitle: 'Beispiel-Problemräume für zukünftige Sessions.',
     angleLabel: 'Möglicher Ansatz',
     examples: [
       ['Follow-up-Chaos im Handwerk', 'Angebote werden verschickt, aber Follow-ups passieren manuell oder gar nicht.', 'Leichtes CRM oder Reminder-Workflow.'],
       ['Vereinsorganisation per WhatsApp', 'Freiwillige, Schichten und Zusagen verschwinden in Gruppenchats.', 'Einfacher Helferplaner oder formularbasierter Workflow.'],
-      ['Fotodokumentation auf Baustellen', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
+      ['Projekt- oder Einsatzdokumentation', 'Fotos liegen verteilt in Handygalerien, Chats und E-Mails.', 'Upload-Flow mit Projekt-Tags.'],
       ['Wartungs- und Prüferinnerungen', 'Wiederkehrende Termine werden manuell nachgehalten.', 'Automatisierter Reminder-Service.'],
     ],
     scheduleKicker: 'Ablauf',
-    scheduleTitle: 'Ein kompakter Abend mit genug Raum für gute Gespräche.',
+    scheduleTitle: 'Ablauf des ersten Pilot-Events.',
+    scheduleLead: 'Das ist der Ablauf für Pizza & Prototypes am 26. Juni. Zukünftige Formate können anders aussehen.',
     schedule: [
       ['18:00', 'Ankommen, Pizza, Getränke und Problemkarten'],
       ['18:15', 'Kurze Einführung und Spielregeln'],
       ['18:25', 'Teambildung'],
       ['18:35', 'Prototype-Sprint mit Pizza nebenbei'],
       ['20:20', 'Demo Walk / Ergebnisse teilen'],
-      ['20:45', 'Business Opportunity und nächste Schritte'],
+      ['20:45', 'Ergebnisse teilen und mögliche nächste Schritte'],
       ['21:00', 'Open End'],
     ],
     faqKicker: 'FAQ',
-    faqTitle: 'Kurze Antworten vor der Anmeldung.',
+    faqTitle: 'Kurze Antworten vor deinem Community-Beitritt.',
     faqs: [
       ['Muss ich eine Startup-Idee mitbringen?', 'Nein. Wir bringen Problemkarten mit. Du brauchst nur Neugier und Lust, an etwas Echtem zu arbeiten.'],
       ['Muss ich ein Programmierprofi sein?', 'Nein. Du musst kein Experte sein. Aber du solltest Lust auf Bauen, Coden, Designen oder technische Problemlösung haben.'],
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Ja. Wir planen nicht, von Teilnehmenden Geld für dieses Format zu nehmen. Pizza und Getränke sind inklusive.'],
+      ['Ist das kostenlos?', 'Der Community-Beitritt ist kostenlos, und auch der erste Pizza & Prototypes Pilot ist kostenlos. Zukünftige Formate können variieren.'],
     ],
-    formKicker: 'Event-Anmeldung',
-    formTitle: 'Sichere dir einen Platz für die erste Session.',
+    formKicker: 'Community-Updates',
+    formTitle: 'Werde Teil der Tech Meets Problems Community.',
     formSubtitle:
-      'Trag dich auch ein, wenn du an diesem Termin nicht kannst. Die erste Session ist auf etwa 30 Personen begrenzt, deshalb gilt first come, first served und wir informieren dich auch über kommende Events.',
-    pilotDetails: 'Details zum ersten Pilot',
-    capacityNote: 'Auf etwa 30 Personen begrenzt',
-    laptopNote: 'Laptop empfohlen. eduroam und Gast-WLAN sind verfügbar.',
-    included: 'Pizza, alkoholfreie und alkoholische Getränke inklusive',
-    privacyNote: 'Wir nutzen deine Daten nur, um Tech Meets Problems zu organisieren und relevante Updates zu senden. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter mit deiner Anmeldung, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
+      'Die Einreichungen für den ersten Pilot sind geschlossen bzw. bereits in der Auswahl. Trag dich in die Community-Liste ein, wenn du Updates zu zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen bekommen möchtest. Die Eintragung garantiert keinen Platz am 26. Juni.',
+    formInstruction: 'Füll das Formular unten aus, um auf die Community-Liste zu kommen.',
+    formDetailsNote: 'Wir nutzen deine Angaben, um deinen Hintergrund besser einzuschätzen, zukünftige Sessions zu planen und bei begrenzten Formaten passende Leute einzuladen.',
+    communityCardTitle: 'Wofür du dich einträgst',
+    communityInfo: ['Community-Updates', 'Zukünftige Sessions und Projektmöglichkeiten', 'Mögliche Nachrückplätze für ausgewählte Formate', 'WhatsApp-Community-Hub verfügbar'],
+    privacyNote: 'Wir nutzen deine Daten für Community- und zukünftige Event-Updates von Tech Meets Problems. Wenn du über einen Kampagnenlink kommst, speichern wir auch einfache Herkunftsparameter, damit wir sehen, welche Kanäle funktionieren. Kein Spam.',
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
     privacyText:
-      'Wir halten es einfach: Deine Angaben nutzen wir, um Tech Meets Problems zu organisieren, deine Anmeldung zu verwalten, dir Bestätigung, Kalenderblocker und relevante Event-Updates zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Telefonnummer, Profilangaben, Interessen, Pizza-/Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
+      'Wir halten es einfach: Deine Angaben nutzen wir, um die Tech Meets Problems Community-Liste zu verwalten, dir relevante Updates zu zukünftigen Sessions und Projekten zu senden und zu verstehen, welche Kanäle funktioniert haben. Dazu können Name, E-Mail-Adresse, Status, Universität oder Hochschule, Studien- oder beruflicher Hintergrund, Profil-Links, Interessen, Essenshinweise, Freitextangaben, Sprache, Zeitstempel, Landingpage und UTM-Parameter verarbeitet werden.',
     privacyDetails: [
-      'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Anmeldungen zu speichern, Bestätigungsmails zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
+      'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Community-Eintragungen zu speichern, relevante Updates zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
       'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@nikvisuals.de.',
     ],
     privacyItems: [
       'Verantwortlich: Niklas Brüne und Frederik Krause.',
-      'Zweck: Organisation, Anmeldung, Kommunikation, Catering, Kanalauswertung und Eventdokumentation.',
+      'Zweck: Community-Kommunikation, Planung zukünftiger Events, optionales Catering für künftige Formate, Kanalauswertung und Eventdokumentation.',
       'Tools/Empfänger: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics und GA4 nach Consent.',
       'Widerruf, Widerspruch oder Löschanfrage: info@nikvisuals.de.',
     ],
     privacyConsentStart: 'Ich habe die ',
     privacyConsentLink: 'Datenschutzhinweise',
     privacyConsentEnd:
-      ' gelesen und möchte meine Anmeldung abschicken. Ich erhalte per E-Mail die Bestätigung, den Kalenderblocker und wichtige Updates zu Tech Meets Problems. Kein Spam, jederzeit widerrufbar.',
+      ' gelesen und möchte der Tech Meets Problems Community-Liste beitreten. Ich kann per E-Mail relevante Updates zu zukünftigen Events und Projekten erhalten. Kein Spam, jederzeit widerrufbar.',
     privacyAndUpdatesText:
-      'Ich habe die Datenschutzhinweise gelesen und möchte meine Anmeldung abschicken. Ich erhalte per E-Mail die Bestätigung, den Kalenderblocker und wichtige Updates zu Tech Meets Problems. Kein Spam, jederzeit widerrufbar.',
-    privacyRequired: 'Bitte bestätige die Datenschutzhinweise und notwendigen Event-Updates vor dem Absenden.',
+      'Ich habe die Datenschutzhinweise gelesen und möchte der Tech Meets Problems Community-Liste beitreten. Ich kann per E-Mail relevante Updates zu zukünftigen Events und Projekten erhalten. Kein Spam, jederzeit widerrufbar.',
+    privacyRequired: 'Bitte bestätige die Datenschutzhinweise und Community-Updates vor dem Absenden.',
     photoVideoNotice:
       'Hinweis: Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
-    successTitle: 'Du bist für das Event angemeldet.',
-    successText: 'Danke. Deine Anmeldung wurde erfolgreich gesendet.',
-    nextStepsTitle: 'Nice, du stehst auf der Liste.',
-    nextStepsText: 'Tritt gern der WhatsApp-Gruppe bei und speichere dir den Termin direkt im Kalender, damit er nicht in der Woche untergeht.',
-    nextStepsEmailNote: 'Du bekommst zusätzlich eine Bestätigung per E-Mail. Schau zur Sicherheit auch kurz im Spam-Ordner nach.',
+    successTitle: 'Du stehst auf der Community-Liste.',
+    successText: 'Danke. Dein Community-Interesse wurde erfolgreich gesendet.',
+    nextStepsTitle: 'Danke, du bist auf der Tech Meets Problems Community-Liste.',
+    nextStepsText: 'Wir halten dich über zukünftige Sessions, mögliche Nachrückplätze und Projektmöglichkeiten auf dem Laufenden. Du kannst außerdem dem WhatsApp-Community-Hub für Updates und Austausch beitreten.',
+    nextStepsEmailNote: 'Wir nutzen deine E-Mail nur für relevante Tech Meets Problems Updates. Schau zur Sicherheit auch kurz im Spam-Ordner nach.',
     addToCalendar: 'Zum Kalender hinzufügen',
     googleCalendar: 'Google',
     outlookCalendar: 'Outlook',
     appleCalendar: 'Apple / ICS',
-    whatsappAfterSubmit: 'WhatsApp-Gruppe beitreten',
+    whatsappAfterSubmit: 'WhatsApp-Community beitreten',
     instagramAfterSubmitText: 'Für Updates und zukünftige Events kannst du uns auch auf Instagram folgen.',
     instagramAfterSubmitButton: 'Instagram öffnen',
-    error: 'Bitte fülle die Pflichtfelder aus, bevor du dich fürs Event anmeldest.',
+    error: 'Bitte fülle die Pflichtfelder aus, bevor du der Community beitrittst.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
       firstName: 'Vorname',
@@ -476,40 +513,50 @@ const copy = {
       email: 'E-Mail-Adresse',
       phone: 'Telefonnummer, optional',
       role: 'Was beschreibt dich am besten?',
-      status: 'Aktueller Status, optional',
+      status: 'Aktueller Status',
+      university: 'Universität oder Hochschule',
+      universityOther: 'Universität oder Hochschule angeben',
+      studyField: 'Studienfach oder beruflicher Hintergrund',
+      studyFieldOther: 'Bitte genauer angeben, optional',
       coding: 'Kannst du coden?',
-      eventLanguage: 'Bevorzugte Event-Sprache',
+      eventLanguage: 'Bevorzugte Sprache für zukünftige Formate',
       startupInterest: 'Interessierst du dich für Startups oder dafür, selbst mal zu gründen?',
-      followUp: 'Zeit für ein kleines Folgeprojekt nach dem Event?',
-      link: 'GitHub, LinkedIn, Portfolio oder Website, optional',
-      pizza: 'Pizza-Präferenz',
-      source: 'Woher hast du vom Event erfahren? optional',
+      followUp: 'Interesse an zukünftigen Projekten oder Folgeformaten?',
+      githubLink: 'GitHub-Profil, optional',
+      linkedinLink: 'LinkedIn-Profil, optional',
+      portfolioLink: 'Portfolio oder eigene Website, optional',
+      profileLinks: 'Optionale Profil-Links',
+      linksHelper: 'Optionale Links helfen uns, deinen Hintergrund besser einzuschätzen und können die Auswahlchancen bei begrenzten Formaten verbessern.',
+      pizza: 'Essenspräferenz für zukünftige Events, optional',
+      source: 'Wie hast du von Tech Meets Problems erfahren?',
       sourceOther: 'Woher genau?',
       interests: 'Was interessiert dich?',
       foodNotes: 'Allergien oder Essenshinweise, optional',
       notes: 'Sonst noch etwas? Eigene Projektidee, Frage oder Kontext?',
       select: 'Auswählen',
     },
-    roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Maker', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
-    statusOptions: ['Student an der Uni Siegen', 'Student an einer anderen Uni', 'Berufstätig', 'Gründer / selbstständig', 'Andere'],
+    roles: ['Programmierer', 'Informatikstudent', 'Technischer Student', 'Builder', 'UI/UX Designer', 'HCI', 'Data Science / AI', 'Engineering', 'Wirtschaftsinformatiker', 'BWLer', 'Business / Product', 'Andere'],
+    statusOptions: ['Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung', 'Berufstätig', 'Gründer/in / selbstständig', 'Aktuell nicht im Studium', 'Sonstiges'],
+    universityOptions: ['Universität Siegen', 'TH Köln / Campus Gummersbach', 'Fachhochschule Südwestfalen', 'Universität Bonn', 'Hochschule Bonn-Rhein-Sieg', 'Universität Koblenz', 'Hochschule Koblenz', 'Philipps-Universität Marburg', 'Justus-Liebig-Universität Gießen', 'Technische Hochschule Mittelhessen', 'FOM Hochschule', 'IU Internationale Hochschule', 'Sonstiges'],
+    studyFieldOptions: ['Informatik', 'Wirtschaftsinformatik', 'Human-Computer Interaction / HCI', 'UX / UI / Design', 'Data Science / AI', 'Elektrotechnik', 'Maschinenbau', 'Mechatronik', 'Wirtschaftsingenieurwesen', 'Medien / Kommunikation', 'BWL / Management', 'Entrepreneurship / SME Management', 'Ingenieurwesen, anderes', 'Tech, anderes', 'Business, anderes', 'Aktuell nicht im Studium', 'Sonstiges'],
     codingLevels: ['Ja, sicher', 'Ja, ein bisschen', 'Ich lerne gerade', 'Ich kann nur vibe-coden', 'Nein, aber ich kann designen, recherchieren oder validieren'],
     eventLanguageOptions: ['Deutsch', 'Englisch', 'Egal'],
     startupInterestOptions: ['Ja, großes Interesse', 'Vielleicht irgendwann', 'Nein, eher nicht'],
     interests: ['Web Apps', 'AI Tools', 'Automatisierung', 'SaaS', 'Hardware / IoT', 'Design / UX', 'Lokale Business-Probleme', 'Startup-Ideen', 'Einfach gute Leute treffen'],
     followUp: ['Ja', 'Vielleicht', 'Gerade nicht'],
-    pizza: ['Ja, normale Pizza', 'Vegetarisch', 'Vegan', 'Keine Pizza für mich'],
+    pizza: ['Keine Präferenz', 'Vegetarisch', 'Vegan', 'Anderes / später mitteilen'],
     sourceOptions: ['Mund-zu-Mund-Propaganda', 'Website', 'Social Media', 'LinkedIn', 'Professor', 'Vorlesung', 'Flyer', 'Werbung in der Mensa', 'Sonstiges'],
     requiredNote: '* Pflichtfelder',
     sending: 'Wird gesendet...',
-    roomKicker: 'Event-Atmosphäre',
+    roomKicker: 'Atmosphäre im ersten Piloten',
     roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten, Pizza, Getränke und Menschen, die gemeinsam an echten Business-Problemen arbeiten.',
+      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Beim ersten Piloten gibt es Pizza und Getränke, zukünftige Formate können anders aussehen.',
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
-    whatsappKicker: 'Builder-Gruppe',
-    whatsappTitle: 'Updates, Problemkarten und ein Ort zum Connecten, auch wenn du an diesem Termin nicht kannst.',
-    whatsappCardTitle: 'Tritt der Builder-Gruppe bei',
-    whatsappButton: 'WhatsApp beitreten',
+    whatsappKicker: 'Community-Hub',
+    whatsappTitle: 'Tritt der Tech Meets Problems WhatsApp-Community bei.',
+    whatsappCardTitle: 'Allgemeine Updates, Infos zu zukünftigen Sessions, Problemkarten, Projektideen und Austausch rund um echte Probleme, Tech, Workflows und Prototypen.',
+    whatsappButton: 'WhatsApp-Community beitreten',
     instagramCommunityLabel: 'Updates & Eindrücke auf Instagram',
     instagramCommunityHelper: 'Für zukünftige Events und Einblicke.',
     instagramFooter: 'Folge uns auf Instagram',
@@ -521,11 +568,11 @@ const copy = {
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
-    quickShare: 'Event teilen',
+    quickShare: 'Community teilen',
     languageLabel: 'Sprache',
-    shareNativeText: 'Tech Meets Problems: Pizza & Prototypes ist ein kostenloser builder-first Abend in Siegen, bei dem Entwickler, Maker und technische Studierende an echten Business-Problemen arbeiten. Pizza, alkoholfreie und alkoholische Getränke sind inklusive. Hier kann man sich anmelden:',
+    shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
     locationKicker: 'Ort',
-    locationTitle: 'Das Event findet im Haus der Innovation in der Siegener Innenstadt statt.',
+    locationTitle: 'Ort des ersten Pilot-Events: Haus der Innovation in der Siegener Innenstadt.',
     locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
     sourceLabel: 'In Google Maps öffnen',
     organizersKicker: 'Über uns',
@@ -539,13 +586,13 @@ const copy = {
     companiesKicker: 'Für Unternehmen',
     companiesTitle: 'Habt ihr ein echtes Problem oder wollt das Format unterstützen?',
     companiesText:
-      'Wenn ihr ein Unternehmen, KMU, Handwerksbetrieb, Verein, eine Institution, ein Innovationsteam oder potenzieller Sponsor seid, meldet euch gerne. Wir suchen reale Use Cases, Open-Innovation-Themen und Unterstützer, die technische Studierende und Builder an sinnvollen Herausforderungen arbeiten lassen wollen.',
+      'Wenn ihr ein Unternehmen, KMU, Handwerksbetrieb, Verein, eine Institution, ein Innovationsteam oder potenzielle Unterstützer seid, meldet euch gerne. Wir suchen reale Use Cases, Open-Innovation-Themen und Partner, die der Community langfristig sinnvolle Herausforderungen ermöglichen möchten.',
     companiesButton: 'Kontakt aufnehmen',
     companiesVisual: ['Use Case', 'Builder', 'Output', 'Echter Bedarf', 'Sinnvolle Challenge'],
     poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
     footerSub: 'Where builders work on real business needs.',
-    footerLine: 'Tech Meets Problems: Pizza & Prototypes',
+    footerLine: 'Tech Meets Problems Community · Erster Pilot: Pizza & Prototypes',
     imprint: 'Impressum',
   },
 };
@@ -562,14 +609,14 @@ const LANGUAGE_STORAGE_KEY = 'tech-meets-problems-language';
 const SITE_URL = 'https://techmeetsproblems.com/';
 const seoByLang: Record<Lang, { title: string; description: string }> = {
   de: {
-    title: 'Pizza & Prototypes Siegen | Tech Meets Problems',
+    title: 'Tech Meets Problems | Builder-first Community in Siegen',
     description:
-      'Tech Meets Problems: Pizza & Prototypes ist ein builder-first Event in Siegen für Entwickler, technische Studierende und Maker, die an echten Problemräumen arbeiten.',
+      'Tech Meets Problems ist eine builder-first Tech-Community in Siegen. Pizza & Prototypes ist der erste Pilot für echte Probleme, zukünftige Sessions und praktische Projekte.',
   },
   en: {
-    title: 'Tech Meets Problems: Pizza & Prototypes',
+    title: 'Tech Meets Problems | Builder-first community in Siegen',
     description:
-      'Tech Meets Problems: Pizza & Prototypes is a builder-first event in Siegen where technical people work on real business needs.',
+      'Tech Meets Problems is a builder-first tech community in Siegen. Pizza & Prototypes is the first pilot for real problems, future sessions and practical projects.',
   },
 };
 
@@ -607,7 +654,7 @@ function getShareUrl(lang: Lang) {
     url.searchParams.set('utm_medium', 'share');
   }
   if (!url.searchParams.has('utm_campaign')) {
-    url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+    url.searchParams.set('utm_campaign', 'tech_meets_problems_community');
   }
   if (!url.searchParams.has('utm_content')) {
     url.searchParams.set('utm_content', isLikelyMobileShare() ? 'website_share_mobile' : 'website_share_desktop');
@@ -620,7 +667,7 @@ function getWhatsAppShareUrl(lang: Lang) {
   url.searchParams.set('lang', lang);
   url.searchParams.set('utm_source', 'whatsapp');
   url.searchParams.set('utm_medium', 'share');
-  url.searchParams.set('utm_campaign', 'pizza_and_prototypes_2026');
+  url.searchParams.set('utm_campaign', 'tech_meets_problems_community');
   url.searchParams.set('utm_content', lang === 'de' ? 'website_share' : 'website_share_en');
   return url.toString();
 }
@@ -890,7 +937,11 @@ function App() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.pizza) {
+    const needsSourceDetail = form.source === 'Other' || form.source === 'Sonstiges';
+    const isStudentStatus = ['Bachelor student', 'Master student', 'PhD / researcher', 'Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung'].includes(form.status);
+    const needsUniversityDetail = form.university === 'Other' || form.university === 'Sonstiges';
+
+    if (!form.firstName || !form.lastName || !form.email || !form.role || !form.status || !form.studyField || !form.codingLevel || !form.eventLanguage || !form.startupInterest || !form.followUp || !form.source || (isStudentStatus && !form.university) || (isStudentStatus && needsUniversityDetail && !form.universityOther) || (needsSourceDetail && !form.sourceOther)) {
       setFormError(t.error);
       return;
     }
@@ -938,11 +989,14 @@ function App() {
     };
     const submissionPayload = {
       ...submission,
-      _subject: `New signup: ${submission.firstName} ${submission.lastName} - Pizza & Prototypes`,
+      signupType: 'community_interest',
+      eventId: 'future_events_general',
+      formVersion: '2026-06-19-community-v1',
+      _subject: 'New Tech Meets Problems community signup',
       _replyto: submission.email,
       fullName: `${submission.firstName} ${submission.lastName}`.trim(),
       interests: submission.interests.join(', '),
-      event: 'Tech Meets Problems: Pizza & Prototypes',
+      event: 'Tech Meets Problems Community / Future Events',
     };
 
     try {
@@ -987,7 +1041,7 @@ function App() {
     }
 
     await navigator.share({
-      title: 'Tech Meets Problems: Pizza & Prototypes',
+      title: 'Tech Meets Problems',
       text: t.shareNativeText,
       url: shareUrl,
     });
@@ -1001,7 +1055,7 @@ function App() {
       <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
-      <Hero t={t} lang={lang} />
+      <Hero t={t} />
       <ProblemSection t={t} />
       <RoomPreviewSection t={t} />
       <WhyJoinSection t={t} />
@@ -1010,6 +1064,7 @@ function App() {
       <OpportunitySection t={t} />
       <HowItWorks t={t} />
       <ExampleProblems t={t} />
+      <FirstPilotSection t={t} lang={lang} />
       <Schedule t={t} />
       <Registration
         t={t}
@@ -1221,7 +1276,7 @@ function SignupSuccessModal({ t, show, onClose }: { t: typeof copy.en; show: boo
   );
 }
 
-function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
+function Hero({ t }: { t: typeof copy.en }) {
   return (
     <section id="top" className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 pb-12 pt-20 sm:px-5 sm:pb-14 sm:pt-24 lg:grid-cols-[1.08fr_0.92fr] lg:pt-16">
       <div className="min-w-0 max-w-3xl">
@@ -1241,8 +1296,8 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           </a>
           <div className="hero-free-badge" aria-label={`${t.freeBadgeLine1}, ${t.freeBadgeLine2}`}>
             <span className="hero-free-badge-icons" aria-hidden="true">
-              <Pizza className="h-4 w-4" />
-              <CupSoda className="h-4 w-4" />
+              <Sparkles className="h-4 w-4" />
+              <Users className="h-4 w-4" />
             </span>
             <span>
               <strong>{t.freeBadgeLine1}</strong>
@@ -1251,9 +1306,9 @@ function Hero({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           </div>
         </div>
         <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
-          <HeroFact icon={CalendarDays} label={EVENT.date[lang]} />
-          <HeroFact icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-          <HeroFact icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+          <HeroFact icon={CalendarDays} label={t.communityFacts[0]} />
+          <HeroFact icon={Lightbulb} label={t.communityFacts[1]} />
+          <HeroFact icon={Workflow} label={t.communityFacts[2]} />
         </div>
         <p className="mt-5 text-sm leading-6 text-slate-400">{t.note}</p>
       </div>
@@ -1301,10 +1356,9 @@ function HeroVisual({ t }: { t: typeof copy.en }) {
   return (
     <div className="relative min-w-0">
       <div className="event-map-card hero-visual-card">
-        <img src={ASSETS.heroMap} alt={`${t.edition.split(' · ')[0]} event flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
+        <img src={ASSETS.heroMap} alt={`${t.pilotContextTitle} flow`} className="hero-visual-image" decoding="async" fetchPriority="high" />
       </div>
       <HeroSupporters t={t} />
-      <Countdown t={t} compact />
     </div>
   );
 }
@@ -1450,10 +1504,31 @@ function ExampleProblems({ t }: { t: typeof copy.en }) {
   );
 }
 
+function FirstPilotSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
+  return (
+    <Section id="first-pilot" kicker={t.pilotKicker} title={t.pilotContextTitle}>
+      <div className="glass-card mt-10 p-6 sm:p-8">
+          <p className="section-lead mt-0">{t.pilotContextText}</p>
+          <p className="mt-5 text-sm leading-6 text-cyan-100">{t.pilotEligibility}</p>
+          <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
+            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
+            <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+          </div>
+          <p className="mt-5 text-sm text-slate-400">{t.pilotIncluded}</p>
+          <div className="mt-5 max-w-xl">
+            <Countdown t={t} />
+          </div>
+      </div>
+    </Section>
+  );
+}
+
 
 function Schedule({ t }: { t: typeof copy.en }) {
   return (
     <Section id="schedule" kicker={t.scheduleKicker} title={t.scheduleTitle}>
+      <p className="section-lead">{t.scheduleLead}</p>
       <div className="timeline mt-10">
         {t.schedule.map(([time, item]) => (
           <div key={time} className="timeline-row">
@@ -1512,27 +1587,19 @@ function Registration({
   toggleInterest,
   handleSubmit,
 }: RegistrationProps) {
+  const showUniversity = ['Bachelor student', 'Master student', 'PhD / researcher', 'Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung'].includes(form.status);
+
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <p className="section-lead">{t.formSubtitle}</p>
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-white">{t.pilotDetails}</h3>
+          <h3 className="text-2xl font-semibold text-white">{t.communityCardTitle}</h3>
           <div className="mt-7 space-y-4">
-            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
-            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
-            <InfoRow icon={Check} label={t.included} />
-          </div>
-          <div className="event-alerts mt-6">
-            <div className="event-alert event-alert-strong">
-              <Users className="h-5 w-5" aria-hidden="true" />
-              <span>{t.capacityNote}</span>
-            </div>
-            <div className="event-alert">
-              <Laptop className="h-5 w-5" aria-hidden="true" />
-              <span>{t.laptopNote}</span>
-            </div>
+            <InfoRow icon={MessageCircle} label={t.communityInfo[0]} />
+            <InfoRow icon={CalendarDays} label={t.communityInfo[1]} />
+            <InfoRow icon={Users} label={t.communityInfo[2]} />
+            <InfoRow icon={MessageCircle} label={t.communityInfo[3]} />
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
             <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
@@ -1541,6 +1608,10 @@ function Registration({
         </div>
 
         <form className="form-card" onSubmit={handleSubmit}>
+          <div className="mb-6 rounded-xl border border-white/10 bg-white/[0.035] p-4">
+            <p className="font-medium text-white">{t.formInstruction}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-400">{t.formDetailsNote}</p>
+          </div>
           {submitted && (
             <div className="mb-6 rounded-xl border border-emerald-300/25 bg-emerald-300/10 p-5 text-emerald-100">
               <div className="flex items-center gap-3 font-semibold">
@@ -1559,14 +1630,33 @@ function Registration({
             <TextInput label={t.fields.email} required type="email" value={form.email} onChange={(value) => updateField('email', value)} />
             <TextInput label={t.fields.phone} value={form.phone} onChange={(value) => updateField('phone', value)} />
             <SelectInput label={t.fields.role} required value={form.role} options={t.roles} placeholder={t.fields.select} onChange={(value) => updateField('role', value)} />
-            <SelectInput label={t.fields.status} value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
+            <SelectInput label={t.fields.status} required value={form.status} options={t.statusOptions} placeholder={t.fields.select} onChange={(value) => updateField('status', value)} />
+            {showUniversity && (
+              <SelectInput label={t.fields.university} required value={form.university} options={t.universityOptions} placeholder={t.fields.select} onChange={(value) => updateField('university', value)} />
+            )}
+            {showUniversity && (form.university === 'Other' || form.university === 'Sonstiges') && (
+              <TextInput label={t.fields.universityOther} required value={form.universityOther} onChange={(value) => updateField('universityOther', value)} />
+            )}
+            <SelectInput label={t.fields.studyField} required value={form.studyField} options={t.studyFieldOptions} placeholder={t.fields.select} onChange={(value) => updateField('studyField', value)} />
+            {(form.studyField === 'Other' || form.studyField === 'Sonstiges') && (
+              <TextInput label={t.fields.studyFieldOther} value={form.studyFieldOther} onChange={(value) => updateField('studyFieldOther', value)} />
+            )}
             <SelectInput label={t.fields.coding} required value={form.codingLevel} options={t.codingLevels} placeholder={t.fields.select} onChange={(value) => updateField('codingLevel', value)} />
             <SelectInput label={t.fields.eventLanguage} required value={form.eventLanguage} options={t.eventLanguageOptions} placeholder={t.fields.select} onChange={(value) => updateField('eventLanguage', value)} />
             <SelectInput label={t.fields.startupInterest} required value={form.startupInterest} options={t.startupInterestOptions} placeholder={t.fields.select} onChange={(value) => updateField('startupInterest', value)} />
             <SelectInput label={t.fields.followUp} required value={form.followUp} options={t.followUp} placeholder={t.fields.select} onChange={(value) => updateField('followUp', value)} />
-            <TextInput label={t.fields.link} value={form.link} onChange={(value) => updateField('link', value)} />
-            <SelectInput label={t.fields.pizza} required value={form.pizza} options={t.pizza} placeholder={t.fields.select} onChange={(value) => updateField('pizza', value)} />
+            <SelectInput label={t.fields.pizza} value={form.pizza} options={t.pizza} placeholder={t.fields.select} onChange={(value) => updateField('pizza', value)} />
           </div>
+
+          <fieldset className="mt-6">
+            <legend className="text-sm font-medium text-slate-200">{t.fields.profileLinks}</legend>
+            <p className="mt-2 text-sm leading-6 text-slate-400">{t.fields.linksHelper}</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <TextInput label={t.fields.githubLink} value={form.githubLink} onChange={(value) => updateField('githubLink', value)} />
+              <TextInput label={t.fields.linkedinLink} value={form.linkedinLink} onChange={(value) => updateField('linkedinLink', value)} />
+              <TextInput label={t.fields.portfolioLink} value={form.portfolioLink} onChange={(value) => updateField('portfolioLink', value)} />
+            </div>
+          </fieldset>
 
           <fieldset className="mt-6">
             <legend className="mb-3 text-sm font-medium text-slate-200">{t.fields.interests}</legend>
@@ -1581,9 +1671,9 @@ function Registration({
           </fieldset>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <SelectInput label={t.fields.source} value={form.source} options={t.sourceOptions} placeholder={t.fields.select} onChange={(value) => updateField('source', value)} />
+            <SelectInput label={t.fields.source} required value={form.source} options={t.sourceOptions} placeholder={t.fields.select} onChange={(value) => updateField('source', value)} />
             {(form.source === 'Other' || form.source === 'Sonstiges') && (
-              <TextInput label={t.fields.sourceOther} value={form.sourceOther} onChange={(value) => updateField('sourceOther', value)} />
+              <TextInput label={t.fields.sourceOther} required value={form.sourceOther} onChange={(value) => updateField('sourceOther', value)} />
             )}
             <TextInput label={t.fields.foodNotes} value={form.foodNotes} onChange={(value) => updateField('foodNotes', value)} />
             <label className="field sm:row-span-2">
@@ -1635,8 +1725,6 @@ function Registration({
 }
 
 function SuccessActions({ t }: { t: typeof copy.en }) {
-  const calendarLinks = getCalendarLinks();
-
   return (
     <div className="success-actions">
       <div>
@@ -1644,22 +1732,10 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
         <p>{t.nextStepsText}</p>
         <p className="mt-3 text-sm text-emerald-100/70">{t.nextStepsEmailNote}</p>
       </div>
-      <div className="success-action-grid">
+      <div className="success-action-grid success-action-grid-single">
         <a href={EVENT.whatsappLink} className="success-action-whatsapp" target="_blank" rel="noreferrer">
           <MessageCircle className="h-4 w-4" aria-hidden="true" />
           <span>{t.whatsappAfterSubmit}</span>
-        </a>
-        <a href={calendarLinks.google} target="_blank" rel="noreferrer">
-          <CalendarDays className="h-4 w-4" aria-hidden="true" />
-          {t.googleCalendar}
-        </a>
-        <a href={calendarLinks.outlook} target="_blank" rel="noreferrer">
-          <CalendarDays className="h-4 w-4" aria-hidden="true" />
-          {t.outlookCalendar}
-        </a>
-        <a href={calendarLinks.ics} download="tech-meets-problems-pizza-prototypes.ics">
-          <CalendarDays className="h-4 w-4" aria-hidden="true" />
-          {t.appleCalendar}
         </a>
       </div>
       <div className="success-instagram">
@@ -1671,16 +1747,6 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
       </div>
     </div>
   );
-}
-
-function getCalendarLinks() {
-  const google =
-    'https://calendar.google.com/calendar/u/0/r/eventedit?text=Tech+Meets+Problems:+Pizza+%26+Prototypes&dates=20260626T160000Z/20260626T190000Z&details=Builder-first+prototype+night+in+Siegen.+Pizza,+drinks,+real+problem+cards+and+first+concepts+or+prototypes.&location=Startpunkt57+/+Haus+der+Innovation,+Siegen,+Sandstra%C3%9Fe+26,+57072+Siegen';
-  const outlook =
-    'https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=Tech%20Meets%20Problems%3A%20Pizza%20%26%20Prototypes&startdt=2026-06-26T18%3A00%3A00%2B02%3A00&enddt=2026-06-26T21%3A00%3A00%2B02%3A00&body=Builder-first%20prototype%20night%20in%20Siegen.%20Pizza%2C%20drinks%2C%20real%20problem%20cards%20and%20first%20concepts%20or%20prototypes.&location=Startpunkt57%20%2F%20Haus%20der%20Innovation%2C%20Siegen%2C%20Sandstra%C3%9Fe%2026%2C%2057072%20Siegen';
-  const ics = '/calendar/pizza-and-prototypes.ics';
-
-  return { google, outlook, ics };
 }
 
 function WhatsAppSection({ t }: { t: typeof copy.en }) {

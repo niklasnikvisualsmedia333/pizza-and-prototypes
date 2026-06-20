@@ -2307,6 +2307,10 @@ main > header {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.success-action-grid-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .success-action-grid a {
   display: inline-flex;
   min-height: 2.45rem;
