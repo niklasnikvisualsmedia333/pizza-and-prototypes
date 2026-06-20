@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Globe2,
   Instagram,
+  Linkedin,
   Lightbulb,
   Mail,
   Menu,
@@ -59,6 +60,7 @@ const EVENT = {
   size: '15 to 30 people',
   whatsappLink: 'https://chat.whatsapp.com/Is1hh61VskMLHRgjqgJNUH',
   instagramLink: 'https://www.instagram.com/techmeetsproblems/',
+  linkedinLink: 'https://www.linkedin.com/company/tech-meets-problems',
   contactEmail: 'info@nikvisuals.de',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
   startsAt: '2026-06-26T18:00:00+02:00',
@@ -273,6 +275,8 @@ const copy = {
     whatsappAfterSubmit: 'Join WhatsApp community',
     instagramAfterSubmitText: 'For updates and future events, you can also follow us on Instagram.',
     instagramAfterSubmitButton: 'Open Instagram',
+    linkedinAfterSubmitText: 'You can also follow us on LinkedIn for updates, future sessions and project opportunities.',
+    linkedinAfterSubmitButton: 'Open LinkedIn',
     error: 'Please fill in the required fields before joining the community.',
     sendError: 'Sending did not work right now. Please check your connection and try again.',
     fields: {
@@ -327,8 +331,12 @@ const copy = {
     whatsappButton: 'Join WhatsApp community',
     instagramCommunityLabel: 'Updates & impressions on Instagram',
     instagramCommunityHelper: 'For future events and behind-the-scenes updates.',
+    linkedinCommunityLabel: 'Updates & project opportunities on LinkedIn',
+    linkedinCommunityHelper: 'Follow the company page for future sessions and partner updates.',
     instagramFooter: 'Follow us on Instagram',
     instagramAria: 'Open Tech Meets Problems on Instagram',
+    linkedinFooter: 'Follow us on LinkedIn',
+    linkedinAria: 'Open Tech Meets Problems on LinkedIn',
     shareKicker: 'Share',
     shareTitle: 'Know someone who likes building? Send this to them.',
     shareText: 'A good room starts with the right people.',
@@ -339,10 +347,6 @@ const copy = {
     quickShare: 'Share community',
     languageLabel: 'Language',
     shareNativeText: 'Tech Meets Problems is a builder-first community in Siegen for developers, technical students and tech-minded people who want to work on real business needs. Join the community list for future sessions and project opportunities:',
-    locationKicker: 'Location',
-    locationTitle: 'First pilot location: Haus der Innovation in central Siegen.',
-    locationText: 'Hosted at Startpunkt57 / Haus der Innovation. Powered by Startpunkt57 and the Entrepreneurship Center.',
-    sourceLabel: 'Open in Google Maps',
     organizersKicker: 'About us',
     organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
     organizersText:
@@ -505,6 +509,8 @@ const copy = {
     whatsappAfterSubmit: 'WhatsApp-Community beitreten',
     instagramAfterSubmitText: 'Für Updates und zukünftige Events kannst du uns auch auf Instagram folgen.',
     instagramAfterSubmitButton: 'Instagram öffnen',
+    linkedinAfterSubmitText: 'Für Updates, zukünftige Sessions und Projektmöglichkeiten kannst du uns auch auf LinkedIn folgen.',
+    linkedinAfterSubmitButton: 'LinkedIn öffnen',
     error: 'Bitte fülle die Pflichtfelder aus, bevor du der Community beitrittst.',
     sendError: 'Das Senden hat gerade nicht geklappt. Bitte prüfe deine Verbindung und versuche es erneut.',
     fields: {
@@ -559,8 +565,12 @@ const copy = {
     whatsappButton: 'WhatsApp-Community beitreten',
     instagramCommunityLabel: 'Updates & Eindrücke auf Instagram',
     instagramCommunityHelper: 'Für zukünftige Events und Einblicke.',
+    linkedinCommunityLabel: 'Updates & Projektmöglichkeiten auf LinkedIn',
+    linkedinCommunityHelper: 'Folge der Company Page für zukünftige Sessions und Partner-Updates.',
     instagramFooter: 'Folge uns auf Instagram',
     instagramAria: 'Tech Meets Problems auf Instagram öffnen',
+    linkedinFooter: 'Folge uns auf LinkedIn',
+    linkedinAria: 'Tech Meets Problems auf LinkedIn öffnen',
     shareKicker: 'Teilen',
     shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
     shareText: 'Ein guter Raum startet mit den richtigen Leuten.',
@@ -571,10 +581,6 @@ const copy = {
     quickShare: 'Community teilen',
     languageLabel: 'Sprache',
     shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
-    locationKicker: 'Ort',
-    locationTitle: 'Ort des ersten Pilot-Events: Haus der Innovation in der Siegener Innenstadt.',
-    locationText: 'Das Event findet im Startpunkt57 / Haus der Innovation statt. Unterstützt von Startpunkt57 und Entrepreneurship Center.',
-    sourceLabel: 'In Google Maps öffnen',
     organizersKicker: 'Über uns',
     organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
     organizersText:
@@ -1083,7 +1089,6 @@ function App() {
       />
       <WhatsAppSection t={t} />
       <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
-      <LocationSection t={t} lang={lang} />
       <CompaniesSection t={t} />
       <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
       <FAQ t={t} />
@@ -1513,7 +1518,7 @@ function FirstPilotSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
             <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
             <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={EVENT.location} href={EVENT.mapsLink} />
+            <InfoRow icon={MapPin} label={`${EVENT.location} · ${EVENT.address}`} href={EVENT.mapsLink} />
           </div>
           <p className="mt-5 text-sm text-slate-400">{t.pilotIncluded}</p>
           <div className="mt-5 max-w-xl">
@@ -1745,6 +1750,13 @@ function SuccessActions({ t }: { t: typeof copy.en }) {
           {t.instagramAfterSubmitButton}
         </a>
       </div>
+      <div className="success-instagram">
+        <p>{t.linkedinAfterSubmitText}</p>
+        <a href={EVENT.linkedinLink} target="_blank" rel="noopener noreferrer" aria-label={t.linkedinAria}>
+          <Linkedin className="h-4 w-4" aria-hidden="true" />
+          {t.linkedinAfterSubmitButton}
+        </a>
+      </div>
     </div>
   );
 }
@@ -1778,6 +1790,19 @@ function WhatsAppSection({ t }: { t: typeof copy.en }) {
               <small>{t.instagramCommunityHelper}</small>
             </span>
           </a>
+          <a
+            href={EVENT.linkedinLink}
+            className="community-instagram-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t.linkedinAria}
+          >
+            <Linkedin className="h-4 w-4" aria-hidden="true" />
+            <span>
+              <strong>{t.linkedinCommunityLabel}</strong>
+              <small>{t.linkedinCommunityHelper}</small>
+            </span>
+          </a>
         </div>
       </div>
     </Section>
@@ -1801,37 +1826,6 @@ function ShareSection({ t, copyLink, nativeShare, shareMessage }: { t: typeof co
         </div>
       </div>
       {shareMessage && <p className="mt-4 text-sm text-cyan-200">{shareMessage}</p>}
-    </Section>
-  );
-}
-
-function LocationSection({ t, lang }: { t: typeof copy.en; lang: Lang }) {
-  return (
-    <Section id="location" kicker={t.locationKicker} title={t.locationTitle}>
-      <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="glass-card p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-white">
-            <a href={EVENT.mapsLink} target="_blank" rel="noreferrer" className="transition hover:text-cyan-100">
-              {EVENT.location}
-            </a>
-          </h3>
-          <div className="mt-6 space-y-4">
-            <InfoRow icon={CalendarDays} label={EVENT.date[lang]} />
-            <InfoRow icon={Timer} label={lang === 'de' ? EVENT.timeDe : EVENT.time} />
-            <InfoRow icon={MapPin} label={EVENT.address} href={EVENT.mapsLink} />
-          </div>
-        </div>
-        <div className="location-panel">
-          <p>
-            <a href={EVENT.mapsLink} target="_blank" rel="noreferrer">Startpunkt57 / Haus der Innovation</a>
-            {t.locationText.includes('Hosted') ? ' is hosting the event in central Siegen. Powered by Startpunkt57 and the Entrepreneurship Center.' : ' ist der Ort des Events in der Siegener Innenstadt. Unterstützt von Startpunkt57 und Entrepreneurship Center.'}
-          </p>
-          <a href={EVENT.mapsLink} target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
-            {t.sourceLabel}
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
-          </a>
-        </div>
-      </div>
     </Section>
   );
 }
@@ -1957,6 +1951,10 @@ function Footer({ t, openPrivacyNotice }: { t: typeof copy.en; openPrivacyNotice
           <a href={EVENT.instagramLink} target="_blank" rel="noopener noreferrer" aria-label={t.instagramAria}>
             <Instagram className="h-4 w-4" aria-hidden="true" />
             {t.instagramFooter}
+          </a>
+          <a href={EVENT.linkedinLink} target="_blank" rel="noopener noreferrer" aria-label={t.linkedinAria}>
+            <Linkedin className="h-4 w-4" aria-hidden="true" />
+            {t.linkedinFooter}
           </a>
           <a href="https://nikvisuals.de/impressum" target="_blank" rel="noreferrer">
             {t.imprint}
