@@ -1732,7 +1732,8 @@ main > header {
   width: fit-content;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.9rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
   color: #7dd3fc;
   font-size: 0.9rem;
   font-weight: 750;
@@ -1958,6 +1959,12 @@ main > header {
   .supporter-panel {
     min-height: 9.4rem;
     align-self: end;
+  }
+}
+
+@media (min-width: 1200px) {
+  .founder-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
