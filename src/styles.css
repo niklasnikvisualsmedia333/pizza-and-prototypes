@@ -1732,7 +1732,8 @@ main > header {
   width: fit-content;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.9rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
   color: #7dd3fc;
   font-size: 0.9rem;
   font-weight: 750;

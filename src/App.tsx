@@ -590,7 +590,7 @@ const copy = {
     organizers: [
       ['Niklas Brüne', 'Gründer', 'Eventkonzept, Kommunikation und Problem-Framing'],
       ['Frederik Krause', 'Ehemaliger Gründer', 'Outreach, Operations und Teilnehmererlebnis'],
-      ['Johanna Brenner', 'Gründungsbegleitung', 'Coaching, Koordination und Strategie'],
+      ['Johanna Brenner', 'Startup support', 'Coaching, Koordination und Strategie'],
     ],
     companiesKicker: 'Für Unternehmen',
     companiesTitle: 'Habt ihr ein echtes Problem oder wollt das Format unterstützen?',
