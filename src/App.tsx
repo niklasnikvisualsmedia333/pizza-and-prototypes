@@ -46,6 +46,7 @@ const ASSETS = {
   entrepreneurshipCenter: `${import.meta.env.BASE_URL}assets/logo-entrepreneurship-center.png`,
   niklas: `${import.meta.env.BASE_URL}assets/niklas-bruene.jpg`,
   frederik: `${import.meta.env.BASE_URL}assets/frederik-krause.jpg`,
+  johanna: `${import.meta.env.BASE_URL}assets/johanna-brenner.jpg`,
 };
 
 const EVENT = {
@@ -348,12 +349,13 @@ const copy = {
     languageLabel: 'Language',
     shareNativeText: 'Tech Meets Problems is a builder-first community in Siegen for developers, technical students and tech-minded people who want to work on real business needs. Join the community list for future sessions and project opportunities:',
     organizersKicker: 'About us',
-    organizersTitle: 'Built by Niklas Brüne and Frederik Krause.',
+    organizersTitle: 'The team behind Tech Meets Problems.',
     organizersText:
-      'We are two master’s students at the University of Siegen studying Entrepreneurship & SME Management. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
+      'We are three master’s students at the University of Siegen studying Entrepreneurship & SME Management. Our mission is to create a platform where tech-minded people can work together on real challenges, learn from each other, and develop innovative ideas. At the same time, we want to bridge the gap between companies with real-world problems and motivated builders who are eager to create impactful solutions.',
     organizers: [
       ['Niklas Brüne', 'Founder', 'Event concept, communication and problem framing'],
       ['Frederik Krause', 'Former founder', 'Outreach, operations and participant experience'],
+      ['Johanna Brenner', 'Startup support', 'Coaching, coordination and strategy'],
     ],
     companiesKicker: 'For companies',
     companiesTitle: 'Have a real problem or want to support the format?',
@@ -582,12 +584,13 @@ const copy = {
     languageLabel: 'Sprache',
     shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
     organizersKicker: 'Über uns',
-    organizersTitle: 'Gebaut von Niklas Brüne und Frederik Krause.',
+    organizersTitle: 'Das Team hinter Tech Meets Problems.',
     organizersText:
-      'Wir sind zwei Masterstudenten an der Universität Siegen im Studiengang Entrepreneurship & SME Management. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
+      'Wir sind drei Masterstudierende an der Universität Siegen im Studiengang Entrepreneurship & SME Management. Unsere Mission ist es, eine Plattform zu schaffen, auf der technikaffine Menschen gemeinsam an echten Herausforderungen arbeiten, voneinander lernen und innovative Ideen entwickeln können. Gleichzeitig wollen wir die Lücke zwischen Unternehmen mit realen Problemen und motivierten Buildern schließen, die Lust haben, wirkungsvolle Lösungen zu entwickeln.',
     organizers: [
       ['Niklas Brüne', 'Gründer', 'Eventkonzept, Kommunikation und Problem-Framing'],
       ['Frederik Krause', 'Ehemaliger Gründer', 'Outreach, Operations und Teilnehmererlebnis'],
+      ['Johanna Brenner', 'Gründungsbegleitung', 'Coaching, Koordination und Strategie'],
     ],
     companiesKicker: 'Für Unternehmen',
     companiesTitle: 'Habt ihr ein echtes Problem oder wollt das Format unterstützen?',
@@ -604,8 +607,12 @@ const copy = {
 };
 
 const cardIcons = [Lightbulb, Users, Rocket, Code2];
-const founderImages = [ASSETS.niklas, ASSETS.frederik];
-const founderLinks = ['https://www.linkedin.com/in/niklas-bruene/', 'https://www.linkedin.com/in/frederik-krause-a80448277/'];
+const founderImages = [ASSETS.niklas, ASSETS.frederik, ASSETS.johanna];
+const founderLinks = [
+  'https://www.linkedin.com/in/niklas-bruene/',
+  'https://www.linkedin.com/in/frederik-krause-a80448277/',
+  'https://www.linkedin.com/in/johanna-brenner-619a36328',
+];
 const supporterLogos = [
   { name: 'Startpunkt57', src: ASSETS.startpunkt57, href: 'https://www.startpunkt57.de/' },
   { name: 'Entrepreneurship Center Siegen', src: ASSETS.entrepreneurshipCenter, href: 'https://www.ec.uni-siegen.de/' },
