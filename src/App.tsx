@@ -62,7 +62,7 @@ const EVENT = {
   whatsappLink: 'https://chat.whatsapp.com/Is1hh61VskMLHRgjqgJNUH',
   instagramLink: 'https://www.instagram.com/techmeetsproblems/',
   linkedinLink: 'https://www.linkedin.com/company/tech-meets-problems',
-  contactEmail: 'info@nikvisuals.de',
+  contactEmail: 'info@techmeetsproblems.com',
   mapsLink: 'https://maps.app.goo.gl/KBy84aPDsBduXJWA9',
   startsAt: '2026-06-26T18:00:00+02:00',
 };
@@ -362,6 +362,7 @@ const copy = {
     companiesText:
       'If you are a company, SME, craft business, club, institution, innovation team or potential supporter, reach out. We are looking for real use cases, open innovation topics and partners who want the community to explore useful challenges over time.',
     companiesButton: 'Contact us',
+    companiesEmailHint: 'Or email us directly:',
     companiesVisual: ['Use case', 'Builders', 'Output', 'Real need', 'Useful challenge'],
     poweredBy: 'Supported by',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
@@ -597,6 +598,7 @@ const copy = {
     companiesText:
       'Wenn ihr ein Unternehmen, KMU, Handwerksbetrieb, Verein, eine Institution, ein Innovationsteam oder potenzielle Unterstützer seid, meldet euch gerne. Wir suchen reale Use Cases, Open-Innovation-Themen und Partner, die der Community langfristig sinnvolle Herausforderungen ermöglichen möchten.',
     companiesButton: 'Kontakt aufnehmen',
+    companiesEmailHint: 'Oder direkt per E-Mail:',
     companiesVisual: ['Use Case', 'Builder', 'Output', 'Echter Bedarf', 'Sinnvolle Challenge'],
     poweredBy: 'Unterstützt von',
     supporters: ['Startpunkt57', 'Entrepreneurship Center Siegen'],
@@ -1885,6 +1887,12 @@ function CompaniesSection({ t }: { t: typeof copy.en }) {
             {t.companiesButton}
             <Mail className="h-5 w-5" aria-hidden="true" />
           </a>
+          <p className="mt-3 text-sm text-slate-400">
+            {t.companiesEmailHint}{' '}
+            <a href={`mailto:${EVENT.contactEmail}`} className="font-semibold text-cyan-200 underline decoration-cyan-300/30 underline-offset-4 transition hover:text-white">
+              {EVENT.contactEmail}
+            </a>
+          </p>
         </div>
         <div className="company-visual" aria-hidden="true">
           <div className="company-node company-node-problem">
