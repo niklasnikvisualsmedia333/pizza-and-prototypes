@@ -23,6 +23,14 @@ import {
   Workflow,
   X,
 } from 'lucide-react';
+import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
+import { SectionHeading, TeamBlock } from './components/layout/SharedSections';
+import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
+import { SiteHeader } from './components/layout/SiteHeader';
+import { ASSETS as REFRESH_ASSETS } from './config/assets';
+import { SITE } from './config/site';
+import { communityContent } from './content/community';
+import { withLanguage } from './lib/language';
 
 type Lang = 'en' | 'de';
 type AnalyticsConsent = 'accepted' | 'declined';
@@ -234,7 +242,7 @@ const copy = {
     formKicker: 'Community signup',
     formTitle: 'Join the Tech Meets Problems community.',
     formSubtitle:
-      'Submissions for the first pilot are closed or already in selection. Join the community list for updates about future sessions, project opportunities and possible waitlist spots. Submitting this form does not guarantee a place on 26 June.',
+      'Join the community list for updates about future sessions, real problem spaces and project opportunities.',
     formInstruction: 'Fill out the form below to join the community list.',
     formDetailsNote: 'We use your answers to understand your background, plan future sessions and invite fitting people when a format has limited spots.',
     communityCardTitle: 'What you join',
@@ -470,7 +478,7 @@ const copy = {
     formKicker: 'Community-Updates',
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
     formSubtitle:
-      'Die Einreichungen für den ersten Pilot sind geschlossen bzw. bereits in der Auswahl. Trag dich in die Community-Liste ein, wenn du Updates zu zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen bekommen möchtest. Die Eintragung garantiert keinen Platz am 26. Juni.',
+      'Trag dich in die Community-Liste ein und erhalte Updates zu zukünftigen Sessions, realen Problemräumen und Projektmöglichkeiten.',
     formInstruction: 'Füll das Formular unten aus, um auf die Community-Liste zu kommen.',
     formDetailsNote: 'Wir nutzen deine Angaben, um deinen Hintergrund besser einzuschätzen, zukünftige Sessions zu planen und bei begrenzten Formaten passende Leute einzuladen.',
     communityCardTitle: 'Wofür du dich einträgst',
@@ -1062,47 +1070,332 @@ function App() {
     });
   };
 
+  const refresh = communityContent[lang];
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100" onPointerMove={handlePointerMove}>
-      <BackgroundScene />
-      <Header lang={lang} setLang={setLang} t={t} />
-      <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} openPrivacyNotice={openPrivacyNotice} />
-      <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
+    <main className="refresh-site" onPointerMove={handlePointerMove}>
+      <div className="refresh-background" aria-hidden="true" />
+      <SiteHeader lang={lang} page="community" onLanguageChange={setLang} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
-      <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
-      <Hero t={t} />
-      <ProblemSection t={t} />
-      <RoomPreviewSection t={t} />
-      <WhyJoinSection t={t} />
-      <VisionSection t={t} />
-      <OrganizersSection t={t} />
-      <OpportunitySection t={t} />
-      <HowItWorks t={t} />
-      <ExampleProblems t={t} />
-      <FirstPilotSection t={t} lang={lang} />
-      <Schedule t={t} />
-      <Registration
+      <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
+      <CommunityRefreshHero content={refresh} lang={lang} />
+      <PilotRecap content={refresh} />
+      <CommunityBenefits content={refresh} />
+      <SessionProcess content={refresh} />
+      <div id="community-signup">
+        <Registration
+          t={t}
+          lang={lang}
+          form={form}
+          submitted={submitted}
+          formError={formError}
+          isSubmitting={isSubmitting}
+          privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
+          setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
+          setFormError={setFormError}
+          openPrivacyNotice={openPrivacyNotice}
+          updateField={updateField}
+          toggleInterest={toggleInterest}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+      <CommunityChannels
+        content={refresh}
         t={t}
-        lang={lang}
-        form={form}
-        submitted={submitted}
-        formError={formError}
-        isSubmitting={isSubmitting}
-        privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
-        setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
-        setFormError={setFormError}
-        openPrivacyNotice={openPrivacyNotice}
-        updateField={updateField}
-        toggleInterest={toggleInterest}
-        handleSubmit={handleSubmit}
+        copyLink={copyLink}
+        nativeShare={nativeShare}
+        shareMessage={shareMessage}
       />
-      <WhatsAppSection t={t} />
-      <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
-      <CompaniesSection t={t} />
+      <CommunityCompanyTeaser content={refresh} lang={lang} />
+      <CommunityTeam content={refresh} lang={lang} />
+      <CommunityFaq content={refresh} />
       <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
-      <FAQ t={t} />
-      <Footer t={t} openPrivacyNotice={openPrivacyNotice} />
+      <SharedSiteFooter lang={lang} page="community" />
     </main>
+  );
+}
+
+function CommunityRefreshHero({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  return (
+    <section id="top" className="community-hero">
+      <div className="site-shell community-hero-grid">
+        <div className="community-hero-copy">
+          <p className="section-eyebrow">{content.heroEyebrow}</p>
+          <h1>{content.heroTitle}</h1>
+          <p>{content.heroText}</p>
+          <div className="hero-actions">
+            <a href="#community-signup" className="button button-primary">
+              {content.heroPrimary}
+              <ArrowRight aria-hidden="true" />
+            </a>
+            <a href={withLanguage('/companies/', lang)} className="button button-secondary">
+              {content.heroSecondary}
+            </a>
+          </div>
+          <p className="community-claim">{content.heroClaim}</p>
+        </div>
+
+        <figure className="community-hero-media">
+          <img
+            src={REFRESH_ASSETS.event.communityHero}
+            alt={content.recapImageAlt}
+            width="2048"
+            height="1365"
+            fetchPriority="high"
+          />
+          <figcaption>
+            <span>Tech Meets Problems</span>
+            <strong>{content.heroClaim}</strong>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
+function PilotRecap({ content }: { content: typeof communityContent.en }) {
+  const supportingImages = [
+    REFRESH_ASSETS.event.builderDiscussion,
+    REFRESH_ASSETS.event.conceptReview,
+    REFRESH_ASSETS.event.demo,
+  ];
+
+  return (
+    <section id="recap" className="page-section page-section-muted">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
+        <div className="recap-layout">
+          <figure className="recap-primary">
+            <img
+              src={REFRESH_ASSETS.event.roomAlternative}
+              alt={content.recapImageAlt}
+              width="2048"
+              height="1365"
+              loading="lazy"
+            />
+          </figure>
+          <div className="recap-side">
+            <ul className="recap-proof-list">
+              {content.recapFacts.map((fact) => (
+                <li key={fact}>
+                  <Check aria-hidden="true" />
+                  {fact}
+                </li>
+              ))}
+            </ul>
+            <div className="recap-thumbnails">
+              {supportingImages.map((image) => (
+                <figure key={image}>
+                  <img
+                    src={image}
+                    alt={content.recapImageAlt}
+                    width="2048"
+                    height="1365"
+                    loading="lazy"
+                  />
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CommunityBenefits({ content }: { content: typeof communityContent.en }) {
+  const icons = [Lightbulb, Users, Workflow, Sparkles];
+
+  return (
+    <section id="community" className="page-section">
+      <div className="site-shell">
+        <SectionHeading
+          eyebrow={content.benefitsEyebrow}
+          title={content.benefitsTitle}
+          intro={content.benefitsIntro}
+        />
+        <div className="community-benefit-list">
+          {content.benefits.map((benefit, index) => {
+            const Icon = icons[index];
+            return (
+              <article key={benefit.title}>
+                <Icon aria-hidden="true" />
+                <h3>{benefit.title}</h3>
+                <p>{benefit.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SessionProcess({ content }: { content: typeof communityContent.en }) {
+  return (
+    <section id="how" className="page-section page-section-muted">
+      <div className="site-shell process-layout">
+        <SectionHeading eyebrow={content.processEyebrow} title={content.processTitle} intro={content.processIntro} />
+        <ol className="process-list">
+          {content.steps.map((step, index) => (
+            <li key={step}>
+              <span>{index + 1}</span>
+              <strong>{step}</strong>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function CommunityChannels({
+  content,
+  t,
+  copyLink,
+  nativeShare,
+  shareMessage,
+}: {
+  content: typeof communityContent.en;
+  t: typeof copy.en;
+  copyLink: () => void;
+  nativeShare: () => void;
+  shareMessage: string;
+}) {
+  return (
+    <section className="page-section">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.channelsEyebrow} title={content.channelsTitle} intro={content.channelsText} />
+        <div className="channel-grid">
+          <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">
+            <MessageCircle aria-hidden="true" />
+            <div>
+              <strong>{t.whatsappButton}</strong>
+              <span>{t.whatsappCardTitle}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+          <a href={SITE.instagram} target="_blank" rel="noopener noreferrer">
+            <Instagram aria-hidden="true" />
+            <div>
+              <strong>{t.instagramCommunityLabel}</strong>
+              <span>{t.instagramCommunityHelper}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            <Linkedin aria-hidden="true" />
+            <div>
+              <strong>{t.linkedinCommunityLabel}</strong>
+              <span>{t.linkedinCommunityHelper}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+        </div>
+        <div className="share-row">
+          <p>{t.shareTitle}</p>
+          <div>
+            <button type="button" className="button button-secondary" onClick={nativeShare}>
+              <Share2 aria-hidden="true" />
+              {t.shareButton}
+            </button>
+            <button type="button" className="button button-ghost" onClick={copyLink}>
+              <ClipboardCopy aria-hidden="true" />
+              {t.copyLink}
+            </button>
+          </div>
+          {shareMessage && <span>{shareMessage}</span>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CommunityCompanyTeaser({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  return (
+    <section className="page-section page-section-muted">
+      <div className="site-shell company-teaser">
+        <figure>
+          <img
+            src={REFRESH_ASSETS.event.companyHero}
+            alt={lang === 'de' ? 'Builder arbeiten gemeinsam an einer realen Herausforderung' : 'Builders working together on a real challenge'}
+            width="2048"
+            height="1365"
+            loading="lazy"
+          />
+        </figure>
+        <div>
+          <p className="section-eyebrow">{content.companyEyebrow}</p>
+          <h2>{content.companyTitle}</h2>
+          <p>{content.companyText}</p>
+          <ul>
+            {content.companyPoints.map((point) => (
+              <li key={point}>
+                <Check aria-hidden="true" />
+                {point}
+              </li>
+            ))}
+          </ul>
+          <a href={withLanguage('/companies/', lang)} className="button button-primary">
+            {content.companyCta}
+            <ArrowRight aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CommunityTeam({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  return (
+    <section id="about" className="page-section">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
+        <TeamBlock
+          lang={lang}
+          title={content.teamTitle}
+          text={content.teamText}
+          imageAlt={content.teamImageAlt}
+          members={content.teamMembers}
+        />
+      </div>
+    </section>
+  );
+}
+
+function CommunityFaq({ content }: { content: typeof communityContent.en }) {
+  return (
+    <section className="page-section page-section-muted">
+      <div className="site-shell faq-layout">
+        <SectionHeading eyebrow={content.faqEyebrow} title={content.faqTitle} />
+        <div className="faq-list">
+          {content.faqs.map((faq) => (
+            <details key={faq.question}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
