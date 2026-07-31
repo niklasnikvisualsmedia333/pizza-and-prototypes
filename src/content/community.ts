@@ -10,6 +10,8 @@ export type CommunityContent = {
   heroSecondary: string;
   heroImageAlt: string;
   heroCaption: string;
+  freeEyebrow: string;
+  freeText: string;
   eventEyebrow: string;
   eventPastLabel: string;
   eventUpcomingLabel: string;
@@ -26,6 +28,11 @@ export type CommunityContent = {
   recapFacts: string[];
   recapImageAlt: string;
   recapImageAlts: string[];
+  recapImageCaptions: string[];
+  galleryLabel: string;
+  galleryPrevious: string;
+  galleryNext: string;
+  galleryClose: string;
   benefitsEyebrow: string;
   benefitsTitle: string;
   benefitsIntro: string;
@@ -43,8 +50,8 @@ export type CommunityContent = {
   companyCta: string;
   teamEyebrow: string;
   teamTitle: string;
-  teamText: string;
-  teamTextSecondary: string;
+  teamStoryTitle: string;
+  teamStoryParagraphs: string[];
   teamImageAlt: string;
   teamMembers: Array<{ name: string; role: string; description: string }>;
   faqEyebrow: string;
@@ -65,6 +72,8 @@ export const communityContent: Record<Lang, CommunityContent> = {
     heroSecondary: 'Für Unternehmen',
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
     heroCaption: 'Gemeinsame Arbeit am ersten Event in Siegen',
+    freeEyebrow: 'Kostenlos für dich',
+    freeText: 'Der Community-Beitritt und unsere Community-Events sind kostenlos. Essen und Getränke sind inklusive.',
     eventEyebrow: 'Neueste Veranstaltung',
     eventPastLabel: 'Abgeschlossen',
     eventUpcomingLabel: 'Bestätigtes Event',
@@ -87,9 +96,23 @@ export const communityContent: Record<Lang, CommunityContent> = {
     ],
     recapImageAlt: 'Kleine Teams arbeiten beim ersten Tech Meets Problems Pilot in Siegen',
     recapImageAlts: [
+      'Kleine Teams arbeiten gemeinsam an einem realen Problemraum',
       'Teilnehmende diskutieren gemeinsam an einem Arbeitstisch',
+      'Code auf einem Laptop während der technischen Umsetzung',
+      'Ein Teilnehmer präsentiert ein Ergebnis vor dem Beamer',
       'Ergebnisboard aus dem ersten Tech Meets Problems Pilot',
     ],
+    recapImageCaptions: [
+      'Problemraum und Teams',
+      'Gemeinsamer Austausch am Tisch',
+      'Technische Umsetzung',
+      'Präsentation vor der Gruppe',
+      'Sichtbares Ergebnis am Board',
+    ],
+    galleryLabel: 'Bilder vom ersten Tech Meets Problems Event',
+    galleryPrevious: 'Vorheriges Bild',
+    galleryNext: 'Nächstes Bild',
+    galleryClose: 'Galerie schließen',
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Praxis, Austausch und neue Perspektiven.',
     benefitsIntro:
@@ -120,22 +143,24 @@ export const communityContent: Record<Lang, CommunityContent> = {
     companyCta: 'Zusammenarbeit starten',
     teamEyebrow: 'Über uns',
     teamTitle: 'Wer hinter Tech Meets Problems steht.',
-    teamText:
-      'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. Uns verbindet die Frage, wie technische Talente, Unternehmen und das regionale Gründungsnetzwerk besser zusammenarbeiten können.',
-    teamTextSecondary:
-      'Wir bringen Erfahrungen aus Medienproduktion, KI-Gründung, Psychologie, Wirtschaft und einem medizinischen Gründungsprojekt zusammen. Mit Tech Meets Problems wollen wir Open Innovation in Siegen praktisch erlebbar machen.',
+    teamStoryTitle: 'Warum wir Tech Meets Problems gestartet haben',
+    teamStoryParagraphs: [
+      'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. In gemeinsamen Projekten haben wir erlebt, wie spannend Zusammenarbeit wird, wenn technische, gestalterische und unternehmerische Perspektiven früh zusammenkommen.',
+      'Gleichzeitig fehlt häufig ein unkomplizierter Rahmen, in dem technische Talente und Unternehmen an realen Fragestellungen arbeiten können. Tech Meets Problems soll genau diesen Raum schaffen: praktisch, offen und mit Ergebnissen, an denen weitergearbeitet werden kann.',
+      'Wir bringen eigene Gründungs- und Projekterfahrung mit und sind im Siegener Gründungsnetzwerk eng vernetzt. Unser Ziel ist, Open Innovation in der Region greifbar zu machen und aus ersten Begegnungen starke Kontakte, neue Formate und mögliche Folgeprojekte entstehen zu lassen.',
+    ],
     teamImageAlt: 'Niklas Brüne, Frederik Krause und Johanna Brenner von Tech Meets Problems',
     teamMembers: [
-      { name: 'Frederik Krause', role: 'Partnerschaften und Open Innovation', description: 'Hat bereits ein KI-Startup aufgebaut und verantwortet Unternehmenszugänge, Formatentwicklung und operative Umsetzung.' },
-      { name: 'Johanna Brenner', role: 'Community und Operations', description: 'Dualer Bachelor mit Psychologie- und Wirtschaftsbezug. Arbeitet parallel an einem Gründungsprojekt im Medizinbereich und begleitet Community, Koordination und Gruppenprozesse.' },
-      { name: 'Niklas Brüne', role: 'Strategie und Kommunikation', description: 'Medienmanagement im Bachelor und seit 2021 selbstständig mit einer Medienproduktion. Verantwortet Positionierung, Kommunikation und Außenauftritt.' },
+      { name: 'Frederik Krause', role: 'Partnerschaften und Open Innovation', description: 'Erfahrung aus einer eigenen KI-Gründung. Verantwortet Unternehmenszugänge und Formatentwicklung.' },
+      { name: 'Johanna Brenner', role: 'Community und Operations', description: 'Background in Psychologie und Wirtschaft sowie Erfahrung aus einem medizinischen Gründungsprojekt.' },
+      { name: 'Niklas Brüne', role: 'Strategie und Kommunikation', description: 'Background in Medienmanagement und seit 2021 selbstständig mit einer Medienproduktion.' },
     ],
     faqEyebrow: 'Kurz beantwortet',
     faqTitle: 'Das Wichtigste zur Community.',
     faqs: [
       { question: 'Muss ich eine eigene Idee mitbringen?', answer: 'Nein. Die Sessions starten mit konkreten Problemräumen.' },
       { question: 'Muss ich programmieren können?', answer: 'Du musst kein Programmierprofi sein. Du solltest aber technische, gestalterische oder analytische Fähigkeiten mitbringen und Lust haben, praktisch an einer Lösung zu arbeiten.' },
-      { question: 'Ist die Community kostenlos?', answer: 'Der Community-Beitritt und der erste Pilot sind kostenlos. Zukünftige Formate können andere Rahmenbedingungen haben.' },
+      { question: 'Ist die Community kostenlos?', answer: 'Ja. Der Community-Beitritt und die Community-Events sind kostenlos. Essen und Getränke sind inklusive.' },
       { question: 'Wie erfahre ich von neuen Events?', answer: 'Trag dich in die Community-Liste ein oder folge unseren Community-Kanälen.' },
     ],
   },
@@ -151,6 +176,8 @@ export const communityContent: Record<Lang, CommunityContent> = {
     heroSecondary: 'For companies',
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
     heroCaption: 'Collaborative work at the first event in Siegen',
+    freeEyebrow: 'Free for community members',
+    freeText: 'Joining the community and attending our community events is free. Food and drinks are included.',
     eventEyebrow: 'Latest event',
     eventPastLabel: 'Completed',
     eventUpcomingLabel: 'Confirmed event',
@@ -173,9 +200,23 @@ export const communityContent: Record<Lang, CommunityContent> = {
     ],
     recapImageAlt: 'Small teams working at the first Tech Meets Problems pilot in Siegen',
     recapImageAlts: [
+      'Small teams working together on a real problem space',
       'Participants discussing ideas around a work table',
+      'Code on a laptop during the technical implementation',
+      'A participant presenting a result in front of the projector',
       'Result board from the first Tech Meets Problems pilot',
     ],
+    recapImageCaptions: [
+      'Problem space and teams',
+      'Exchange around the table',
+      'Technical implementation',
+      'Presentation to the group',
+      'Visible result on the board',
+    ],
+    galleryLabel: 'Photos from the first Tech Meets Problems event',
+    galleryPrevious: 'Previous image',
+    galleryNext: 'Next image',
+    galleryClose: 'Close gallery',
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Practice, exchange and new perspectives.',
     benefitsIntro:
@@ -206,22 +247,24 @@ export const communityContent: Record<Lang, CommunityContent> = {
     companyCta: 'Start a collaboration',
     teamEyebrow: 'About us',
     teamTitle: 'Who is behind Tech Meets Problems.',
-    teamText:
-      'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. We share an interest in how technical talent, companies and the regional startup network can work together more effectively.',
-    teamTextSecondary:
-      'We combine experience from media production, an AI startup, psychology, business and a medical venture project. With Tech Meets Problems, we want to make open innovation practical in Siegen.',
+    teamStoryTitle: 'Why we started Tech Meets Problems',
+    teamStoryParagraphs: [
+      'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. Through shared projects, we saw how valuable collaboration becomes when technical, design and business perspectives come together early.',
+      'At the same time, there is often no straightforward setting in which technical talent and companies can work on real questions together. Tech Meets Problems is designed to create that space: practical, open and focused on results that can be developed further.',
+      'We bring our own startup and project experience and are closely connected to the startup network in Siegen. Our aim is to make open innovation tangible in the region and turn first encounters into strong contacts, new formats and possible follow-up projects.',
+    ],
     teamImageAlt: 'Niklas Brüne, Frederik Krause and Johanna Brenner from Tech Meets Problems',
     teamMembers: [
-      { name: 'Frederik Krause', role: 'Partnerships and Open Innovation', description: 'Previously built an AI startup and focuses on company outreach, format development and operational delivery.' },
-      { name: 'Johanna Brenner', role: 'Community and Operations', description: 'Completed a dual bachelor’s degree combining psychology and business. She is also working on a venture project in the medical field and focuses on community, coordination and group processes.' },
-      { name: 'Niklas Brüne', role: 'Strategy and Communication', description: 'Studied media management at bachelor’s level and has run a media production business since 2021. He focuses on positioning, communication and external presence.' },
+      { name: 'Frederik Krause', role: 'Partnerships and Open Innovation', description: 'Experience from building an AI startup. Focuses on company outreach and format development.' },
+      { name: 'Johanna Brenner', role: 'Community and Operations', description: 'Background in psychology and business, with experience from a medical venture project.' },
+      { name: 'Niklas Brüne', role: 'Strategy and Communication', description: 'Background in media management and running a media production business since 2021.' },
     ],
     faqEyebrow: 'Quick answers',
     faqTitle: 'What matters about the community.',
     faqs: [
       { question: 'Do I need to bring an idea?', answer: 'No. Sessions start with concrete problem spaces.' },
       { question: 'Do I need to code?', answer: 'You do not need to be an expert programmer. You should bring technical, design or analytical skills and be willing to work practically on a solution.' },
-      { question: 'Is the community free?', answer: 'Joining the community and the first pilot are free. Future formats may have different conditions.' },
+      { question: 'Is the community free?', answer: 'Yes. Joining the community and attending community events is free. Food and drinks are included.' },
       { question: 'How do I hear about new events?', answer: 'Join the community list or follow our community channels.' },
     ],
   },

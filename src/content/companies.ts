@@ -35,6 +35,11 @@ export type CompaniesContent = {
   proofExpectationTitle: string;
   proofExpectation: string;
   proofImageAlts: string[];
+  proofImageCaptions: string[];
+  galleryLabel: string;
+  galleryPrevious: string;
+  galleryNext: string;
+  galleryClose: string;
   processEyebrow: string;
   processTitle: string;
   process: string[];
@@ -50,8 +55,8 @@ export type CompaniesContent = {
   onePagerPending: string;
   teamEyebrow: string;
   teamTitle: string;
-  teamText: string;
-  teamTextSecondary: string;
+  teamStoryTitle: string;
+  teamStoryParagraphs: string[];
   faqEyebrow: string;
   faqTitle: string;
   faqs: Array<{ question: string; answer: string }>;
@@ -140,10 +145,23 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     proofExpectationTitle: 'Was ein Kurzformat leisten kann',
     proofExpectation: 'Ein Kurzformat liefert keine fertige Software. Es schafft ein gemeinsames Problemverständnis, erste Ansätze und eine Grundlage für mögliche nächste Schritte.',
     proofImageAlts: [
-      'Kleines Team arbeitet an einem Canvas beim ersten Tech Meets Problems Event',
-      'Weiter Blick in den Raum mit mehreren arbeitenden Teams',
+      'Mehrere kleine Teams arbeiten beim ersten Tech Meets Problems Event im Raum',
+      'Teilnehmende besprechen gemeinsam einen Lösungsansatz am Laptop',
+      'Code auf einem Laptop während der technischen Umsetzung',
+      'Ein Teilnehmer präsentiert ein Ergebnis vor dem Beamer',
       'Ergebnisboard aus dem ersten Tech Meets Problems Pilot',
     ],
+    proofImageCaptions: [
+      'Problemraum und Teams',
+      'Gemeinsamer Austausch',
+      'Technische Umsetzung',
+      'Präsentation vor der Gruppe',
+      'Sichtbares Ergebnis',
+    ],
+    galleryLabel: 'Einblicke in das erste Tech Meets Problems Event',
+    galleryPrevious: 'Vorheriges Bild',
+    galleryNext: 'Nächstes Bild',
+    galleryClose: 'Galerie schließen',
     processEyebrow: 'Zusammenarbeit',
     processTitle: 'In drei Schritten zum passenden Format.',
     process: [
@@ -160,13 +178,15 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     onePagerText: 'Der One-Pager fasst Ansatz, Formate und Kontakt für die interne Abstimmung zusammen.',
     onePagerRequest: 'One-Pager anfordern',
     onePagerDownload: 'One-Pager herunterladen',
-    onePagerPending: 'PDF wird ergänzt',
+    onePagerPending: 'One-Pager derzeit nicht verfügbar',
     teamEyebrow: 'Über uns',
     teamTitle: 'Das Team hinter Tech Meets Problems.',
-    teamText:
-      'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. Uns verbindet die Frage, wie technische Talente, Unternehmen und das regionale Gründungsnetzwerk besser zusammenarbeiten können.',
-    teamTextSecondary:
-      'Wir bringen Erfahrungen aus Medienproduktion, KI-Gründung, Psychologie, Wirtschaft und einem medizinischen Gründungsprojekt zusammen. Mit Tech Meets Problems wollen wir Open Innovation in Siegen praktisch erlebbar machen.',
+    teamStoryTitle: 'Warum wir Tech Meets Problems gestartet haben',
+    teamStoryParagraphs: [
+      'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. In gemeinsamen Projekten haben wir erlebt, wie spannend Zusammenarbeit wird, wenn technische, gestalterische und unternehmerische Perspektiven früh zusammenkommen.',
+      'Gleichzeitig fehlt häufig ein unkomplizierter Rahmen, in dem technische Talente und Unternehmen an realen Fragestellungen arbeiten können. Tech Meets Problems soll genau diesen Raum schaffen: praktisch, offen und mit Ergebnissen, an denen weitergearbeitet werden kann.',
+      'Wir bringen eigene Gründungs- und Projekterfahrung mit und sind im Siegener Gründungsnetzwerk eng vernetzt. Unser Ziel ist, Open Innovation in der Region greifbar zu machen und aus ersten Begegnungen starke Kontakte, neue Formate und mögliche Folgeprojekte entstehen zu lassen.',
+    ],
     faqEyebrow: 'Kurz beantwortet',
     faqTitle: 'Fragen zur Zusammenarbeit.',
     faqs: [
@@ -257,10 +277,23 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     proofExpectationTitle: 'What a short format can achieve',
     proofExpectation: 'A short format does not deliver finished software. It creates a shared understanding of the problem, first approaches and a foundation for possible next steps.',
     proofImageAlts: [
-      'Small team working on a canvas at the first Tech Meets Problems event',
-      'Wide view of the room with several teams working together',
+      'Several small teams working in the room at the first Tech Meets Problems event',
+      'Participants discussing an approach together at a laptop',
+      'Code on a laptop during the technical implementation',
+      'A participant presenting a result in front of the projector',
       'Result board from the first Tech Meets Problems pilot',
     ],
+    proofImageCaptions: [
+      'Problem space and teams',
+      'Collaborative exchange',
+      'Technical implementation',
+      'Presentation to the group',
+      'Visible result',
+    ],
+    galleryLabel: 'Impressions from the first Tech Meets Problems event',
+    galleryPrevious: 'Previous image',
+    galleryNext: 'Next image',
+    galleryClose: 'Close gallery',
     processEyebrow: 'Collaboration',
     processTitle: 'Three steps to a suitable format.',
     process: [
@@ -277,13 +310,15 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     onePagerText: 'The one-pager summarizes the approach, formats and contact details for internal discussion.',
     onePagerRequest: 'Request the one-pager',
     onePagerDownload: 'Download the one-pager',
-    onePagerPending: 'PDF will be added',
+    onePagerPending: 'One-pager currently unavailable',
     teamEyebrow: 'About us',
     teamTitle: 'The team behind Tech Meets Problems.',
-    teamText:
-      'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. We share an interest in how technical talent, companies and the regional startup network can work together more effectively.',
-    teamTextSecondary:
-      'We combine experience from media production, an AI startup, psychology, business and a medical venture project. With Tech Meets Problems, we want to make open innovation practical in Siegen.',
+    teamStoryTitle: 'Why we started Tech Meets Problems',
+    teamStoryParagraphs: [
+      'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. Through shared projects, we saw how valuable collaboration becomes when technical, design and business perspectives come together early.',
+      'At the same time, there is often no straightforward setting in which technical talent and companies can work on real questions together. Tech Meets Problems is designed to create that space: practical, open and focused on results that can be developed further.',
+      'We bring our own startup and project experience and are closely connected to the startup network in Siegen. Our aim is to make open innovation tangible in the region and turn first encounters into strong contacts, new formats and possible follow-up projects.',
+    ],
     faqEyebrow: 'Quick answers',
     faqTitle: 'Questions about collaboration.',
     faqs: [

@@ -24,7 +24,8 @@ import {
   X,
 } from 'lucide-react';
 import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
-import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
+import { PreviewNotice, SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
+import { EventGallery } from './components/media/EventGallery';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
 import { ASSETS as REFRESH_ASSETS, EVENT_MEDIA } from './config/assets';
@@ -158,7 +159,7 @@ const copy = {
     primaryCta: 'Join the community',
     freeBadgeLine1: 'Free to join',
     freeBadgeLine2: 'Future sessions & projects',
-    note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
+    note: 'Real problems, focused teamwork and practical next steps.',
     countdownLabel: 'First pilot starts in',
     countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
     exitTitle: 'Leaving already?',
@@ -238,7 +239,7 @@ const copy = {
       ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
       ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'Joining the community is free, and the first Pizza & Prototypes pilot is free too. Future formats may vary.'],
+      ['Is this free?', 'Yes. Joining the community and attending community events is free. Food and drinks are included.'],
     ],
     formKicker: 'Community signup',
     formTitle: 'Join the Tech Meets Problems community.',
@@ -333,7 +334,7 @@ const copy = {
     roomKicker: 'First pilot atmosphere',
     roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards and people working through real business needs together. The first pilot includes pizza and drinks; future formats may vary.',
+      'Relaxed tables, problem cards and people working through real business needs together. Community events are free, with food and drinks included.',
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Community hub',
     whatsappTitle: 'Join the Tech Meets Problems WhatsApp community.',
@@ -394,7 +395,7 @@ const copy = {
     primaryCta: 'Community beitreten',
     freeBadgeLine1: 'Kostenlos eintragen',
     freeBadgeLine2: 'Sessions & Projekte',
-    note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
+    note: 'Echte Probleme, fokussierte Teamarbeit und konkrete nächste Schritte.',
     countdownLabel: 'Erster Pilot startet in',
     countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
     exitTitle: 'Schon weg?',
@@ -474,7 +475,7 @@ const copy = {
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Der Community-Beitritt ist kostenlos, und auch der erste Pizza & Prototypes Pilot ist kostenlos. Zukünftige Formate können variieren.'],
+      ['Ist die Community kostenlos?', 'Ja. Der Community-Beitritt und die Community-Events sind kostenlos. Essen und Getränke sind inklusive.'],
     ],
     formKicker: 'Community-Updates',
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
@@ -569,7 +570,7 @@ const copy = {
     roomKicker: 'Atmosphäre im ersten Piloten',
     roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Beim ersten Piloten gibt es Pizza und Getränke, zukünftige Formate können anders aussehen.',
+      'Entspannte Tische, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Community-Events sind kostenlos, Essen und Getränke inklusive.',
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Community-Hub',
     whatsappTitle: 'Tritt der Tech Meets Problems WhatsApp-Community bei.',
@@ -745,7 +746,7 @@ function loadGoogleAnalyticsScript() {
 }
 
 async function loadGoogleAnalyticsAndSendPageView() {
-  if (gaPageViewSent) {
+  if (import.meta.env.VITE_SITE_ENV === 'preview' || gaPageViewSent) {
     return;
   }
 
@@ -1073,6 +1074,7 @@ function App() {
     <main className="refresh-site" onPointerMove={handlePointerMove}>
       <div className="refresh-background" aria-hidden="true" />
       <SiteHeader lang={lang} page="community" onLanguageChange={setLang} />
+      <PreviewNotice lang={lang} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
       <CommunityRefreshHero content={refresh} lang={lang} />
@@ -1136,6 +1138,13 @@ function CommunityRefreshHero({
               {content.heroSecondary}
               <ArrowRight aria-hidden="true" />
             </a>
+          </div>
+          <div className="community-free-callout">
+            <Check aria-hidden="true" />
+            <div>
+              <strong>{content.freeEyebrow}</strong>
+              <p>{content.freeText}</p>
+            </div>
           </div>
         </div>
 
@@ -1213,50 +1222,38 @@ function LatestEvent({
 }
 
 function PilotRecap({ content }: { content: typeof communityContent.en }) {
-  const supportingImages = [
+  const galleryImages = [
+    EVENT_MEDIA.roomAlternative,
     EVENT_MEDIA.builderDiscussion,
+    EVENT_MEDIA.codeCloseup,
+    EVENT_MEDIA.presenterProjector,
     EVENT_MEDIA.demo,
-  ];
+  ].map((image, index) => ({
+    ...image,
+    alt: content.recapImageAlts[index],
+    caption: content.recapImageCaptions[index],
+  }));
 
   return (
     <section id="recap" className="page-section page-section-muted">
       <div className="site-shell">
         <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
         <p className="recap-date">{content.recapDate}</p>
-        <div className="recap-layout">
-          <figure className="recap-primary">
-            <img
-              src={EVENT_MEDIA.roomAlternative.src}
-              alt={content.recapImageAlt}
-              width={EVENT_MEDIA.roomAlternative.width}
-              height={EVENT_MEDIA.roomAlternative.height}
-              loading="lazy"
-            />
-          </figure>
-          <div className="recap-side">
-            <ul className="recap-proof-list">
-              {content.recapFacts.map((fact) => (
-                <li key={fact}>
-                  <Check aria-hidden="true" />
-                  {fact}
-                </li>
-              ))}
-            </ul>
-            <div className="recap-thumbnails">
-              {supportingImages.map((image, index) => (
-                <figure key={image.src}>
-                  <img
-                    src={image.src}
-                    alt={content.recapImageAlts[index]}
-                    width={image.width}
-                    height={image.height}
-                    loading="lazy"
-                  />
-                </figure>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ul className="recap-proof-list recap-proof-list-inline">
+          {content.recapFacts.map((fact) => (
+            <li key={fact}>
+              <Check aria-hidden="true" />
+              {fact}
+            </li>
+          ))}
+        </ul>
+        <EventGallery
+          images={galleryImages}
+          lightboxLabel={content.galleryLabel}
+          previousLabel={content.galleryPrevious}
+          nextLabel={content.galleryNext}
+          closeLabel={content.galleryClose}
+        />
       </div>
     </section>
   );
@@ -1413,8 +1410,8 @@ function CommunityTeam({
       <div className="site-shell">
         <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
         <TeamBlock
-          text={content.teamText}
-          textSecondary={content.teamTextSecondary}
+          storyTitle={content.teamStoryTitle}
+          storyParagraphs={content.teamStoryParagraphs}
           imageAlt={content.teamImageAlt}
           members={content.teamMembers}
         />

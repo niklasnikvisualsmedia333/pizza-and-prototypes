@@ -19,6 +19,7 @@ export const ASSETS = {
     roomAlternative: asset('event-1/07-event-room-builder-teams-wide.jpg'),
     communityHero: asset('event-1/08-event-room-problem-boards-wide.jpg'),
     conceptReview: asset('event-1/12-builder-team-concept-review.jpg'),
+    codeCloseup: asset('event-1/13-code-closeup-dark-laptop.jpg'),
     codeReview: asset('event-1/14-code-review-pointing-screen.jpg'),
     presenterProjector: asset('event-1/16-demo-presentation-projector-portrait.jpg'),
     demo: asset('event-1/17-demo-proofsiteai-board.jpg'),
@@ -39,6 +40,11 @@ export const EVENT_MEDIA = {
   },
   builderDiscussion: {
     src: ASSETS.event.builderDiscussion,
+    width: 2048,
+    height: 1365,
+  },
+  codeCloseup: {
+    src: ASSETS.event.codeCloseup,
     width: 2048,
     height: 1365,
   },

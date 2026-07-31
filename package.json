@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "dev:phone": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/postbuild.mjs",
+    "build:preview": "VITE_SITE_ENV=preview VITE_BASE_PATH=/tech-meets-problems-preview/ npm run build",
+    "test:build": "node scripts/verify-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "preview:phone": "vite preview --host 0.0.0.0"
   },

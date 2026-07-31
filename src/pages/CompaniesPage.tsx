@@ -12,7 +12,8 @@ import {
   Workflow,
 } from 'lucide-react';
 import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBanner';
-import { SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
+import { PreviewNotice, SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
+import { EventGallery } from '../components/media/EventGallery';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ASSETS, EVENT_MEDIA } from '../config/assets';
@@ -60,6 +61,7 @@ export default function CompaniesPage() {
   const [lang, setLang] = useState<Lang>(() => getInitialLanguage());
   const [analyticsConsent, setAnalyticsConsent] = useState<AnalyticsConsent | null>(() => getStoredAnalyticsConsent());
   const [form, setForm] = useState<CompanyForm>(initialCompanyForm);
+  const [companyWebsite, setCompanyWebsite] = useState('');
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const content = companiesContent[lang];
@@ -106,6 +108,11 @@ export default function CompaniesPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (companyWebsite.trim()) {
+      setFormState('success');
+      return;
+    }
 
     const payload = {
       ...form,
@@ -167,6 +174,7 @@ export default function CompaniesPage() {
       }
       setFormState('success');
       setForm(initialCompanyForm);
+      setCompanyWebsite('');
       setPrivacyAccepted(false);
     } catch (error) {
       console.warn('Company contact request failed', error);
@@ -178,6 +186,7 @@ export default function CompaniesPage() {
     <main className="refresh-site">
       <div className="refresh-background" aria-hidden="true" />
       <SiteHeader lang={lang} page="companies" onLanguageChange={changeLanguage} />
+      <PreviewNotice lang={lang} />
       <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateConsent} />
 
       <section className="company-hero">
@@ -294,19 +303,23 @@ export default function CompaniesPage() {
       <section id="pilot-proof" className="page-section page-section-muted">
         <div className="site-shell">
           <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
-          <div className="proof-gallery">
-            {[EVENT_MEDIA.companyHero, EVENT_MEDIA.roomAlternative, EVENT_MEDIA.demo].map((image, index) => (
-              <figure key={image.src} className={index === 0 ? 'proof-gallery-large' : undefined}>
-                <img
-                  src={image.src}
-                  alt={content.proofImageAlts[index]}
-                  width={image.width}
-                  height={image.height}
-                  loading="lazy"
-                />
-              </figure>
-            ))}
-          </div>
+          <EventGallery
+            images={[
+              EVENT_MEDIA.roomAlternative,
+              EVENT_MEDIA.builderDiscussion,
+              EVENT_MEDIA.codeCloseup,
+              EVENT_MEDIA.presenterProjector,
+              EVENT_MEDIA.demo,
+            ].map((image, index) => ({
+              ...image,
+              alt: content.proofImageAlts[index],
+              caption: content.proofImageCaptions[index],
+            }))}
+            lightboxLabel={content.galleryLabel}
+            previousLabel={content.galleryPrevious}
+            nextLabel={content.galleryNext}
+            closeLabel={content.galleryClose}
+          />
           <div className="expectation-card expectation-card-compact">
             <Sparkles aria-hidden="true" />
             <div>
@@ -373,6 +386,17 @@ export default function CompaniesPage() {
             </div>
 
             <form className="company-form" onSubmit={handleSubmit}>
+              <label className="company-honeypot" aria-hidden="true">
+                Website
+                <input
+                  type="text"
+                  name="company_website"
+                  value={companyWebsite}
+                  onChange={(event) => setCompanyWebsite(event.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </label>
               <div className="company-form-grid">
                 <CompanyInput
                   label={content.form.company}
@@ -486,8 +510,8 @@ export default function CompaniesPage() {
             title={content.teamTitle}
           />
           <TeamBlock
-            text={content.teamText}
-            textSecondary={content.teamTextSecondary}
+            storyTitle={content.teamStoryTitle}
+            storyParagraphs={content.teamStoryParagraphs}
             imageAlt={lang === 'de' ? 'Team von Tech Meets Problems' : 'Tech Meets Problems team'}
             members={communityContent[lang].teamMembers}
           />

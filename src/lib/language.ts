@@ -42,7 +42,10 @@ export function persistLanguage(language: Lang) {
 }
 
 export function withLanguage(path: string, language: Lang) {
-  const url = new URL(path, window.location.origin);
+  const basePath = import.meta.env.BASE_URL;
+  const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
+  const appPath = basePath === '/' ? `/${normalizedPath}` : `${basePath}${normalizedPath}`;
+  const url = new URL(appPath, window.location.origin);
   const current = new URL(window.location.href);
   for (const key of PRESERVED_QUERY_PARAMETERS) {
     const value = current.searchParams.get(key);

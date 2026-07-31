@@ -32,6 +32,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_COMPANY_CONTACT_ENDPOINT: ${{ secrets.VITE_COMPANY_CONTACT_ENDPOINT }}
+          VITE_SITE_ENV: production
+          VITE_BASE_PATH: /
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

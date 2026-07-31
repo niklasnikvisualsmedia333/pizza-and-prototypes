@@ -56,15 +56,13 @@ export function Supporters({ lang, compact = false }: { lang: Lang; compact?: bo
 }
 
 export function TeamBlock({
-  title,
-  text,
-  textSecondary,
+  storyTitle,
+  storyParagraphs,
   imageAlt,
   members,
 }: {
-  title?: string;
-  text: string;
-  textSecondary?: string;
+  storyTitle: string;
+  storyParagraphs: string[];
   imageAlt: string;
   members: Array<{ name: string; role: string; description: string }>;
 }) {
@@ -80,9 +78,8 @@ export function TeamBlock({
         <img src={ASSETS.event.team} alt={imageAlt} width="2048" height="1365" loading="lazy" />
       </figure>
       <div className="team-copy">
-        {title && <h3>{title}</h3>}
-        <p>{text}</p>
-        {textSecondary && <p>{textSecondary}</p>}
+        <h3>{storyTitle}</h3>
+        {storyParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       </div>
       <div className="team-list">
         {members.map((member) => (
@@ -104,5 +101,22 @@ export function TeamBlock({
         ))}
       </div>
     </div>
+  );
+}
+
+export function PreviewNotice({ lang }: { lang: Lang }) {
+  if (import.meta.env.VITE_SITE_ENV !== 'preview') {
+    return null;
+  }
+
+  return (
+    <aside className="preview-notice" aria-label={lang === 'de' ? 'Hinweis zur Vorschau' : 'Preview notice'}>
+      <strong>{lang === 'de' ? 'Interne Vorschau' : 'Internal preview'}</strong>
+      <span>
+        {lang === 'de'
+          ? 'Community-Anmeldungen in dieser Vorschau werden bereits an den echten Communityworkflow übermittelt.'
+          : 'Community signups in this preview are already sent to the live community workflow.'}
+      </span>
+    </aside>
   );
 }

@@ -11,7 +11,7 @@ export function AnalyticsConsentBanner({
   consent: AnalyticsConsent | null;
   onChoice: (nextConsent: AnalyticsConsent) => void;
 }) {
-  if (consent !== null) {
+  if (import.meta.env.VITE_SITE_ENV === 'preview' || consent !== null) {
     return null;
   }
 
@@ -31,4 +31,3 @@ export function AnalyticsConsentBanner({
     </aside>
   );
 }
-

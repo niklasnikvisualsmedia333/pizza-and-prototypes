@@ -57,7 +57,7 @@ function loadGoogleAnalyticsScript() {
 }
 
 export async function loadGoogleAnalyticsAndSendPageView() {
-  if (gaPageViewSent) {
+  if (import.meta.env.VITE_SITE_ENV === 'preview' || gaPageViewSent) {
     return;
   }
 
@@ -86,4 +86,3 @@ export async function loadGoogleAnalyticsAndSendPageView() {
     console.warn('GA4 analytics failed to load', error);
   }
 }
-
