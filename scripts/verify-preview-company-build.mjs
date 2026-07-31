@@ -9,8 +9,9 @@ const files = (await readdir(resolve('dist/assets'))).filter((name) => name.ends
 const bundles = Object.fromEntries(await Promise.all(files.map(async (name) => [name, await readFile(resolve('dist/assets', name), 'utf8')])));
 const companyBundle = Object.entries(bundles).find(([name]) => name.startsWith('companies-'))?.[1] || '';
 const communityBundle = Object.entries(bundles).find(([name]) => name.startsWith('community-'))?.[1] || '';
-const endpoint = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-company-contact';
+const endpoint = process.env.VITE_COMPANY_CONTACT_ENDPOINT;
 
+assert(endpoint, 'Set VITE_COMPANY_CONTACT_ENDPOINT when verifying the endpoint-configured preview build');
 assert(companyBundle.includes(endpoint), 'Preview company bundle does not contain the configured company endpoint');
 assert(!communityBundle.includes(endpoint), 'Preview community bundle contains the company endpoint');
 assert(!companyBundle.includes('tech-meets-problems-registration'), 'Preview company bundle references the community webhook');
