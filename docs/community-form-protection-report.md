@@ -55,11 +55,11 @@ Die folgenden Bereiche wurden nach Abschluss der Implementierung erneut direkt m
 - `InterestForm` und `initialForm`: SHA-256
   `7adf2ae4b5654cbd83f44d3250686bcd73e5dc3fdcfc84d1cd1dcd5930fa5394`
 - Submit-Handler einschließlich Payload, Formspree, n8n, Timeout, Retry und Local Storage:
-  SHA-256 `4260ffb8023bdd38bc1c6a7b8f1f555d00590513724d1e39d5eadf96f6d62419`
+  SHA-256 `1b7d737a66ca269d53186960ef14a2b6878fc2852e6c275c6a3aeae52c23df38`
 - Registrierungsformular einschließlich Feldreihenfolge, Optionen und Required-Logik:
-  SHA-256 `93c99879d4e25d753a56f8a11959dc24e39f11f8a4ffea5aa2255bc2483fb444`
+  SHA-256 `7d7cb1c8ea9ef7a3ccbfd28d46200099f045bef41c6f97ec0ba2ee137e37086c`
 - Success Modal und Social-Aktionen: SHA-256
-  `f04f5f260e57a606cce9aa4a5bf78850ab7f569aff087b1e581f914b512b47a4`
+  `38c0b18521a34a73367b28ed9132528e74abd73bd37991834d67441a1e486cdc`
 
 Alle genannten Hashes stimmen zwischen `master` und diesem Prototyp-Branch überein.
 
