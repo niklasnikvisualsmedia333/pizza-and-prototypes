@@ -1215,7 +1215,6 @@ function LatestEvent({
 function PilotRecap({ content }: { content: typeof communityContent.en }) {
   const supportingImages = [
     EVENT_MEDIA.builderDiscussion,
-    EVENT_MEDIA.presenterProjector,
     EVENT_MEDIA.demo,
   ];
 
@@ -1223,6 +1222,7 @@ function PilotRecap({ content }: { content: typeof communityContent.en }) {
     <section id="recap" className="page-section page-section-muted">
       <div className="site-shell">
         <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
+        <p className="recap-date">{content.recapDate}</p>
         <div className="recap-layout">
           <figure className="recap-primary">
             <img
@@ -1414,6 +1414,7 @@ function CommunityTeam({
         <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
         <TeamBlock
           text={content.teamText}
+          textSecondary={content.teamTextSecondary}
           imageAlt={content.teamImageAlt}
           members={content.teamMembers}
         />

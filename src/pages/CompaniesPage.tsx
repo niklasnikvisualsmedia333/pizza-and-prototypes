@@ -97,6 +97,13 @@ export default function CompaniesPage() {
     }
   };
 
+  const chooseTailoredFormat = () => {
+    const tailoredOption = content.form.options.at(-2);
+    if (tailoredOption) {
+      updateField('format', tailoredOption);
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -243,7 +250,17 @@ export default function CompaniesPage() {
               </article>
             ))}
           </div>
-          <p className="format-note">{content.formatsNote}</p>
+          <div className="tailored-format-card">
+            <div>
+              <p className="section-eyebrow">{content.tailoredEyebrow}</p>
+              <h3>{content.tailoredTitle}</h3>
+              <p>{content.tailoredText}</p>
+            </div>
+            <a className="button button-secondary" href="#company-contact" onClick={chooseTailoredFormat}>
+              {content.tailoredCta}
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -251,6 +268,16 @@ export default function CompaniesPage() {
         <div className="site-shell disciplines-layout">
           <SectionHeading eyebrow={content.disciplinesEyebrow} title={content.disciplinesTitle} />
           <div>
+            <div className="community-profile-card">
+              <p className="section-eyebrow">{content.communityProfileEyebrow}</p>
+              <h3>{content.communityProfileTitle}</h3>
+              <div className="community-profile-facts">
+                {content.communityProfileFacts.map((fact) => (
+                  <strong key={fact}>{fact}</strong>
+                ))}
+              </div>
+              <p>{content.communityProfileText}</p>
+            </div>
             <p className="disciplines-intro">{content.disciplinesText}</p>
             <div className="discipline-list">
               {content.disciplines.map((discipline) => (
@@ -268,7 +295,7 @@ export default function CompaniesPage() {
         <div className="site-shell">
           <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
           <div className="proof-gallery">
-            {[EVENT_MEDIA.roomWide, EVENT_MEDIA.presenterProjector, EVENT_MEDIA.demo].map((image, index) => (
+            {[EVENT_MEDIA.companyHero, EVENT_MEDIA.roomAlternative, EVENT_MEDIA.demo].map((image, index) => (
               <figure key={image.src} className={index === 0 ? 'proof-gallery-large' : undefined}>
                 <img
                   src={image.src}
@@ -280,9 +307,12 @@ export default function CompaniesPage() {
               </figure>
             ))}
           </div>
-          <div className="expectation-band">
+          <div className="expectation-card expectation-card-compact">
             <Sparkles aria-hidden="true" />
-            <p>{content.proofExpectation}</p>
+            <div>
+              <h3>{content.proofExpectationTitle}</h3>
+              <p>{content.proofExpectation}</p>
+            </div>
           </div>
         </div>
       </section>
@@ -322,18 +352,23 @@ export default function CompaniesPage() {
                 <p className="section-eyebrow">{content.onePagerEyebrow}</p>
                 <h3>{content.onePagerTitle}</h3>
                 <p>{content.onePagerText}</p>
-                <a
-                  className="button button-secondary"
-                  href={
-                    DOWNLOADS.onePager.status === 'available' && DOWNLOADS.onePager.url
-                      ? DOWNLOADS.onePager.url
-                      : `mailto:${SITE.contactEmail}?subject=${encodeURIComponent('One-Pager Tech Meets Problems')}`
-                  }
-                  {...(DOWNLOADS.onePager.status === 'available' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
-                  {DOWNLOADS.onePager.status === 'available' ? content.onePagerDownload : content.onePagerRequest}
-                  <ExternalLink aria-hidden="true" />
-                </a>
+                {DOWNLOADS.onePager.status === 'available' ? (
+                  <a
+                    className="button button-secondary"
+                    href={DOWNLOADS.onePager.url}
+                    download={DOWNLOADS.onePager.filename}
+                  >
+                    {content.onePagerDownload}
+                    <ExternalLink aria-hidden="true" />
+                  </a>
+                ) : (
+                  <>
+                    <button type="button" className="button button-secondary button-disabled" disabled aria-disabled="true">
+                      {content.onePagerDownload}
+                    </button>
+                    <small className="one-pager-status">{content.onePagerPending}</small>
+                  </>
+                )}
               </div>
             </div>
 
@@ -447,16 +482,12 @@ export default function CompaniesPage() {
       <section id="about" className="page-section">
         <div className="site-shell">
           <SectionHeading
-            eyebrow={lang === 'de' ? 'Team und Unterstützer' : 'Team and supporters'}
-            title={lang === 'de' ? 'Regional verankert. Praktisch orientiert.' : 'Rooted in the region. Focused on practice.'}
+            eyebrow={content.teamEyebrow}
+            title={content.teamTitle}
           />
           <TeamBlock
-            title={lang === 'de' ? 'Das Team hinter Tech Meets Problems' : 'The team behind Tech Meets Problems'}
-            text={
-              lang === 'de'
-                ? 'Wir entwickeln das Format gemeinsam mit Community und Partnern aus der Region.'
-                : 'We develop the format together with the community and regional partners.'
-            }
+            text={content.teamText}
+            textSecondary={content.teamTextSecondary}
             imageAlt={lang === 'de' ? 'Team von Tech Meets Problems' : 'Tech Meets Problems team'}
             members={communityContent[lang].teamMembers}
           />

@@ -17,13 +17,22 @@ export type CompaniesContent = {
   formatsIntro: string;
   formats: Array<{ title: string; text: string; frame: string }>;
   formatsNote: string;
+  tailoredEyebrow: string;
+  tailoredTitle: string;
+  tailoredText: string;
+  tailoredCta: string;
   disciplinesEyebrow: string;
   disciplinesTitle: string;
   disciplinesText: string;
   disciplines: string[];
+  communityProfileEyebrow: string;
+  communityProfileTitle: string;
+  communityProfileFacts: string[];
+  communityProfileText: string;
   proofEyebrow: string;
   proofTitle: string;
   proofText: string;
+  proofExpectationTitle: string;
   proofExpectation: string;
   proofImageAlts: string[];
   processEyebrow: string;
@@ -38,6 +47,11 @@ export type CompaniesContent = {
   onePagerText: string;
   onePagerRequest: string;
   onePagerDownload: string;
+  onePagerPending: string;
+  teamEyebrow: string;
+  teamTitle: string;
+  teamText: string;
+  teamTextSecondary: string;
   faqEyebrow: string;
   faqTitle: string;
   faqs: Array<{ question: string; answer: string }>;
@@ -72,10 +86,10 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     metaDescription:
       'Tech Meets Problems verbindet Unternehmen mit technischen Talenten und neuen Perspektiven auf Prozesse, Digitalisierung, KI und reale Herausforderungen.',
     heroEyebrow: 'Tech Meets Problems für Unternehmen',
-    heroTitle: 'Sie bringen die Herausforderung ein. Wir bringen technische Talente und neue Perspektiven zusammen.',
+    heroTitle: 'Ihre Herausforderung trifft auf technische Talente.',
     heroText:
-      'Tech Meets Problems ist eine regionale Open-Innovation-Initiative aus Siegen. Wir verbinden Unternehmen mit einer technisch orientierten und praxisinteressierten Community.',
-    heroPrimary: 'Gespräch starten',
+      'Tech Meets Problems verbindet Unternehmen mit einer wachsenden technischen Community aus Siegen und der Region. Gemeinsam entstehen neue Perspektiven, erste Ansätze und passende nächste Schritte.',
+    heroPrimary: 'Kontakt aufnehmen',
     heroSecondary: 'Zur Community',
     heroImageAlt: 'Technische Talente arbeiten gemeinsam an einem Problem-Canvas',
     benefitsEyebrow: 'Nutzen für Unternehmen',
@@ -88,7 +102,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     ],
     formatsEyebrow: 'Kooperationsformate',
     formatsTitle: 'Der Rahmen richtet sich nach Ihrer Fragestellung.',
-    formatsIntro: 'Vier mögliche Einstiege. Dauer und beteiligte Profile stimmen wir gemeinsam ab.',
+    formatsIntro: 'Mögliche Einstiege. Dauer und beteiligte Profile stimmen wir gemeinsam ab.',
     formats: [
       { title: 'Impuls und Austausch', text: 'Einblicke in Technologien, Projekte, Transformation, Karrierewege oder aktuelle Branchenfragen.', frame: '30 bis 60 Minuten plus Fragen und Austausch' },
       { title: 'Innovation Event', text: 'Eine klar abgegrenzte Herausforderung wird analysiert und in erste Konzepte, Workflows, Mockups oder technische Ansätze übersetzt.', frame: 'Etwa 90 Minuten bis ein Tag' },
@@ -96,6 +110,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       { title: 'Recruiting und Employer Branding', text: 'Technische Einblicke, reale Aufgaben, Karrierewege und direkter Austausch stärken die regionale Arbeitgeberwahrnehmung.', frame: 'Company Insight, Q&A, Workshop oder Community-Format' },
     ],
     formatsNote: 'Auch individuelle Workshops, mehrteilige Programme und Hackathons sind möglich, wenn sie zur Fragestellung und zur Community passen.',
+    tailoredEyebrow: 'Individuelles Format',
+    tailoredTitle: 'Nicht jede Herausforderung passt in ein Standardformat.',
+    tailoredText:
+      'Gemeinsam klären wir Ziel, Zeitraum und passende Profile aus der Community. Möglich sind individuelle Workshops, mehrteilige Programme, Hackathons oder ein speziell entwickeltes Format.',
+    tailoredCta: 'Individuelles Format besprechen',
     disciplinesEyebrow: 'Unsere Community',
     disciplinesTitle: 'Technische und techniknahe Profile aus der Region.',
     disciplinesText: 'Eine wachsende technische Community aus Siegen und der Region bringt unterschiedliche Perspektiven zusammen.',
@@ -110,13 +129,19 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Mechatronik',
       'Wirtschaftsingenieurwesen',
     ],
-    proofEyebrow: 'Pilot als Proof',
-    proofTitle: 'Pizza & Prototypes als erster Praxistest.',
-    proofText: 'Beim ersten Pilot arbeiteten kleine Teams an einem realen, anonymisierten Problemraum. Entstanden sind konkrete Workflows, Mockups, technische Konzepte und erste Prototypen.',
+    communityProfileEyebrow: 'Die Community',
+    communityProfileTitle: 'Technische Talente mit unterschiedlichen Erfahrungen.',
+    communityProfileFacts: ['Über 120 Mitglieder', 'Viele studieren im Master', 'International und praxiserfahren'],
+    communityProfileText:
+      'Viele Mitglieder haben ihren Bachelor in Deutschland oder im Ausland abgeschlossen und studieren heute im Master. Ein großer Teil bringt bereits Berufserfahrung aus Unternehmen, Projekten oder eigener Gründung mit.',
+    proofEyebrow: 'Unser erstes Event',
+    proofTitle: 'Pizza & Prototypes · 26. Juni 2026',
+    proofText: 'Bei unserem ersten Event arbeiteten kleine Teams an einem realen, anonymisierten Problemraum. Entstanden sind Workflows, Mockups, technische Konzepte und erste Prototypen.',
+    proofExpectationTitle: 'Was ein Kurzformat leisten kann',
     proofExpectation: 'Ein Kurzformat liefert keine fertige Software. Es schafft ein gemeinsames Problemverständnis, erste Ansätze und eine Grundlage für mögliche nächste Schritte.',
     proofImageAlts: [
-      'Kleine Teams arbeiten gemeinsam beim ersten Tech Meets Problems Pilot',
-      'Teilnehmer präsentiert ein Ergebnis vor einem Projektor',
+      'Kleines Team arbeitet an einem Canvas beim ersten Tech Meets Problems Event',
+      'Weiter Blick in den Raum mit mehreren arbeitenden Teams',
       'Ergebnisboard aus dem ersten Tech Meets Problems Pilot',
     ],
     processEyebrow: 'Zusammenarbeit',
@@ -135,6 +160,13 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     onePagerText: 'Der One-Pager fasst Ansatz, Formate und Kontakt für die interne Abstimmung zusammen.',
     onePagerRequest: 'One-Pager anfordern',
     onePagerDownload: 'One-Pager herunterladen',
+    onePagerPending: 'PDF wird ergänzt',
+    teamEyebrow: 'Über uns',
+    teamTitle: 'Das Team hinter Tech Meets Problems.',
+    teamText:
+      'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. Uns verbindet die Frage, wie technische Talente, Unternehmen und das regionale Gründungsnetzwerk besser zusammenarbeiten können.',
+    teamTextSecondary:
+      'Wir bringen Erfahrungen aus Medienproduktion, KI-Gründung, Psychologie, Wirtschaft und einem medizinischen Gründungsprojekt zusammen. Mit Tech Meets Problems wollen wir Open Innovation in Siegen praktisch erlebbar machen.',
     faqEyebrow: 'Kurz beantwortet',
     faqTitle: 'Fragen zur Zusammenarbeit.',
     faqs: [
@@ -172,9 +204,9 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     metaDescription:
       'Tech Meets Problems connects companies with technical talent and new perspectives on processes, digitalization, AI and real challenges.',
     heroEyebrow: 'Tech Meets Problems for companies',
-    heroTitle: 'You bring the challenge. We bring technical talent and new perspectives together.',
-    heroText: 'Tech Meets Problems is a regional open-innovation initiative from Siegen. We connect companies with a technically oriented, hands-on community.',
-    heroPrimary: 'Start a conversation',
+    heroTitle: 'Your challenge meets technical talent.',
+    heroText: 'Tech Meets Problems connects companies with a growing technical community from Siegen and the surrounding region. Together, we create new perspectives, first approaches and suitable next steps.',
+    heroPrimary: 'Get in touch',
     heroSecondary: 'Visit the community',
     heroImageAlt: 'Technical talent working together on a problem canvas',
     benefitsEyebrow: 'Benefits for companies',
@@ -187,7 +219,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     ],
     formatsEyebrow: 'Collaboration formats',
     formatsTitle: 'The setup follows your question.',
-    formatsIntro: 'Four possible starting points. We agree on duration and relevant participant profiles together.',
+    formatsIntro: 'Possible starting points. We agree on duration and relevant profiles together.',
     formats: [
       { title: 'Impulse and exchange', text: 'Insights into technologies, projects, transformation, career paths or current industry questions.', frame: '30 to 60 minutes plus questions and exchange' },
       { title: 'Innovation event', text: 'A clearly scoped challenge is analyzed and translated into first concepts, workflows, mockups or technical approaches.', frame: 'Around 90 minutes to one day' },
@@ -195,6 +227,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       { title: 'Recruiting and employer branding', text: 'Technical insights, real tasks, career paths and direct exchange strengthen regional employer visibility.', frame: 'Company insight, Q&A, workshop or community format' },
     ],
     formatsNote: 'Tailored workshops, multi-part programs and hackathons are also possible when they fit the question and the community.',
+    tailoredEyebrow: 'Tailored format',
+    tailoredTitle: 'Not every challenge fits a standard format.',
+    tailoredText:
+      'Together, we clarify the goal, timeframe and suitable profiles from the community. Possible setups include tailored workshops, multi-part programs, hackathons or a purpose-built format.',
+    tailoredCta: 'Discuss a tailored format',
     disciplinesEyebrow: 'Our community',
     disciplinesTitle: 'Technical and tech-adjacent profiles from the region.',
     disciplinesText: 'A growing technical community from Siegen and the surrounding region brings different perspectives together.',
@@ -209,13 +246,19 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Mechatronics',
       'Industrial engineering',
     ],
-    proofEyebrow: 'Pilot as proof',
-    proofTitle: 'Pizza & Prototypes as the first practical test.',
-    proofText: 'At the first pilot, small teams worked on a real, anonymized problem space. They created concrete workflows, mockups, technical concepts and first prototypes.',
+    communityProfileEyebrow: 'The community',
+    communityProfileTitle: 'Technical talent with different backgrounds.',
+    communityProfileFacts: ['More than 120 members', 'Many are master’s students', 'International and experienced in practice'],
+    communityProfileText:
+      'Many members completed their bachelor’s degree in Germany or abroad and are now studying at master’s level. A significant part of the community already brings experience from companies, projects or their own ventures.',
+    proofEyebrow: 'Our first event',
+    proofTitle: 'Pizza & Prototypes · 26 June 2026',
+    proofText: 'At our first event, small teams worked on a real, anonymized problem space. They developed workflows, mockups, technical concepts and first prototypes.',
+    proofExpectationTitle: 'What a short format can achieve',
     proofExpectation: 'A short format does not deliver finished software. It creates a shared understanding of the problem, first approaches and a foundation for possible next steps.',
     proofImageAlts: [
-      'Small teams collaborating at the first Tech Meets Problems pilot',
-      'Participant presenting a result in front of a projector',
+      'Small team working on a canvas at the first Tech Meets Problems event',
+      'Wide view of the room with several teams working together',
       'Result board from the first Tech Meets Problems pilot',
     ],
     processEyebrow: 'Collaboration',
@@ -234,6 +277,13 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     onePagerText: 'The one-pager summarizes the approach, formats and contact details for internal discussion.',
     onePagerRequest: 'Request the one-pager',
     onePagerDownload: 'Download the one-pager',
+    onePagerPending: 'PDF will be added',
+    teamEyebrow: 'About us',
+    teamTitle: 'The team behind Tech Meets Problems.',
+    teamText:
+      'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. We share an interest in how technical talent, companies and the regional startup network can work together more effectively.',
+    teamTextSecondary:
+      'We combine experience from media production, an AI startup, psychology, business and a medical venture project. With Tech Meets Problems, we want to make open innovation practical in Siegen.',
     faqEyebrow: 'Quick answers',
     faqTitle: 'Questions about collaboration.',
     faqs: [

@@ -58,19 +58,21 @@ export function Supporters({ lang, compact = false }: { lang: Lang; compact?: bo
 export function TeamBlock({
   title,
   text,
+  textSecondary,
   imageAlt,
   members,
 }: {
   title?: string;
   text: string;
+  textSecondary?: string;
   imageAlt: string;
   members: Array<{ name: string; role: string; description: string }>;
 }) {
-  const linkedInProfiles = [
-    'https://www.linkedin.com/in/niklas-bruene',
-    'https://www.linkedin.com/in/frederik-krause-a80448277/',
-    'https://www.linkedin.com/in/johanna-brenner-619a36328',
-  ];
+  const linkedInProfiles: Record<string, string> = {
+    'Frederik Krause': 'https://www.linkedin.com/in/frederik-krause-a80448277/',
+    'Johanna Brenner': 'https://www.linkedin.com/in/johanna-brenner-619a36328',
+    'Niklas Brüne': 'https://www.linkedin.com/in/niklas-bruene',
+  };
 
   return (
     <div className="team-block">
@@ -80,16 +82,17 @@ export function TeamBlock({
       <div className="team-copy">
         {title && <h3>{title}</h3>}
         <p>{text}</p>
+        {textSecondary && <p>{textSecondary}</p>}
       </div>
       <div className="team-list">
-        {members.map((member, index) => (
+        {members.map((member) => (
           <article key={member.name}>
             <div>
               <strong>{member.name}</strong>
               <span>{member.role}</span>
               <p>{member.description}</p>
               <a
-                href={linkedInProfiles[index]}
+                href={linkedInProfiles[member.name]}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} LinkedIn`}

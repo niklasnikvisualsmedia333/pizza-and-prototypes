@@ -1,7 +1,7 @@
 export const DOWNLOADS = {
   onePager: {
-    status: 'request' as 'request' | 'available',
-    url: null as string | null,
+    status: 'pending' as 'pending' | 'available',
+    url: `${import.meta.env.BASE_URL}downloads/tech-meets-problems-one-pager.pdf`,
     filename: 'tech-meets-problems-one-pager.pdf',
   },
 } as const;

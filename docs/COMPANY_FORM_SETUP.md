@@ -29,6 +29,21 @@ Für die nächste Version einen eigenen Formspree-Endpunkt oder einen eigenen n8
 
 Empfohlen ist ein eigener n8n-Webhook mit eigenem Sheet-Tab. Dadurch bleiben Community-Anmeldungen und Unternehmensanfragen nachvollziehbar getrennt.
 
+## Checkliste für direkten Versand an info@techmeetsproblems.com
+
+- separate Formspree- oder n8n-Route ausschließlich für Company-Anfragen anlegen
+- `info@techmeetsproblems.com` als Zieladresse konfigurieren und verifizieren
+- optionale Bestätigungsmail mit eigenständigem Company-Wording erstellen
+- optional eine eigene Google-Sheet-Struktur für Company-Anfragen verwenden
+- Spam-Schutz und Rate-Limits des gewählten Dienstes aktivieren
+- Consent-Text und Datenschutzhinweise an den tatsächlichen Dienst anpassen
+- UTM-Felder aus dem bestehenden Company-Payload unverändert übernehmen
+- neuen Endpoint zuerst im Testmodus mit Testdaten prüfen
+- erst danach `VITE_COMPANY_CONTACT_ENDPOINT` setzen und vom Mailto-Fallback wechseln
+
+Bis diese Punkte abgeschlossen sind, bleibt der Mailto-Fallback die bewusst gewählte und
+transparente Standardlösung.
+
 ## Datenschutz
 
 Im Mail-Fallback verarbeitet die Website die Eingaben nicht serverseitig. Sie übernimmt sie lediglich in eine lokale E-Mail-Vorlage. Sobald ein Endpoint aktiviert wird, müssen die Datenschutzhinweise den tatsächlichen Dienst, Empfänger, Zweck und die Löschmöglichkeit nennen.

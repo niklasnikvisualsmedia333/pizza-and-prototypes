@@ -46,3 +46,11 @@ Formspree-/n8n-Logik, Retry, Timeout, Local Storage und Legal-Felder zeigen im D
 ## Ergebnis
 
 Das Communityformular ist funktional geschützt. Es wurde keine echte Übermittlung ausgelöst.
+
+## Prüfung im Website-Refresh vom Juli 2026
+
+Auch bei der responsiven und inhaltlichen Überarbeitung des Prototyps wurden `InterestForm`,
+`initialForm`, Feldreihenfolge, Optionen, Required-Logik, Submit-Handler, Payload-Aufbau,
+Success Modal und Social-Aktionen nicht verändert. Die Änderungen betreffen ausschließlich
+Seiteninhalte, gemeinsam genutzte Präsentationskomponenten und Layout-Styles. Es wurde kein
+Communityformular an Formspree oder n8n gesendet.

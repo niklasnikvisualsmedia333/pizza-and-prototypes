@@ -2664,7 +2664,7 @@ fieldset legend {
 .site-shell {
   position: relative;
   z-index: 1;
-  width: min(100% - 2rem, 76rem);
+  width: min(100% - 2rem, 82rem);
   margin-inline: auto;
 }
 
@@ -2964,7 +2964,7 @@ fieldset legend {
 
 .community-hero-copy,
 .company-hero-copy {
-  max-width: 44rem;
+  max-width: 47.5rem;
 }
 
 .section-eyebrow {
@@ -2979,18 +2979,18 @@ fieldset legend {
 
 .community-hero h1,
 .company-hero h1 {
-  max-width: 15ch;
+  max-width: 16ch;
   margin: 0;
   color: #fff;
-  font-size: 2.75rem;
+  font-size: clamp(2.65rem, 10.5vw, 3.35rem);
   font-weight: 720;
   letter-spacing: 0;
-  line-height: 1.02;
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .company-hero h1 {
-  max-width: 18ch;
-  font-size: 2.5rem;
+  max-width: 17ch;
 }
 
 .community-hero-copy > p:not(.section-eyebrow, .community-claim),
@@ -3087,6 +3087,19 @@ fieldset legend {
   position: relative;
   z-index: 1;
   padding-block: 4.5rem;
+}
+
+#latest-event,
+#community,
+#how,
+#about,
+#benefits,
+#formats,
+#pilot-proof,
+#company-contact,
+#privacy,
+#recap {
+  scroll-margin-top: 6.25rem;
 }
 
 .page-section-muted {
@@ -3188,6 +3201,14 @@ fieldset legend {
   line-height: 1.75;
 }
 
+.recap-date {
+  margin: 1rem 0 0;
+  color: #76dfed;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.03em;
+}
+
 .recap-layout {
   display: grid;
   gap: 1rem;
@@ -3242,7 +3263,7 @@ fieldset legend {
 
 .recap-proof-list {
   border-left: 2px solid #1f7fe7;
-  padding: 0.4rem 0 0.4rem 1rem;
+  padding: 0.55rem 0 0.55rem 1.15rem;
 }
 
 .recap-proof-list li,
@@ -3252,8 +3273,8 @@ fieldset legend {
   align-items: flex-start;
   gap: 0.65rem;
   color: #d4dce8;
-  font-size: 0.88rem;
-  line-height: 1.5;
+  font-size: 0.98rem;
+  line-height: 1.6;
 }
 
 .recap-proof-list svg,
@@ -3268,12 +3289,12 @@ fieldset legend {
 
 .recap-thumbnails {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
 .recap-thumbnails figure {
-  aspect-ratio: 1.15;
+  aspect-ratio: 1.5;
 }
 
 .recap-thumbnails img {
@@ -3401,11 +3422,11 @@ fieldset legend {
   grid-template-columns: 1.75rem 1fr 0.9rem;
   align-items: center;
   gap: 0.8rem;
-  min-height: 4.35rem;
+  min-height: 3.9rem;
   border: 1px solid rgba(103, 232, 249, 0.18);
   border-radius: 0.5rem;
   background: rgba(15, 23, 42, 0.55);
-  padding: 0.8rem 0.9rem;
+  padding: 0.7rem 0.85rem;
   color: #d7e2ef;
   text-decoration: none;
   transition:
@@ -3519,6 +3540,10 @@ fieldset legend {
   align-self: center;
 }
 
+.team-copy > p + p {
+  margin-top: 1rem;
+}
+
 .team-member-grid {
   display: grid;
   grid-column: 1 / -1;
@@ -3600,14 +3625,17 @@ fieldset legend {
 }
 
 .team-list article {
+  display: flex;
+  min-height: 15rem;
   border-top: 2px solid rgba(103, 232, 249, 0.45);
   background: rgba(15, 23, 42, 0.62);
   padding: 1rem;
 }
 
 .team-list article div {
-  display: grid;
-  gap: 0.25rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 }
 
 .team-list strong {
@@ -3634,7 +3662,8 @@ fieldset legend {
   width: fit-content;
   align-items: center;
   gap: 0.3rem;
-  margin-top: 0.2rem;
+  margin-top: auto;
+  padding-top: 1rem;
   color: #73dfed;
   font-size: 0.75rem;
   font-weight: 700;
@@ -3647,9 +3676,10 @@ fieldset legend {
 }
 
 .supporter-strip {
-  display: grid;
+  display: flex;
   grid-column: 1 / -1;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.55rem;
   align-items: center;
   margin-top: 0.5rem;
   border-top: 1px solid rgba(148, 163, 184, 0.14);
@@ -3666,17 +3696,18 @@ fieldset legend {
 
 .supporter-strip a {
   display: grid;
-  min-height: 4rem;
+  width: auto;
+  min-height: 2.9rem;
   place-items: center;
   border-radius: 0.5rem;
   background: #fff;
-  padding: 0.6rem 0.9rem;
+  padding: 0.35rem 0.75rem;
 }
 
 .supporter-strip img {
-  width: 100%;
-  max-width: 14rem;
-  height: 2.65rem;
+  width: auto;
+  max-width: 11rem;
+  height: 2rem;
   object-fit: contain;
 }
 
@@ -3685,7 +3716,9 @@ fieldset legend {
   border: 1px solid rgba(103, 232, 249, 0.16);
   border-radius: 0.5rem;
   background: rgba(8, 14, 25, 0.74);
-  padding: 0.65rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.5rem;
 }
 
 .supporter-strip-compact a {
@@ -3694,8 +3727,8 @@ fieldset legend {
 }
 
 .supporter-strip-compact img {
-  max-width: 11rem;
-  height: 1.9rem;
+  max-width: 9.5rem;
+  height: 1.7rem;
 }
 
 .faq-layout {
@@ -3847,6 +3880,18 @@ fieldset legend {
   margin-top: 1rem;
 }
 
+.button-disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.one-pager-status {
+  display: block;
+  margin-top: 0.55rem;
+  color: #8190a4;
+  font-size: 0.72rem;
+}
+
 .format-grid article > span {
   margin-bottom: 1.15rem;
 }
@@ -3864,6 +3909,45 @@ fieldset legend {
   font-size: 0.8rem;
 }
 
+.tailored-format-card {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 1rem;
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  border-left: 3px solid #2379e8;
+  border-radius: 0.5rem;
+  background: rgba(11, 24, 41, 0.78);
+  padding: 1.4rem;
+}
+
+.tailored-format-card .section-eyebrow,
+.community-profile-card .section-eyebrow {
+  margin-bottom: 0.55rem;
+}
+
+.tailored-format-card h3,
+.community-profile-card h3,
+.expectation-card-compact h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.tailored-format-card p:not(.section-eyebrow),
+.community-profile-card > p:last-child,
+.expectation-card-compact p {
+  margin: 0.65rem 0 0;
+  color: #a7b4c7;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.tailored-format-card .button {
+  justify-self: start;
+}
+
 .discipline-list {
   display: flex;
   flex-wrap: wrap;
@@ -3876,6 +3960,31 @@ fieldset legend {
   color: #a9b5c7;
   font-size: 0.92rem;
   line-height: 1.7;
+}
+
+.community-profile-card {
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.62);
+  padding: 1.35rem;
+}
+
+.community-profile-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.community-profile-facts strong {
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  border-radius: 999px;
+  background: rgba(31, 126, 181, 0.1);
+  padding: 0.45rem 0.7rem;
+  color: #cceff4;
+  font-size: 0.74rem;
+  font-weight: 700;
 }
 
 .discipline-list span {
@@ -3905,7 +4014,7 @@ fieldset legend {
 }
 
 .proof-gallery figure {
-  aspect-ratio: 1.4;
+  aspect-ratio: 1.55;
 }
 
 .proof-gallery img {
@@ -3913,7 +4022,7 @@ fieldset legend {
 }
 
 .proof-gallery figure:nth-child(2) img {
-  object-position: center 34%;
+  object-position: center 42%;
 }
 
 .expectation-band {
@@ -3948,6 +4057,24 @@ fieldset legend {
   border-radius: 0.5rem;
   background: rgba(57, 29, 20, 0.2);
   padding: 1.5rem;
+}
+
+.expectation-card-compact {
+  display: flex;
+  max-width: 46rem;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+  border-color: rgba(243, 154, 75, 0.22);
+  padding: 1.25rem;
+}
+
+.expectation-card-compact > svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+  color: #f4a55b;
 }
 
 .company-contact-layout {
@@ -4098,7 +4225,7 @@ fieldset legend {
 
 @media (min-width: 640px) {
   .site-shell {
-    width: min(100% - 3rem, 76rem);
+    width: min(100% - 3rem, 82rem);
   }
 
   .site-language {
@@ -4114,12 +4241,9 @@ fieldset legend {
     flex-wrap: wrap;
   }
 
-  .community-hero h1 {
-    font-size: 3.25rem;
-  }
-
+  .community-hero h1,
   .company-hero h1 {
-    font-size: 3rem;
+    font-size: clamp(3.1rem, 7vw, 3.75rem);
   }
 
   .section-heading h2,
@@ -4167,10 +4291,6 @@ fieldset legend {
     grid-column: 1 / -1;
   }
 
-  .supporter-strip {
-    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
-  }
-
   .proof-gallery {
     grid-template-columns: 1.3fr 1fr;
   }
@@ -4212,23 +4332,25 @@ fieldset legend {
 
   .community-hero-grid,
   .company-hero-grid {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    gap: 3.5rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(28rem, 0.85fr);
+    gap: 3rem;
   }
 
   .community-hero-media,
   .company-hero-media,
   .community-hero-media img,
   .company-hero-media img {
-    min-height: 31rem;
+    min-height: 29rem;
+  }
+
+  .community-hero h1,
+  .company-hero h1 {
+    font-size: clamp(3rem, 3.55vw, 3.55rem);
   }
 
   .community-hero h1 {
-    font-size: 3.75rem;
-  }
-
-  .company-hero h1 {
-    font-size: 2.9rem;
+    max-width: none;
+    text-wrap: wrap;
   }
 
   .page-section {
@@ -4240,7 +4362,7 @@ fieldset legend {
   }
 
   .recap-layout {
-    grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.55fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(23rem, 0.75fr);
     gap: 1.25rem;
   }
 
@@ -4314,6 +4436,17 @@ fieldset legend {
     padding: 2rem;
   }
 
+  .expectation-card-compact {
+    display: flex;
+    padding: 1.25rem;
+  }
+
+  .tailored-format-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    padding: 1.5rem 1.75rem;
+  }
+
   .company-contact-layout {
     grid-template-columns: minmax(16rem, 0.6fr) minmax(0, 1.4fr);
     gap: 1rem;
@@ -4335,18 +4468,15 @@ fieldset legend {
     gap: 2.25rem;
   }
 
-  .community-hero h1 {
-    font-size: 4rem;
-  }
-
+  .community-hero h1,
   .company-hero h1 {
-    font-size: 3.3rem;
+    font-size: clamp(3rem, 3.5vw, 3.75rem);
   }
 }
 
 @media (max-width: 430px) {
   .site-shell {
-    width: min(100% - 1.25rem, 76rem);
+    width: min(100% - 1.25rem, 82rem);
   }
 
   .site-brand small {
@@ -4360,8 +4490,8 @@ fieldset legend {
 
   .community-hero h1,
   .company-hero h1 {
-    font-size: 2.45rem;
-    overflow-wrap: anywhere;
+    font-size: clamp(2.05rem, 9.6vw, 2.55rem);
+    overflow-wrap: normal;
   }
 
   .section-heading h2,
@@ -4371,12 +4501,8 @@ fieldset legend {
     overflow-wrap: anywhere;
   }
 
-  .recap-thumbnails {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .recap-thumbnails figure {
-    aspect-ratio: 1;
+    aspect-ratio: 1.45;
   }
 
   .channel-grid > a {
@@ -4385,15 +4511,23 @@ fieldset legend {
   }
 
   .supporter-strip {
-    grid-template-columns: 1fr;
+    align-items: flex-start;
   }
 
   .supporter-strip-compact {
-    grid-template-columns: 1fr 1fr;
+    width: 100%;
   }
 
   .supporter-strip-compact > span {
-    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .supporter-strip-compact a {
+    flex: 1 1 8.5rem;
+  }
+
+  .team-list article {
+    min-height: 0;
   }
 
   .analytics-consent {

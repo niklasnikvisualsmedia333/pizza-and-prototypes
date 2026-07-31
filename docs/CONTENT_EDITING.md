@@ -42,9 +42,10 @@ bestätigtes Event darf ein CTA nur gesetzt werden, wenn `registrationUrl` tats�
 
 ## One-Pager hinterlegen
 
-In `src/config/downloads.ts` den Status von `request` auf `available` setzen und die geprüfte
-PDF-URL in `url` eintragen. Solange keine URL vorhanden ist, öffnet die sichtbare Aktion nur
-eine vorbereitete E-Mail an `info@techmeetsproblems.com`.
+Die geprüfte PDF unter `public/downloads/tech-meets-problems-one-pager.pdf` ablegen und danach
+in `src/config/downloads.ts` ausschließlich den Status von `pending` auf `available` setzen.
+URL und Dateiname sind bereits zentral konfiguriert. Solange die Datei fehlt, bleibt der sichtbare
+Button deaktiviert und erzeugt weder einen 404-Aufruf noch eine irreführende Mailanfrage.
 
 ## Teamtexte
 
