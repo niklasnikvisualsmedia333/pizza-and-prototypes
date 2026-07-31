@@ -34,7 +34,7 @@ export type CommunityContent = {
   teamTitle: string;
   teamText: string;
   teamImageAlt: string;
-  teamMembers: Array<{ name: string; role: string }>;
+  teamMembers: Array<{ name: string; role: string; description: string }>;
   faqEyebrow: string;
   faqTitle: string;
   faqs: Array<{ question: string; answer: string }>;
@@ -46,21 +46,21 @@ export const communityContent: Record<Lang, CommunityContent> = {
     metaDescription:
       'Tech Meets Problems verbindet technische Talente mit realen Herausforderungen aus Unternehmen und Region. Werde Teil der Builder-first Community aus Siegen.',
     heroEyebrow: 'Builder-first Community für reale Herausforderungen',
-    heroTitle: 'Technische Talente arbeiten an echten Problemen.',
+    heroTitle: 'Technische Studierende lösen reale Probleme aus Unternehmen.',
     heroText:
-      'Tech Meets Problems verbindet Builder, technische Studierende und junge Talente mit realen Herausforderungen aus Unternehmen und Region. In kleinen Teams entstehen neue Perspektiven, Konzepte, Workflows, Mockups und erste Prototypen.',
+      'Tech Meets Problems bringt technische Studierende und weitere Builder mit realen Herausforderungen aus Unternehmen und Region zusammen. In kleinen Teams entstehen daraus Konzepte, Workflows, Mockups und erste Prototypen.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
     heroClaim: 'Where builders work on real business needs.',
     recapEyebrow: 'Erster Pilot',
     recapTitle: 'Pizza & Prototypes, Juni 2026',
     recapText:
-      'Am 26. Juni kamen Builder, technische Studierende und Maker im Haus der Innovation in Siegen zusammen. In kleinen Teams arbeiteten sie an einem realen, anonymisierten Problemraum und entwickelten Workflows, Konzepte, Mockups, technische Skizzen und erste Prototypen.',
+      'Am 26. Juni kamen Builder und technische Studierende im Haus der Innovation in Siegen zusammen. In kleinen Teams arbeiteten sie an einem realen, anonymisierten Problemraum und entwickelten Workflows, Konzepte, Mockups, technische Skizzen und erste Prototypen.',
     recapFacts: [
       'Echte Problemräume',
       'Kleine, fokussierte Teams',
-      'Offene Laptops und praktische Arbeit',
-      'Keine Pitchdecks und kein Startup-Theater',
+      'Praktische Zusammenarbeit',
+      'Workflows, Mockups und erste Prototypen',
     ],
     recapImageAlt: 'Builder-Teams arbeiten beim ersten Tech Meets Problems Pilot in Siegen',
     benefitsEyebrow: 'Für Builder',
@@ -96,24 +96,36 @@ export const communityContent: Record<Lang, CommunityContent> = {
       'Ergebnis teilen und nächste Schritte prüfen',
     ],
     channelsEyebrow: 'Community-Kanäle',
-    channelsTitle: 'Bleib mit Tech Meets Problems verbunden.',
+    channelsTitle: 'Bleib bei Tech Meets Problems auf dem Laufenden.',
     channelsText:
-      'Erhalte Hinweise zu Sessions, Problemräumen und Projekten. Kein Dauerfeuer, nur relevante Updates.',
+      'Wähle den Kanal, der zu dir passt. Dort teilen wir neue Sessions, Problemräume und Projektmöglichkeiten.',
     companyEyebrow: 'Für Unternehmen',
     companyTitle: 'Reale Herausforderung im Unternehmen?',
     companyText:
       'Wir entwickeln passende Formate, die Unternehmen mit technischen Talenten, neuen Perspektiven und ersten Lösungsansätzen verbinden.',
     companyPoints: ['Technische Talente', 'Reale Herausforderungen', 'Greifbare nächste Schritte'],
-    companyCta: 'Zusammenarbeit entdecken',
+    companyCta: 'Zusammenarbeit starten',
     teamEyebrow: 'Das Team',
     teamTitle: 'Aus Siegen. Für praktische Zusammenarbeit.',
     teamText:
-      'Wir verbinden Community, Unternehmen und regionale Partner. Gemeinsam entwickeln wir Formate, in denen reale Probleme auf technische Neugier treffen.',
+      'Wir entwickeln Tech Meets Problems gemeinsam mit der Community und Partnern aus der Region.',
     teamImageAlt: 'Team von Tech Meets Problems',
     teamMembers: [
-      { name: 'Niklas Brüne', role: 'Strategie, Produkt und Kommunikation' },
-      { name: 'Frederik Krause', role: 'Partnerschaften und Open Innovation' },
-      { name: 'Johanna Brenner', role: 'Community, Operations und Strategie' },
+      {
+        name: 'Niklas Brüne',
+        role: 'GRÜNDER',
+        description: 'Eventkonzept, Kommunikation und Problem-Framing',
+      },
+      {
+        name: 'Frederik Krause',
+        role: 'EHEMALIGER GRÜNDER',
+        description: 'Outreach, Operations und Teilnehmererlebnis',
+      },
+      {
+        name: 'Johanna Brenner',
+        role: 'STARTUP SUPPORT',
+        description: 'Coaching, Koordination und Strategie',
+      },
     ],
     faqEyebrow: 'Kurz beantwortet',
     faqTitle: 'Das Wichtigste zur Community.',
@@ -137,21 +149,21 @@ export const communityContent: Record<Lang, CommunityContent> = {
     metaDescription:
       'Tech Meets Problems connects technical talent with real challenges from companies and the region. Join the builder-first community from Siegen.',
     heroEyebrow: 'Builder-first community for real challenges',
-    heroTitle: 'Technical talent works on real problems.',
+    heroTitle: 'Technical students solve real problems from companies.',
     heroText:
-      'Tech Meets Problems connects builders, technical students and young talent with real challenges from companies and the region. Small teams turn them into new perspectives, concepts, workflows, mockups and first prototypes.',
+      'Tech Meets Problems brings technical students and other builders together with real challenges from companies and the region. Small teams turn them into concepts, workflows, mockups and first prototypes.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
     heroClaim: 'Where builders work on real business needs.',
     recapEyebrow: 'First pilot',
     recapTitle: 'Pizza & Prototypes, June 2026',
     recapText:
-      'On June 26, builders, technical students and makers met at Haus der Innovation in Siegen. Small teams worked on a real, anonymized problem space and developed workflows, concepts, mockups, technical sketches and first prototypes.',
+      'On June 26, builders and technical students met at Haus der Innovation in Siegen. Small teams worked on a real, anonymized problem space and developed workflows, concepts, mockups, technical sketches and first prototypes.',
     recapFacts: [
       'Real problem spaces',
       'Small, focused teams',
-      'Open laptops and practical work',
-      'No pitch decks or startup theatre',
+      'Practical collaboration',
+      'Workflows, mockups and first prototypes',
     ],
     recapImageAlt: 'Builder teams working at the first Tech Meets Problems pilot in Siegen',
     benefitsEyebrow: 'For builders',
@@ -187,24 +199,36 @@ export const communityContent: Record<Lang, CommunityContent> = {
       'Share the result and review next steps',
     ],
     channelsEyebrow: 'Community channels',
-    channelsTitle: 'Stay connected with Tech Meets Problems.',
+    channelsTitle: 'Stay up to date with Tech Meets Problems.',
     channelsText:
-      'Hear about sessions, problem spaces and projects. No constant noise, only relevant updates.',
+      'Choose the channel that works for you. We share new sessions, problem spaces and project opportunities there.',
     companyEyebrow: 'For companies',
     companyTitle: 'A real challenge inside your company?',
     companyText:
       'We develop suitable formats that connect companies with technical talent, fresh perspectives and first solution approaches.',
     companyPoints: ['Technical talent', 'Real challenges', 'Tangible next steps'],
-    companyCta: 'Explore collaboration',
+    companyCta: 'Start a collaboration',
     teamEyebrow: 'The team',
     teamTitle: 'From Siegen. Built for practical collaboration.',
     teamText:
-      'We connect community, companies and regional partners. Together, we shape formats where real problems meet technical curiosity.',
+      'We develop Tech Meets Problems together with the community and partners from the region.',
     teamImageAlt: 'Tech Meets Problems team',
     teamMembers: [
-      { name: 'Niklas Brüne', role: 'Strategy, product and communication' },
-      { name: 'Frederik Krause', role: 'Partnerships and open innovation' },
-      { name: 'Johanna Brenner', role: 'Community, operations and strategy' },
+      {
+        name: 'Niklas Brüne',
+        role: 'FOUNDER',
+        description: 'Event concept, communication and problem framing',
+      },
+      {
+        name: 'Frederik Krause',
+        role: 'FORMER FOUNDER',
+        description: 'Outreach, operations and participant experience',
+      },
+      {
+        name: 'Johanna Brenner',
+        role: 'STARTUP SUPPORT',
+        description: 'Coaching, coordination and strategy',
+      },
     ],
     faqEyebrow: 'Quick answers',
     faqTitle: 'What matters about the community.',
@@ -224,4 +248,3 @@ export const communityContent: Record<Lang, CommunityContent> = {
     ],
   },
 };
-

@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
-import { SectionHeading, TeamBlock } from './components/layout/SharedSections';
+import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
 import { ASSETS as REFRESH_ASSETS } from './config/assets';
@@ -347,8 +347,8 @@ const copy = {
     linkedinFooter: 'Follow us on LinkedIn',
     linkedinAria: 'Open Tech Meets Problems on LinkedIn',
     shareKicker: 'Share',
-    shareTitle: 'Know someone who likes building? Send this to them.',
-    shareText: 'A good room starts with the right people.',
+    shareTitle: 'Know someone who would fit the community? Share Tech Meets Problems.',
+    shareText: 'That is how the right people find each other.',
     copyLink: 'Copy page link',
     shareButton: 'Share',
     copied: 'Page link copied.',
@@ -583,8 +583,8 @@ const copy = {
     linkedinFooter: 'Folge uns auf LinkedIn',
     linkedinAria: 'Tech Meets Problems auf LinkedIn öffnen',
     shareKicker: 'Teilen',
-    shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
-    shareText: 'Ein guter Raum startet mit den richtigen Leuten.',
+    shareTitle: 'Kennst du jemanden, der gut in die Community passt? Teile Tech Meets Problems.',
+    shareText: 'So finden die richtigen Menschen zusammen.',
     copyLink: 'Link kopieren',
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
@@ -1107,7 +1107,7 @@ function App() {
         shareMessage={shareMessage}
       />
       <CommunityCompanyTeaser content={refresh} lang={lang} />
-      <CommunityTeam content={refresh} lang={lang} />
+      <CommunityTeam content={refresh} />
       <CommunityFaq content={refresh} />
       <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
       <SharedSiteFooter lang={lang} page="community" />
@@ -1134,11 +1134,11 @@ function CommunityRefreshHero({
               {content.heroPrimary}
               <ArrowRight aria-hidden="true" />
             </a>
-            <a href={withLanguage('/companies/', lang)} className="button button-secondary">
+            <a href={withLanguage('/companies/', lang)} className="button button-company">
               {content.heroSecondary}
+              <ArrowRight aria-hidden="true" />
             </a>
           </div>
-          <p className="community-claim">{content.heroClaim}</p>
         </div>
 
         <figure className="community-hero-media">
@@ -1155,6 +1155,9 @@ function CommunityRefreshHero({
           </figcaption>
         </figure>
       </div>
+      <div className="site-shell hero-trust-row">
+        <Supporters lang={lang} compact />
+      </div>
     </section>
   );
 }
@@ -1164,6 +1167,7 @@ function PilotRecap({ content }: { content: typeof communityContent.en }) {
     REFRESH_ASSETS.event.builderDiscussion,
     REFRESH_ASSETS.event.conceptReview,
     REFRESH_ASSETS.event.demo,
+    REFRESH_ASSETS.event.presenterProjector,
   ];
 
   return (
@@ -1360,17 +1364,14 @@ function CommunityCompanyTeaser({
 
 function CommunityTeam({
   content,
-  lang,
 }: {
   content: typeof communityContent.en;
-  lang: Lang;
 }) {
   return (
     <section id="about" className="page-section">
       <div className="site-shell">
         <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
         <TeamBlock
-          lang={lang}
           text={content.teamText}
           imageAlt={content.teamImageAlt}
           members={content.teamMembers}

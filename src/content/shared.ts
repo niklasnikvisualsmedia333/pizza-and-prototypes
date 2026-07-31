@@ -41,7 +41,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     companyCta: 'Format besprechen',
     privacy: 'Datenschutz',
     imprint: 'Impressum',
-    footerLine: 'Where builders work on real business needs.',
+    footerLine: 'Community, reale Probleme und praktische Projekte aus Siegen.',
     instagram: 'Instagram',
     linkedin: 'LinkedIn',
     whatsapp: 'WhatsApp',
@@ -68,7 +68,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     companyCta: 'Discuss a format',
     privacy: 'Privacy',
     imprint: 'Imprint',
-    footerLine: 'Where builders work on real business needs.',
+    footerLine: 'Community, real problems and practical projects from Siegen.',
     instagram: 'Instagram',
     linkedin: 'LinkedIn',
     whatsapp: 'WhatsApp',
@@ -83,4 +83,3 @@ export const sharedContent: Record<Lang, SharedContent> = {
     supportedBy: 'Supported by',
   },
 };
-

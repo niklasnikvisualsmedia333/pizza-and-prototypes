@@ -18,6 +18,7 @@ export type CompaniesContent = {
   formats: Array<{ title: string; text: string; frame: string }>;
   disciplinesEyebrow: string;
   disciplinesTitle: string;
+  disciplinesText: string;
   disciplines: string[];
   proofEyebrow: string;
   proofTitle: string;
@@ -67,7 +68,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     metaDescription:
       'Tech Meets Problems verbindet Unternehmen mit technischen Talenten und neuen Perspektiven auf reale Herausforderungen, Digitalisierung, Automatisierung und KI.',
     heroEyebrow: 'Tech Meets Problems für Unternehmen',
-    heroTitle: 'Sie bringen die Herausforderung. Wir bringen technische Talente und neue Perspektiven zusammen.',
+    heroTitle: 'Sie bringen die Herausforderung ein. Wir bringen technische Talente und neue Perspektiven zusammen.',
     heroText:
       'Tech Meets Problems ist eine regionale Open-Innovation-Initiative aus Siegen. Wir verbinden Unternehmen mit einer technisch orientierten und praxisinteressierten Community.',
     heroPrimary: 'Format besprechen',
@@ -101,7 +102,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     formatsEyebrow: 'Kooperationsformate',
     formatsTitle: 'Der Rahmen richtet sich nach Ihrer Herausforderung.',
     formatsIntro:
-      'Vom kompakten Impuls bis zum mehrwöchigen Sprint. Wir klären zuerst Ziel, Problemraum und passende Community-Profile.',
+      'Diese drei Formate sind ein Ausgangspunkt. Wenn es zur Tech Meets Problems Community passt, entwickeln wir auch individuelle Workshops, Hackathons oder mehrteilige Programme.',
     formats: [
       {
         title: 'Impulsvortrag und Networking',
@@ -119,34 +120,39 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
         frame: 'mehrtägig oder mehrwöchig',
       },
     ],
-    disciplinesEyebrow: 'Community-Profile',
-    disciplinesTitle: 'Technische und techniknahe Perspektiven.',
+    disciplinesEyebrow: 'Unsere Community',
+    disciplinesTitle: 'Mehr als 120 Studierende – viele davon im Master.',
+    disciplinesText:
+      'Unsere Community wächst weiter. Sie bringt Studierende und junge Berufstätige aus technischen und techniknahen Fachrichtungen zusammen.',
     disciplines: [
-      'Engineering und Mechatronik',
       'Informatik und Softwareentwicklung',
-      'Data Science und Artificial Intelligence',
       'Wirtschaftsinformatik',
+      'Data Science und Artificial Intelligence',
       'Human-Computer Interaction',
       'User Experience und Design',
+      'Elektrotechnik',
+      'Maschinenbau',
+      'Mechatronik',
+      'Wirtschaftsingenieurwesen',
     ],
     proofEyebrow: 'Der erste Pilot',
     proofTitle: 'Ein erster Test mit echten Buildern.',
     proofText:
-      'Pizza & Prototypes hat gezeigt, dass sich eine motivierte technische Community rund um reale Business-Probleme aktivieren lässt. Der stärkste Beweis war konzentrierte Teamarbeit, offene Laptops, Problemkarten und greifbare erste Ergebnisse.',
+      'Beim ersten Pizza & Prototypes Pilot arbeiteten kleine Teams an einem anonymisierten Unternehmensproblem. Entstanden sind konkrete Workflows, Mockups und erste Prototypen. Inzwischen umfasst die wachsende Community mehr als 120 Studierende.',
     proofExpectation:
-      'Ein Kurzformat liefert keine fertige Software. Es schafft Problemverständnis, neue Perspektiven, erste Konzepte und eine belastbare Grundlage für mögliche nächste Schritte.',
+      'Ein Kurzformat ist ein strukturierter Start. Es schafft ein gemeinsames Problemverständnis und erste Ansätze. Danach entscheiden Unternehmen und Teams, welche Ideen weiterverfolgt werden.',
     proofImageAlt: 'Builder diskutieren Konzepte und erste technische Lösungsansätze',
     processEyebrow: 'Zusammenarbeit',
     processTitle: 'Drei Schritte bis zum passenden Format.',
     process: [
       'Herausforderung und Ziel klären',
-      'Format und Community-Profile auswählen',
+      'Passendes Format und beteiligte Profile abstimmen',
       'Ergebnisse auswerten und nächste Schritte prüfen',
     ],
-    expectationEyebrow: 'Erwartungsmanagement',
-    expectationTitle: 'Ein guter erster Schritt, kein fertiges Produktversprechen.',
+    expectationEyebrow: 'Was Sie erwarten können',
+    expectationTitle: 'Ein klarer Startpunkt für die weitere Arbeit.',
     expectationText:
-      'Wir versprechen keine fertige Software in wenigen Stunden. Ziel sind bessere Fragen, neue Perspektiven und greifbare Ansätze, die intern oder in einem Folgeprojekt weitergeführt werden können.',
+      'Gemeinsam grenzen wir die Herausforderung ein und wählen einen realistischen Rahmen. Das Ergebnis kann ein Workflow, ein Mockup, ein technisches Konzept oder ein erster Prototyp sein.',
     contactEyebrow: 'Kontakt',
     contactTitle: 'Lassen Sie uns die Herausforderung kurz einordnen.',
     contactText:
@@ -224,7 +230,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     formatsEyebrow: 'Collaboration formats',
     formatsTitle: 'The setup follows your challenge.',
     formatsIntro:
-      'From a focused impulse to a multi-week sprint. We first clarify the goal, problem space and suitable community profiles.',
+      'These three formats are a starting point. When it fits the Tech Meets Problems community, we also develop tailored workshops, hackathons or multi-part programs.',
     formats: [
       {
         title: 'Impulse talk and networking',
@@ -242,34 +248,39 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
         frame: 'several days or weeks',
       },
     ],
-    disciplinesEyebrow: 'Community profiles',
-    disciplinesTitle: 'Technical and tech-adjacent perspectives.',
+    disciplinesEyebrow: 'Our community',
+    disciplinesTitle: 'More than 120 students – many of them in master’s programs.',
+    disciplinesText:
+      'The community is still growing. It brings together students and young professionals from technical and tech-adjacent disciplines.',
     disciplines: [
-      'Engineering and mechatronics',
       'Computer science and software development',
-      'Data science and artificial intelligence',
       'Business informatics',
+      'Data science and artificial intelligence',
       'Human-computer interaction',
       'User experience and design',
+      'Electrical engineering',
+      'Mechanical engineering',
+      'Mechatronics',
+      'Industrial engineering',
     ],
     proofEyebrow: 'The first pilot',
     proofTitle: 'A first test with real builders.',
     proofText:
-      'Pizza & Prototypes showed that a motivated technical community can be activated around real business problems. The strongest proof was focused teamwork, open laptops, problem cards and tangible first output.',
+      'During the first Pizza & Prototypes pilot, small teams worked on an anonymized company problem. They developed concrete workflows, mockups and first prototypes. The growing community now includes more than 120 students.',
     proofExpectation:
-      'A short format does not deliver finished software. It creates problem understanding, fresh perspectives, first concepts and a sound basis for possible next steps.',
+      'A short format is a structured starting point. It creates a shared understanding of the problem and first approaches. Companies and teams can then decide which ideas are worth pursuing.',
     proofImageAlt: 'Builders reviewing concepts and first technical solution approaches',
     processEyebrow: 'Collaboration',
     processTitle: 'Three steps to a suitable format.',
     process: [
       'Clarify the challenge and goal',
-      'Select the format and community profiles',
+      'Agree on the format and relevant participant profiles',
       'Review outcomes and possible next steps',
     ],
     expectationEyebrow: 'Clear expectations',
-    expectationTitle: 'A useful first step, not a finished-product promise.',
+    expectationTitle: 'A clear starting point for the work ahead.',
     expectationText:
-      'We do not promise finished software in a few hours. The goal is better questions, new perspectives and tangible approaches that can continue internally or in a follow-up project.',
+      'Together, we scope the challenge and choose a realistic setup. The outcome can be a workflow, mockup, technical concept or first prototype.',
     contactEyebrow: 'Contact',
     contactTitle: 'Let us briefly frame the challenge.',
     contactText:

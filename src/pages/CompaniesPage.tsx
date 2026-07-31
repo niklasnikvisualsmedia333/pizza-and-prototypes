@@ -13,12 +13,13 @@ import {
   Workflow,
 } from 'lucide-react';
 import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBanner';
-import { SectionHeading, TeamBlock } from '../components/layout/SharedSections';
+import { SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ASSETS } from '../config/assets';
 import { SITE } from '../config/site';
 import { companiesContent } from '../content/companies';
+import { communityContent } from '../content/community';
 import {
   ANALYTICS_CONSENT_KEY,
   type AnalyticsConsent,
@@ -191,6 +192,9 @@ export default function CompaniesPage() {
             </figcaption>
           </figure>
         </div>
+        <div className="site-shell hero-trust-row">
+          <Supporters lang={lang} compact />
+        </div>
       </section>
 
       <section id="benefits" className="page-section">
@@ -235,24 +239,22 @@ export default function CompaniesPage() {
               </article>
             ))}
           </div>
-          <p className="format-note">
-            {lang === 'de'
-              ? 'Hackathons und individuelle Formate können wir bei Bedarf separat prüfen.'
-              : 'Hackathons and individual formats can be reviewed separately when useful.'}
-          </p>
         </div>
       </section>
 
       <section className="page-section disciplines-section">
         <div className="site-shell disciplines-layout">
           <SectionHeading eyebrow={content.disciplinesEyebrow} title={content.disciplinesTitle} />
-          <div className="discipline-list">
-            {content.disciplines.map((discipline) => (
-              <span key={discipline}>
-                <Cpu aria-hidden="true" />
-                {discipline}
-              </span>
-            ))}
+          <div>
+            <p className="disciplines-intro">{content.disciplinesText}</p>
+            <div className="discipline-list">
+              {content.disciplines.map((discipline) => (
+                <span key={discipline}>
+                  <Cpu aria-hidden="true" />
+                  {discipline}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -261,7 +263,7 @@ export default function CompaniesPage() {
         <div className="site-shell">
           <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
           <div className="proof-gallery">
-            {[ASSETS.event.conceptReview, ASSETS.event.codeReview, ASSETS.event.demo].map((image, index) => (
+            {[ASSETS.event.roomWide, ASSETS.event.presenterProjector, ASSETS.event.demo].map((image, index) => (
               <figure key={image} className={index === 0 ? 'proof-gallery-large' : undefined}>
                 <img
                   src={image}
@@ -434,7 +436,6 @@ export default function CompaniesPage() {
             title={lang === 'de' ? 'Regional verankert. Praktisch orientiert.' : 'Rooted in the region. Focused on practice.'}
           />
           <TeamBlock
-            lang={lang}
             title={lang === 'de' ? 'Das Team hinter Tech Meets Problems' : 'The team behind Tech Meets Problems'}
             text={
               lang === 'de'
@@ -442,20 +443,7 @@ export default function CompaniesPage() {
                 : 'We develop the format together with the community and regional partners.'
             }
             imageAlt={lang === 'de' ? 'Team von Tech Meets Problems' : 'Tech Meets Problems team'}
-            members={[
-              {
-                name: 'Niklas Brüne',
-                role: lang === 'de' ? 'Strategie, Produkt und Kommunikation' : 'Strategy, product and communication',
-              },
-              {
-                name: 'Frederik Krause',
-                role: lang === 'de' ? 'Partnerschaften und Open Innovation' : 'Partnerships and open innovation',
-              },
-              {
-                name: 'Johanna Brenner',
-                role: lang === 'de' ? 'Community, Operations und Strategie' : 'Community, operations and strategy',
-              },
-            ]}
+            members={communityContent[lang].teamMembers}
           />
         </div>
       </section>

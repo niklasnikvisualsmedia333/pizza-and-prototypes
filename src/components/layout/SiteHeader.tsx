@@ -86,7 +86,12 @@ export function SiteHeader({
           <div className="site-mobile-menu">
             <LanguageControl lang={lang} onLanguageChange={onLanguageChange} compact />
             {navigation.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+              <a
+                key={item.href}
+                href={item.href}
+                className={item.emphasized ? 'site-nav-company' : undefined}
+                onClick={() => setMenuOpen(false)}
+              >
                 {item.label}
               </a>
             ))}
@@ -122,4 +127,3 @@ function LanguageControl({
     </div>
   );
 }
-
