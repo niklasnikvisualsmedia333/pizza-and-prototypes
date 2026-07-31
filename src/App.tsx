@@ -255,13 +255,13 @@ const copy = {
     privacyDetails: [
       'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store community signups, send relevant updates and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
-      'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@nikvisuals.de.',
+      'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Responsible: Niklas Brüne and Frederik Krause.',
       'Purpose: community communication, future-event planning, optional catering for future formats, channel evaluation and event documentation.',
       'Tools/recipients: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics and GA4 after consent.',
-      'Withdrawal, objection or deletion request: info@nikvisuals.de.',
+      'Withdrawal, objection or deletion request: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'I have read the ',
     privacyConsentLink: 'privacy notice',
@@ -491,13 +491,13 @@ const copy = {
     privacyDetails: [
       'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Community-Eintragungen zu speichern, relevante Updates zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
-      'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@nikvisuals.de.',
+      'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Verantwortlich: Niklas Brüne und Frederik Krause.',
       'Zweck: Community-Kommunikation, Planung zukünftiger Events, optionales Catering für künftige Formate, Kanalauswertung und Eventdokumentation.',
       'Tools/Empfänger: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics und GA4 nach Consent.',
-      'Widerruf, Widerspruch oder Löschanfrage: info@nikvisuals.de.',
+      'Widerruf, Widerspruch oder Löschanfrage: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'Ich habe die ',
     privacyConsentLink: 'Datenschutzhinweise',
@@ -1371,7 +1371,6 @@ function CommunityTeam({
         <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
         <TeamBlock
           lang={lang}
-          title={content.teamTitle}
           text={content.teamText}
           imageAlt={content.teamImageAlt}
           members={content.teamMembers}

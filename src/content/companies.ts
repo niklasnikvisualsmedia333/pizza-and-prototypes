@@ -150,7 +150,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     contactEyebrow: 'Kontakt',
     contactTitle: 'Lassen Sie uns die Herausforderung kurz einordnen.',
     contactText:
-      'Beschreiben Sie Thema, Ziel und gewünschten Rahmen. Ohne konfigurierten Company-Endpunkt bereitet die Website lediglich eine E-Mail vor.',
+      'Beschreiben Sie Thema, Ziel und gewünschten Rahmen. Ihre Angaben werden in eine E-Mail übernommen, die Sie vor dem Absenden prüfen können.',
     directContact: 'Oder direkt per E-Mail:',
     form: {
       company: 'Unternehmen',
@@ -273,7 +273,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     contactEyebrow: 'Contact',
     contactTitle: 'Let us briefly frame the challenge.',
     contactText:
-      'Describe the topic, goal and preferred setup. Without a configured company endpoint, the website only prepares an email.',
+      'Describe the topic, goal and preferred setup. Your details are transferred into an email that you can review before sending.',
     directContact: 'Or email us directly:',
     form: {
       company: 'Company',
@@ -309,4 +309,3 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     },
   },
 };
-

@@ -57,7 +57,7 @@ export function TeamBlock({
   members,
 }: {
   lang: Lang;
-  title: string;
+  title?: string;
   text: string;
   imageAlt: string;
   members: Array<{ name: string; role: string }>;
@@ -74,7 +74,7 @@ export function TeamBlock({
         <img src={ASSETS.event.team} alt={imageAlt} width="2048" height="1365" loading="lazy" />
       </figure>
       <div className="team-copy">
-        <h3>{title}</h3>
+        {title && <h3>{title}</h3>}
         <p>{text}</p>
         <div className="team-list">
           {members.map((member, index) => (
@@ -95,4 +95,3 @@ export function TeamBlock({
     </div>
   );
 }
-
