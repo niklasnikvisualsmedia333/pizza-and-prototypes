@@ -81,11 +81,10 @@ export function TeamBlock({
         {title && <h3>{title}</h3>}
         <p>{text}</p>
       </div>
-      <div className="team-member-grid">
+      <div className="team-list">
         {members.map((member, index) => (
-          <article key={member.name} className="team-member-card">
-            <img src={ASSETS.teamProfiles[index]} alt={member.name} width="1024" height="1024" loading="lazy" />
-            <div className="team-member-content">
+          <article key={member.name}>
+            <div>
               <strong>{member.name}</strong>
               <span>{member.role}</span>
               <p>{member.description}</p>

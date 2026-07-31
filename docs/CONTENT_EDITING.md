@@ -16,6 +16,7 @@ Deutsch und Englisch liegen jeweils im selben Inhaltsobjekt unter `de` und `en`.
 - E-Mail, Social-Links, WhatsApp, Impressum und Unterstützer: `src/config/site.ts`
 - Bildpfade: `src/config/assets.ts`
 - Eventdaten: `src/config/events.ts`
+- One-Pager-Status und spätere PDF-URL: `src/config/downloads.ts`
 
 Unterstützer werden über die Einträge in `SITE.supporters` gepflegt. Name, Link und Logo sollten gemeinsam geprüft werden.
 
@@ -35,6 +36,22 @@ Ein neues Event wird als weiteres Objekt in `src/config/events.ts` angelegt. Nur
 
 Ein Eventobjekt ersetzt kein Anmeldeformular. Eventanmeldungen müssen technisch vom Communityformular getrennt bleiben. Details stehen in `docs/FUTURE_EVENTS_AND_REGISTRATION.md`.
 
+Die Community-Seite zeigt automatisch das erste bestätigte `upcoming`-Event. Gibt es keines,
+erscheint das zuletzt abgeschlossene Event mit einem Hinweis auf die Community-Liste. Für ein
+bestätigtes Event darf ein CTA nur gesetzt werden, wenn `registrationUrl` tatsächlich existiert.
+
+## One-Pager hinterlegen
+
+In `src/config/downloads.ts` den Status von `request` auf `available` setzen und die geprüfte
+PDF-URL in `url` eintragen. Solange keine URL vorhanden ist, öffnet die sichtbare Aktion nur
+eine vorbereitete E-Mail an `info@techmeetsproblems.com`.
+
+## Teamtexte
+
+Die drei Rollen und Beschreibungen stehen in `src/content/community.ts`. Sichtbar ist nur das
+Gruppenfoto `public/assets/event-1/01-team-organizers-close.jpg`; die Einzelbilder bleiben als
+Bestandsassets erhalten, werden aber nicht gerendert.
+
 ## Geschützter Bereich: Communityformular
 
 Der Bereich `Registration`, dessen State, Validierung, Payload und Submit-Handler in `src/App.tsx` ist produktiv mit Formspree, n8n, Google Sheets und Gmail verbunden.
@@ -50,3 +67,15 @@ Ohne vollständige Prüfung nicht verändern:
 - Erfolgsmeldung und Community-Aktionen
 
 Nie durch das Unternehmensformular oder ein späteres Eventformular wiederverwenden. Keine Tests an produktive Endpunkte senden.
+
+## Lokale Preview
+
+```bash
+npm ci
+npm run dev
+npm run build
+npm run preview
+```
+
+Community: `http://127.0.0.1:4173/` beziehungsweise der von Vite gemeldete Port.
+Unternehmen: `http://127.0.0.1:4173/companies/`.

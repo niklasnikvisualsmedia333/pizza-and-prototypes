@@ -3,12 +3,15 @@ import type { Lang } from '../lib/language';
 export type SharedContent = {
   brandLine: string;
   communityNav: string;
+  eventNav: string;
+  howNav: string;
   recapNav: string;
   companiesNav: string;
   aboutNav: string;
   companyBenefitsNav: string;
   companyFormatsNav: string;
   companyContactNav: string;
+  companyPilotNav: string;
   communityCta: string;
   companyCta: string;
   privacy: string;
@@ -31,14 +34,17 @@ export const sharedContent: Record<Lang, SharedContent> = {
   de: {
     brandLine: 'Builder-first Community aus Siegen',
     communityNav: 'Community',
+    eventNav: 'Event',
+    howNav: 'So funktioniert es',
     recapNav: 'Rückblick',
     companiesNav: 'Für Unternehmen',
     aboutNav: 'Über uns',
     companyBenefitsNav: 'Nutzen',
     companyFormatsNav: 'Formate',
     companyContactNav: 'Kontakt',
+    companyPilotNav: 'Pilot',
     communityCta: 'Community beitreten',
-    companyCta: 'Format besprechen',
+    companyCta: 'Gespräch starten',
     privacy: 'Datenschutz',
     imprint: 'Impressum',
     footerLine: 'Community, reale Probleme und praktische Projekte aus Siegen.',
@@ -58,14 +64,17 @@ export const sharedContent: Record<Lang, SharedContent> = {
   en: {
     brandLine: 'Builder-first community from Siegen',
     communityNav: 'Community',
+    eventNav: 'Event',
+    howNav: 'How it works',
     recapNav: 'Recap',
     companiesNav: 'For companies',
     aboutNav: 'About',
     companyBenefitsNav: 'Benefits',
     companyFormatsNav: 'Formats',
     companyContactNav: 'Contact',
+    companyPilotNav: 'Pilot',
     communityCta: 'Join the community',
-    companyCta: 'Discuss a format',
+    companyCta: 'Start a conversation',
     privacy: 'Privacy',
     imprint: 'Imprint',
     footerLine: 'Community, real problems and practical projects from Siegen.',

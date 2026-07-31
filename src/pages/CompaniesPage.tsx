@@ -1,7 +1,6 @@
 import { type FormEvent, useEffect, useState } from 'react';
 import {
   ArrowRight,
-  Check,
   Cpu,
   ExternalLink,
   Lightbulb,
@@ -16,7 +15,8 @@ import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBan
 import { SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
-import { ASSETS } from '../config/assets';
+import { ASSETS, EVENT_MEDIA } from '../config/assets';
+import { DOWNLOADS } from '../config/downloads';
 import { SITE } from '../config/site';
 import { companiesContent } from '../content/companies';
 import { communityContent } from '../content/community';
@@ -30,28 +30,24 @@ import { type Lang, getInitialLanguage, persistLanguage, withLanguage } from '..
 
 type CompanyForm = {
   company: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   role: string;
   format: string;
   challenge: string;
   phone: string;
   timeframe: string;
-  details: string;
 };
 
 const initialCompanyForm: CompanyForm = {
   company: '',
-  firstName: '',
-  lastName: '',
+  name: '',
   email: '',
   role: '',
   format: '',
   challenge: '',
   phone: '',
   timeframe: '',
-  details: '',
 };
 
 const COMPANY_CONTACT_ENDPOINT = import.meta.env.VITE_COMPANY_CONTACT_ENDPOINT?.trim();
@@ -107,11 +103,27 @@ export default function CompaniesPage() {
     const payload = {
       ...form,
       submissionType: 'company_interest',
-      formVersion: '2026-07-company-prototype-v1',
+      formVersion: '2026-07-company-prototype-v2',
       language: lang,
       submittedAt: new Date().toISOString(),
       landingPage: window.location.href,
       referrer: document.referrer,
+      utmSource: new URLSearchParams(window.location.search).get('utm_source') || '',
+      utmMedium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+      utmCampaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+      utmContent: new URLSearchParams(window.location.search).get('utm_content') || '',
+      utmTerm: new URLSearchParams(window.location.search).get('utm_term') || '',
+      trackingSummary: ['source', 'medium', 'campaign', 'content', 'term']
+        .map((key) => {
+          const value = new URLSearchParams(window.location.search).get(`utm_${key}`);
+          return value ? `${key}:${value}` : '';
+        })
+        .filter(Boolean)
+        .join(' | '),
+      privacyAccepted,
+      privacyAcceptedAt: new Date().toISOString(),
+      privacyVersion: '2026-07-company-prototype-v2',
+      privacyText: content.form.privacy,
     };
 
     if (!COMPANY_CONTACT_ENDPOINT) {
@@ -119,15 +131,14 @@ export default function CompaniesPage() {
         content.form.emailIntro,
         '',
         `${content.form.company}: ${form.company}`,
-        `${content.form.firstName}: ${form.firstName}`,
-        `${content.form.lastName}: ${form.lastName}`,
+        `${content.form.name}: ${form.name}`,
         `${content.form.email}: ${form.email}`,
         `${content.form.role}: ${form.role}`,
         `${content.form.format}: ${form.format}`,
         `${content.form.challenge}: ${form.challenge}`,
         `${content.form.phone}: ${form.phone || '-'}`,
         `${content.form.timeframe}: ${form.timeframe || '-'}`,
-        `${content.form.details}: ${form.details || '-'}`,
+        `Landing page: ${payload.landingPage}`,
       ].join('\n');
 
       window.location.href = `mailto:${SITE.contactEmail}?subject=${encodeURIComponent(content.form.subject)}&body=${encodeURIComponent(body)}`;
@@ -173,7 +184,7 @@ export default function CompaniesPage() {
                 {content.heroPrimary}
                 <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-secondary" href="#pilot-proof">
+              <a className="button button-secondary" href={withLanguage('/', lang)}>
                 {content.heroSecondary}
               </a>
             </div>
@@ -202,19 +213,12 @@ export default function CompaniesPage() {
           <SectionHeading eyebrow={content.benefitsEyebrow} title={content.benefitsTitle} />
           <div className="benefit-columns">
             {content.benefits.map((benefit, index) => {
-              const Icon = [Target, Users, Lightbulb][index];
+              const Icon = [Users, Lightbulb, Workflow, Target][index];
               return (
                 <article key={benefit.title}>
                   <Icon aria-hidden="true" />
                   <h3>{benefit.title}</h3>
-                  <ul>
-                    {benefit.points.map((point) => (
-                      <li key={point}>
-                        <Check aria-hidden="true" />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
+                  <p>{benefit.text}</p>
                 </article>
               );
             })}
@@ -239,6 +243,7 @@ export default function CompaniesPage() {
               </article>
             ))}
           </div>
+          <p className="format-note">{content.formatsNote}</p>
         </div>
       </section>
 
@@ -263,13 +268,13 @@ export default function CompaniesPage() {
         <div className="site-shell">
           <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
           <div className="proof-gallery">
-            {[ASSETS.event.roomWide, ASSETS.event.presenterProjector, ASSETS.event.demo].map((image, index) => (
-              <figure key={image} className={index === 0 ? 'proof-gallery-large' : undefined}>
+            {[EVENT_MEDIA.roomWide, EVENT_MEDIA.presenterProjector, EVENT_MEDIA.demo].map((image, index) => (
+              <figure key={image.src} className={index === 0 ? 'proof-gallery-large' : undefined}>
                 <img
-                  src={image}
-                  alt={content.proofImageAlt}
-                  width="2048"
-                  height="1365"
+                  src={image.src}
+                  alt={content.proofImageAlts[index]}
+                  width={image.width}
+                  height={image.height}
                   loading="lazy"
                 />
               </figure>
@@ -296,16 +301,6 @@ export default function CompaniesPage() {
         </div>
       </section>
 
-      <section className="page-section page-section-compact">
-        <div className="site-shell expectation-card">
-          <div>
-            <p className="section-eyebrow">{content.expectationEyebrow}</p>
-            <h2>{content.expectationTitle}</h2>
-          </div>
-          <p>{content.expectationText}</p>
-        </div>
-      </section>
-
       <section id="company-contact" className="page-section page-section-muted">
         <div className="site-shell">
           <SectionHeading eyebrow={content.contactEyebrow} title={content.contactTitle} intro={content.contactText} />
@@ -323,6 +318,23 @@ export default function CompaniesPage() {
                 <Mail aria-hidden="true" />
                 {SITE.contactEmail}
               </a>
+              <div className="one-pager-box">
+                <p className="section-eyebrow">{content.onePagerEyebrow}</p>
+                <h3>{content.onePagerTitle}</h3>
+                <p>{content.onePagerText}</p>
+                <a
+                  className="button button-secondary"
+                  href={
+                    DOWNLOADS.onePager.status === 'available' && DOWNLOADS.onePager.url
+                      ? DOWNLOADS.onePager.url
+                      : `mailto:${SITE.contactEmail}?subject=${encodeURIComponent('One-Pager Tech Meets Problems')}`
+                  }
+                  {...(DOWNLOADS.onePager.status === 'available' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {DOWNLOADS.onePager.status === 'available' ? content.onePagerDownload : content.onePagerRequest}
+                  <ExternalLink aria-hidden="true" />
+                </a>
+              </div>
             </div>
 
             <form className="company-form" onSubmit={handleSubmit}>
@@ -334,21 +346,9 @@ export default function CompaniesPage() {
                   required
                 />
                 <CompanyInput
-                  label={content.form.role}
-                  value={form.role}
-                  onChange={(value) => updateField('role', value)}
-                  required
-                />
-                <CompanyInput
-                  label={content.form.firstName}
-                  value={form.firstName}
-                  onChange={(value) => updateField('firstName', value)}
-                  required
-                />
-                <CompanyInput
-                  label={content.form.lastName}
-                  value={form.lastName}
-                  onChange={(value) => updateField('lastName', value)}
+                  label={content.form.name}
+                  value={form.name}
+                  onChange={(value) => updateField('name', value)}
                   required
                 />
                 <CompanyInput
@@ -357,6 +357,11 @@ export default function CompaniesPage() {
                   onChange={(value) => updateField('email', value)}
                   type="email"
                   required
+                />
+                <CompanyInput
+                  label={content.form.role}
+                  value={form.role}
+                  onChange={(value) => updateField('role', value)}
                 />
                 <CompanyInput
                   label={content.form.phone}
@@ -392,10 +397,6 @@ export default function CompaniesPage() {
                     onChange={(event) => updateField('challenge', event.target.value)}
                   />
                 </label>
-                <label className="company-field company-field-wide">
-                  <span>{content.form.details}</span>
-                  <textarea rows={4} value={form.details} onChange={(event) => updateField('details', event.target.value)} />
-                </label>
               </div>
 
               <label className="company-privacy">
@@ -425,6 +426,20 @@ export default function CompaniesPage() {
               </button>
               <p className="company-required-note">{content.form.required}</p>
             </form>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-section page-section-muted">
+        <div className="site-shell faq-layout">
+          <SectionHeading eyebrow={content.faqEyebrow} title={content.faqTitle} />
+          <div className="faq-list">
+            {content.faqs.map((faq) => (
+              <details key={faq.question}>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

@@ -27,10 +27,11 @@ import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './compon
 import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
-import { ASSETS as REFRESH_ASSETS } from './config/assets';
+import { ASSETS as REFRESH_ASSETS, EVENT_MEDIA } from './config/assets';
+import { PAST_EVENTS, UPCOMING_EVENTS } from './config/events';
 import { SITE } from './config/site';
 import { communityContent } from './content/community';
-import { withLanguage } from './lib/language';
+import { persistLanguage, withLanguage } from './lib/language';
 
 type Lang = 'en' | 'de';
 type AnalyticsConsent = 'accepted' | 'declined';
@@ -872,11 +873,7 @@ function App() {
 
   const setLang = (nextLang: Lang) => {
     setLangState(nextLang);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
-
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', nextLang);
-    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    persistLanguage(nextLang);
   };
 
   useEffect(() => {
@@ -1079,9 +1076,10 @@ function App() {
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
       <CommunityRefreshHero content={refresh} lang={lang} />
-      <PilotRecap content={refresh} />
+      <LatestEvent content={refresh} lang={lang} />
       <CommunityBenefits content={refresh} />
       <SessionProcess content={refresh} />
+      <PilotRecap content={refresh} />
       <div id="community-signup">
         <Registration
           t={t}
@@ -1143,15 +1141,15 @@ function CommunityRefreshHero({
 
         <figure className="community-hero-media">
           <img
-            src={REFRESH_ASSETS.event.communityHero}
-            alt={content.recapImageAlt}
-            width="2048"
-            height="1365"
+            src={EVENT_MEDIA.communityHero.src}
+            alt={content.heroImageAlt}
+            width={EVENT_MEDIA.communityHero.width}
+            height={EVENT_MEDIA.communityHero.height}
             fetchPriority="high"
           />
           <figcaption>
             <span>Tech Meets Problems</span>
-            <strong>{content.heroClaim}</strong>
+            <strong>{content.heroCaption}</strong>
           </figcaption>
         </figure>
       </div>
@@ -1162,12 +1160,63 @@ function CommunityRefreshHero({
   );
 }
 
+function LatestEvent({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  const event = UPCOMING_EVENTS[0] ?? PAST_EVENTS[0];
+  if (!event) {
+    return null;
+  }
+
+  const isUpcoming = event.status === 'upcoming';
+  const registrationLabels = {
+    open: content.eventOpenLabel,
+    waitlist: content.eventWaitlistLabel,
+    sold_out: content.eventSoldOutLabel,
+    closed: content.eventClosedLabel,
+  };
+  const date = new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(`${event.date}T12:00:00`));
+
+  return (
+    <section id="latest-event" className="page-section page-section-compact latest-event-section">
+      <div className="site-shell latest-event-card">
+        <div>
+          <p className="section-eyebrow">{content.eventEyebrow}</p>
+          <span className="event-status">{isUpcoming ? content.eventUpcomingLabel : content.eventPastLabel}</span>
+          <h2>{lang === 'de' ? event.titleDe : event.titleEn}</h2>
+          <p>{lang === 'de' ? event.subtitleDe : event.subtitleEn}</p>
+        </div>
+        <dl className="event-facts">
+          <div><dt>{date}</dt><dd>{event.startTime}–{event.endTime}</dd></div>
+          <div><dt>{event.location}</dt><dd>{event.address}</dd></div>
+          <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>
+        </dl>
+        <div className="event-followup">
+          <p>{isUpcoming ? (lang === 'de' ? event.descriptionDe : event.descriptionEn) : content.eventFallbackText}</p>
+          {isUpcoming && event.registrationUrl ? (
+            <a className="button button-primary" href={event.registrationUrl}>{registrationLabels[event.registrationStatus]}</a>
+          ) : (
+            <a className="button button-secondary" href="#community-signup">{content.eventCta}</a>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PilotRecap({ content }: { content: typeof communityContent.en }) {
   const supportingImages = [
-    REFRESH_ASSETS.event.builderDiscussion,
-    REFRESH_ASSETS.event.conceptReview,
-    REFRESH_ASSETS.event.demo,
-    REFRESH_ASSETS.event.presenterProjector,
+    EVENT_MEDIA.builderDiscussion,
+    EVENT_MEDIA.presenterProjector,
+    EVENT_MEDIA.demo,
   ];
 
   return (
@@ -1177,10 +1226,10 @@ function PilotRecap({ content }: { content: typeof communityContent.en }) {
         <div className="recap-layout">
           <figure className="recap-primary">
             <img
-              src={REFRESH_ASSETS.event.roomAlternative}
+              src={EVENT_MEDIA.roomAlternative.src}
               alt={content.recapImageAlt}
-              width="2048"
-              height="1365"
+              width={EVENT_MEDIA.roomAlternative.width}
+              height={EVENT_MEDIA.roomAlternative.height}
               loading="lazy"
             />
           </figure>
@@ -1194,13 +1243,13 @@ function PilotRecap({ content }: { content: typeof communityContent.en }) {
               ))}
             </ul>
             <div className="recap-thumbnails">
-              {supportingImages.map((image) => (
-                <figure key={image}>
+              {supportingImages.map((image, index) => (
+                <figure key={image.src}>
                   <img
-                    src={image}
-                    alt={content.recapImageAlt}
-                    width="2048"
-                    height="1365"
+                    src={image.src}
+                    alt={content.recapImageAlts[index]}
+                    width={image.width}
+                    height={image.height}
                     loading="lazy"
                   />
                 </figure>
@@ -1344,14 +1393,6 @@ function CommunityCompanyTeaser({
           <p className="section-eyebrow">{content.companyEyebrow}</p>
           <h2>{content.companyTitle}</h2>
           <p>{content.companyText}</p>
-          <ul>
-            {content.companyPoints.map((point) => (
-              <li key={point}>
-                <Check aria-hidden="true" />
-                {point}
-              </li>
-            ))}
-          </ul>
           <a href={withLanguage('/companies/', lang)} className="button button-primary">
             {content.companyCta}
             <ArrowRight aria-hidden="true" />

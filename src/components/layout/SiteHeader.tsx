@@ -1,5 +1,5 @@
 import { ArrowRight, Globe2, Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ASSETS } from '../../config/assets';
 import { sharedContent } from '../../content/shared';
 import type { Lang } from '../../lib/language';
@@ -17,6 +17,7 @@ export function SiteHeader({
   onLanguageChange: (language: Lang) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const content = sharedContent[lang];
   const isCommunity = page === 'community';
 
@@ -25,22 +26,34 @@ export function SiteHeader({
       return;
     }
     const close = () => setMenuOpen(false);
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
     window.addEventListener('resize', close);
-    return () => window.removeEventListener('resize', close);
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      window.removeEventListener('resize', close);
+      window.removeEventListener('keydown', closeOnEscape);
+    };
   }, [menuOpen]);
 
   const navigation = isCommunity
     ? [
-        { label: content.recapNav, href: '#recap' },
+        { label: content.eventNav, href: '#latest-event' },
         { label: content.communityNav, href: '#community' },
+        { label: content.howNav, href: '#how' },
         { label: content.companiesNav, href: withLanguage('/companies/', lang), emphasized: true },
         { label: content.aboutNav, href: '#about' },
       ]
     : [
         { label: content.companyBenefitsNav, href: '#benefits' },
         { label: content.companyFormatsNav, href: '#formats' },
+        { label: content.companyPilotNav, href: '#pilot-proof' },
+        { label: content.companyContactNav, href: '#company-contact' },
         { label: content.communityNav, href: withLanguage('/', lang), emphasized: true },
-        { label: content.aboutNav, href: '#about' },
       ];
 
   const ctaHref = isCommunity ? '#community-signup' : '#company-contact';
@@ -49,7 +62,7 @@ export function SiteHeader({
   return (
     <header className="site-header">
       <nav className="site-shell site-header-inner" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
-        <a className="site-brand" href={withLanguage('/', lang)} aria-label="Tech Meets Problems">
+        <a className="site-brand" href={withLanguage(isCommunity ? '/' : '/companies/', lang)} aria-label="Tech Meets Problems">
           <img src={ASSETS.logo} alt="" width="48" height="48" />
           <span>
             <strong>Tech Meets Problems</strong>
@@ -73,6 +86,7 @@ export function SiteHeader({
           </a>
           <button
             className="site-menu-button"
+            ref={menuButtonRef}
             type="button"
             aria-label={menuOpen ? content.menuClose : content.menuOpen}
             aria-expanded={menuOpen}

@@ -8,12 +8,23 @@ export type CommunityContent = {
   heroText: string;
   heroPrimary: string;
   heroSecondary: string;
-  heroClaim: string;
+  heroImageAlt: string;
+  heroCaption: string;
+  eventEyebrow: string;
+  eventPastLabel: string;
+  eventUpcomingLabel: string;
+  eventClosedLabel: string;
+  eventOpenLabel: string;
+  eventWaitlistLabel: string;
+  eventSoldOutLabel: string;
+  eventFallbackText: string;
+  eventCta: string;
   recapEyebrow: string;
   recapTitle: string;
   recapText: string;
   recapFacts: string[];
   recapImageAlt: string;
+  recapImageAlts: string[];
   benefitsEyebrow: string;
   benefitsTitle: string;
   benefitsIntro: string;
@@ -28,7 +39,6 @@ export type CommunityContent = {
   companyEyebrow: string;
   companyTitle: string;
   companyText: string;
-  companyPoints: string[];
   companyCta: string;
   teamEyebrow: string;
   teamTitle: string;
@@ -44,207 +54,167 @@ export const communityContent: Record<Lang, CommunityContent> = {
   de: {
     metaTitle: 'Tech Meets Problems | Builder-first Community in Siegen',
     metaDescription:
-      'Tech Meets Problems verbindet technische Talente mit realen Herausforderungen aus Unternehmen und Region. Werde Teil der Builder-first Community aus Siegen.',
+      'Tech Meets Problems bringt technische Studierende, junge Talente und Builder mit realen Herausforderungen aus Unternehmen und Region zusammen.',
     heroEyebrow: 'Builder-first Community für reale Herausforderungen',
-    heroTitle: 'Technische Studierende lösen reale Probleme aus Unternehmen.',
+    heroTitle: 'Technische Studierende arbeiten an echten Problemen aus Unternehmen.',
     heroText:
-      'Tech Meets Problems bringt technische Studierende und weitere Builder mit realen Herausforderungen aus Unternehmen und Region zusammen. In kleinen Teams entstehen daraus Konzepte, Workflows, Mockups und erste Prototypen.',
+      'Tech Meets Problems bringt technische Studierende, junge Talente und weitere Builder mit realen Herausforderungen aus Unternehmen und Region zusammen. In kleinen Teams entstehen Konzepte, Workflows, Mockups und erste Prototypen.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
-    heroClaim: 'Where builders work on real business needs.',
-    recapEyebrow: 'Erster Pilot',
+    heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
+    heroCaption: 'Einblick in den ersten Pilot in Siegen',
+    eventEyebrow: 'Neueste Veranstaltung',
+    eventPastLabel: 'Abgeschlossen',
+    eventUpcomingLabel: 'Bestätigtes Event',
+    eventClosedLabel: 'Anmeldung geschlossen',
+    eventOpenLabel: 'Anmeldung geöffnet',
+    eventWaitlistLabel: 'Warteliste',
+    eventSoldOutLabel: 'Ausgebucht',
+    eventFallbackText: 'Das nächste Format ist in Vorbereitung. Über die Community erfährst du zuerst davon.',
+    eventCta: 'Community beitreten',
+    recapEyebrow: 'Rückblick auf den ersten Pilot',
     recapTitle: 'Pizza & Prototypes, Juni 2026',
     recapText:
-      'Am 26. Juni kamen Builder und technische Studierende im Haus der Innovation in Siegen zusammen. In kleinen Teams arbeiteten sie an einem realen, anonymisierten Problemraum und entwickelten Workflows, Konzepte, Mockups, technische Skizzen und erste Prototypen.',
+      'Beim ersten Pilot arbeiteten kleine Teams an einem realen, anonymisierten Problemraum. Dabei entstanden konkrete Workflows, Mockups, technische Konzepte und erste Prototypen.',
     recapFacts: [
-      'Echte Problemräume',
-      'Kleine, fokussierte Teams',
-      'Praktische Zusammenarbeit',
+      'Reale Problemräume',
+      'Kleine Teams',
+      'Gemeinsame Konzeptarbeit',
       'Workflows, Mockups und erste Prototypen',
     ],
-    recapImageAlt: 'Builder-Teams arbeiten beim ersten Tech Meets Problems Pilot in Siegen',
-    benefitsEyebrow: 'Für Builder',
-    benefitsTitle: 'Mehr Praxis. Weniger Theorie.',
+    recapImageAlt: 'Kleine Teams arbeiten beim ersten Tech Meets Problems Pilot in Siegen',
+    recapImageAlts: [
+      'Teilnehmende diskutieren gemeinsam an einem Arbeitstisch',
+      'Teilnehmer präsentiert ein Ergebnis vor dem Projektor',
+      'Ergebnisboard aus dem ersten Tech Meets Problems Pilot',
+    ],
+    benefitsEyebrow: 'Community',
+    benefitsTitle: 'Praxis, Austausch und neue Perspektiven.',
     benefitsIntro:
-      'Die Community bringt technische und techniknahe Menschen zusammen, die reale Herausforderungen verstehen und greifbare nächste Schritte entwickeln wollen.',
+      'Die Community verbindet technische und techniknahe Menschen, die gemeinsam an konkreten Fragestellungen arbeiten möchten.',
     benefits: [
-      {
-        title: 'Echte Probleme',
-        text: 'Arbeite an realen Bedarfen statt an erfundenen Cases.',
-      },
-      {
-        title: 'Gute Leute',
-        text: 'Lerne Builder aus Software, Data, HCI, UX und Engineering kennen.',
-      },
-      {
-        title: 'Greifbare Ergebnisse',
-        text: 'Übersetze Ideen in Workflows, Mockups, Konzepte oder erste Prototypen.',
-      },
-      {
-        title: 'Neue Einblicke',
-        text: 'Erhalte Einblicke in Unternehmen, Projekte und mögliche nächste Schritte.',
-      },
+      { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Bedarfen aus Unternehmen und Region.' },
+      { title: 'Technische Community', text: 'Lerne Menschen aus Software, Data, HCI, UX und Engineering kennen.' },
+      { title: 'Praktische Ergebnisse', text: 'Entwickle Konzepte, Workflows, Mockups oder erste Prototypen.' },
+      { title: 'Neue Einblicke', text: 'Erhalte Einblicke in Unternehmen, Technologien und mögliche Projekte.' },
     ],
     processEyebrow: 'So funktionieren Sessions',
-    processTitle: 'Von der Herausforderung zum nächsten Schritt.',
+    processTitle: 'Ein klarer Ablauf für den ersten nächsten Schritt.',
     processIntro:
-      'Das Format bleibt bewusst kompakt. Es geht nicht um fertige Software, sondern um gutes Problemverständnis und erste belastbare Ansätze.',
+      'Ein kurzes Format liefert keine fertige Software. Es schafft Problemverständnis, erste Ansätze und eine Grundlage für weitere Schritte.',
     steps: [
-      'Reale Herausforderung verstehen',
-      'In einem kleinen Team arbeiten',
-      'Konzept, Workflow, Mockup oder Prototyp entwickeln',
+      'Herausforderung verstehen',
+      'Kleines Team bilden',
+      'Ansatz entwickeln und ausprobieren',
       'Ergebnis teilen und nächste Schritte prüfen',
     ],
     channelsEyebrow: 'Community-Kanäle',
-    channelsTitle: 'Bleib bei Tech Meets Problems auf dem Laufenden.',
-    channelsText:
-      'Wähle den Kanal, der zu dir passt. Dort teilen wir neue Sessions, Problemräume und Projektmöglichkeiten.',
+    channelsTitle: 'Bleib mit Tech Meets Problems verbunden.',
+    channelsText: 'Neue Sessions, Problemräume und Projektmöglichkeiten teilen wir über unsere Community-Kanäle.',
     companyEyebrow: 'Für Unternehmen',
     companyTitle: 'Reale Herausforderung im Unternehmen?',
     companyText:
-      'Wir entwickeln passende Formate, die Unternehmen mit technischen Talenten, neuen Perspektiven und ersten Lösungsansätzen verbinden.',
-    companyPoints: ['Technische Talente', 'Reale Herausforderungen', 'Greifbare nächste Schritte'],
-    companyCta: 'Zusammenarbeit starten',
-    teamEyebrow: 'Das Team',
-    teamTitle: 'Aus Siegen. Für praktische Zusammenarbeit.',
-    teamText:
-      'Wir entwickeln Tech Meets Problems gemeinsam mit der Community und Partnern aus der Region.',
-    teamImageAlt: 'Team von Tech Meets Problems',
+      'Tech Meets Problems entwickelt Formate, die Unternehmen mit technischen Talenten, neuen Perspektiven und ersten Ansätzen zusammenbringen.',
+    companyCta: 'Für Unternehmen',
+    teamEyebrow: 'Über uns',
+    teamTitle: 'Das Team hinter Tech Meets Problems.',
+    teamText: 'Wir entwickeln die Community, Formate und Partnerschaften aus Siegen heraus.',
+    teamImageAlt: 'Niklas Brüne, Frederik Krause und Johanna Brenner von Tech Meets Problems',
     teamMembers: [
-      {
-        name: 'Niklas Brüne',
-        role: 'GRÜNDER',
-        description: 'Eventkonzept, Kommunikation und Problem-Framing',
-      },
-      {
-        name: 'Frederik Krause',
-        role: 'EHEMALIGER GRÜNDER',
-        description: 'Outreach, Operations und Teilnehmererlebnis',
-      },
-      {
-        name: 'Johanna Brenner',
-        role: 'STARTUP SUPPORT',
-        description: 'Coaching, Koordination und Strategie',
-      },
+      { name: 'Niklas Brüne', role: 'Strategie und Kommunikation', description: 'Positionierung, Produktlogik und Außenauftritt' },
+      { name: 'Frederik Krause', role: 'Partnerschaften und Open Innovation', description: 'Unternehmenszugänge, Formatentwicklung und operative Umsetzung' },
+      { name: 'Johanna Brenner', role: 'Community und Operations', description: 'Community, Koordination und Gruppenprozesse' },
     ],
     faqEyebrow: 'Kurz beantwortet',
     faqTitle: 'Das Wichtigste zur Community.',
     faqs: [
-      {
-        question: 'Muss ich eine eigene Idee mitbringen?',
-        answer: 'Nein. Tech Meets Problems startet mit realen Problemräumen. Du bringst Neugier und deine Perspektive mit.',
-      },
-      {
-        question: 'Muss ich programmieren können?',
-        answer: 'Nein. Software, Data, HCI, UX, Engineering und andere technische Perspektiven ergänzen sich.',
-      },
-      {
-        question: 'Ist der Community-Beitritt kostenlos?',
-        answer: 'Ja. Einzelne zukünftige Formate können eigene Rahmenbedingungen haben.',
-      },
+      { question: 'Muss ich eine eigene Idee mitbringen?', answer: 'Nein. Die Sessions starten mit konkreten Problemräumen.' },
+      { question: 'Muss ich programmieren können?', answer: 'Nein. Unterschiedliche technische und techniknahe Perspektiven ergänzen sich.' },
+      { question: 'Ist die Community kostenlos?', answer: 'Der Community-Beitritt und der erste Pilot sind kostenlos. Zukünftige Formate können andere Rahmenbedingungen haben.' },
+      { question: 'Wie erfahre ich von neuen Events?', answer: 'Trag dich in die Community-Liste ein oder folge unseren Community-Kanälen.' },
     ],
   },
   en: {
     metaTitle: 'Tech Meets Problems | Builder-first community in Siegen',
     metaDescription:
-      'Tech Meets Problems connects technical talent with real challenges from companies and the region. Join the builder-first community from Siegen.',
+      'Tech Meets Problems brings technical students, young talent and builders together with real challenges from companies and the region.',
     heroEyebrow: 'Builder-first community for real challenges',
-    heroTitle: 'Technical students solve real problems from companies.',
+    heroTitle: 'Technical students work on real company problems.',
     heroText:
-      'Tech Meets Problems brings technical students and other builders together with real challenges from companies and the region. Small teams turn them into concepts, workflows, mockups and first prototypes.',
+      'Tech Meets Problems brings technical students, young talent and other builders together with real challenges from companies and the region. Small teams turn them into concepts, workflows, mockups and first prototypes.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
-    heroClaim: 'Where builders work on real business needs.',
-    recapEyebrow: 'First pilot',
+    heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
+    heroCaption: 'A look inside the first pilot in Siegen',
+    eventEyebrow: 'Latest event',
+    eventPastLabel: 'Completed',
+    eventUpcomingLabel: 'Confirmed event',
+    eventClosedLabel: 'Registration closed',
+    eventOpenLabel: 'Registration open',
+    eventWaitlistLabel: 'Waitlist',
+    eventSoldOutLabel: 'Sold out',
+    eventFallbackText: 'The next format is in preparation. Community members will hear about it first.',
+    eventCta: 'Join the community',
+    recapEyebrow: 'First pilot recap',
     recapTitle: 'Pizza & Prototypes, June 2026',
     recapText:
-      'On June 26, builders and technical students met at Haus der Innovation in Siegen. Small teams worked on a real, anonymized problem space and developed workflows, concepts, mockups, technical sketches and first prototypes.',
+      'At the first pilot, small teams worked on a real, anonymized problem space. They created concrete workflows, mockups, technical concepts and first prototypes.',
     recapFacts: [
       'Real problem spaces',
-      'Small, focused teams',
-      'Practical collaboration',
+      'Small teams',
+      'Collaborative concept work',
       'Workflows, mockups and first prototypes',
     ],
-    recapImageAlt: 'Builder teams working at the first Tech Meets Problems pilot in Siegen',
-    benefitsEyebrow: 'For builders',
-    benefitsTitle: 'More practice. Less theory.',
+    recapImageAlt: 'Small teams working at the first Tech Meets Problems pilot in Siegen',
+    recapImageAlts: [
+      'Participants discussing ideas around a work table',
+      'Participant presenting a result in front of the projector',
+      'Result board from the first Tech Meets Problems pilot',
+    ],
+    benefitsEyebrow: 'Community',
+    benefitsTitle: 'Practice, exchange and new perspectives.',
     benefitsIntro:
-      'The community brings technical and tech-minded people together to understand real challenges and shape practical next steps.',
+      'The community connects technical and tech-adjacent people who want to work together on concrete questions.',
     benefits: [
-      {
-        title: 'Real problems',
-        text: 'Work on real needs instead of invented cases.',
-      },
-      {
-        title: 'Good people',
-        text: 'Meet builders from software, data, HCI, UX and engineering.',
-      },
-      {
-        title: 'Tangible output',
-        text: 'Turn ideas into workflows, mockups, concepts or first prototypes.',
-      },
-      {
-        title: 'New perspectives',
-        text: 'Gain insight into companies, projects and possible next steps.',
-      },
+      { title: 'Real challenges', text: 'Work on concrete needs from companies and the region.' },
+      { title: 'Technical community', text: 'Meet people from software, data, HCI, UX and engineering.' },
+      { title: 'Practical output', text: 'Develop concepts, workflows, mockups or first prototypes.' },
+      { title: 'New insights', text: 'Gain insight into companies, technologies and possible projects.' },
     ],
     processEyebrow: 'How sessions work',
-    processTitle: 'From a challenge to a practical next step.',
+    processTitle: 'A clear path to a practical first step.',
     processIntro:
-      'The format stays intentionally focused. It is not about finished software, but about sound problem understanding and useful first approaches.',
+      'A short format does not deliver finished software. It creates problem understanding, first approaches and a foundation for further steps.',
     steps: [
-      'Understand a real challenge',
-      'Work in a small team',
-      'Develop a concept, workflow, mockup or prototype',
+      'Understand the challenge',
+      'Form a small team',
+      'Develop and test an approach',
       'Share the result and review next steps',
     ],
     channelsEyebrow: 'Community channels',
-    channelsTitle: 'Stay up to date with Tech Meets Problems.',
-    channelsText:
-      'Choose the channel that works for you. We share new sessions, problem spaces and project opportunities there.',
+    channelsTitle: 'Stay connected with Tech Meets Problems.',
+    channelsText: 'We share new sessions, problem spaces and project opportunities through our community channels.',
     companyEyebrow: 'For companies',
     companyTitle: 'A real challenge inside your company?',
     companyText:
-      'We develop suitable formats that connect companies with technical talent, fresh perspectives and first solution approaches.',
-    companyPoints: ['Technical talent', 'Real challenges', 'Tangible next steps'],
-    companyCta: 'Start a collaboration',
-    teamEyebrow: 'The team',
-    teamTitle: 'From Siegen. Built for practical collaboration.',
-    teamText:
-      'We develop Tech Meets Problems together with the community and partners from the region.',
-    teamImageAlt: 'Tech Meets Problems team',
+      'Tech Meets Problems develops formats that bring companies together with technical talent, new perspectives and first approaches.',
+    companyCta: 'For companies',
+    teamEyebrow: 'About us',
+    teamTitle: 'The team behind Tech Meets Problems.',
+    teamText: 'We develop the community, formats and partnerships from Siegen.',
+    teamImageAlt: 'Niklas Brüne, Frederik Krause and Johanna Brenner from Tech Meets Problems',
     teamMembers: [
-      {
-        name: 'Niklas Brüne',
-        role: 'FOUNDER',
-        description: 'Event concept, communication and problem framing',
-      },
-      {
-        name: 'Frederik Krause',
-        role: 'FORMER FOUNDER',
-        description: 'Outreach, operations and participant experience',
-      },
-      {
-        name: 'Johanna Brenner',
-        role: 'STARTUP SUPPORT',
-        description: 'Coaching, coordination and strategy',
-      },
+      { name: 'Niklas Brüne', role: 'Strategy and Communication', description: 'Positioning, product logic and external communication' },
+      { name: 'Frederik Krause', role: 'Partnerships and Open Innovation', description: 'Company outreach, format development and operational delivery' },
+      { name: 'Johanna Brenner', role: 'Community and Operations', description: 'Community, coordination and group processes' },
     ],
     faqEyebrow: 'Quick answers',
     faqTitle: 'What matters about the community.',
     faqs: [
-      {
-        question: 'Do I need to bring an idea?',
-        answer: 'No. Tech Meets Problems starts with real problem spaces. You bring curiosity and your perspective.',
-      },
-      {
-        question: 'Do I need to code?',
-        answer: 'No. Software, data, HCI, UX, engineering and other technical perspectives complement each other.',
-      },
-      {
-        question: 'Is joining the community free?',
-        answer: 'Yes. Individual future formats may have their own conditions.',
-      },
+      { question: 'Do I need to bring an idea?', answer: 'No. Sessions start with concrete problem spaces.' },
+      { question: 'Do I need to code?', answer: 'No. Different technical and tech-adjacent perspectives complement each other.' },
+      { question: 'Is the community free?', answer: 'Joining the community and the first pilot are free. Future formats may have different conditions.' },
+      { question: 'How do I hear about new events?', answer: 'Join the community list or follow our community channels.' },
     ],
   },
 };

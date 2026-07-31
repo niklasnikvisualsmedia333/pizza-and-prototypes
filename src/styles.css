@@ -3098,6 +3098,72 @@ fieldset legend {
   padding-block: 2rem;
 }
 
+.latest-event-section {
+  padding-top: 0;
+}
+
+.latest-event-card {
+  display: grid;
+  gap: 1.5rem;
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.72);
+  padding: 1.25rem;
+}
+
+.latest-event-card h2 {
+  margin: 0.7rem 0 0;
+  color: #fff;
+  font-size: 1.55rem;
+}
+
+.latest-event-card p {
+  margin: 0.5rem 0 0;
+  color: #9eacbf;
+  line-height: 1.65;
+}
+
+.event-status {
+  display: inline-flex;
+  border: 1px solid rgba(243, 154, 75, 0.4);
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  color: #f4b275;
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.event-facts {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.event-facts div {
+  border-left: 2px solid rgba(103, 232, 249, 0.35);
+  padding-left: 0.8rem;
+}
+
+.event-facts dt {
+  color: #e6edf7;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.event-facts dd {
+  margin: 0.2rem 0 0;
+  color: #8797ad;
+  font-size: 0.76rem;
+}
+
+.event-followup {
+  align-self: center;
+}
+
+.event-followup .button {
+  margin-top: 1rem;
+}
+
 .section-heading {
   max-width: 48rem;
 }
@@ -3528,24 +3594,15 @@ fieldset legend {
 
 .team-list {
   display: grid;
-  gap: 0;
+  grid-column: 1 / -1;
+  gap: 0.75rem;
   margin-top: 1.5rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .team-list article {
-  display: grid;
-  grid-template-columns: 1.5rem 1fr;
-  gap: 0.7rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-  padding-block: 1rem;
-}
-
-.team-list article > svg {
-  width: 1rem;
-  height: 1rem;
-  margin-top: 0.2rem;
-  color: #67e8f9;
+  border-top: 2px solid rgba(103, 232, 249, 0.45);
+  background: rgba(15, 23, 42, 0.62);
+  padding: 1rem;
 }
 
 .team-list article div {
@@ -3559,8 +3616,17 @@ fieldset legend {
 }
 
 .team-list span {
+  display: block;
+  margin-top: 0.35rem;
   color: #a5b1c2;
   font-size: 0.82rem;
+}
+
+.team-list p {
+  margin: 0.65rem 0 0;
+  color: #8797ad;
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 .team-list a {
@@ -3750,6 +3816,13 @@ fieldset legend {
   color: #69e4f2;
 }
 
+.benefit-columns article > p {
+  margin: 0.75rem 0 0;
+  color: #9eacbf;
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
 .benefit-columns ul {
   margin-top: 1rem;
 }
@@ -3758,6 +3831,20 @@ fieldset legend {
   display: flex;
   min-height: 17rem;
   flex-direction: column;
+}
+
+.one-pager-box {
+  margin-top: 2rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  padding-top: 1.5rem;
+}
+
+.one-pager-box .section-eyebrow {
+  margin-bottom: 0.6rem;
+}
+
+.one-pager-box .button {
+  margin-top: 1rem;
 }
 
 .format-grid article > span {
@@ -4028,11 +4115,11 @@ fieldset legend {
   }
 
   .community-hero h1 {
-    font-size: 3.65rem;
+    font-size: 3.25rem;
   }
 
   .company-hero h1 {
-    font-size: 3.25rem;
+    font-size: 3rem;
   }
 
   .section-heading h2,
@@ -4054,14 +4141,21 @@ fieldset legend {
     padding-left: 1.3rem;
   }
 
-  .channel-grid,
+  .channel-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .benefit-columns,
   .format-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .team-member-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .team-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .share-row {
@@ -4087,6 +4181,14 @@ fieldset legend {
 
   .company-form-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .latest-event-card {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  }
+
+  .event-followup {
+    grid-column: 1 / -1;
   }
 
   .company-field-wide {
@@ -4122,11 +4224,11 @@ fieldset legend {
   }
 
   .community-hero h1 {
-    font-size: 4.5rem;
+    font-size: 3.75rem;
   }
 
   .company-hero h1 {
-    font-size: 3.75rem;
+    font-size: 2.9rem;
   }
 
   .page-section {
@@ -4177,6 +4279,16 @@ fieldset legend {
     gap: 2.5rem;
   }
 
+  .latest-event-card {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 0.9fr) minmax(0, 1fr);
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .event-followup {
+    grid-column: auto;
+  }
+
   .team-photo,
   .team-photo img {
     min-height: 32rem;
@@ -4207,6 +4319,11 @@ fieldset legend {
     gap: 1rem;
   }
 
+  .benefit-columns,
+  .format-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .company-contact-aside,
   .company-form {
     padding: 1.75rem;
@@ -4219,11 +4336,11 @@ fieldset legend {
   }
 
   .community-hero h1 {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 
   .company-hero h1 {
-    font-size: 4.15rem;
+    font-size: 3.3rem;
   }
 }
 

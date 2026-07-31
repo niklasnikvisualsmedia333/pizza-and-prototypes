@@ -25,3 +25,41 @@ export const ASSETS = {
     teamSpeaking: asset('event-1/19-team-organizers-speaking.jpg'),
   },
 } as const;
+
+export const EVENT_MEDIA = {
+  communityHero: {
+    src: ASSETS.event.communityHero,
+    width: 2048,
+    height: 1365,
+  },
+  roomAlternative: {
+    src: ASSETS.event.roomAlternative,
+    width: 2048,
+    height: 1365,
+  },
+  builderDiscussion: {
+    src: ASSETS.event.builderDiscussion,
+    width: 2048,
+    height: 1365,
+  },
+  presenterProjector: {
+    src: ASSETS.event.presenterProjector,
+    width: 1365,
+    height: 2048,
+  },
+  demo: {
+    src: ASSETS.event.demo,
+    width: 2048,
+    height: 1365,
+  },
+  companyHero: {
+    src: ASSETS.event.companyHero,
+    width: 2048,
+    height: 1365,
+  },
+  roomWide: {
+    src: ASSETS.event.roomWide,
+    width: 2048,
+    height: 1365,
+  },
+} as const;

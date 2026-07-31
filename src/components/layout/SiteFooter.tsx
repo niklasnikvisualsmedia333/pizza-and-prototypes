@@ -21,6 +21,9 @@ export function SiteFooter({ lang, page }: { lang: Lang; page: 'community' | 'co
         </div>
 
         <div className="site-footer-links">
+          <a href={withLanguage(page === 'community' ? '/companies/' : '/', lang)}>
+            {page === 'community' ? content.companiesNav : content.communityNav}
+          </a>
           <a href={`mailto:${SITE.contactEmail}`}>
             <Mail aria-hidden="true" />
             {SITE.contactEmail}
@@ -46,4 +49,3 @@ export function SiteFooter({ lang, page }: { lang: Lang; page: 'community' | 'co
     </footer>
   );
 }
-
