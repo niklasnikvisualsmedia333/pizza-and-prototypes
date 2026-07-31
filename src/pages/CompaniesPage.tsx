@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   Cpu,
@@ -67,7 +67,32 @@ export default function CompaniesPage() {
   const [companyWebsite, setCompanyWebsite] = useState('');
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const successCloseRef = useRef<HTMLButtonElement>(null);
   const content = companiesContent[lang];
+
+  useEffect(() => {
+    if (formState !== 'success') {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    successCloseRef.current?.focus();
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setFormState('idle');
+        window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [formState]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -529,10 +554,14 @@ export default function CompaniesPage() {
               </label>
 
               {!COMPANY_CONTACT_ENDPOINT && <p className="company-mail-help">{content.form.mailHelp}</p>}
-              {formState === 'success' && <p className="company-form-message success">{content.form.success}</p>}
-              {formState === 'error' && <p className="company-form-message error">{content.form.error}</p>}
+              {formState === 'error' && (
+                <p className="company-form-message error" role="alert" aria-live="assertive">
+                  {content.form.error}{' '}
+                  <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
+                </p>
+              )}
 
-              <button className="button button-primary company-submit" type="submit" disabled={formState === 'sending'}>
+              <button ref={submitButtonRef} className="button button-primary company-submit" type="submit" disabled={formState === 'sending'}>
                 {formState === 'sending'
                   ? content.form.sending
                   : COMPANY_CONTACT_ENDPOINT
@@ -545,6 +574,59 @@ export default function CompaniesPage() {
           </div>
         </div>
       </section>
+
+      {formState === 'success' && (
+        <div
+          className="company-success-backdrop"
+          role="presentation"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setFormState('idle');
+              window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+            }
+          }}
+        >
+          <section
+            className="company-success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="company-success-title"
+            aria-describedby="company-success-description"
+          >
+            <button
+              ref={successCloseRef}
+              type="button"
+              className="company-success-close"
+              onClick={() => {
+                setFormState('idle');
+                window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+              }}
+              aria-label={content.form.successClose}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+            <div className="company-success-icon" aria-hidden="true">
+              <span>✓</span>
+            </div>
+            <h2 id="company-success-title">{content.form.successTitle}</h2>
+            <p id="company-success-description">{content.form.successText}</p>
+            <p>
+              {content.form.successAdditional}{' '}
+              <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.
+            </p>
+            <button
+              type="button"
+              className="button button-primary company-success-submit"
+              onClick={() => {
+                setFormState('idle');
+                window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+              }}
+            >
+              {content.form.successClose}
+            </button>
+          </section>
+        </div>
+      )}
 
       <section className="page-section page-section-muted">
         <div className="site-shell faq-layout">

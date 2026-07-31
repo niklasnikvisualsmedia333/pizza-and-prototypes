@@ -79,7 +79,10 @@ export type CompaniesContent = {
     submitEndpoint: string;
     sending: string;
     mailHelp: string;
-    success: string;
+    successTitle: string;
+    successText: string;
+    successAdditional: string;
+    successClose: string;
     error: string;
     subject: string;
     emailIntro: string;
@@ -216,8 +219,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       submitEndpoint: 'Anfrage senden',
       sending: 'Wird gesendet …',
       mailHelp: 'Ihre Angaben werden in eine E-Mail übernommen. Bitte prüfen und senden Sie diese anschließend in Ihrem E-Mail-Programm.',
-      success: 'Vielen Dank. Ihre Anfrage wurde erfolgreich übermittelt.',
-      error: 'Die Anfrage konnte nicht gesendet werden. Bitte nutzen Sie den direkten E-Mail-Kontakt.',
+      successTitle: 'Anfrage erfolgreich gesendet',
+      successText: 'Vielen Dank. Ihre Anfrage ist bei uns eingegangen. Sie erhalten in Kürze eine Bestätigung per E-Mail. Bitte prüfen Sie auch Ihren Spam-Ordner.',
+      successAdditional: 'Falls keine Bestätigung ankommt oder Sie noch etwas ergänzen möchten, schreiben Sie uns direkt an',
+      successClose: 'Schließen',
+      error: 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie direkt an',
       subject: 'Anfrage zu einem Tech Meets Problems Format',
       emailIntro: 'Guten Tag,\n\nich möchte ein mögliches Format mit Tech Meets Problems besprechen.',
       options: ['Impuls und Austausch', 'Innovation Event', 'Prozessoptimierungs-Event', 'Recruiting und Employer Branding', 'Individuelles Format', 'Noch offen'],
@@ -350,8 +356,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       submitEndpoint: 'Send inquiry',
       sending: 'Sending …',
       mailHelp: 'Your information is copied into an email. Please review and send it in your email application.',
-      success: 'Thank you. Your inquiry was submitted successfully.',
-      error: 'The inquiry could not be sent. Please use the direct email contact.',
+      successTitle: 'Inquiry sent successfully',
+      successText: 'Thank you. We have received your inquiry. You will receive a confirmation by email shortly. Please also check your spam folder.',
+      successAdditional: 'If the confirmation does not arrive or you would like to add anything, email us directly at',
+      successClose: 'Close',
+      error: 'The inquiry could not be sent right now. Please try again or email us directly at',
       subject: 'Inquiry about a Tech Meets Problems format',
       emailIntro: 'Hello,\n\nI would like to discuss a possible format with Tech Meets Problems.',
       options: ['Impulse and exchange', 'Innovation event', 'Process improvement event', 'Recruiting and employer branding', 'Tailored format', 'Still open'],
