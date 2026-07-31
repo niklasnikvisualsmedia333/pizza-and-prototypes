@@ -9,7 +9,6 @@ export type CommunityContent = {
   heroPrimary: string;
   heroSecondary: string;
   heroImageAlt: string;
-  heroCaption: string;
   freeEyebrow: string;
   freeText: string;
   eventEyebrow: string;
@@ -19,7 +18,6 @@ export type CommunityContent = {
   eventOpenLabel: string;
   eventWaitlistLabel: string;
   eventSoldOutLabel: string;
-  eventSpeakerPrefix: string;
   eventRegistrationNote: string;
   eventTypeFallback: string;
   eventFallbackText: string;
@@ -67,25 +65,23 @@ export const communityContent: Record<Lang, CommunityContent> = {
     metaTitle: 'Tech Meets Problems | Builder-first Community in Siegen',
     metaDescription:
       'Tech Meets Problems verbindet technische Talente mit realen Herausforderungen aus Unternehmen und der Region. Werde Teil der Community aus Siegen.',
-    heroEyebrow: 'Community für technische Talente',
-    heroTitle: 'Möchtest du an echten Herausforderungen aus Unternehmen arbeiten?',
+    heroEyebrow: 'Builder-first Tech-Community in Siegen',
+    heroTitle: 'Arbeite an echten Herausforderungen aus Unternehmen.',
     heroText:
       'In der Tech Meets Problems Community triffst du technische Studierende, junge Berufstätige und weitere techniknahe Profile. Gemeinsam entwickelt ihr Konzepte, Workflows, Mockups oder erste Prototypen.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
-    heroCaption: 'Gemeinsame Arbeit am ersten Event in Siegen',
     freeEyebrow: 'Kostenlos für dich',
-    freeText: 'Der Community-Beitritt und unsere Community-Events sind kostenlos. Essen und Getränke sind inklusive. Möglich machen das unsere Partner und Sponsoren.',
+    freeText: 'Der Community-Beitritt ist kostenlos. Beim ersten Pilot gab es Essen und Getränke; zukünftige Formate können anders aussehen.',
     eventEyebrow: 'Neueste Veranstaltung',
     eventPastLabel: 'Abgeschlossen',
-    eventUpcomingLabel: 'Bestätigtes Event',
+    eventUpcomingLabel: 'Nächstes Event',
     eventClosedLabel: 'Anmeldung geschlossen',
     eventOpenLabel: 'Anmeldung erforderlich',
     eventWaitlistLabel: 'Warteliste',
     eventSoldOutLabel: 'Ausgebucht',
-    eventSpeakerPrefix: 'Mit',
-    eventRegistrationNote: 'Für die Teilnahme ist eine Anmeldung erforderlich. Über die Community erhältst du die Anmeldeinformationen per E-Mail.',
+    eventRegistrationNote: 'Für dieses Event ist eine separate Anmeldung erforderlich. Über die Community erhältst du die Anmeldeinformationen per E-Mail.',
     eventTypeFallback: 'Community-Format',
     eventFallbackText: 'Das nächste Format ist in Vorbereitung. Über die Community erfährst du zuerst davon.',
     eventCta: 'Community beitreten',
@@ -166,7 +162,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     faqs: [
       { question: 'Muss ich eine eigene Idee mitbringen?', answer: 'Nein. Die Sessions starten mit konkreten Problemräumen.' },
       { question: 'Muss ich programmieren können?', answer: 'Du musst kein Programmierprofi sein. Du solltest aber technische, gestalterische oder analytische Fähigkeiten mitbringen und Lust haben, praktisch an einer Lösung zu arbeiten.' },
-      { question: 'Ist die Community kostenlos?', answer: 'Ja. Der Community-Beitritt und die Community-Events sind kostenlos. Essen und Getränke sind inklusive.' },
+      { question: 'Ist die Community kostenlos?', answer: 'Ja, der Community-Beitritt ist kostenlos. Einzelne Formate können unterschiedliche Rahmenbedingungen haben.' },
       { question: 'Wie erfahre ich von neuen Events?', answer: 'Trag dich in die Community-Liste ein oder folge unseren Community-Kanälen.' },
     ],
   },
@@ -174,25 +170,23 @@ export const communityContent: Record<Lang, CommunityContent> = {
     metaTitle: 'Tech Meets Problems | Builder-first community in Siegen',
     metaDescription:
       'Tech Meets Problems connects technical talent with real challenges from companies and the region. Join the community from Siegen.',
-    heroEyebrow: 'Community for technical talent',
-    heroTitle: 'Want to work on real challenges from companies?',
+    heroEyebrow: 'Builder-first tech community in Siegen',
+    heroTitle: 'Work on real challenges from companies.',
     heroText:
       'The Tech Meets Problems community brings together technical students, young professionals and other tech-oriented profiles. Together, you develop concepts, workflows, mockups or first prototypes.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
-    heroCaption: 'Collaborative work at the first event in Siegen',
     freeEyebrow: 'Free for community members',
-    freeText: 'Joining the community and attending our community events is free. Food and drinks are included. Our partners and sponsors make this possible.',
+    freeText: 'Joining the community is free. The first pilot included food and drinks; future formats may look different.',
     eventEyebrow: 'Latest event',
     eventPastLabel: 'Completed',
-    eventUpcomingLabel: 'Confirmed event',
+    eventUpcomingLabel: 'Upcoming event',
     eventClosedLabel: 'Registration closed',
     eventOpenLabel: 'Registration required',
     eventWaitlistLabel: 'Waitlist',
     eventSoldOutLabel: 'Sold out',
-    eventSpeakerPrefix: 'With',
-    eventRegistrationNote: 'Registration is required. Community members receive the registration details by email.',
+    eventRegistrationNote: 'Separate registration is required for this event. Community members receive the registration details by email.',
     eventTypeFallback: 'Community format',
     eventFallbackText: 'The next format is in preparation. Community members will hear about it first.',
     eventCta: 'Join the community',
@@ -273,7 +267,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     faqs: [
       { question: 'Do I need to bring an idea?', answer: 'No. Sessions start with concrete problem spaces.' },
       { question: 'Do I need to code?', answer: 'You do not need to be an expert programmer. You should bring technical, design or analytical skills and be willing to work practically on a solution.' },
-      { question: 'Is the community free?', answer: 'Yes. Joining the community and attending community events is free. Food and drinks are included.' },
+      { question: 'Is the community free?', answer: 'Yes, joining the community is free. Individual formats may have different arrangements.' },
       { question: 'How do I hear about new events?', answer: 'Join the community list or follow our community channels.' },
     ],
   },

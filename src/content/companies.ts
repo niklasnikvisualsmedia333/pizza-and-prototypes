@@ -5,11 +5,12 @@ export type CompaniesContent = {
   metaDescription: string;
   heroEyebrow: string;
   heroTitle: string;
+  heroTitlePrefix: string;
+  heroTitleTail: string;
   heroText: string;
   heroPrimary: string;
   heroSecondary: string;
   heroImageAlt: string;
-  heroCaption: string;
   benefitsEyebrow: string;
   benefitsTitle: string;
   benefits: Array<{ title: string; text: string }>;
@@ -93,12 +94,13 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Tech Meets Problems verbindet Unternehmen mit technischen Talenten und neuen Perspektiven auf Prozesse, Digitalisierung, KI und reale Herausforderungen.',
     heroEyebrow: 'Tech Meets Problems für Unternehmen',
     heroTitle: 'Ihre Herausforderung trifft auf technische Talente.',
+    heroTitlePrefix: 'Ihre Herausforderung trifft auf',
+    heroTitleTail: 'technische Talente.',
     heroText:
-      'Tech Meets Problems verbindet Unternehmen mit einer wachsenden Community aus Siegen und der Region. Sie besteht überwiegend aus technischen Studierenden, darunter vielen Masterstudierenden, sowie jungen Berufstätigen und weiteren techniknahen Profilen. Gemeinsam entstehen neue Perspektiven, erste Ansätze und passende nächste Schritte.',
+      'Tech Meets Problems verbindet Unternehmen mit einer wachsenden Community aus Siegen und der Region. Ein großer Teil besteht aus technischen Studierenden, darunter viele Masterstudierende. Hinzu kommen junge Berufstätige und weitere techniknahe Profile. Gemeinsam entstehen neue Perspektiven, erste Ansätze und passende nächste Schritte.',
     heroPrimary: 'Kontakt aufnehmen',
     heroSecondary: 'Zur Community',
     heroImageAlt: 'Technische Studierende und weitere Talente arbeiten beim ersten Tech Meets Problems Event in kleinen Teams.',
-    heroCaption: 'Reale Herausforderungen. Kleine Teams.',
     benefitsEyebrow: 'Nutzen für Unternehmen',
     benefitsTitle: 'Neue Perspektiven auf konkrete Fragestellungen.',
     benefits: [
@@ -227,11 +229,12 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Tech Meets Problems connects companies with technical talent and new perspectives on processes, digitalization, AI and real challenges.',
     heroEyebrow: 'Tech Meets Problems for companies',
     heroTitle: 'Your challenge meets technical talent.',
-    heroText: 'Tech Meets Problems connects companies with a growing community from Siegen and the surrounding region. It consists primarily of technical students, including many master’s students, as well as young professionals and other tech-oriented profiles. Together, we develop new perspectives, first approaches and suitable next steps.',
+    heroTitlePrefix: 'Your challenge meets',
+    heroTitleTail: 'technical talent.',
+    heroText: 'Tech Meets Problems connects companies with a growing community from Siegen and the surrounding region. A large part of the community consists of technical students, including many master’s students. Young professionals and other tech-oriented profiles add further experience. Together, we develop new perspectives, first approaches and suitable next steps.',
     heroPrimary: 'Get in touch',
     heroSecondary: 'Visit the community',
     heroImageAlt: 'Technical students and other talent work in small teams at the first Tech Meets Problems event.',
-    heroCaption: 'Real challenges. Small teams.',
     benefitsEyebrow: 'Benefits for companies',
     benefitsTitle: 'New perspectives on concrete questions.',
     benefits: [

@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
-import { PreviewNotice, SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
+import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
 import { EventGallery } from './components/media/EventGallery';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
@@ -1074,7 +1074,6 @@ function App() {
     <main className="refresh-site" onPointerMove={handlePointerMove}>
       <div className="refresh-background" aria-hidden="true" />
       <SiteHeader lang={lang} page="community" onLanguageChange={setLang} />
-      <PreviewNotice lang={lang} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
       <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
       <CommunityRefreshHero content={refresh} lang={lang} />
@@ -1149,19 +1148,21 @@ function CommunityRefreshHero({
         </div>
 
         <figure className="community-hero-media">
-          <img
-            src={EVENT_MEDIA.communityHero.src}
-            alt={content.heroImageAlt}
-            width={EVENT_MEDIA.communityHero.width}
-            height={EVENT_MEDIA.communityHero.height}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-          <figcaption>
-            <span>Tech Meets Problems</span>
-            <strong>{content.heroCaption}</strong>
-          </figcaption>
+          <picture>
+            <source media="(min-width: 1280px)" srcSet={`${EVENT_MEDIA.communityHero.xlarge} 1600w, ${EVENT_MEDIA.communityHero.large} 1280w`} />
+            <source media="(min-width: 640px)" srcSet={`${EVENT_MEDIA.communityHero.large} 1280w, ${EVENT_MEDIA.communityHero.medium} 768w`} />
+            <img
+              src={EVENT_MEDIA.communityHero.src}
+              srcSet={`${EVENT_MEDIA.communityHero.medium} 768w, ${EVENT_MEDIA.communityHero.large} 1280w`}
+              sizes="(min-width: 1280px) 50vw, (min-width: 900px) 45vw, 100vw"
+              alt={content.heroImageAlt}
+              width={EVENT_MEDIA.communityHero.width}
+              height={EVENT_MEDIA.communityHero.height}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
         </figure>
       </div>
       <div className="site-shell hero-trust-row">
@@ -1169,6 +1170,28 @@ function CommunityRefreshHero({
       </div>
     </section>
   );
+}
+
+function formatClock(time: string, lang: Lang) {
+  if (lang === 'de') {
+    return time;
+  }
+  const [hours, minutes] = time.split(':').map(Number);
+  return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(
+    new Date(2026, 0, 1, hours, minutes),
+  );
+}
+
+function formatEventTime(event: (typeof UPCOMING_EVENTS)[number], lang: Lang) {
+  if (!event.startTime) {
+    return event.location ?? '';
+  }
+  if (event.endTime) {
+    return lang === 'de'
+      ? `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)} Uhr`
+      : `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)}`;
+  }
+  return lang === 'de' ? `ab ${formatClock(event.startTime, lang)} Uhr` : `from ${formatClock(event.startTime, lang)}`;
 }
 
 function LatestEvent({
@@ -1191,6 +1214,7 @@ function LatestEvent({
     closed: content.eventClosedLabel,
   };
   const date = new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-GB', {
+    weekday: 'long',
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -1207,8 +1231,8 @@ function LatestEvent({
         </div>
         <dl className="event-facts">
           <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
-          {event.speaker && <div><dt>{content.eventSpeakerPrefix} {event.speaker}</dt><dd>{event.language}</dd></div>}
-          {(event.startTime || event.location) && <div><dt>{event.startTime && event.endTime ? `${event.startTime}–${event.endTime}` : event.location}</dt><dd>{event.address ?? event.language}</dd></div>}
+          {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.language}</dd></div>}
+          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location ? event.address ?? event.language : event.language}</dd></div>}
           {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
         </dl>
         <div className="event-followup">

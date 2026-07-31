@@ -33,6 +33,7 @@ const eventImage = (filename: string, width: number, height: number) => ({
     thumbnail: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-320.webp`),
     medium: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-768.webp`),
     large: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-1280.webp`),
+    xlarge: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-1600.webp`),
     width,
     height,
 });
@@ -40,6 +41,9 @@ const eventImage = (filename: string, width: number, height: number) => ({
 export const EVENT_MEDIA = {
   communityHero: {
     src: ASSETS.event.communityHero,
+    medium: asset('event-1/optimized/08-event-room-problem-boards-wide-768.webp'),
+    large: asset('event-1/optimized/08-event-room-problem-boards-wide-1280.webp'),
+    xlarge: asset('event-1/optimized/08-event-room-problem-boards-wide-1600.webp'),
     width: 2048,
     height: 1365,
   },
@@ -65,9 +69,7 @@ export const EVENT_MEDIA = {
     fit: 'contain' as const,
   },
   companyHero: {
-    src: ASSETS.event.companyHero,
-    width: 2048,
-    height: 1365,
+    ...eventImage('07-event-room-builder-teams-wide.jpg', 2048, 1365),
   },
   roomWide: {
     src: ASSETS.event.roomWide,

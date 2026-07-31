@@ -63,12 +63,13 @@ Die folgenden Bereiche wurden nach Abschluss der Implementierung erneut direkt m
 
 Alle genannten Hashes stimmen zwischen `master` und diesem Prototyp-Branch überein.
 
-## Preview-Hinweis
+## Preview-Sicherheit
 
 Die getrennte Preview verwendet bewusst weiterhin dieselben produktiven Community-Endpunkte.
 Eine Anmeldung über die Preview ist daher eine echte Übermittlung und kann einen Eintrag im
-produktiven Communityworkflow erzeugen. Der Hinweis fordert ausdrücklich dazu auf, nur bewusst
-Testdaten abzusenden.
+produktiven Communityworkflow erzeugen. Der sichtbare interne Preview-Hinweis wurde im Refresh
+entfernt, damit die veröffentlichte Vorschau die geplante Gestaltung abbildet; deshalb dürfen dort
+weiterhin keine Testanmeldungen ausgelöst werden.
 Analytics sind im Preview-Build deaktiviert; die Formularanbindung ist es nicht.
 
 ## Prüfung im Website-Refresh vom Juli 2026

@@ -2994,6 +2994,10 @@ fieldset legend {
   text-wrap: balance;
 }
 
+.company-hero-title-tail {
+  white-space: nowrap;
+}
+
 .community-hero-copy > p:not(.section-eyebrow, .community-claim),
 .company-hero-copy > p:not(.section-eyebrow) {
   max-width: 40rem;
@@ -3032,14 +3036,6 @@ fieldset legend {
   box-shadow: 0 1.8rem 4rem rgba(0, 0, 0, 0.35);
 }
 
-.community-hero-media::after,
-.company-hero-media::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 52%, rgba(5, 9, 17, 0.86));
-  content: "";
-}
-
 .community-hero-media img,
 .company-hero-media img {
   display: block;
@@ -3055,33 +3051,6 @@ fieldset legend {
 
 .company-hero-media img {
   object-position: 52% center;
-}
-
-.community-hero-media figcaption,
-.company-hero-media figcaption {
-  position: absolute;
-  z-index: 1;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  display: grid;
-  gap: 0.2rem;
-}
-
-.community-hero-media figcaption span,
-.company-hero-media figcaption span {
-  color: #7ee9f5;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.community-hero-media figcaption strong,
-.company-hero-media figcaption strong {
-  color: #fff;
-  font-size: 1rem;
-  line-height: 1.35;
 }
 
 .page-section {
@@ -3529,6 +3498,16 @@ fieldset legend {
 
 .company-teaser > div {
   align-self: center;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.company-teaser > div > p {
+  margin: 0;
+}
+
+.company-teaser > div > .section-eyebrow {
+  margin-bottom: -0.7rem;
 }
 
 .company-teaser ul {
@@ -3731,28 +3710,6 @@ fieldset legend {
   color: #cbd5e1;
   font-size: 0.8rem;
   line-height: 1.55;
-}
-
-.preview-notice {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  width: min(100% - 2rem, 82rem);
-  gap: 0.75rem;
-  align-items: baseline;
-  margin: 0.75rem auto 0;
-  border: 1px solid rgba(243, 154, 75, 0.3);
-  border-radius: 0.45rem;
-  background: rgba(41, 25, 17, 0.86);
-  padding: 0.65rem 0.85rem;
-  color: #d5dce6;
-  font-size: 0.76rem;
-  line-height: 1.45;
-}
-
-.preview-notice strong {
-  flex: 0 0 auto;
-  color: #f7b477;
 }
 
 .event-gallery {
@@ -4802,8 +4759,13 @@ fieldset legend {
 
   .community-hero h1,
   .company-hero h1 {
-    font-size: clamp(2.05rem, 9.6vw, 2.55rem);
+    font-size: clamp(1.95rem, 8.8vw, 2.45rem);
     overflow-wrap: normal;
+  }
+
+  .company-hero h1 {
+    max-width: none;
+    font-size: clamp(1.7rem, 7.6vw, 2.35rem);
   }
 
   .section-heading h2,
@@ -4847,13 +4809,6 @@ fieldset legend {
     bottom: 0.6rem;
     left: 0.6rem;
     width: auto;
-  }
-
-  .preview-notice {
-    display: grid;
-    width: calc(100% - 1.25rem);
-    gap: 0.2rem;
-    font-size: 0.7rem;
   }
 
   .community-free-callout {

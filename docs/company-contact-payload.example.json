@@ -8,7 +8,7 @@
   "phone": "+49 271 000000",
   "timeframe": "Herbst 2026",
   "submissionType": "company_interest",
-  "formVersion": "2026-07-company-prototype-v2",
+  "formVersion": "2026-08-company-v1",
   "language": "de",
   "submittedAt": "2026-07-31T12:00:00.000Z",
   "landingPage": "https://techmeetsproblems.com/companies/?utm_source=example",
@@ -21,6 +21,6 @@
   "trackingSummary": "source:example | medium:documentation | campaign:company_example | content:payload",
   "privacyAccepted": true,
   "privacyAcceptedAt": "2026-07-31T12:00:00.000Z",
-  "privacyVersion": "2026-07-company-prototype-v2",
+  "privacyVersion": "2026-08-company-privacy-v1",
   "privacyText": "Fiktiver Zustimmungstext für die technische Dokumentation."
 }

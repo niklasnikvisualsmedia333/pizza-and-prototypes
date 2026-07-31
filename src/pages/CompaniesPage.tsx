@@ -12,7 +12,7 @@ import {
   Workflow,
 } from 'lucide-react';
 import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBanner';
-import { PreviewNotice, SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
+import { SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
 import { EventGallery } from '../components/media/EventGallery';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
@@ -52,6 +52,9 @@ const initialCompanyForm: CompanyForm = {
 };
 
 const COMPANY_CONTACT_ENDPOINT = import.meta.env.VITE_COMPANY_CONTACT_ENDPOINT?.trim();
+const COMPANY_FORM_VERSION = '2026-08-company-v1';
+const COMPANY_PRIVACY_VERSION = '2026-08-company-privacy-v1';
+const COMPANY_REQUEST_TIMEOUT_MS = 12000;
 
 function setMetaContent(selector: string, content: string) {
   document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
@@ -110,33 +113,50 @@ export default function CompaniesPage() {
     event.preventDefault();
 
     if (companyWebsite.trim()) {
-      setFormState('success');
       return;
     }
 
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
+    if (!form.company.trim() || !form.name.trim() || !emailIsValid || !form.format.trim() || !form.challenge.trim() || !privacyAccepted) {
+      setFormState('error');
+      return;
+    }
+
+    const submittedAt = new Date().toISOString();
+    const query = new URLSearchParams(window.location.search);
+    const trimmedForm = {
+      company: form.company.trim(),
+      name: form.name.trim(),
+      email: form.email.trim(),
+      role: form.role.trim(),
+      format: form.format.trim(),
+      challenge: form.challenge.trim(),
+      phone: form.phone.trim(),
+      timeframe: form.timeframe.trim(),
+    };
     const payload = {
-      ...form,
+      ...trimmedForm,
       submissionType: 'company_interest',
-      formVersion: '2026-07-company-prototype-v2',
+      formVersion: COMPANY_FORM_VERSION,
       language: lang,
-      submittedAt: new Date().toISOString(),
+      submittedAt,
       landingPage: window.location.href,
       referrer: document.referrer,
-      utmSource: new URLSearchParams(window.location.search).get('utm_source') || '',
-      utmMedium: new URLSearchParams(window.location.search).get('utm_medium') || '',
-      utmCampaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
-      utmContent: new URLSearchParams(window.location.search).get('utm_content') || '',
-      utmTerm: new URLSearchParams(window.location.search).get('utm_term') || '',
+      utmSource: query.get('utm_source') || '',
+      utmMedium: query.get('utm_medium') || '',
+      utmCampaign: query.get('utm_campaign') || '',
+      utmContent: query.get('utm_content') || '',
+      utmTerm: query.get('utm_term') || '',
       trackingSummary: ['source', 'medium', 'campaign', 'content', 'term']
         .map((key) => {
-          const value = new URLSearchParams(window.location.search).get(`utm_${key}`);
+          const value = query.get(`utm_${key}`);
           return value ? `${key}:${value}` : '';
         })
         .filter(Boolean)
         .join(' | '),
       privacyAccepted,
-      privacyAcceptedAt: new Date().toISOString(),
-      privacyVersion: '2026-07-company-prototype-v2',
+      privacyAcceptedAt: submittedAt,
+      privacyVersion: COMPANY_PRIVACY_VERSION,
       privacyText: content.form.privacy,
     };
 
@@ -144,14 +164,14 @@ export default function CompaniesPage() {
       const body = [
         content.form.emailIntro,
         '',
-        `${content.form.company}: ${form.company}`,
-        `${content.form.name}: ${form.name}`,
-        `${content.form.email}: ${form.email}`,
-        `${content.form.role}: ${form.role}`,
-        `${content.form.format}: ${form.format}`,
-        `${content.form.challenge}: ${form.challenge}`,
-        `${content.form.phone}: ${form.phone || '-'}`,
-        `${content.form.timeframe}: ${form.timeframe || '-'}`,
+        `${content.form.company}: ${trimmedForm.company}`,
+        `${content.form.name}: ${trimmedForm.name}`,
+        `${content.form.email}: ${trimmedForm.email}`,
+        `${content.form.role}: ${trimmedForm.role || '-'}`,
+        `${content.form.format}: ${trimmedForm.format}`,
+        `${content.form.challenge}: ${trimmedForm.challenge}`,
+        `${content.form.phone}: ${trimmedForm.phone || '-'}`,
+        `${content.form.timeframe}: ${trimmedForm.timeframe || '-'}`,
         `Landing page: ${payload.landingPage}`,
       ].join('\n');
 
@@ -160,6 +180,8 @@ export default function CompaniesPage() {
     }
 
     setFormState('sending');
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), COMPANY_REQUEST_TIMEOUT_MS);
     try {
       const response = await fetch(COMPANY_CONTACT_ENDPOINT, {
         method: 'POST',
@@ -168,9 +190,14 @@ export default function CompaniesPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
       if (!response.ok) {
         throw new Error('Company contact request failed');
+      }
+      const result: unknown = await response.json();
+      if (!result || typeof result !== 'object' || !('ok' in result) || result.ok !== true) {
+        throw new Error('Company contact response was not accepted');
       }
       setFormState('success');
       setForm(initialCompanyForm);
@@ -179,6 +206,8 @@ export default function CompaniesPage() {
     } catch (error) {
       console.warn('Company contact request failed', error);
       setFormState('error');
+    } finally {
+      window.clearTimeout(timeout);
     }
   };
 
@@ -186,14 +215,16 @@ export default function CompaniesPage() {
     <main className="refresh-site">
       <div className="refresh-background" aria-hidden="true" />
       <SiteHeader lang={lang} page="companies" onLanguageChange={changeLanguage} />
-      <PreviewNotice lang={lang} />
       <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateConsent} />
 
       <section className="company-hero">
         <div className="site-shell company-hero-grid">
           <div className="company-hero-copy">
             <p className="section-eyebrow">{content.heroEyebrow}</p>
-            <h1>{content.heroTitle}</h1>
+            <h1>
+              {content.heroTitlePrefix}{' '}
+              <span className="company-hero-title-tail">{content.heroTitleTail}</span>
+            </h1>
             <p>{content.heroText}</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#company-contact">
@@ -206,19 +237,21 @@ export default function CompaniesPage() {
             </div>
           </div>
           <figure className="company-hero-media">
-            <img
-              src={ASSETS.event.companyHero}
-              alt={content.heroImageAlt}
-              width="2048"
-              height="1365"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
-            <figcaption>
-              <span>Tech Meets Problems</span>
-              <strong>{content.heroCaption}</strong>
-            </figcaption>
+            <picture>
+              <source media="(min-width: 1280px)" srcSet={`${EVENT_MEDIA.companyHero.xlarge} 1600w, ${EVENT_MEDIA.companyHero.large} 1280w`} />
+              <source media="(min-width: 640px)" srcSet={`${EVENT_MEDIA.companyHero.large} 1280w, ${EVENT_MEDIA.companyHero.medium} 768w`} />
+              <img
+                src={EVENT_MEDIA.companyHero.src}
+                srcSet={`${EVENT_MEDIA.companyHero.medium} 768w, ${EVENT_MEDIA.companyHero.large} 1280w`}
+                sizes="(min-width: 1280px) 50vw, (min-width: 900px) 45vw, 100vw"
+                alt={content.heroImageAlt}
+                width={EVENT_MEDIA.companyHero.width}
+                height={EVENT_MEDIA.companyHero.height}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
           </figure>
         </div>
         <div className="site-shell hero-trust-row">
@@ -402,18 +435,27 @@ export default function CompaniesPage() {
               </label>
               <div className="company-form-grid">
                 <CompanyInput
+                  name="company"
+                  autocomplete="organization"
+                  maxLength={200}
                   label={content.form.company}
                   value={form.company}
                   onChange={(value) => updateField('company', value)}
                   required
                 />
                 <CompanyInput
+                  name="name"
+                  autocomplete="name"
+                  maxLength={160}
                   label={content.form.name}
                   value={form.name}
                   onChange={(value) => updateField('name', value)}
                   required
                 />
                 <CompanyInput
+                  name="email"
+                  autocomplete="email"
+                  maxLength={254}
                   label={content.form.email}
                   value={form.email}
                   onChange={(value) => updateField('email', value)}
@@ -421,21 +463,27 @@ export default function CompaniesPage() {
                   required
                 />
                 <CompanyInput
+                  name="role"
+                  autocomplete="organization-title"
+                  maxLength={160}
                   label={content.form.role}
                   value={form.role}
                   onChange={(value) => updateField('role', value)}
                 />
                 <CompanyInput
+                  name="phone"
+                  autocomplete="tel"
+                  maxLength={80}
                   label={content.form.phone}
                   value={form.phone}
                   onChange={(value) => updateField('phone', value)}
                 />
-                <label className="company-field">
+                <label className="company-field" htmlFor="company-format">
                   <span>
                     {content.form.format}
                     <strong aria-label="required">*</strong>
                   </span>
-                  <select required value={form.format} onChange={(event) => updateField('format', event.target.value)}>
+                  <select id="company-format" name="format" required value={form.format} onChange={(event) => updateField('format', event.target.value)}>
                     <option value="">{content.form.select}</option>
                     {content.form.options.map((option) => (
                       <option key={option}>{option}</option>
@@ -443,16 +491,22 @@ export default function CompaniesPage() {
                   </select>
                 </label>
                 <CompanyInput
+                  name="timeframe"
+                  autocomplete="off"
+                  maxLength={200}
                   label={content.form.timeframe}
                   value={form.timeframe}
                   onChange={(value) => updateField('timeframe', value)}
                 />
-                <label className="company-field company-field-wide">
+                <label className="company-field company-field-wide" htmlFor="company-challenge">
                   <span>
                     {content.form.challenge}
                     <strong aria-label="required">*</strong>
                   </span>
                   <textarea
+                    id="company-challenge"
+                    name="challenge"
+                    maxLength={5000}
                     required
                     rows={5}
                     value={form.challenge}
@@ -527,12 +581,18 @@ export default function CompaniesPage() {
 }
 
 function CompanyInput({
+  name,
+  autocomplete,
+  maxLength,
   label,
   value,
   onChange,
   type = 'text',
   required = false,
 }: {
+  name: string;
+  autocomplete: string;
+  maxLength: number;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -540,12 +600,12 @@ function CompanyInput({
   required?: boolean;
 }) {
   return (
-    <label className="company-field">
+    <label className="company-field" htmlFor={name}>
       <span>
         {label}
         {required && <strong aria-label="required">*</strong>}
       </span>
-      <input type={type} required={required} value={value} onChange={(event) => onChange(event.target.value)} />
+      <input id={name} name={name} type={type} autoComplete={autocomplete} maxLength={maxLength} required={required} value={value} onChange={(event) => onChange(event.target.value)} />
     </label>
   );
 }

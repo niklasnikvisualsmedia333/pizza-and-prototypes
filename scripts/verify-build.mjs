@@ -1,4 +1,4 @@
-import { access, readFile, stat } from 'node:fs/promises';
+import { access, readdir, readFile, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const preview = process.env.VITE_SITE_ENV === 'preview';
@@ -31,6 +31,8 @@ const [communityHtml, companyHtml, appSource, companySource, downloadsSource, ga
   read('src/config/assets.ts'),
   read('src/components/layout/SharedSections.tsx'),
 ]);
+const bundleNames = await readdir(resolve('dist/assets'), { recursive: true });
+const bundleText = (await Promise.all(bundleNames.filter((name) => name.endsWith('.js')).map((name) => readFile(resolve('dist/assets', name), 'utf8')))).join('\n');
 
 const pdfPath = resolve('dist/downloads/tech-meets-problems-one-pager.pdf');
 const pdf = await readFile(pdfPath);
@@ -62,10 +64,17 @@ assert(gallerySource.includes('createPortal'), 'Gallery lightbox is not portaled
 assert(gallerySource.includes('thumbnail'), 'Gallery thumbnail variants are not configured');
 assert(gallerySource.includes('objectFit'), 'Gallery fit-specific rendering is missing');
 assert(eventsSource.includes("ai-in-software-development-2026"), 'Upcoming August event is missing');
-assert(eventsSource.includes("Sebastian Klietsch"), 'Upcoming event speaker is missing');
+assert(!eventsSource.includes('Sebastian Klietsch'), 'Private upcoming event speaker leaked into source');
+assert(eventsSource.includes("startTime: '18:00'"), 'Upcoming event start time is missing');
+assert(!appSource.includes('PreviewNotice'), 'Community preview notice is still rendered');
+assert(!companySource.includes('PreviewNotice'), 'Company preview notice is still rendered');
+assert(!sharedSectionsSource.includes('preview-notice'), 'Preview notice component is still present');
+assert(!bundleText.includes('Sebastian Klietsch'), 'Private upcoming event speaker leaked into built bundle');
 assert(assetsSource.includes('07-event-room-builder-teams-wide.jpg'), 'Company hero asset is not the wide room image');
 assert(assetsSource.includes('event-1/optimized/'), 'Optimized gallery asset path is missing');
-assert(sharedSectionsSource.includes('real submissions'), 'Preview warning does not identify real submissions');
+assert(assetsSource.includes('08-event-room-problem-boards-wide-768.webp'), 'Community hero WebP is missing');
+assert(companySource.includes("COMPANY_FORM_VERSION = '2026-08-company-v1'"), 'Stable company form version missing');
+assert(companySource.includes("COMPANY_PRIVACY_VERSION = '2026-08-company-privacy-v1'"), 'Stable company privacy version missing');
 
 if (preview) {
   const robots = await read('dist/robots.txt');

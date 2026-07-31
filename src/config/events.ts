@@ -58,14 +58,14 @@ export const EVENTS: SiteEvent[] = [
     subtitleDe: 'A Great New Chance or Just Marketing?',
     subtitleEn: 'A Great New Chance or Just Marketing?',
     date: '2026-08-06',
-    speaker: 'Sebastian Klietsch',
+    startTime: '18:00',
     eventTypeDe: 'Vortrag & Austausch',
     eventTypeEn: 'Talk & discussion',
     language: 'DE / EN',
     image: ASSETS.event.roomAlternative,
     registrationStatus: 'open',
-    descriptionDe: 'Vortrag und Austausch mit Sebastian Klietsch.',
-    descriptionEn: 'A talk and discussion with Sebastian Klietsch.',
+    descriptionDe: 'Vortrag und anschließender Austausch über den Einsatz von KI in der Softwareentwicklung.',
+    descriptionEn: 'A talk followed by discussion about the use of AI in software development.',
   },
 ];
 

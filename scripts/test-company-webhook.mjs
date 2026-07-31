@@ -20,7 +20,7 @@ const payload = {
   phone: '',
   timeframe: 'Autumn 2026',
   submissionType: 'company_interest',
-  formVersion: '2026-07-company-prototype-v2',
+  formVersion: '2026-08-company-v1',
   language: 'en',
   submittedAt: new Date().toISOString(),
   landingPage: 'http://localhost/companies/?utm_source=test',
@@ -33,7 +33,7 @@ const payload = {
   trackingSummary: 'source:test | medium:script | campaign:company_webhook_test',
   privacyAccepted: true,
   privacyAcceptedAt: new Date().toISOString(),
-  privacyVersion: '2026-07-company-prototype-v2',
+  privacyVersion: '2026-08-company-privacy-v1',
   privacyText: 'Fictitious test consent.',
 };
 

@@ -5,16 +5,17 @@ Das Prototype-Formular auf `/companies/` ist bewusst vom Communityformular getre
 ## Aktueller Zustand
 
 - Payload-Typ: `submissionType: company_interest`
-- Formularversion: `2026-07-company-prototype-v2`
+- Formularversion: `2026-08-company-v1`
 - Optionaler Endpoint: `VITE_COMPANY_CONTACT_ENDPOINT`
 - Ohne Endpoint findet kein Formular-Netzwerkrequest statt.
 - Stattdessen wird eine vorausgefüllte E-Mail an `info@techmeetsproblems.com` geöffnet. Die Person prüft und versendet sie selbst.
 
 Das Company-Formular darf niemals den bestehenden Community-Formspree-Endpunkt, n8n-Webhook oder Google-Sheet-Tab verwenden.
 
-Der v2-Payload enthält `company`, `name`, `email`, `role`, `format`, `challenge`, `phone`,
+Das Company-Payload enthält `company`, `name`, `email`, `role`, `format`, `challenge`, `phone`,
 `timeframe`, Sprache, Zeitstempel, Landingpage, Referrer, UTM-Felder, Tracking-Zusammenfassung
-und die Datenschutzbestätigung.
+und die Datenschutzbestätigung. Die stabilen Vertragsversionen sind `2026-08-company-v1` und
+`2026-08-company-privacy-v1`.
 
 ## Empfohlene Produktionslösung
 

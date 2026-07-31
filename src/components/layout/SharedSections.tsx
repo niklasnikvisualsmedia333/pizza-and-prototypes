@@ -103,20 +103,3 @@ export function TeamBlock({
     </div>
   );
 }
-
-export function PreviewNotice({ lang }: { lang: Lang }) {
-  if (import.meta.env.VITE_SITE_ENV !== 'preview') {
-    return null;
-  }
-
-  return (
-    <aside className="preview-notice" aria-label={lang === 'de' ? 'Hinweis zur Vorschau' : 'Preview notice'}>
-      <strong>{lang === 'de' ? 'Interne Vorschau' : 'Internal preview'}</strong>
-      <span>
-        {lang === 'de'
-          ? 'Community-Anmeldungen in dieser Vorschau sind echte Übermittlungen. Bitte nur bewusst mit Testdaten absenden.'
-          : 'Community signups in this preview are real submissions. Please only submit intentional test data.'}
-      </span>
-    </aside>
-  );
-}
