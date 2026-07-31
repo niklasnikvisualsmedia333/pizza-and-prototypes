@@ -66,8 +66,9 @@ Alle genannten Hashes stimmen zwischen `master` und diesem Prototyp-Branch über
 ## Preview-Hinweis
 
 Die getrennte Preview verwendet bewusst weiterhin dieselben produktiven Community-Endpunkte.
-Eine Anmeldung über die Preview erzeugt daher einen echten Eintrag im produktiven
-Communityworkflow. In der Preview wird dieser Umstand sichtbar und zweisprachig angezeigt.
+Eine Anmeldung über die Preview ist daher eine echte Übermittlung und kann einen Eintrag im
+produktiven Communityworkflow erzeugen. Der Hinweis fordert ausdrücklich dazu auf, nur bewusst
+Testdaten abzusenden.
 Analytics sind im Preview-Build deaktiviert; die Formularanbindung ist es nicht.
 
 ## Prüfung im Website-Refresh vom Juli 2026

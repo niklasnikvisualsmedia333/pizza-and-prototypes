@@ -11,11 +11,13 @@ export type SiteEvent = {
   subtitleDe: string;
   subtitleEn: string;
   date: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-  address: string;
+  startTime?: string;
+  endTime?: string;
+  location?: string;
+  address?: string;
   speaker?: string;
+  eventTypeDe?: string;
+  eventTypeEn?: string;
   language: string;
   capacity?: number;
   image: string;
@@ -48,8 +50,31 @@ export const EVENTS: SiteEvent[] = [
     descriptionEn:
       'Builders, technical students and young talent worked in small teams on a real, anonymized problem space.',
   },
+  {
+    slug: 'ai-in-software-development-2026',
+    status: 'upcoming',
+    titleDe: 'AI in Software Development',
+    titleEn: 'AI in Software Development',
+    subtitleDe: 'A Great New Chance or Just Marketing?',
+    subtitleEn: 'A Great New Chance or Just Marketing?',
+    date: '2026-08-06',
+    speaker: 'Sebastian Klietsch',
+    eventTypeDe: 'Vortrag & Austausch',
+    eventTypeEn: 'Talk & discussion',
+    language: 'DE / EN',
+    image: ASSETS.event.roomAlternative,
+    registrationStatus: 'open',
+    descriptionDe: 'Vortrag und Austausch mit Sebastian Klietsch.',
+    descriptionEn: 'A talk and discussion with Sebastian Klietsch.',
+  },
 ];
 
-export const PAST_EVENTS = EVENTS.filter((event) => event.status === 'past');
-export const UPCOMING_EVENTS = EVENTS.filter((event) => event.status === 'upcoming');
+const byDateAscending = (a: SiteEvent, b: SiteEvent) => a.date.localeCompare(b.date);
 
+export const UPCOMING_EVENTS = EVENTS
+  .filter((event) => event.status === 'upcoming')
+  .sort(byDateAscending);
+
+export const PAST_EVENTS = EVENTS
+  .filter((event) => event.status === 'past')
+  .sort((a, b) => byDateAscending(b, a));

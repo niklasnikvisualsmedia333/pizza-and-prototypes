@@ -14,7 +14,7 @@ export const ASSETS = {
     team: asset('event-1/01-team-organizers-close.jpg'),
     pizza: asset('event-1/03-pizza-catering.jpg'),
     builderDiscussion: asset('event-1/04-builder-team-laptop-discussion.jpg'),
-    companyHero: asset('event-1/05-teamwork-canvas-wide.jpg'),
+    companyHero: asset('event-1/07-event-room-builder-teams-wide.jpg'),
     roomWide: asset('event-1/06-teamwork-community-wide.jpg'),
     roomAlternative: asset('event-1/07-event-room-builder-teams-wide.jpg'),
     communityHero: asset('event-1/08-event-room-problem-boards-wide.jpg'),
@@ -27,6 +27,16 @@ export const ASSETS = {
   },
 } as const;
 
+const eventImage = (filename: string, width: number, height: number) => ({
+    src: asset(`event-1/${filename}`),
+    lightboxSrc: asset(`event-1/${filename}`),
+    thumbnail: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-320.webp`),
+    medium: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-768.webp`),
+    large: asset(`event-1/optimized/${filename.replace(/\.jpg$/, '')}-1280.webp`),
+    width,
+    height,
+});
+
 export const EVENT_MEDIA = {
   communityHero: {
     src: ASSETS.event.communityHero,
@@ -34,29 +44,25 @@ export const EVENT_MEDIA = {
     height: 1365,
   },
   roomAlternative: {
-    src: ASSETS.event.roomAlternative,
-    width: 2048,
-    height: 1365,
+    ...eventImage('07-event-room-builder-teams-wide.jpg', 2048, 1365),
+    fit: 'cover' as const,
+    objectPosition: 'center',
   },
   builderDiscussion: {
-    src: ASSETS.event.builderDiscussion,
-    width: 2048,
-    height: 1365,
+    ...eventImage('04-builder-team-laptop-discussion.jpg', 2048, 1365),
+    fit: 'contain' as const,
   },
   codeCloseup: {
-    src: ASSETS.event.codeCloseup,
-    width: 2048,
-    height: 1365,
+    ...eventImage('13-code-closeup-dark-laptop.jpg', 2048, 1365),
+    fit: 'contain' as const,
   },
   presenterProjector: {
-    src: ASSETS.event.presenterProjector,
-    width: 1365,
-    height: 2048,
+    ...eventImage('16-demo-presentation-projector-portrait.jpg', 1365, 2048),
+    fit: 'contain' as const,
   },
   demo: {
-    src: ASSETS.event.demo,
-    width: 2048,
-    height: 1365,
+    ...eventImage('17-demo-proofsiteai-board.jpg', 2048, 1365),
+    fit: 'contain' as const,
   },
   companyHero: {
     src: ASSETS.event.companyHero,

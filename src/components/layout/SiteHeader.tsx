@@ -45,7 +45,7 @@ export function SiteHeader({
         { label: content.eventNav, href: '#latest-event' },
         { label: content.communityNav, href: '#community' },
         { label: content.howNav, href: '#how' },
-        { label: content.companiesNav, href: withLanguage('/companies/', lang), emphasized: true },
+        { label: content.companiesNav, href: withLanguage('/companies/', lang), emphasized: true, external: true },
         { label: content.aboutNav, href: '#about' },
       ]
     : [
@@ -53,7 +53,7 @@ export function SiteHeader({
         { label: content.companyFormatsNav, href: '#formats' },
         { label: content.companyPilotNav, href: '#pilot-proof' },
         { label: content.companyContactNav, href: '#company-contact' },
-        { label: content.communityNav, href: withLanguage('/', lang), emphasized: true },
+        { label: content.communityNav, href: withLanguage('/', lang), emphasized: true, external: true },
       ];
 
   const ctaHref = isCommunity ? '#community-signup' : '#company-contact';
@@ -72,7 +72,13 @@ export function SiteHeader({
 
         <div className="site-nav-desktop">
           {navigation.map((item) => (
-            <a key={item.href} href={item.href} className={item.emphasized ? 'site-nav-company' : undefined}>
+            <a
+              key={item.href}
+              href={item.href}
+              className={item.emphasized ? 'site-nav-company' : undefined}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
               {item.label}
             </a>
           ))}
@@ -104,6 +110,8 @@ export function SiteHeader({
                 key={item.href}
                 href={item.href}
                 className={item.emphasized ? 'site-nav-company' : undefined}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
                 onClick={() => setMenuOpen(false)}
               >
                 {item.label}

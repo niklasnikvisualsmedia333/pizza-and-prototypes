@@ -4,10 +4,17 @@ import { createPortal } from 'react-dom';
 
 export type EventGalleryImage = {
   src: string;
+  lightboxSrc?: string;
+  thumbnail?: string;
+  medium?: string;
+  large?: string;
   width: number;
   height: number;
   alt: string;
   caption: string;
+  fit?: 'cover' | 'contain';
+  objectPosition?: string;
+  thumbnailPosition?: string;
 };
 
 export function EventGallery({
@@ -69,17 +76,24 @@ export function EventGallery({
         <button
           ref={mainButtonRef}
           type="button"
-          className={`event-gallery-main${activeImage.height > activeImage.width ? ' is-portrait' : ''}`}
+          className={`event-gallery-main${activeImage.height > activeImage.width ? ' is-portrait' : ''}${activeImage.fit === 'contain' ? ' is-contained' : ''}`}
           onClick={() => setLightboxOpen(true)}
           aria-label={`${lightboxLabel}: ${activeImage.caption}`}
         >
-          <img
-            src={activeImage.src}
-            alt={activeImage.alt}
-            width={activeImage.width}
-            height={activeImage.height}
-            loading="lazy"
-          />
+          <picture>
+            {activeImage.large && <source media="(min-width: 900px)" srcSet={activeImage.large} />}
+            <img
+              src={activeImage.medium ?? activeImage.src}
+              srcSet={activeImage.medium ? `${activeImage.medium} 768w, ${activeImage.large ?? activeImage.medium} 1280w` : undefined}
+              sizes="(min-width: 900px) 82vw, 100vw"
+              alt={activeImage.alt}
+              width={activeImage.width}
+              height={activeImage.height}
+              loading="lazy"
+              decoding="async"
+              style={{ objectFit: activeImage.fit ?? 'cover', objectPosition: activeImage.objectPosition }}
+            />
+          </picture>
           <span className="event-gallery-expand" aria-hidden="true">
             <Expand />
           </span>
@@ -104,7 +118,15 @@ export function EventGallery({
             aria-label={`${index + 1}: ${image.caption}`}
             aria-current={index === activeIndex ? 'true' : undefined}
           >
-            <img src={image.src} alt="" width={image.width} height={image.height} loading="lazy" />
+            <img
+              src={image.thumbnail ?? image.src}
+              alt=""
+              width={image.width}
+              height={image.height}
+              loading="lazy"
+              decoding="async"
+              style={{ objectPosition: image.thumbnailPosition ?? image.objectPosition }}
+            />
           </button>
         ))}
       </div>
@@ -134,7 +156,13 @@ export function EventGallery({
             <ChevronLeft />
           </button>
           <figure className={activeImage.height > activeImage.width ? 'is-portrait' : undefined}>
-            <img src={activeImage.src} alt={activeImage.alt} width={activeImage.width} height={activeImage.height} />
+            <img
+              src={activeImage.lightboxSrc ?? activeImage.src}
+              alt={activeImage.alt}
+              width={activeImage.width}
+              height={activeImage.height}
+              decoding="async"
+            />
             <figcaption>{activeImage.caption}</figcaption>
           </figure>
           <button type="button" className="event-lightbox-arrow next" onClick={showNext} aria-label={nextLabel}>

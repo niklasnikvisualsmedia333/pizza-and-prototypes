@@ -8,7 +8,16 @@ Ein neues Event wird als einzelnes, typisiertes Objekt in `src/config/events.ts`
 - `upcoming`: bestätigt und öffentlich
 - `past`: abgeschlossen
 
-Die Website darf eine Upcoming-Sektion nur rendern, wenn mindestens ein Eintrag ausdrücklich `upcoming` ist. Aktuell ist Pizza & Prototypes als vergangener Pilot hinterlegt; es gibt kein bestätigtes kommendes Event.
+Die Website rendert das nächste nicht als `draft` markierte Event nach Datum aufsteigend. Gibt es
+kein kommendes Event, fällt sie auf das zuletzt vergangene Event nach Datum absteigend zurück.
+`draft`-Einträge werden nie öffentlich gerendert. Zeit, Ort, Speaker, Kapazität und Anmeldelink
+werden nur ergänzt, wenn sie bestätigt sind; leere optionale Felder erscheinen nicht als leere
+Labels.
+
+Ein neues kommendes Event erhält in `src/config/events.ts` den Status `upcoming`, einen eindeutigen
+Slug, lokalisierte Titel und Untertitel, ein ISO-Datum, Registrierungsstatus, Format und eine
+Beschreibung. Nach dem Event wird sein Status auf `past` gesetzt. Eine Anmeldung bleibt von der
+Community-Liste getrennt und benötigt einen eigenen Workflow.
 
 ## Eventanmeldung bleibt getrennt
 

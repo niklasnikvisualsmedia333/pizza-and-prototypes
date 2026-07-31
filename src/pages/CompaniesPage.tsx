@@ -200,7 +200,7 @@ export default function CompaniesPage() {
                 {content.heroPrimary}
                 <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-secondary" href={withLanguage('/', lang)}>
+              <a className="button button-secondary" href={withLanguage('/', lang)} target="_blank" rel="noopener noreferrer">
                 {content.heroSecondary}
               </a>
             </div>
@@ -211,11 +211,13 @@ export default function CompaniesPage() {
               alt={content.heroImageAlt}
               width="2048"
               height="1365"
+              loading="eager"
               fetchPriority="high"
+              decoding="async"
             />
             <figcaption>
               <span>Tech Meets Problems</span>
-              <strong>{lang === 'de' ? 'Reale Herausforderung. Neue Perspektiven.' : 'Real challenge. New perspectives.'}</strong>
+              <strong>{content.heroCaption}</strong>
             </figcaption>
           </figure>
         </div>
@@ -259,6 +261,7 @@ export default function CompaniesPage() {
               </article>
             ))}
           </div>
+          <p className="formats-note">{content.formatsNote}</p>
           <div className="tailored-format-card">
             <div>
               <p className="section-eyebrow">{content.tailoredEyebrow}</p>

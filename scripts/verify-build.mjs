@@ -20,13 +20,16 @@ function assert(condition, message) {
   }
 }
 
-const [communityHtml, companyHtml, appSource, companySource, downloadsSource, gallerySource] = await Promise.all([
+const [communityHtml, companyHtml, appSource, companySource, downloadsSource, gallerySource, eventsSource, assetsSource, sharedSectionsSource] = await Promise.all([
   read('dist/index.html'),
   read('dist/companies/index.html'),
   read('src/App.tsx'),
   read('src/pages/CompaniesPage.tsx'),
   read('src/config/downloads.ts'),
   read('src/components/media/EventGallery.tsx'),
+  read('src/config/events.ts'),
+  read('src/config/assets.ts'),
+  read('src/components/layout/SharedSections.tsx'),
 ]);
 
 const pdfPath = resolve('dist/downloads/tech-meets-problems-one-pager.pdf');
@@ -56,6 +59,13 @@ assert(gallerySource.includes("event.key === 'ArrowLeft'"), 'Gallery keyboard na
 assert(gallerySource.includes("event.key === 'ArrowRight'"), 'Gallery next-image keyboard navigation missing');
 assert(gallerySource.includes("document.body.style.overflow = 'hidden'"), 'Gallery scroll lock missing');
 assert(gallerySource.includes('createPortal'), 'Gallery lightbox is not portaled above sticky page chrome');
+assert(gallerySource.includes('thumbnail'), 'Gallery thumbnail variants are not configured');
+assert(gallerySource.includes('objectFit'), 'Gallery fit-specific rendering is missing');
+assert(eventsSource.includes("ai-in-software-development-2026"), 'Upcoming August event is missing');
+assert(eventsSource.includes("Sebastian Klietsch"), 'Upcoming event speaker is missing');
+assert(assetsSource.includes('07-event-room-builder-teams-wide.jpg'), 'Company hero asset is not the wide room image');
+assert(assetsSource.includes('event-1/optimized/'), 'Optimized gallery asset path is missing');
+assert(sharedSectionsSource.includes('real submissions'), 'Preview warning does not identify real submissions');
 
 if (preview) {
   const robots = await read('dist/robots.txt');

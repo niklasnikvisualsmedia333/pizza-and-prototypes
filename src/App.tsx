@@ -1134,7 +1134,7 @@ function CommunityRefreshHero({
               {content.heroPrimary}
               <ArrowRight aria-hidden="true" />
             </a>
-            <a href={withLanguage('/companies/', lang)} className="button button-company">
+            <a href={withLanguage('/companies/', lang)} className="button button-company" target="_blank" rel="noopener noreferrer">
               {content.heroSecondary}
               <ArrowRight aria-hidden="true" />
             </a>
@@ -1154,7 +1154,9 @@ function CommunityRefreshHero({
             alt={content.heroImageAlt}
             width={EVENT_MEDIA.communityHero.width}
             height={EVENT_MEDIA.communityHero.height}
+            loading="eager"
             fetchPriority="high"
+            decoding="async"
           />
           <figcaption>
             <span>Tech Meets Problems</span>
@@ -1204,12 +1206,14 @@ function LatestEvent({
           <p>{lang === 'de' ? event.subtitleDe : event.subtitleEn}</p>
         </div>
         <dl className="event-facts">
-          <div><dt>{date}</dt><dd>{event.startTime}–{event.endTime}</dd></div>
-          <div><dt>{event.location}</dt><dd>{event.address}</dd></div>
-          <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>
+          <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
+          {event.speaker && <div><dt>{content.eventSpeakerPrefix} {event.speaker}</dt><dd>{event.language}</dd></div>}
+          {(event.startTime || event.location) && <div><dt>{event.startTime && event.endTime ? `${event.startTime}–${event.endTime}` : event.location}</dt><dd>{event.address ?? event.language}</dd></div>}
+          {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
         </dl>
         <div className="event-followup">
           <p>{isUpcoming ? (lang === 'de' ? event.descriptionDe : event.descriptionEn) : content.eventFallbackText}</p>
+          {isUpcoming && <p className="event-registration-note">{content.eventRegistrationNote}</p>}
           {isUpcoming && event.registrationUrl ? (
             <a className="button button-primary" href={event.registrationUrl}>{registrationLabels[event.registrationStatus]}</a>
           ) : (
@@ -1384,13 +1388,14 @@ function CommunityCompanyTeaser({
             width="2048"
             height="1365"
             loading="lazy"
+            decoding="async"
           />
         </figure>
         <div>
           <p className="section-eyebrow">{content.companyEyebrow}</p>
           <h2>{content.companyTitle}</h2>
           <p>{content.companyText}</p>
-          <a href={withLanguage('/companies/', lang)} className="button button-primary">
+          <a href={withLanguage('/companies/', lang)} className="button button-primary" target="_blank" rel="noopener noreferrer">
             {content.companyCta}
             <ArrowRight aria-hidden="true" />
           </a>

@@ -2990,7 +2990,8 @@ fieldset legend {
 }
 
 .company-hero h1 {
-  max-width: 17ch;
+  max-width: 20ch;
+  text-wrap: balance;
 }
 
 .community-hero-copy > p:not(.section-eyebrow, .community-claim),
@@ -3175,6 +3176,19 @@ fieldset legend {
 
 .event-followup .button {
   margin-top: 1rem;
+}
+
+.event-registration-note {
+  color: #cbd5e1 !important;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.formats-note {
+  margin: 1rem 0 0;
+  color: #9eacbf;
+  font-size: 0.86rem;
+  line-height: 1.6;
 }
 
 .section-heading {
@@ -3775,8 +3789,18 @@ fieldset legend {
   object-position: center;
 }
 
+.event-gallery-main picture {
+  display: block;
+  min-height: inherit;
+  background: #050913;
+}
+
 .event-gallery-main.is-portrait img {
   object-fit: contain;
+}
+
+.event-gallery-main.is-contained img {
+  background: #050913;
 }
 
 .event-gallery-expand {
@@ -4607,7 +4631,7 @@ fieldset legend {
   }
 
   .company-hero-grid {
-    grid-template-columns: minmax(0, 1.28fr) minmax(27rem, 0.72fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2.5rem;
   }
 
@@ -4624,7 +4648,7 @@ fieldset legend {
   }
 
   .company-hero h1 {
-    max-width: 23ch;
+    max-width: 20ch;
     font-size: clamp(2.8rem, 3.15vw, 3.35rem);
     text-wrap: balance;
   }

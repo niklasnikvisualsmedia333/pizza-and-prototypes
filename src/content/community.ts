@@ -19,6 +19,9 @@ export type CommunityContent = {
   eventOpenLabel: string;
   eventWaitlistLabel: string;
   eventSoldOutLabel: string;
+  eventSpeakerPrefix: string;
+  eventRegistrationNote: string;
+  eventTypeFallback: string;
   eventFallbackText: string;
   eventCta: string;
   recapEyebrow: string;
@@ -73,14 +76,17 @@ export const communityContent: Record<Lang, CommunityContent> = {
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
     heroCaption: 'Gemeinsame Arbeit am ersten Event in Siegen',
     freeEyebrow: 'Kostenlos für dich',
-    freeText: 'Der Community-Beitritt und unsere Community-Events sind kostenlos. Essen und Getränke sind inklusive.',
+    freeText: 'Der Community-Beitritt und unsere Community-Events sind kostenlos. Essen und Getränke sind inklusive. Möglich machen das unsere Partner und Sponsoren.',
     eventEyebrow: 'Neueste Veranstaltung',
     eventPastLabel: 'Abgeschlossen',
     eventUpcomingLabel: 'Bestätigtes Event',
     eventClosedLabel: 'Anmeldung geschlossen',
-    eventOpenLabel: 'Anmeldung geöffnet',
+    eventOpenLabel: 'Anmeldung erforderlich',
     eventWaitlistLabel: 'Warteliste',
     eventSoldOutLabel: 'Ausgebucht',
+    eventSpeakerPrefix: 'Mit',
+    eventRegistrationNote: 'Für die Teilnahme ist eine Anmeldung erforderlich. Über die Community erhältst du die Anmeldeinformationen per E-Mail.',
+    eventTypeFallback: 'Community-Format',
     eventFallbackText: 'Das nächste Format ist in Vorbereitung. Über die Community erfährst du zuerst davon.',
     eventCta: 'Community beitreten',
     recapEyebrow: 'Rückblick',
@@ -177,14 +183,17 @@ export const communityContent: Record<Lang, CommunityContent> = {
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
     heroCaption: 'Collaborative work at the first event in Siegen',
     freeEyebrow: 'Free for community members',
-    freeText: 'Joining the community and attending our community events is free. Food and drinks are included.',
+    freeText: 'Joining the community and attending our community events is free. Food and drinks are included. Our partners and sponsors make this possible.',
     eventEyebrow: 'Latest event',
     eventPastLabel: 'Completed',
     eventUpcomingLabel: 'Confirmed event',
     eventClosedLabel: 'Registration closed',
-    eventOpenLabel: 'Registration open',
+    eventOpenLabel: 'Registration required',
     eventWaitlistLabel: 'Waitlist',
     eventSoldOutLabel: 'Sold out',
+    eventSpeakerPrefix: 'With',
+    eventRegistrationNote: 'Registration is required. Community members receive the registration details by email.',
+    eventTypeFallback: 'Community format',
     eventFallbackText: 'The next format is in preparation. Community members will hear about it first.',
     eventCta: 'Join the community',
     recapEyebrow: 'Recap',

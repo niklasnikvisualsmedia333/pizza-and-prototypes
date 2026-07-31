@@ -21,7 +21,11 @@ export function SiteFooter({ lang, page }: { lang: Lang; page: 'community' | 'co
         </div>
 
         <div className="site-footer-links">
-          <a href={withLanguage(page === 'community' ? '/companies/' : '/', lang)}>
+          <a
+            href={withLanguage(page === 'community' ? '/companies/' : '/', lang)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {page === 'community' ? content.companiesNav : content.communityNav}
           </a>
           <a href={`mailto:${SITE.contactEmail}`}>

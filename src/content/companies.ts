@@ -9,6 +9,7 @@ export type CompaniesContent = {
   heroPrimary: string;
   heroSecondary: string;
   heroImageAlt: string;
+  heroCaption: string;
   benefitsEyebrow: string;
   benefitsTitle: string;
   benefits: Array<{ title: string; text: string }>;
@@ -93,10 +94,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     heroEyebrow: 'Tech Meets Problems für Unternehmen',
     heroTitle: 'Ihre Herausforderung trifft auf technische Talente.',
     heroText:
-      'Tech Meets Problems verbindet Unternehmen mit einer wachsenden technischen Community aus Siegen und der Region. Gemeinsam entstehen neue Perspektiven, erste Ansätze und passende nächste Schritte.',
+      'Tech Meets Problems verbindet Unternehmen mit einer wachsenden Community aus Siegen und der Region. Sie besteht überwiegend aus technischen Studierenden, darunter vielen Masterstudierenden, sowie jungen Berufstätigen und weiteren techniknahen Profilen. Gemeinsam entstehen neue Perspektiven, erste Ansätze und passende nächste Schritte.',
     heroPrimary: 'Kontakt aufnehmen',
     heroSecondary: 'Zur Community',
-    heroImageAlt: 'Technische Talente arbeiten gemeinsam an einem Problem-Canvas',
+    heroImageAlt: 'Technische Studierende und weitere Talente arbeiten beim ersten Tech Meets Problems Event in kleinen Teams.',
+    heroCaption: 'Reale Herausforderungen. Kleine Teams.',
     benefitsEyebrow: 'Nutzen für Unternehmen',
     benefitsTitle: 'Neue Perspektiven auf konkrete Fragestellungen.',
     benefits: [
@@ -135,7 +137,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Wirtschaftsingenieurwesen',
     ],
     communityProfileEyebrow: 'Die Community',
-    communityProfileTitle: 'Technische Talente mit unterschiedlichen Erfahrungen.',
+    communityProfileTitle: 'Technische Studierende und junge Berufstätige.',
     communityProfileFacts: ['Über 120 Mitglieder', 'Viele studieren im Master', 'International und praxiserfahren'],
     communityProfileText:
       'Viele Mitglieder haben ihren Bachelor in Deutschland oder im Ausland abgeschlossen und studieren heute im Master. Ein großer Teil bringt bereits Berufserfahrung aus Unternehmen, Projekten oder eigener Gründung mit.',
@@ -225,10 +227,11 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Tech Meets Problems connects companies with technical talent and new perspectives on processes, digitalization, AI and real challenges.',
     heroEyebrow: 'Tech Meets Problems for companies',
     heroTitle: 'Your challenge meets technical talent.',
-    heroText: 'Tech Meets Problems connects companies with a growing technical community from Siegen and the surrounding region. Together, we create new perspectives, first approaches and suitable next steps.',
+    heroText: 'Tech Meets Problems connects companies with a growing community from Siegen and the surrounding region. It consists primarily of technical students, including many master’s students, as well as young professionals and other tech-oriented profiles. Together, we develop new perspectives, first approaches and suitable next steps.',
     heroPrimary: 'Get in touch',
     heroSecondary: 'Visit the community',
-    heroImageAlt: 'Technical talent working together on a problem canvas',
+    heroImageAlt: 'Technical students and other talent work in small teams at the first Tech Meets Problems event.',
+    heroCaption: 'Real challenges. Small teams.',
     benefitsEyebrow: 'Benefits for companies',
     benefitsTitle: 'New perspectives on concrete questions.',
     benefits: [
@@ -267,7 +270,7 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
       'Industrial engineering',
     ],
     communityProfileEyebrow: 'The community',
-    communityProfileTitle: 'Technical talent with different backgrounds.',
+    communityProfileTitle: 'Technical students and young professionals.',
     communityProfileFacts: ['More than 120 members', 'Many are master’s students', 'International and experienced in practice'],
     communityProfileText:
       'Many members completed their bachelor’s degree in Germany or abroad and are now studying at master’s level. A significant part of the community already brings experience from companies, projects or their own ventures.',

@@ -75,7 +75,7 @@ export function TeamBlock({
   return (
     <div className="team-block">
       <figure className="team-photo">
-        <img src={ASSETS.event.team} alt={imageAlt} width="2048" height="1365" loading="lazy" />
+        <img src={ASSETS.event.team} alt={imageAlt} width="2048" height="1365" loading="lazy" decoding="async" />
       </figure>
       <div className="team-copy">
         <h3>{storyTitle}</h3>
@@ -114,8 +114,8 @@ export function PreviewNotice({ lang }: { lang: Lang }) {
       <strong>{lang === 'de' ? 'Interne Vorschau' : 'Internal preview'}</strong>
       <span>
         {lang === 'de'
-          ? 'Community-Anmeldungen in dieser Vorschau werden bereits an den echten Communityworkflow übermittelt.'
-          : 'Community signups in this preview are already sent to the live community workflow.'}
+          ? 'Community-Anmeldungen in dieser Vorschau sind echte Übermittlungen. Bitte nur bewusst mit Testdaten absenden.'
+          : 'Community signups in this preview are real submissions. Please only submit intentional test data.'}
       </span>
     </aside>
   );
