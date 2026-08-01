@@ -90,6 +90,7 @@ export function SiteHeader({
             {ctaLabel}
             <ArrowRight aria-hidden="true" />
           </a>
+          {isCommunity && !menuOpen && <LanguageControl lang={lang} onLanguageChange={onLanguageChange} quick />}
           <button
             className="site-menu-button"
             ref={menuButtonRef}
@@ -132,18 +133,35 @@ function LanguageControl({
   lang,
   onLanguageChange,
   compact = false,
+  quick = false,
 }: {
   lang: Lang;
   onLanguageChange: (language: Lang) => void;
   compact?: boolean;
+  quick?: boolean;
 }) {
   return (
-    <div className={`site-language${compact ? ' site-language-wide' : ''}`} aria-label="Language switcher">
-      <Globe2 aria-hidden="true" />
-      <button type="button" className={lang === 'de' ? 'active' : ''} onClick={() => onLanguageChange('de')}>
+    <div
+      className={`site-language${compact ? ' site-language-wide' : ''}${quick ? ' site-language-quick' : ''}`}
+      aria-label={lang === 'de' ? 'Sprache wählen' : 'Choose language'}
+    >
+      {!quick && <Globe2 aria-hidden="true" />}
+      <button
+        type="button"
+        className={lang === 'de' ? 'active' : ''}
+        aria-label={lang === 'de' ? 'Deutsch' : 'German'}
+        aria-pressed={lang === 'de'}
+        onClick={() => onLanguageChange('de')}
+      >
         DE
       </button>
-      <button type="button" className={lang === 'en' ? 'active' : ''} onClick={() => onLanguageChange('en')}>
+      <button
+        type="button"
+        className={lang === 'en' ? 'active' : ''}
+        aria-label={lang === 'de' ? 'Englisch' : 'English'}
+        aria-pressed={lang === 'en'}
+        onClick={() => onLanguageChange('en')}
+      >
         EN
       </button>
     </div>

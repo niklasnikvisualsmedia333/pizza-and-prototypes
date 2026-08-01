@@ -2805,6 +2805,20 @@ fieldset legend {
   grid-template-columns: auto 1fr 1fr;
 }
 
+.site-language-quick {
+  display: grid;
+  width: auto;
+  grid-template-columns: repeat(2, 2rem);
+  gap: 0.1rem;
+  padding: 0.15rem;
+}
+
+.site-language-quick button {
+  width: 2rem;
+  min-height: 2.35rem;
+  padding: 0;
+}
+
 .site-header-cta {
   display: none !important;
 }
@@ -4566,6 +4580,10 @@ fieldset legend {
 
   .site-language {
     display: grid;
+  }
+
+  .site-language-quick {
+    display: none;
   }
 
   .site-header-cta {
