@@ -1,14 +1,23 @@
-Tech Meets Problems is a builder-first community in Siegen, Germany.
+# Tech Meets Problems
 
-It connects technical talent with real challenges from companies and the region. Community members work in small teams on problem framing, workflows, mockups, concepts and first prototypes.
+> Tech Meets Problems is a bilingual builder-first community in Siegen, Germany, connecting technical talent with real challenges from companies and regional organizations.
 
-It is for developers, technical students, HCI/UX people, data and AI profiles, and other practical problem solvers.
+The community brings together developers, technical students, HCI and UX profiles, data and AI practitioners, makers, and other practical problem solvers. In small teams, participants work on problem framing, workflows, mockups, concepts, and first prototypes.
 
-Pizza & Prototypes was the first pilot format. Future sessions are listed only when confirmed.
+Pizza & Prototypes was the first pilot format. New events and community sessions are published only when confirmed.
 
-Companies and regional organizations can propose a real problem, support a session, or start a conversation at:
-https://techmeetsproblems.com/companies/
+## Community
 
-Main URL: https://techmeetsproblems.com/
+- [Tech Meets Problems community in German](https://techmeetsproblems.com/): Join the community and learn about future sessions, practical projects, and real problem spaces.
+- [Tech Meets Problems community in English](https://techmeetsproblems.com/?lang=en): English information for international builders and technical talent.
 
-Contact: info@techmeetsproblems.com or via the website forms.
+## Companies and partners
+
+- [Information for companies in German](https://techmeetsproblems.com/companies/): Learn about collaboration formats, company challenges, partnerships, and contact options.
+- [Information for companies in English](https://techmeetsproblems.com/companies/?lang=en): English information about collaboration, partnerships, and company inquiries.
+- [Tech Meets Problems company one-pager](https://techmeetsproblems.com/downloads/tech-meets-problems-one-pager.pdf): A compact overview of the community and possible collaboration formats.
+
+## Site information
+
+- [Public sitemap](https://techmeetsproblems.com/sitemap.xml): An index of the public pages on the website.
+- [Contact Tech Meets Problems](mailto:info@techmeetsproblems.com): General inquiries, partnerships, sponsorships, and support.
