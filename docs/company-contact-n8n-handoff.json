@@ -1,0 +1,79 @@
+{
+  "workflowName": "TMP Company Contact",
+  "webhookMethod": "POST",
+  "recommendedWebhookPath": "tech-meets-problems-company-contact",
+  "endpointEnvironmentVariable": "VITE_COMPANY_CONTACT_ENDPOINT",
+  "submissionType": "company_interest",
+  "formVersion": "2026-08-company-v1",
+  "privacyVersion": "2026-08-company-privacy-v1",
+  "allowedOrigins": [
+    "https://techmeetsproblems.com",
+    "https://niklasnikvisualsmedia333.github.io"
+  ],
+  "successResponse": {
+    "status": 200,
+    "body": { "ok": true }
+  },
+  "validationResponse": {
+    "status": 422,
+    "body": { "ok": false, "error": "validation_failed" }
+  },
+  "internalRecipient": "info@techmeetsproblems.com",
+  "languageField": "language",
+  "requiredFields": [
+    "company",
+    "name",
+    "email",
+    "format",
+    "challenge",
+    "submissionType",
+    "formVersion",
+    "language",
+    "submittedAt",
+    "landingPage",
+    "privacyAccepted",
+    "privacyAcceptedAt",
+    "privacyVersion",
+    "privacyText"
+  ],
+  "optionalFields": [
+    "role",
+    "phone",
+    "timeframe",
+    "referrer",
+    "utmSource",
+    "utmMedium",
+    "utmCampaign",
+    "utmContent",
+    "utmTerm",
+    "trackingSummary"
+  ],
+  "sheetColumns": [
+    "receivedAt",
+    "company",
+    "name",
+    "email",
+    "role",
+    "format",
+    "challenge",
+    "phone",
+    "timeframe",
+    "language",
+    "landingPage",
+    "referrer",
+    "utmSource",
+    "utmMedium",
+    "utmCampaign",
+    "utmContent",
+    "utmTerm",
+    "trackingSummary",
+    "privacyAccepted",
+    "privacyAcceptedAt",
+    "privacyVersion",
+    "privacyText",
+    "submissionType",
+    "formVersion",
+    "status",
+    "internalNotes"
+  ]
+}

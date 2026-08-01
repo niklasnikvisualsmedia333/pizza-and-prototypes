@@ -23,6 +23,16 @@ import {
   Workflow,
   X,
 } from 'lucide-react';
+import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
+import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
+import { EventGallery } from './components/media/EventGallery';
+import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
+import { SiteHeader } from './components/layout/SiteHeader';
+import { ASSETS as REFRESH_ASSETS, EVENT_MEDIA } from './config/assets';
+import { PAST_EVENTS, UPCOMING_EVENTS } from './config/events';
+import { SITE } from './config/site';
+import { communityContent } from './content/community';
+import { persistLanguage, withLanguage } from './lib/language';
 
 type Lang = 'en' | 'de';
 type AnalyticsConsent = 'accepted' | 'declined';
@@ -149,7 +159,7 @@ const copy = {
     primaryCta: 'Join the community',
     freeBadgeLine1: 'Free to join',
     freeBadgeLine2: 'Future sessions & projects',
-    note: 'No pitch decks. No startup theatre. Just real problems worth working on.',
+    note: 'Real problems, focused teamwork and practical next steps.',
     countdownLabel: 'First pilot starts in',
     countdownUnits: ['Days', 'Hours', 'Minutes', 'Seconds'],
     exitTitle: 'Leaving already?',
@@ -229,12 +239,12 @@ const copy = {
       ['Is this a pitch event?', 'No. There are no pitch decks. We use a relaxed demo walk.'],
       ['Do I need a laptop?', 'Helpful, but not mandatory. One laptop per team is enough.'],
       ['Is this only for students?', 'No. Students, hobby developers and technical people from the region are welcome.'],
-      ['Is this free?', 'Joining the community is free, and the first Pizza & Prototypes pilot is free too. Future formats may vary.'],
+      ['Is this free?', 'Yes. Joining the community and attending our community events is free. Our partners and sponsors make this possible.'],
     ],
     formKicker: 'Community signup',
     formTitle: 'Join the Tech Meets Problems community.',
     formSubtitle:
-      'Submissions for the first pilot are closed or already in selection. Join the community list for updates about future sessions, project opportunities and possible waitlist spots. Submitting this form does not guarantee a place on 26 June.',
+      'Join the community list for updates about future sessions, real problem spaces and project opportunities.',
     formInstruction: 'Fill out the form below to join the community list.',
     formDetailsNote: 'We use your answers to understand your background, plan future sessions and invite fitting people when a format has limited spots.',
     communityCardTitle: 'What you join',
@@ -247,13 +257,13 @@ const copy = {
     privacyDetails: [
       'The form is processed through Formspree. We also use n8n, Google Sheets and Gmail to store community signups, send relevant updates and receive internal notifications. Cloudflare Web Analytics is used as a simple, privacy-friendly baseline analysis. Google Analytics 4 only loads after your optional analytics consent.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
-      'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@nikvisuals.de.',
+      'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Responsible: Niklas Brüne and Frederik Krause.',
       'Purpose: community communication, future-event planning, optional catering for future formats, channel evaluation and event documentation.',
       'Tools/recipients: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics and GA4 after consent.',
-      'Withdrawal, objection or deletion request: info@nikvisuals.de.',
+      'Withdrawal, objection or deletion request: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'I have read the ',
     privacyConsentLink: 'privacy notice',
@@ -324,7 +334,7 @@ const copy = {
     roomKicker: 'First pilot atmosphere',
     roomTitle: 'This is the kind of room we want to create.',
     roomText:
-      'Not classic networking with business cards. More like relaxed tables, open laptops, problem cards and people working through real business needs together. The first pilot includes pizza and drinks; future formats may vary.',
+      'Relaxed tables, problem cards and people working through real business needs together. Community events are free, with food and drinks included.',
     roomCaption: 'Visualization of how Pizza & Prototypes could feel in the room.',
     whatsappKicker: 'Community hub',
     whatsappTitle: 'Join the Tech Meets Problems WhatsApp community.',
@@ -339,8 +349,8 @@ const copy = {
     linkedinFooter: 'Follow us on LinkedIn',
     linkedinAria: 'Open Tech Meets Problems on LinkedIn',
     shareKicker: 'Share',
-    shareTitle: 'Know someone who likes building? Send this to them.',
-    shareText: 'A good room starts with the right people.',
+    shareTitle: 'Know someone who would fit the community? Share Tech Meets Problems.',
+    shareText: 'That is how the right people find each other.',
     copyLink: 'Copy page link',
     shareButton: 'Share',
     copied: 'Page link copied.',
@@ -385,7 +395,7 @@ const copy = {
     primaryCta: 'Community beitreten',
     freeBadgeLine1: 'Kostenlos eintragen',
     freeBadgeLine2: 'Sessions & Projekte',
-    note: 'Keine Pitchdecks. Kein Startup-Theater. Nur echte Probleme, gute Leute und erste Lösungen.',
+    note: 'Echte Probleme, fokussierte Teamarbeit und konkrete nächste Schritte.',
     countdownLabel: 'Erster Pilot startet in',
     countdownUnits: ['Tage', 'Stunden', 'Minuten', 'Sekunden'],
     exitTitle: 'Schon weg?',
@@ -465,12 +475,12 @@ const copy = {
       ['Ist das ein Pitch-Event?', 'Nein. Es gibt keine Pitchdecks. Wir nutzen einen entspannten Demo Walk.'],
       ['Brauche ich einen Laptop?', 'Hilfreich, aber nicht Pflicht. Ein Laptop pro Team reicht.'],
       ['Ist das nur für Studierende?', 'Nein. Studierende, Hobby-Entwickler und technische Menschen aus der Region sind willkommen.'],
-      ['Ist das kostenlos?', 'Der Community-Beitritt ist kostenlos, und auch der erste Pizza & Prototypes Pilot ist kostenlos. Zukünftige Formate können variieren.'],
+      ['Ist die Community kostenlos?', 'Ja. Der Community-Beitritt und die Teilnahme an unseren Community-Events sind kostenlos. Möglich machen das unsere Partner und Sponsoren.'],
     ],
     formKicker: 'Community-Updates',
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
     formSubtitle:
-      'Die Einreichungen für den ersten Pilot sind geschlossen bzw. bereits in der Auswahl. Trag dich in die Community-Liste ein, wenn du Updates zu zukünftigen Sessions, Projektmöglichkeiten und möglichen Nachrückplätzen bekommen möchtest. Die Eintragung garantiert keinen Platz am 26. Juni.',
+      'Trag dich in die Community-Liste ein und erhalte Updates zu zukünftigen Sessions, realen Problemräumen und Projektmöglichkeiten.',
     formInstruction: 'Füll das Formular unten aus, um auf die Community-Liste zu kommen.',
     formDetailsNote: 'Wir nutzen deine Angaben, um deinen Hintergrund besser einzuschätzen, zukünftige Sessions zu planen und bei begrenzten Formaten passende Leute einzuladen.',
     communityCardTitle: 'Wofür du dich einträgst',
@@ -483,13 +493,13 @@ const copy = {
     privacyDetails: [
       'Das Formular läuft über Formspree. Zusätzlich nutzen wir n8n, Google Sheets und Gmail, um Community-Eintragungen zu speichern, relevante Updates zu senden und interne Benachrichtigungen zu erhalten. Cloudflare Web Analytics ist als einfache, privacy-freundliche Basisanalyse eingebunden. Google Analytics 4 wird nur nach deiner optionalen Analytics-Einwilligung geladen.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
-      'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@nikvisuals.de.',
+      'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Verantwortlich: Niklas Brüne und Frederik Krause.',
       'Zweck: Community-Kommunikation, Planung zukünftiger Events, optionales Catering für künftige Formate, Kanalauswertung und Eventdokumentation.',
       'Tools/Empfänger: Formspree, n8n, Google Sheets, Gmail, Cloudflare Web Analytics und GA4 nach Consent.',
-      'Widerruf, Widerspruch oder Löschanfrage: info@nikvisuals.de.',
+      'Widerruf, Widerspruch oder Löschanfrage: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'Ich habe die ',
     privacyConsentLink: 'Datenschutzhinweise',
@@ -560,7 +570,7 @@ const copy = {
     roomKicker: 'Atmosphäre im ersten Piloten',
     roomTitle: 'So soll sich der Raum anfühlen.',
     roomText:
-      'Kein klassisches Networking mit Visitenkarten. Eher entspannte Tische, offene Laptops, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Beim ersten Piloten gibt es Pizza und Getränke, zukünftige Formate können anders aussehen.',
+      'Entspannte Tische, Problemkarten und Menschen, die gemeinsam an echten Business-Problemen arbeiten. Community-Events sind kostenlos, Essen und Getränke inklusive.',
     roomCaption: 'Visualisierung, wie Pizza & Prototypes im Raum wirken könnte.',
     whatsappKicker: 'Community-Hub',
     whatsappTitle: 'Tritt der Tech Meets Problems WhatsApp-Community bei.',
@@ -575,8 +585,8 @@ const copy = {
     linkedinFooter: 'Folge uns auf LinkedIn',
     linkedinAria: 'Tech Meets Problems auf LinkedIn öffnen',
     shareKicker: 'Teilen',
-    shareTitle: 'Kennst du jemanden, der gerne baut? Schick es weiter.',
-    shareText: 'Ein guter Raum startet mit den richtigen Leuten.',
+    shareTitle: 'Kennst du jemanden, der gut in die Community passt? Teile Tech Meets Problems.',
+    shareText: 'So finden die richtigen Menschen zusammen.',
     copyLink: 'Link kopieren',
     shareButton: 'Teilen',
     copied: 'Link kopiert.',
@@ -736,7 +746,7 @@ function loadGoogleAnalyticsScript() {
 }
 
 async function loadGoogleAnalyticsAndSendPageView() {
-  if (gaPageViewSent) {
+  if (import.meta.env.VITE_SITE_ENV === 'preview' || gaPageViewSent) {
     return;
   }
 
@@ -864,11 +874,7 @@ function App() {
 
   const setLang = (nextLang: Lang) => {
     setLangState(nextLang);
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
-
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', nextLang);
-    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    persistLanguage(nextLang);
   };
 
   useEffect(() => {
@@ -1062,47 +1068,402 @@ function App() {
     });
   };
 
+  const refresh = communityContent[lang];
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[#07080d] text-slate-100" onPointerMove={handlePointerMove}>
-      <BackgroundScene />
-      <Header lang={lang} setLang={setLang} t={t} />
-      <MobileQuickNav t={t} lang={lang} setLang={setLang} nativeShare={nativeShare} openPrivacyNotice={openPrivacyNotice} />
-      <ExitNudge t={t} show={showExitNudge} onClose={() => setShowExitNudge(false)} />
+    <main className="refresh-site" onPointerMove={handlePointerMove}>
+      <div className="refresh-background" aria-hidden="true" />
+      <SiteHeader lang={lang} page="community" onLanguageChange={setLang} />
       <SignupSuccessModal t={t} show={showSignupModal} onClose={() => setShowSignupModal(false)} />
-      <AnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
-      <Hero t={t} />
-      <ProblemSection t={t} />
-      <RoomPreviewSection t={t} />
-      <WhyJoinSection t={t} />
-      <VisionSection t={t} />
-      <OrganizersSection t={t} />
-      <OpportunitySection t={t} />
-      <HowItWorks t={t} />
-      <ExampleProblems t={t} />
-      <FirstPilotSection t={t} lang={lang} />
-      <Schedule t={t} />
-      <Registration
+      <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
+      <CommunityRefreshHero content={refresh} lang={lang} />
+      <LatestEvent content={refresh} lang={lang} />
+      <CommunityBenefits content={refresh} />
+      <SessionProcess content={refresh} />
+      <PilotRecap content={refresh} />
+      <div id="community-signup">
+        <Registration
+          t={t}
+          lang={lang}
+          form={form}
+          submitted={submitted}
+          formError={formError}
+          isSubmitting={isSubmitting}
+          privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
+          setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
+          setFormError={setFormError}
+          openPrivacyNotice={openPrivacyNotice}
+          updateField={updateField}
+          toggleInterest={toggleInterest}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+      <CommunityChannels
+        content={refresh}
         t={t}
-        lang={lang}
-        form={form}
-        submitted={submitted}
-        formError={formError}
-        isSubmitting={isSubmitting}
-        privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
-        setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
-        setFormError={setFormError}
-        openPrivacyNotice={openPrivacyNotice}
-        updateField={updateField}
-        toggleInterest={toggleInterest}
-        handleSubmit={handleSubmit}
+        copyLink={copyLink}
+        nativeShare={nativeShare}
+        shareMessage={shareMessage}
       />
-      <WhatsAppSection t={t} />
-      <ShareSection t={t} copyLink={copyLink} nativeShare={nativeShare} shareMessage={shareMessage} />
-      <CompaniesSection t={t} />
+      <CommunityCompanyTeaser content={refresh} lang={lang} />
+      <CommunityTeam content={refresh} />
+      <CommunityFaq content={refresh} />
       <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
-      <FAQ t={t} />
-      <Footer t={t} openPrivacyNotice={openPrivacyNotice} />
+      <SharedSiteFooter lang={lang} page="community" />
     </main>
+  );
+}
+
+function CommunityRefreshHero({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  return (
+    <section id="top" className="community-hero">
+      <div className="site-shell community-hero-grid">
+        <div className="community-hero-copy">
+          <p className="section-eyebrow">{content.heroEyebrow}</p>
+          <h1>{content.heroTitle}</h1>
+          <p>{content.heroText}</p>
+          <div className="hero-actions">
+            <a href="#community-signup" className="button button-primary">
+              {content.heroPrimary}
+              <ArrowRight aria-hidden="true" />
+            </a>
+            <a href={withLanguage('/companies/', lang)} className="button button-company" target="_blank" rel="noopener noreferrer">
+              {content.heroSecondary}
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </div>
+          <div className="community-free-callout">
+            <Check aria-hidden="true" />
+            <div>
+              <strong>{content.freeEyebrow}</strong>
+              <p>{content.freeText}</p>
+            </div>
+          </div>
+        </div>
+
+        <figure className="community-hero-media">
+          <picture>
+            <source media="(min-width: 1280px)" srcSet={`${EVENT_MEDIA.communityHero.xlarge} 1600w, ${EVENT_MEDIA.communityHero.large} 1280w`} />
+            <source media="(min-width: 640px)" srcSet={`${EVENT_MEDIA.communityHero.large} 1280w, ${EVENT_MEDIA.communityHero.medium} 768w`} />
+            <img
+              src={EVENT_MEDIA.communityHero.src}
+              srcSet={`${EVENT_MEDIA.communityHero.medium} 768w, ${EVENT_MEDIA.communityHero.large} 1280w`}
+              sizes="(min-width: 1280px) 50vw, (min-width: 900px) 45vw, 100vw"
+              alt={content.heroImageAlt}
+              width={EVENT_MEDIA.communityHero.width}
+              height={EVENT_MEDIA.communityHero.height}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
+        </figure>
+      </div>
+      <div className="site-shell hero-trust-row">
+        <Supporters lang={lang} compact />
+      </div>
+    </section>
+  );
+}
+
+function formatClock(time: string, lang: Lang) {
+  if (lang === 'de') {
+    return time;
+  }
+  const [hours, minutes] = time.split(':').map(Number);
+  return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(
+    new Date(2026, 0, 1, hours, minutes),
+  );
+}
+
+function formatEventTime(event: (typeof UPCOMING_EVENTS)[number], lang: Lang) {
+  if (!event.startTime) {
+    return event.location ?? '';
+  }
+  if (event.endTime) {
+    return lang === 'de'
+      ? `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)} Uhr`
+      : `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)}`;
+  }
+  return lang === 'de' ? `ab ${formatClock(event.startTime, lang)} Uhr` : `from ${formatClock(event.startTime, lang)}`;
+}
+
+function LatestEvent({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  const event = UPCOMING_EVENTS[0] ?? PAST_EVENTS[0];
+  if (!event) {
+    return null;
+  }
+
+  const isUpcoming = event.status === 'upcoming';
+  const registrationLabels = {
+    open: content.eventOpenLabel,
+    waitlist: content.eventWaitlistLabel,
+    sold_out: content.eventSoldOutLabel,
+    closed: content.eventClosedLabel,
+  };
+  const date = new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(`${event.date}T12:00:00`));
+
+  return (
+    <section id="latest-event" className="page-section page-section-compact latest-event-section">
+      <div className="site-shell latest-event-card">
+        <div>
+          <p className="section-eyebrow">{content.eventEyebrow}</p>
+          <span className="event-status">{isUpcoming ? content.eventUpcomingLabel : content.eventPastLabel}</span>
+          <h2>{lang === 'de' ? event.titleDe : event.titleEn}</h2>
+          <p>{lang === 'de' ? event.subtitleDe : event.subtitleEn}</p>
+        </div>
+        <dl className="event-facts">
+          <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
+          {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.language}</dd></div>}
+          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location ? event.address ?? event.language : event.language}</dd></div>}
+          {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
+        </dl>
+        <div className="event-followup">
+          <p>{isUpcoming ? (lang === 'de' ? event.descriptionDe : event.descriptionEn) : content.eventFallbackText}</p>
+          {isUpcoming && <p className="event-registration-note">{content.eventRegistrationNote}</p>}
+          {isUpcoming && event.registrationUrl ? (
+            <a className="button button-primary" href={event.registrationUrl}>{registrationLabels[event.registrationStatus]}</a>
+          ) : (
+            <a className="button button-secondary" href="#community-signup">{content.eventCta}</a>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PilotRecap({ content }: { content: typeof communityContent.en }) {
+  const galleryImages = [
+    EVENT_MEDIA.roomAlternative,
+    EVENT_MEDIA.builderDiscussion,
+    EVENT_MEDIA.codeCloseup,
+    EVENT_MEDIA.presenterProjector,
+    EVENT_MEDIA.demo,
+  ].map((image, index) => ({
+    ...image,
+    alt: content.recapImageAlts[index],
+    caption: content.recapImageCaptions[index],
+  }));
+
+  return (
+    <section id="recap" className="page-section page-section-muted">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
+        <p className="recap-date">{content.recapDate}</p>
+        <ul className="recap-proof-list recap-proof-list-inline">
+          {content.recapFacts.map((fact) => (
+            <li key={fact}>
+              <Check aria-hidden="true" />
+              {fact}
+            </li>
+          ))}
+        </ul>
+        <EventGallery
+          images={galleryImages}
+          lightboxLabel={content.galleryLabel}
+          previousLabel={content.galleryPrevious}
+          nextLabel={content.galleryNext}
+          closeLabel={content.galleryClose}
+        />
+      </div>
+    </section>
+  );
+}
+
+function CommunityBenefits({ content }: { content: typeof communityContent.en }) {
+  const icons = [Lightbulb, Users, Workflow, Sparkles];
+
+  return (
+    <section id="community" className="page-section">
+      <div className="site-shell">
+        <SectionHeading
+          eyebrow={content.benefitsEyebrow}
+          title={content.benefitsTitle}
+          intro={content.benefitsIntro}
+        />
+        <div className="community-benefit-list">
+          {content.benefits.map((benefit, index) => {
+            const Icon = icons[index];
+            return (
+              <article key={benefit.title}>
+                <Icon aria-hidden="true" />
+                <h3>{benefit.title}</h3>
+                <p>{benefit.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SessionProcess({ content }: { content: typeof communityContent.en }) {
+  return (
+    <section id="how" className="page-section page-section-muted">
+      <div className="site-shell process-layout">
+        <SectionHeading eyebrow={content.processEyebrow} title={content.processTitle} intro={content.processIntro} />
+        <ol className="process-list">
+          {content.steps.map((step, index) => (
+            <li key={step}>
+              <span>{index + 1}</span>
+              <strong>{step}</strong>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function CommunityChannels({
+  content,
+  t,
+  copyLink,
+  nativeShare,
+  shareMessage,
+}: {
+  content: typeof communityContent.en;
+  t: typeof copy.en;
+  copyLink: () => void;
+  nativeShare: () => void;
+  shareMessage: string;
+}) {
+  return (
+    <section className="page-section">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.channelsEyebrow} title={content.channelsTitle} intro={content.channelsText} />
+        <div className="channel-grid">
+          <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">
+            <MessageCircle aria-hidden="true" />
+            <div>
+              <strong>{t.whatsappButton}</strong>
+              <span>{t.whatsappCardTitle}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+          <a href={SITE.instagram} target="_blank" rel="noopener noreferrer">
+            <Instagram aria-hidden="true" />
+            <div>
+              <strong>{t.instagramCommunityLabel}</strong>
+              <span>{t.instagramCommunityHelper}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            <Linkedin aria-hidden="true" />
+            <div>
+              <strong>{t.linkedinCommunityLabel}</strong>
+              <span>{t.linkedinCommunityHelper}</span>
+            </div>
+            <ExternalLink aria-hidden="true" />
+          </a>
+        </div>
+        <div className="share-row">
+          <p>{t.shareTitle}</p>
+          <div>
+            <button type="button" className="button button-secondary" onClick={nativeShare}>
+              <Share2 aria-hidden="true" />
+              {t.shareButton}
+            </button>
+            <button type="button" className="button button-ghost" onClick={copyLink}>
+              <ClipboardCopy aria-hidden="true" />
+              {t.copyLink}
+            </button>
+          </div>
+          {shareMessage && <span>{shareMessage}</span>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CommunityCompanyTeaser({
+  content,
+  lang,
+}: {
+  content: typeof communityContent.en;
+  lang: Lang;
+}) {
+  return (
+    <section className="page-section page-section-muted">
+      <div className="site-shell company-teaser">
+        <figure>
+          <img
+            src={REFRESH_ASSETS.event.companyHero}
+            alt={lang === 'de' ? 'Builder arbeiten gemeinsam an einer realen Herausforderung' : 'Builders working together on a real challenge'}
+            width="2048"
+            height="1365"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div>
+          <p className="section-eyebrow">{content.companyEyebrow}</p>
+          <h2>{content.companyTitle}</h2>
+          <p>{content.companyText}</p>
+          <a href={withLanguage('/companies/', lang)} className="button button-primary" target="_blank" rel="noopener noreferrer">
+            {content.companyCta}
+            <ArrowRight aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CommunityTeam({
+  content,
+}: {
+  content: typeof communityContent.en;
+}) {
+  return (
+    <section id="about" className="page-section">
+      <div className="site-shell">
+        <SectionHeading eyebrow={content.teamEyebrow} title={content.teamTitle} />
+        <TeamBlock
+          storyTitle={content.teamStoryTitle}
+          storyParagraphs={content.teamStoryParagraphs}
+          imageAlt={content.teamImageAlt}
+          members={content.teamMembers}
+        />
+      </div>
+    </section>
+  );
+}
+
+function CommunityFaq({ content }: { content: typeof communityContent.en }) {
+  return (
+    <section className="page-section page-section-muted">
+      <div className="site-shell faq-layout">
+        <SectionHeading eyebrow={content.faqEyebrow} title={content.faqTitle} />
+        <div className="faq-list">
+          {content.faqs.map((faq) => (
+            <details key={faq.question}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 

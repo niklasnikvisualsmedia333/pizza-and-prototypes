@@ -1,11 +1,14 @@
-Tech Meets Problems is a builder-first event format in Siegen, Germany.
+Tech Meets Problems is a builder-first community in Siegen, Germany.
 
-The first event edition is Tech Meets Problems: Pizza & Prototypes.
+It connects technical talent with real challenges from companies and the region. Community members work in small teams on problem framing, workflows, mockups, concepts and first prototypes.
 
-It is for developers, technical students, makers, HCI/UX people, data and AI-interested people, and technical problem solvers who want to work on real business needs.
+It is for developers, technical students, HCI/UX people, data and AI profiles, and other practical problem solvers.
 
-The event focuses on first concepts, workflows, mockups, prototypes, and practical problem solving in small teams.
+Pizza & Prototypes was the first pilot format. Future sessions are listed only when confirmed.
+
+Companies and regional organizations can propose a real problem, support a session, or start a conversation at:
+https://techmeetsproblems.com/companies/
 
 Main URL: https://techmeetsproblems.com/
 
-Contact: via the website registration/contact form.
+Contact: info@techmeetsproblems.com or via the website forms.
