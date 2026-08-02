@@ -53,6 +53,7 @@ export function SiteHeader({
         { label: content.companyFormatsNav, href: '#formats' },
         { label: content.companyPilotNav, href: '#pilot-proof' },
         { label: content.companyContactNav, href: '#company-contact' },
+        { label: content.aboutNav, href: '#about' },
         { label: content.communityNav, href: withLanguage('/', lang), emphasized: true, external: true },
       ];
 
