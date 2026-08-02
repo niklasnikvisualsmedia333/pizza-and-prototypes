@@ -364,6 +364,15 @@ export default function CompaniesPage() {
       <section id="pilot-proof" className="page-section page-section-muted">
         <div className="site-shell">
           <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
+          <a
+            className="button button-secondary recap-aftermovie-link"
+            href={SITE.aftermovie.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {SITE.aftermovie.label[lang]}
+            <ExternalLink aria-hidden="true" />
+          </a>
           <EventGallery
             images={[
               EVENT_MEDIA.roomAlternative,

@@ -1080,7 +1080,7 @@ function App() {
       <LatestEvent content={refresh} lang={lang} />
       <CommunityBenefits content={refresh} />
       <SessionProcess content={refresh} />
-      <PilotRecap content={refresh} />
+      <PilotRecap content={refresh} lang={lang} />
       <div id="community-signup">
         <Registration
           t={t}
@@ -1249,7 +1249,7 @@ function LatestEvent({
   );
 }
 
-function PilotRecap({ content }: { content: typeof communityContent.en }) {
+function PilotRecap({ content, lang }: { content: typeof communityContent.en; lang: Lang }) {
   const galleryImages = [
     EVENT_MEDIA.roomAlternative,
     EVENT_MEDIA.builderDiscussion,
@@ -1267,6 +1267,15 @@ function PilotRecap({ content }: { content: typeof communityContent.en }) {
       <div className="site-shell">
         <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
         <p className="recap-date">{content.recapDate}</p>
+        <a
+          className="button button-secondary recap-aftermovie-link"
+          href={SITE.aftermovie.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {SITE.aftermovie.label[lang]}
+          <ExternalLink aria-hidden="true" />
+        </a>
         <ul className="recap-proof-list recap-proof-list-inline">
           {content.recapFacts.map((fact) => (
             <li key={fact}>
