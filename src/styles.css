@@ -2029,6 +2029,10 @@ main > header {
 }
 
 @media (max-width: 639px) {
+  .recap-aftermovie-link {
+    width: 100%;
+  }
+
   .mobile-quick-nav {
     right: 0.85rem;
     bottom: max(0.85rem, env(safe-area-inset-bottom));
@@ -3204,6 +3208,13 @@ fieldset legend {
   font-size: 0.82rem;
   font-weight: 750;
   letter-spacing: 0.03em;
+}
+
+.recap-aftermovie-link {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 1rem;
+  white-space: normal;
 }
 
 .recap-layout {
