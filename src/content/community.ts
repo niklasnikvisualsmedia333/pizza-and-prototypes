@@ -19,6 +19,8 @@ export type CommunityContent = {
   eventWaitlistLabel: string;
   eventSoldOutLabel: string;
   eventRegistrationNote: string;
+  eventRegisterCta: string;
+  eventRegistrationDirectNote: string;
   eventTypeFallback: string;
   eventFallbackText: string;
   eventCta: string;
@@ -82,6 +84,9 @@ export const communityContent: Record<Lang, CommunityContent> = {
     eventWaitlistLabel: 'Warteliste',
     eventSoldOutLabel: 'Ausgebucht',
     eventRegistrationNote: 'Für dieses Event ist eine separate Anmeldung erforderlich. Über die Community erhältst du die Anmeldeinformationen per E-Mail.',
+    eventRegisterCta: 'Jetzt zum Event anmelden',
+    eventRegistrationDirectNote:
+      'Für dieses Event ist eine separate Anmeldung erforderlich. Du kannst dich direkt anmelden und zusätzlich der Community beitreten, um Updates zu zukünftigen Events und Projekten zu erhalten.',
     eventTypeFallback: 'Community-Format',
     eventFallbackText: 'Das nächste Format ist in Vorbereitung. Über die Community erfährst du zuerst davon.',
     eventCta: 'Community beitreten',
@@ -187,6 +192,9 @@ export const communityContent: Record<Lang, CommunityContent> = {
     eventWaitlistLabel: 'Waitlist',
     eventSoldOutLabel: 'Sold out',
     eventRegistrationNote: 'Separate registration is required for this event. Community members receive the registration details by email.',
+    eventRegisterCta: 'Register for the event',
+    eventRegistrationDirectNote:
+      'Separate registration is required for this event. You can register directly and also join the community for updates on future events and projects.',
     eventTypeFallback: 'Community format',
     eventFallbackText: 'The next format is in preparation. Community members will hear about it first.',
     eventCta: 'Join the community',

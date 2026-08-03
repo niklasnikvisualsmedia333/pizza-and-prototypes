@@ -1213,6 +1213,11 @@ function LatestEvent({
     sold_out: content.eventSoldOutLabel,
     closed: content.eventClosedLabel,
   };
+  const directRegistrationUrl =
+    isUpcoming &&
+    (event.registrationStatus === 'open' || event.registrationStatus === 'waitlist')
+      ? event.registrationUrl
+      : undefined;
   const date = new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-GB', {
     weekday: 'long',
     day: 'numeric',
@@ -1237,12 +1242,28 @@ function LatestEvent({
         </dl>
         <div className="event-followup">
           <p>{isUpcoming ? (lang === 'de' ? event.descriptionDe : event.descriptionEn) : content.eventFallbackText}</p>
-          {isUpcoming && <p className="event-registration-note">{content.eventRegistrationNote}</p>}
-          {isUpcoming && event.registrationUrl ? (
-            <a className="button button-primary" href={event.registrationUrl}>{registrationLabels[event.registrationStatus]}</a>
-          ) : (
-            <a className="button button-secondary" href="#community-signup">{content.eventCta}</a>
+          {isUpcoming && (
+            <p className="event-registration-note">
+              {directRegistrationUrl ? content.eventRegistrationDirectNote : content.eventRegistrationNote}
+            </p>
           )}
+          <div className="event-actions">
+            {directRegistrationUrl && (
+              <a
+                className="button button-primary"
+                href={directRegistrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {event.registrationStatus === 'waitlist' ? content.eventWaitlistLabel : content.eventRegisterCta}
+                <ExternalLink aria-hidden="true" />
+              </a>
+            )}
+            <a className="button button-secondary" href="#community-signup">
+              {content.eventCta}
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
     </section>
