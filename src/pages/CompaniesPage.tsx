@@ -414,6 +414,21 @@ export default function CompaniesPage() {
         </div>
       </section>
 
+      <section id="about" className="page-section">
+        <div className="site-shell">
+          <SectionHeading
+            eyebrow={content.teamEyebrow}
+            title={content.teamTitle}
+          />
+          <TeamBlock
+            storyTitle={content.teamStoryTitle}
+            storyParagraphs={content.teamStoryParagraphs}
+            imageAlt={lang === 'de' ? 'Team von Tech Meets Problems' : 'Tech Meets Problems team'}
+            members={communityContent[lang].teamMembers}
+          />
+        </div>
+      </section>
+
       <section id="company-contact" className="page-section page-section-muted">
         <div className="site-shell">
           <SectionHeading eyebrow={content.contactEyebrow} title={content.contactTitle} intro={content.contactText} />
@@ -648,21 +663,6 @@ export default function CompaniesPage() {
               </details>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section id="about" className="page-section">
-        <div className="site-shell">
-          <SectionHeading
-            eyebrow={content.teamEyebrow}
-            title={content.teamTitle}
-          />
-          <TeamBlock
-            storyTitle={content.teamStoryTitle}
-            storyParagraphs={content.teamStoryParagraphs}
-            imageAlt={lang === 'de' ? 'Team von Tech Meets Problems' : 'Tech Meets Problems team'}
-            members={communityContent[lang].teamMembers}
-          />
         </div>
       </section>
 
