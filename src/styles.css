@@ -2029,6 +2029,14 @@ main > header {
 }
 
 @media (max-width: 639px) {
+  .event-actions {
+    display: grid;
+  }
+
+  .event-actions .button {
+    width: 100%;
+  }
+
   .recap-aftermovie-link {
     width: 100%;
   }
@@ -3163,6 +3171,17 @@ fieldset legend {
 
 .event-followup .button {
   margin-top: 1rem;
+}
+
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.event-actions .button {
+  margin-top: 0;
 }
 
 .event-registration-note {

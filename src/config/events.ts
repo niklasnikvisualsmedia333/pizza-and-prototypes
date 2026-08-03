@@ -64,6 +64,7 @@ export const EVENTS: SiteEvent[] = [
     language: 'DE / EN',
     image: ASSETS.event.roomAlternative,
     registrationStatus: 'open',
+    registrationUrl: 'https://forms.gle/pNbme2mcW9WrHNDG6',
     descriptionDe: 'Vortrag und anschließender Austausch über den Einsatz von KI in der Softwareentwicklung.',
     descriptionEn: 'A talk followed by discussion about the use of AI in software development.',
   },
