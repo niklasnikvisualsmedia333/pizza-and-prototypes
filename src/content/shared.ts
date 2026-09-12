@@ -32,7 +32,7 @@ export type SharedContent = {
 
 export const sharedContent: Record<Lang, SharedContent> = {
   de: {
-    brandLine: 'Builder-first Community · gestartet in Siegen',
+    brandLine: 'Builder-first Community',
     communityNav: 'Community',
     eventNav: 'Event',
     howNav: 'So funktioniert es',
@@ -62,7 +62,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     supportedBy: 'Unterstützt durch',
   },
   en: {
-    brandLine: 'Builder-first community · started in Siegen',
+    brandLine: 'Builder-first community',
     communityNav: 'Community',
     eventNav: 'Event',
     howNav: 'How it works',
