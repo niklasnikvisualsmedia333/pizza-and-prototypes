@@ -1,15 +1,15 @@
 # Tech Meets Problems
 
-> Tech Meets Problems is a bilingual builder-first community in Siegen, Germany, connecting technical talent with real challenges from companies and regional organizations.
+> Tech Meets Problems is a bilingual builder-first community that started in Siegen, Germany, and is open to technical and tech-adjacent people across Germany.
 
-The community brings together developers, technical students, HCI and UX profiles, data and AI practitioners, makers, and other practical problem solvers. In small teams, participants work on problem framing, workflows, mockups, concepts, and first prototypes.
+The community brings together developers, technical students, HCI and UX profiles, data and AI practitioners, builders, and other practical problem solvers. In small teams, participants work on problem framing, workflows, mockups, concepts, and first prototypes. In-person events so far have taken place in Siegen.
 
 Pizza & Prototypes was the first pilot format. New events and community sessions are published only when confirmed.
 
 ## Community
 
 - [Tech Meets Problems community in German](https://techmeetsproblems.com/): Join the community and learn about future sessions, practical projects, and real problem spaces.
-- [Tech Meets Problems community in English](https://techmeetsproblems.com/?lang=en): English information for international builders and technical talent.
+- [Tech Meets Problems community in English](https://techmeetsproblems.com/?lang=en): English information for builders and technical talent across Germany.
 
 ## Companies and partners
 

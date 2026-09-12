@@ -64,13 +64,13 @@ export type CommunityContent = {
 
 export const communityContent: Record<Lang, CommunityContent> = {
   de: {
-    metaTitle: 'Tech Meets Problems | Builder-first Community in Siegen',
+    metaTitle: 'Tech Meets Problems | Builder-first Tech-Community',
     metaDescription:
-      'Tech Meets Problems verbindet technische Talente mit realen Herausforderungen aus Unternehmen und der Region. Werde Teil der Community aus Siegen.',
-    heroEyebrow: 'Builder-first Tech-Community in Siegen',
+      'Tech Meets Problems verbindet Builder und technische Talente mit realen Herausforderungen, Community-Formaten und Projektmöglichkeiten. In Siegen gestartet, offen für Menschen aus ganz Deutschland.',
+    heroEyebrow: 'Builder-first Tech-Community',
     heroTitle: 'Arbeite an echten Herausforderungen aus Unternehmen.',
     heroText:
-      'In der Tech Meets Problems Community triffst du technische Studierende, junge Berufstätige und weitere techniknahe Profile. Gemeinsam entwickelt ihr Konzepte, Workflows, Mockups oder erste Prototypen.',
+      'In der Tech Meets Problems Community triffst du technische Studierende, junge Berufstätige und weitere techniknahe Profile. Gemeinsam entwickelt ihr Konzepte, Workflows, Mockups oder erste Prototypen. In Siegen gestartet, offen für Builder aus ganz Deutschland.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
@@ -125,7 +125,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsIntro:
       'Die Community verbindet technische und techniknahe Menschen, die gemeinsam an konkreten Fragestellungen arbeiten möchten.',
     benefits: [
-      { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Bedarfen aus Unternehmen und Region.' },
+      { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Bedarfen aus Unternehmen, Organisationen und Projekten.' },
       { title: 'Technische Community', text: 'Lerne Menschen aus Software, Data, HCI, UX und Engineering kennen.' },
       { title: 'Praktische Ergebnisse', text: 'Entwickle Konzepte, Workflows, Mockups oder erste Prototypen.' },
       { title: 'Neue Einblicke', text: 'Erhalte Einblicke in Unternehmen, Technologien und mögliche Projekte.' },
@@ -154,7 +154,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     teamStoryParagraphs: [
       'Wir haben uns im Master Entrepreneurship & SME Management an der Universität Siegen kennengelernt. In gemeinsamen Projekten haben wir erlebt, wie spannend Zusammenarbeit wird, wenn technische, gestalterische und unternehmerische Perspektiven früh zusammenkommen.',
       'Gleichzeitig fehlt häufig ein unkomplizierter Rahmen, in dem technische Talente und Unternehmen an realen Fragestellungen arbeiten können. Tech Meets Problems soll genau diesen Raum schaffen: praktisch, offen und mit Ergebnissen, an denen weitergearbeitet werden kann.',
-      'Wir bringen eigene Gründungs- und Projekterfahrung mit und sind im Siegener Gründungsnetzwerk eng vernetzt. Unser Ziel ist, Open Innovation in der Region greifbar zu machen und aus ersten Begegnungen starke Kontakte, neue Formate und mögliche Folgeprojekte entstehen zu lassen.',
+      'Wir bringen eigene Gründungs- und Projekterfahrung mit und sind im Siegener Gründungsnetzwerk eng vernetzt. Siegen bleibt unser Ausgangspunkt und unsere Netzwerkbasis. Von dort aus wollen wir Open Innovation greifbar machen und die Community Schritt für Schritt weiterentwickeln.',
     ],
     teamImageAlt: 'Niklas Brüne, Frederik Krause und Johanna Brenner von Tech Meets Problems',
     teamMembers: [
@@ -168,17 +168,18 @@ export const communityContent: Record<Lang, CommunityContent> = {
       { question: 'Muss ich eine eigene Idee mitbringen?', answer: 'Nein. Die Sessions starten mit konkreten Problemräumen.' },
       { question: 'Muss ich programmieren können?', answer: 'Du musst kein Programmierprofi sein. Du solltest aber technische, gestalterische oder analytische Fähigkeiten mitbringen und Lust haben, praktisch an einer Lösung zu arbeiten.' },
       { question: 'Ist die Community kostenlos?', answer: 'Ja. Der Community-Beitritt und die Teilnahme an unseren Community-Events sind kostenlos. Möglich machen das unsere Partner und Sponsoren.' },
+      { question: 'Muss ich aus Siegen kommen?', answer: 'Nein. Tech Meets Problems ist in Siegen gestartet und unsere bisherigen Präsenz-Events fanden hier statt. Die Community ist aber offen für Builder und Tech-Interessierte aus ganz Deutschland. Bei Events kommunizieren wir den jeweiligen Ort separat.' },
       { question: 'Wie erfahre ich von neuen Events?', answer: 'Trag dich in die Community-Liste ein oder folge unseren Community-Kanälen.' },
     ],
   },
   en: {
-    metaTitle: 'Tech Meets Problems | Builder-first community in Siegen',
+    metaTitle: 'Tech Meets Problems | Builder-first tech community',
     metaDescription:
-      'Tech Meets Problems connects technical talent with real challenges from companies and the region. Join the community from Siegen.',
-    heroEyebrow: 'Builder-first tech community in Siegen',
+      'Tech Meets Problems connects builders and technical talent with real challenges, community formats and project opportunities. Started in Siegen, open to people across Germany.',
+    heroEyebrow: 'Builder-first tech community',
     heroTitle: 'Work on real challenges from companies.',
     heroText:
-      'The Tech Meets Problems community brings together technical students, young professionals and other tech-oriented profiles. Together, you develop concepts, workflows, mockups or first prototypes.',
+      'The Tech Meets Problems community brings together technical students, young professionals and other tech-oriented profiles. Together, you develop concepts, workflows, mockups or first prototypes. Started in Siegen, open to builders across Germany.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
@@ -233,7 +234,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsIntro:
       'The community connects technical and tech-adjacent people who want to work together on concrete questions.',
     benefits: [
-      { title: 'Real challenges', text: 'Work on concrete needs from companies and the region.' },
+      { title: 'Real challenges', text: 'Work on concrete needs from companies, organizations and projects.' },
       { title: 'Technical community', text: 'Meet people from software, data, HCI, UX and engineering.' },
       { title: 'Practical output', text: 'Develop concepts, workflows, mockups or first prototypes.' },
       { title: 'New insights', text: 'Gain insight into companies, technologies and possible projects.' },
@@ -262,7 +263,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     teamStoryParagraphs: [
       'We met during the Entrepreneurship & SME Management master’s program at the University of Siegen. Through shared projects, we saw how valuable collaboration becomes when technical, design and business perspectives come together early.',
       'At the same time, there is often no straightforward setting in which technical talent and companies can work on real questions together. Tech Meets Problems is designed to create that space: practical, open and focused on results that can be developed further.',
-      'We bring our own startup and project experience and are closely connected to the startup network in Siegen. Our aim is to make open innovation tangible in the region and turn first encounters into strong contacts, new formats and possible follow-up projects.',
+      'We bring our own startup and project experience and are closely connected to the startup network in Siegen. Siegen remains our starting point and network base. From there, we want to make open innovation tangible and develop the community step by step.',
     ],
     teamImageAlt: 'Niklas Brüne, Frederik Krause and Johanna Brenner from Tech Meets Problems',
     teamMembers: [
@@ -276,6 +277,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
       { question: 'Do I need to bring an idea?', answer: 'No. Sessions start with concrete problem spaces.' },
       { question: 'Do I need to code?', answer: 'You do not need to be an expert programmer. You should bring technical, design or analytical skills and be willing to work practically on a solution.' },
       { question: 'Is the community free?', answer: 'Yes. Joining the community and attending our community events is free. Our partners and sponsors make this possible.' },
+      { question: 'Do I need to be based in Siegen?', answer: 'No. Tech Meets Problems started in Siegen and our in-person events so far have taken place here. The community is open to builders and tech-minded people across Germany. We share the location separately for each event.' },
       { question: 'How do I hear about new events?', answer: 'Join the community list or follow our community channels.' },
     ],
   },

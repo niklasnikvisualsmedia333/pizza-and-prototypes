@@ -32,7 +32,7 @@ export type SharedContent = {
 
 export const sharedContent: Record<Lang, SharedContent> = {
   de: {
-    brandLine: 'Builder-first Community aus Siegen',
+    brandLine: 'Builder-first Community',
     communityNav: 'Community',
     eventNav: 'Event',
     howNav: 'So funktioniert es',
@@ -47,7 +47,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     companyCta: 'Kontakt aufnehmen',
     privacy: 'Datenschutz',
     imprint: 'Impressum',
-    footerLine: 'Community, reale Probleme und praktische Projekte aus Siegen.',
+    footerLine: 'Echte Probleme, praktische Projekte und eine Builder-Community mit Wurzeln in Siegen.',
     instagram: 'Instagram',
     linkedin: 'LinkedIn',
     whatsapp: 'WhatsApp',
@@ -62,7 +62,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     supportedBy: 'Unterstützt durch',
   },
   en: {
-    brandLine: 'Builder-first community from Siegen',
+    brandLine: 'Builder-first community',
     communityNav: 'Community',
     eventNav: 'Event',
     howNav: 'How it works',
@@ -77,7 +77,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     companyCta: 'Get in touch',
     privacy: 'Privacy',
     imprint: 'Imprint',
-    footerLine: 'Community, real problems and practical projects from Siegen.',
+    footerLine: 'Real problems, practical projects and a builder-first community rooted in Siegen.',
     instagram: 'Instagram',
     linkedin: 'LinkedIn',
     whatsapp: 'WhatsApp',
