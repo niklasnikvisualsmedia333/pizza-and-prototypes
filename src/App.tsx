@@ -151,7 +151,7 @@ const copy = {
     brand: 'Tech Meets Problems',
     edition: 'Community · Future sessions · Real problems',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first tech community in Siegen',
+    eyebrow: 'Builder-first tech community',
     heroTitle: 'Build solutions for real-world problems.',
     heroTitleLines: ['Build solutions for', 'real-world problems.'],
     heroText:
@@ -357,7 +357,7 @@ const copy = {
     noShare: 'Sharing is not supported in this browser. You can copy the link instead.',
     quickShare: 'Share community',
     languageLabel: 'Language',
-    shareNativeText: 'Tech Meets Problems is a builder-first community in Siegen for developers, technical students and tech-minded people who want to work on real business needs. Join the community list for future sessions and project opportunities:',
+    shareNativeText: 'Tech Meets Problems is a builder-first community, started in Siegen and open to builders across Germany. Developers, technical students and tech-minded people work on real business needs, future sessions and project opportunities:',
     organizersKicker: 'About us',
     organizersTitle: 'The team behind Tech Meets Problems.',
     organizersText:
@@ -387,7 +387,7 @@ const copy = {
     brand: 'Tech Meets Problems',
     edition: 'Community · Zukünftige Sessions · Echte Probleme',
     tagline: 'Where builders work on real business needs.',
-    eyebrow: 'Builder-first Tech-Community in Siegen',
+    eyebrow: 'Builder-first Tech-Community',
     heroTitle: 'Entwickle Lösungen für echte Probleme.',
     heroTitleLines: ['Entwickle Lösungen', 'für echte Probleme.'],
     heroText:
@@ -593,7 +593,7 @@ const copy = {
     noShare: 'Teilen wird in diesem Browser nicht unterstützt. Du kannst stattdessen den Link kopieren.',
     quickShare: 'Community teilen',
     languageLabel: 'Sprache',
-    shareNativeText: 'Tech Meets Problems ist eine builder-first Community in Siegen für Entwickler, technische Studierende und technikaffine Menschen, die an echten Business-Problemen arbeiten möchten. Hier kann man sich für zukünftige Sessions und Projektmöglichkeiten eintragen:',
+    shareNativeText: 'Tech Meets Problems ist eine builder-first Community, in Siegen gestartet und offen für Builder aus ganz Deutschland. Entwickler, technische Studierende und technikaffine Menschen arbeiten an echten Business-Problemen, zukünftigen Sessions und Projektmöglichkeiten:',
     organizersKicker: 'Über uns',
     organizersTitle: 'Das Team hinter Tech Meets Problems.',
     organizersText:
@@ -634,14 +634,14 @@ const LANGUAGE_STORAGE_KEY = 'tech-meets-problems-language';
 const SITE_URL = 'https://techmeetsproblems.com/';
 const seoByLang: Record<Lang, { title: string; description: string }> = {
   de: {
-    title: 'Tech Meets Problems | Builder-first Community in Siegen',
+    title: 'Tech Meets Problems | Builder-first Tech-Community',
     description:
-      'Tech Meets Problems ist eine builder-first Tech-Community in Siegen. Pizza & Prototypes ist der erste Pilot für echte Probleme, zukünftige Sessions und praktische Projekte.',
+      'Tech Meets Problems verbindet Builder und technische Talente mit realen Herausforderungen, Community-Formaten und Projektmöglichkeiten. In Siegen gestartet, offen für Menschen aus ganz Deutschland.',
   },
   en: {
-    title: 'Tech Meets Problems | Builder-first community in Siegen',
+    title: 'Tech Meets Problems | Builder-first tech community',
     description:
-      'Tech Meets Problems is a builder-first tech community in Siegen. Pizza & Prototypes is the first pilot for real problems, future sessions and practical projects.',
+      'Tech Meets Problems connects builders and technical talent with real challenges, community formats and project opportunities. Started in Siegen, open to people across Germany.',
   },
 };
 
