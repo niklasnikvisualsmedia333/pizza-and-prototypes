@@ -45,7 +45,7 @@ assert(downloadsSource.includes('downloads/tech-meets-problems-one-pager.pdf'), 
 assert(!communityHtml.includes('/pizza-and-prototypes/'), 'Old repository base path found in community build');
 assert(!companyHtml.includes('/pizza-and-prototypes/'), 'Old repository base path found in company build');
 assert(appSource.includes("const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa'"), 'Community Formspree endpoint changed');
-assert(appSource.includes("const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration'"), 'Community n8n endpoint changed');
+assert(appSource.includes("const N8N_WEBHOOK_URL = 'https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-registration'"), 'Community n8n endpoint changed');
 assert(appSource.includes('privacyAndUpdatesAcceptedAt'), 'Community consent payload field missing');
 assert(companySource.includes('VITE_COMPANY_CONTACT_ENDPOINT?.trim()'), 'Company endpoint environment fallback missing');
 assert(companySource.includes('companyWebsite.trim()'), 'Company honeypot guard missing');
