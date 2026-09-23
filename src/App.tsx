@@ -78,7 +78,7 @@ const EVENT = {
 };
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdobqwa';
-const N8N_WEBHOOK_URL = 'https://n8n.srv1037647.hstgr.cloud/webhook/tech-meets-problems-registration';
+const N8N_WEBHOOK_URL = 'https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-registration';
 const ANALYTICS_CONSENT_KEY = 'tmp_analytics_consent';
 const GA_MEASUREMENT_ID = 'G-SQXS1M7GYN';
 const PRIVACY_NOTICE_VERSION = '2026-05-27';
