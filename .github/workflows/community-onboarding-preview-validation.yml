@@ -2,7 +2,7 @@ name: Community onboarding preview validation
 
 on:
   push:
-    branches: [prototype/community-onboarding-production-ready-v5]
+    branches: [prototype/community-onboarding-staging-v6]
   workflow_dispatch:
 
 permissions:
@@ -47,7 +47,7 @@ jobs:
       - name: Upload inspectable build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: community-onboarding-v5-preview
+          name: community-onboarding-v6-preview
           path: dist
           if-no-files-found: error
           retention-days: 7
