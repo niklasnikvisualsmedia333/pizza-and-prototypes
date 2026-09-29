@@ -33,6 +33,7 @@ import { PAST_EVENTS, UPCOMING_EVENTS } from './config/events';
 import { SITE } from './config/site';
 import { communityContent } from './content/community';
 import { persistLanguage, withLanguage } from './lib/language';
+import { getSignupMode } from './lib/communitySignupTransport';
 import { trackPrototypeEvent } from './lib/communitySignupPrototype';
 import { CommunitySignupFlow } from './components/community/CommunitySignupFlow';
 
@@ -251,7 +252,7 @@ const copy = {
     formDetailsNote: 'You choose which updates or opportunities are relevant to you.',
     communityCardTitle: "What you'll hear about",
     communityInfo: ['Selected opportunities', 'Real projects and challenges', 'Events & workshops', 'Community and company updates'],
-    privacyNote: 'Your name and email create your membership. Interests and profile details are optional after joining. The local prototype keeps this information in the current browser session.',
+    privacyNote: 'Your name and email create your membership. Interests and profile details are optional after joining.',
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
     privacyText: 'The signup asks for your first name, last name, email and consent. Interests are selected before signup and stored only in this browser until you join. Optional profile details include status, study or professional background, university or institution, practical experience, contribution areas and profile links. Language, timestamps and campaign/referrer information are also recorded.',
@@ -485,7 +486,7 @@ const copy = {
     formDetailsNote: 'Du entscheidest selbst, welche Updates und Opportunities für dich relevant sind.',
     communityCardTitle: 'Was du mitbekommst',
     communityInfo: ['Ausgewählte Opportunities', 'Reale Projekte und Problemräume', 'Events & Workshops', 'Community- und Unternehmensupdates'],
-    privacyNote: 'Für deine Mitgliedschaft brauchen wir Name und E-Mail-Adresse. Interessen und weitere Profilangaben sind optional. Der lokale Prototyp speichert diese Angaben in der aktuellen Browser-Session.',
+    privacyNote: 'Für deine Mitgliedschaft brauchen wir Name und E-Mail-Adresse. Interessen und weitere Profilangaben sind nach dem Beitritt optional.',
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
     privacyText: 'Für den Beitritt fragen wir Vorname, Nachname, E-Mail-Adresse und Einwilligung ab. Interessen werden vor der Anmeldung ausgewählt und bis zum Beitritt nur in diesem Browser gespeichert. Optional kannst du Status, Studien- oder Berufshintergrund, Hochschule oder Institution, Praxiserfahrung, Beitragsbereiche und Profil-Links ergänzen. Sprache, Zeitstempel und Kampagnen- sowie Referrer-Informationen werden ebenfalls erfasst.',
@@ -1085,6 +1086,7 @@ function App() {
         <Registration
           t={t}
           lang={lang}
+          signupMode={getSignupMode()}
           openPrivacyNotice={openPrivacyNotice}
         />
       </div>
@@ -2122,10 +2124,17 @@ function LegacyRegistration({
 type RegistrationProps = {
   t: typeof copy.en;
   lang: Lang;
+  signupMode: 'mock' | 'live';
   openPrivacyNotice: () => void;
 };
 
-function Registration({ t, lang, openPrivacyNotice }: RegistrationProps) {
+function Registration({ t, lang, signupMode, openPrivacyNotice }: RegistrationProps) {
+  const privacyNote = signupMode === 'live'
+    ? (lang === 'de' ? 'Deine Anmeldung wird an den konfigurierten Community-Dienst übermittelt. Weitere Profilangaben bleiben freiwillig.' : 'Your signup is sent to the configured community service. Any further profile details are optional.')
+    : (lang === 'de' ? 'Im lokalen Mock-Modus bleibt deine Anmeldung in dieser Browser-Session. Es werden keine Registrierungsdaten an externe Dienste gesendet.' : 'In local mock mode, your signup stays in this browser session. No registration data is sent to external services.');
+  const transportNote = signupMode === 'live'
+    ? (lang === 'de' ? 'Die Anmeldung wird an den konfigurierten Community-Dienst gesendet.' : 'Your signup is sent to the configured community service.')
+    : (lang === 'de' ? 'Im lokalen Mock-Modus wird nichts an Registrierungsdienste gesendet.' : 'Local mock mode does not send data to registration services.');
   return (
     <Section id="register" kicker={t.formKicker} title={t.formTitle}>
       <p className="section-lead">{t.formSubtitle}</p>
@@ -2140,7 +2149,7 @@ function Registration({ t, lang, openPrivacyNotice }: RegistrationProps) {
           </div>
           <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
             <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">{t.privacyNote}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{privacyNote}</p>
           </div>
         </div>
 
@@ -2150,9 +2159,7 @@ function Registration({ t, lang, openPrivacyNotice }: RegistrationProps) {
             start: t.privacyConsentStart,
             link: t.privacyConsentLink,
             end: t.privacyConsentEnd,
-            note: lang === 'de'
-              ? 'Im lokalen Prototyp wird die Anmeldung ausschließlich in diesem Browser gespeichert.'
-              : 'In this local prototype, the signup is stored only in this browser.',
+            note: transportNote,
           }}
           onOpenPrivacyNotice={openPrivacyNotice}
           whatsappLink={EVENT.whatsappLink}
