@@ -2974,6 +2974,373 @@ fieldset legend {
   outline-offset: 3px;
 }
 
+/* Community signup prototype only. Reuses the existing TMP card and button styles. */
+.tmp-onboarding-card {
+  min-width: 0;
+}
+
+#community-signup .mt-10 > .tmp-onboarding-card {
+  order: -1;
+}
+
+.tmp-onboarding-heading {
+  margin-bottom: 1.2rem;
+}
+
+.tmp-onboarding-heading .section-eyebrow,
+.tmp-onboarding-success > .section-eyebrow,
+.tmp-onboarding-summary > .section-eyebrow {
+  margin-bottom: 0.55rem;
+}
+
+.tmp-onboarding-heading h3,
+.tmp-onboarding-success h3,
+.tmp-onboarding-summary h3 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.tmp-onboarding-heading > p:last-child,
+.tmp-onboarding-success > p:not(.section-eyebrow),
+.tmp-onboarding-summary > p:not(.section-eyebrow) {
+  margin: 0.65rem 0 0;
+  color: #aeb9ca;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.tmp-onboarding-options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.tmp-onboarding-option {
+  display: flex;
+  width: 100%;
+  min-height: 3.65rem;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 0.75rem;
+  color: #e7edf7;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.tmp-onboarding-option:hover,
+.tmp-onboarding-option:focus-visible {
+  border-color: rgba(103, 232, 249, 0.45);
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.tmp-onboarding-option:focus-visible,
+.tmp-onboarding-back:focus-visible,
+.tmp-onboarding-card input:focus-visible {
+  outline: 3px solid rgba(103, 232, 249, 0.52);
+  outline-offset: 2px;
+}
+
+.tmp-onboarding-option.is-selected {
+  border-color: rgba(103, 232, 249, 0.65);
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.tmp-onboarding-option > svg:first-child {
+  flex: 0 0 auto;
+  color: #7dd3fc;
+}
+
+.tmp-onboarding-option > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.18rem;
+}
+
+.tmp-onboarding-option strong {
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.tmp-onboarding-option small {
+  color: #9eacbf;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.tmp-onboarding-check {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  margin-left: auto;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  color: #67e8f9;
+}
+
+.tmp-onboarding-option.is-selected .tmp-onboarding-check {
+  border-color: rgba(103, 232, 249, 0.7);
+  background: rgba(34, 211, 238, 0.12);
+}
+
+.tmp-simple-option {
+  justify-content: space-between;
+}
+
+.tmp-onboarding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-top: 1.2rem;
+}
+
+.tmp-onboarding-hint {
+  color: #91a0b5;
+  font-size: 0.78rem;
+}
+
+.tmp-onboarding-back {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  background: transparent;
+  padding: 0.45rem 0;
+  color: #aeb9ca;
+  font: inherit;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.tmp-onboarding-back:hover {
+  color: #fff;
+}
+
+.tmp-onboarding-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.tmp-onboarding-form > label:not(.tmp-onboarding-consent) {
+  color: #dbe4ef;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.tmp-onboarding-form input[type="email"],
+.tmp-onboarding-form input[type="text"],
+.tmp-onboarding-form input[list] {
+  width: 100%;
+  min-height: 3.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.055);
+  padding: 0.85rem 0.95rem;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 16px;
+}
+
+.tmp-onboarding-form input:focus {
+  border-color: rgba(103, 232, 249, 0.65);
+  outline: 3px solid rgba(34, 211, 238, 0.12);
+}
+
+.tmp-onboarding-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+  color: #d0d8e5;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.tmp-onboarding-consent input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  margin-top: 0.18rem;
+  accent-color: #22d3ee;
+}
+
+.tmp-onboarding-consent .privacy-link-button {
+  margin-inline: 0.18rem;
+}
+
+.tmp-onboarding-privacy {
+  margin: 0;
+  color: #8d9cb1;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.tmp-onboarding-submit {
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.tmp-onboarding-error {
+  margin: 0;
+  border: 1px solid rgba(251, 113, 133, 0.3);
+  border-radius: 0.55rem;
+  background: rgba(244, 63, 94, 0.08);
+  padding: 0.65rem 0.75rem;
+  color: #fecdd3;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.tmp-onboarding-success,
+.tmp-onboarding-summary {
+  display: grid;
+  justify-items: start;
+  gap: 0.8rem;
+}
+
+.tmp-onboarding-success-icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  border-radius: 0.8rem;
+  background: rgba(16, 185, 129, 0.1);
+  color: #6ee7b7;
+}
+
+.tmp-onboarding-success-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  border-left: 2px solid rgba(103, 232, 249, 0.5);
+  margin-block: 0.2rem;
+  padding: 0.25rem 0 0.25rem 0.8rem;
+  color: #cbd5e1;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.tmp-onboarding-success-note svg {
+  flex: 0 0 auto;
+  color: #7dd3fc;
+}
+
+.tmp-onboarding-experience {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tmp-experience-option {
+  min-height: 3.75rem;
+}
+
+.tmp-onboarding-level {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(103, 232, 249, 0.3);
+  border-radius: 50%;
+  color: #a5f3fc;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tmp-onboarding-summary-group {
+  width: 100%;
+}
+
+.tmp-onboarding-summary-group > strong {
+  color: #e5edf7;
+  font-size: 0.84rem;
+}
+
+.tmp-onboarding-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.tmp-onboarding-tags > span {
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.06);
+  padding: 0.35rem 0.65rem;
+  color: #c8edf2;
+  font-size: 0.75rem;
+}
+
+.tmp-onboarding-summary-actions {
+  display: grid;
+  width: 100%;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+.tmp-onboarding-summary-actions p {
+  margin: 0;
+  color: #aeb9ca;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.tmp-onboarding-summary-actions > .button {
+  width: 100%;
+}
+
+.tmp-onboarding-external {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.4rem;
+  color: #a5dff4;
+  font-size: 0.84rem;
+  text-decoration: none;
+}
+
+.tmp-onboarding-external:hover {
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .tmp-goals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  #community-signup .mt-10 > .tmp-onboarding-card {
+    order: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .tmp-goals-grid small {
+    display: none;
+  }
+
+  .tmp-goals-grid .tmp-onboarding-option {
+    min-height: 3.25rem;
+  }
+}
+
 .community-hero,
 .company-hero {
   position: relative;

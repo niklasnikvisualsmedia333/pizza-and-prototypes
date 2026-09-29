@@ -33,6 +33,7 @@ import { PAST_EVENTS, UPCOMING_EVENTS } from './config/events';
 import { SITE } from './config/site';
 import { communityContent } from './content/community';
 import { persistLanguage, withLanguage } from './lib/language';
+import { CommunitySignupFlow } from './components/community/CommunitySignupFlow';
 
 type Lang = 'en' | 'de';
 type AnalyticsConsent = 'accepted' | 'declined';
@@ -889,13 +890,15 @@ function App() {
   }, [lang]);
 
   useEffect(() => {
-    if (analyticsConsent === 'accepted') {
+    if (analyticsConsent === 'accepted' && import.meta.env.VITE_COMMUNITY_SIGNUP_MODE === 'live') {
       void loadGoogleAnalyticsAndSendPageView();
     }
   }, [analyticsConsent]);
 
   useEffect(() => {
-    retryPendingN8nRegistration();
+    if (import.meta.env.VITE_COMMUNITY_SIGNUP_MODE === 'live') {
+      retryPendingN8nRegistration();
+    }
   }, []);
 
   const updateAnalyticsConsent = (nextConsent: AnalyticsConsent) => {
@@ -1085,17 +1088,7 @@ function App() {
         <Registration
           t={t}
           lang={lang}
-          form={form}
-          submitted={submitted}
-          formError={formError}
-          isSubmitting={isSubmitting}
-          privacyAndUpdatesAccepted={privacyAndUpdatesAccepted}
-          setPrivacyAndUpdatesAccepted={setPrivacyAndUpdatesAccepted}
-          setFormError={setFormError}
           openPrivacyNotice={openPrivacyNotice}
-          updateField={updateField}
-          toggleInterest={toggleInterest}
-          handleSubmit={handleSubmit}
         />
       </div>
       <CommunityChannels
@@ -1961,7 +1954,7 @@ function FAQ({ t }: { t: typeof copy.en }) {
   );
 }
 
-type RegistrationProps = {
+type LegacyRegistrationProps = {
   t: typeof copy.en;
   lang: Lang;
   form: InterestForm;
@@ -1977,7 +1970,7 @@ type RegistrationProps = {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-function Registration({
+function LegacyRegistration({
   t,
   lang,
   form,
@@ -1991,7 +1984,7 @@ function Registration({
   updateField,
   toggleInterest,
   handleSubmit,
-}: RegistrationProps) {
+}: LegacyRegistrationProps) {
   const showUniversity = ['Bachelor student', 'Master student', 'PhD / researcher', 'Bachelorstudent/in', 'Masterstudent/in', 'Promotion / Forschung'].includes(form.status);
 
   return (
@@ -2124,6 +2117,50 @@ function Registration({
           </button>
           <p className="required-note">{t.requiredNote}</p>
         </form>
+      </div>
+    </Section>
+  );
+}
+
+type RegistrationProps = {
+  t: typeof copy.en;
+  lang: Lang;
+  openPrivacyNotice: () => void;
+};
+
+function Registration({ t, lang, openPrivacyNotice }: RegistrationProps) {
+  return (
+    <Section id="register" kicker={t.formKicker} title={t.formTitle}>
+      <p className="section-lead">{t.formSubtitle}</p>
+      <div className="mt-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
+        <div className="glass-card p-6 sm:p-8">
+          <h3 className="text-2xl font-semibold text-white">{t.communityCardTitle}</h3>
+          <div className="mt-7 space-y-4">
+            <InfoRow icon={MessageCircle} label={t.communityInfo[0]} />
+            <InfoRow icon={CalendarDays} label={t.communityInfo[1]} />
+            <InfoRow icon={Users} label={t.communityInfo[2]} />
+            <InfoRow icon={MessageCircle} label={t.communityInfo[3]} />
+          </div>
+          <div className="mt-8 rounded-xl border border-cyan-300/20 bg-cyan-300/8 p-5">
+            <p className="font-medium text-cyan-100">{lang === 'de' ? 'Datennutzung' : 'Data use'}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{t.privacyNote}</p>
+          </div>
+        </div>
+
+        <CommunitySignupFlow
+          lang={lang}
+          privacyCopy={{
+            start: t.privacyConsentStart,
+            link: t.privacyConsentLink,
+            end: t.privacyConsentEnd,
+            note: lang === 'de'
+              ? 'Im lokalen Prototyp wird die Anmeldung ausschließlich in diesem Browser gespeichert.'
+              : 'In this local prototype, the signup is stored only in this browser.',
+          }}
+          onOpenPrivacyNotice={openPrivacyNotice}
+          whatsappLink={EVENT.whatsappLink}
+          instagramLink={EVENT.instagramLink}
+        />
       </div>
     </Section>
   );

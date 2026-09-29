@@ -66,11 +66,11 @@ export const communityContent: Record<Lang, CommunityContent> = {
   de: {
     metaTitle: 'Tech Meets Problems | Builder-first Tech-Community',
     metaDescription:
-      'Tech Meets Problems verbindet Builder und technische Talente mit realen Herausforderungen, Community-Formaten und Projektmöglichkeiten. In Siegen gestartet, offen für Menschen aus ganz Deutschland.',
-    heroEyebrow: 'Builder-first Tech-Community',
-    heroTitle: 'Arbeite an echten Herausforderungen aus Unternehmen.',
+      'Tech Meets Problems verbindet Studierende und Young Professionals aus Tech, Business, Product und Design mit realen Herausforderungen, ausgewählten Opportunities und einer praxisnahen Community. In Siegen gestartet, offen darüber hinaus.',
+    heroEyebrow: 'Builder-first Community',
+    heroTitle: 'Sammle Praxiserfahrung an echten Problemen.',
     heroText:
-      'In der Tech Meets Problems Community triffst du technische Studierende, junge Berufstätige und weitere techniknahe Profile. Gemeinsam entwickelt ihr Konzepte, Workflows, Mockups oder erste Prototypen. In Siegen gestartet, offen für Builder aus ganz Deutschland.',
+      'Tech Meets Problems verbindet Studierende und Young Professionals aus Tech, Business, Product und Design mit echten Herausforderungen, Unternehmen und ausgewählten Opportunities. Events sind ein Teil davon – die Community geht darüber hinaus. In Siegen gestartet, offen darüber hinaus.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
@@ -123,12 +123,12 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Praxis, Austausch und neue Perspektiven.',
     benefitsIntro:
-      'Die Community verbindet technische und techniknahe Menschen, die gemeinsam an konkreten Fragestellungen arbeiten möchten.',
+      'Praktische Erfahrung, relevante Einblicke und Menschen, die gemeinsam Dinge umsetzen wollen – auch über einzelne Events hinaus.',
     benefits: [
       { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Bedarfen aus Unternehmen, Organisationen und Projekten.' },
-      { title: 'Technische Community', text: 'Lerne Menschen aus Software, Data, HCI, UX und Engineering kennen.' },
-      { title: 'Praktische Ergebnisse', text: 'Entwickle Konzepte, Workflows, Mockups oder erste Prototypen.' },
-      { title: 'Neue Einblicke', text: 'Erhalte Einblicke in Unternehmen, Technologien und mögliche Projekte.' },
+      { title: 'Praxiserfahrung', text: 'Sammle Erfahrung außerhalb der Vorlesungen – in praktischen Fragen, Projekten und Formaten.' },
+      { title: 'Ausgewählte Opportunities', text: 'Erfahre von passenden Praktika, Werkstudentenstellen, Jobs und Projekten aus unserem Netzwerk, wenn sie verfügbar sind.' },
+      { title: 'Menschen & Unternehmen', text: 'Lerne motivierte Menschen aus Tech, Business, Product, Design und Entrepreneurship kennen und erhalte Einblicke in Unternehmen.' },
     ],
     processEyebrow: 'So funktionieren Sessions',
     processTitle: 'Von der Herausforderung zum ersten konkreten Ansatz.',
@@ -175,11 +175,11 @@ export const communityContent: Record<Lang, CommunityContent> = {
   en: {
     metaTitle: 'Tech Meets Problems | Builder-first tech community',
     metaDescription:
-      'Tech Meets Problems connects builders and technical talent with real challenges, community formats and project opportunities. Started in Siegen, open to people across Germany.',
-    heroEyebrow: 'Builder-first tech community',
-    heroTitle: 'Work on real challenges from companies.',
+      'Tech Meets Problems connects students and young professionals across tech, business, product and design with real challenges, selected opportunities and a hands-on community. Started in Siegen. Open beyond Siegen.',
+    heroEyebrow: 'Builder-first community',
+    heroTitle: 'Gain real-world experience solving real problems.',
     heroText:
-      'The Tech Meets Problems community brings together technical students, young professionals and other tech-oriented profiles. Together, you develop concepts, workflows, mockups or first prototypes. Started in Siegen, open to builders across Germany.',
+      'Tech Meets Problems connects students and young professionals across tech, business, product and design with real challenges, companies and selected opportunities. Events are part of it – the community goes beyond them. Started in Siegen. Open beyond Siegen.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
@@ -232,12 +232,12 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Practice, exchange and new perspectives.',
     benefitsIntro:
-      'The community connects technical and tech-adjacent people who want to work together on concrete questions.',
+      'Practical experience, relevant insights and people who want to make things happen together – beyond individual events.',
     benefits: [
       { title: 'Real challenges', text: 'Work on concrete needs from companies, organizations and projects.' },
-      { title: 'Technical community', text: 'Meet people from software, data, HCI, UX and engineering.' },
-      { title: 'Practical output', text: 'Develop concepts, workflows, mockups or first prototypes.' },
-      { title: 'New insights', text: 'Gain insight into companies, technologies and possible projects.' },
+      { title: 'Practical experience', text: 'Gain experience beyond lectures by working on practical questions, projects and formats.' },
+      { title: 'Selected opportunities', text: 'Hear about relevant internships, student jobs, jobs and projects from our network when available.' },
+      { title: 'People & companies', text: 'Meet motivated people across Tech, Business, Product, Design and Entrepreneurship, and get closer to companies.' },
     ],
     processEyebrow: 'How sessions work',
     processTitle: 'From the challenge to a first practical approach.',
