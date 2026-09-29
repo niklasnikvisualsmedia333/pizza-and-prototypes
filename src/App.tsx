@@ -33,6 +33,7 @@ import { PAST_EVENTS, UPCOMING_EVENTS } from './config/events';
 import { SITE } from './config/site';
 import { communityContent } from './content/community';
 import { persistLanguage, withLanguage } from './lib/language';
+import { trackPrototypeEvent } from './lib/communitySignupPrototype';
 import { CommunitySignupFlow } from './components/community/CommunitySignupFlow';
 
 type Lang = 'en' | 'de';
@@ -1118,7 +1119,7 @@ function CommunityRefreshHero({
           <h1>{content.heroTitle}</h1>
           <p>{content.heroText}</p>
           <div className="hero-actions">
-            <a href="#community-signup" className="button button-primary">
+            <a href="#community-signup" className="button button-primary" onClick={() => trackPrototypeEvent('community_cta_click', { language: lang })}>
               {content.heroPrimary}
               <ArrowRight aria-hidden="true" />
             </a>
