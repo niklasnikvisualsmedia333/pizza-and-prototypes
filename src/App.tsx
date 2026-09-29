@@ -246,29 +246,29 @@ const copy = {
     ],
     formKicker: 'Community signup',
     formTitle: 'Join the Tech Meets Problems community.',
-    formSubtitle: 'Join for free and hear about relevant opportunities, projects, events and updates. You decide what you want to take part in.',
+    formSubtitle: 'Get relevant updates about projects, opportunities, companies and events. Taking part is optional. You choose what is relevant to you.',
     formInstruction: 'Joining is free and does not require an application or participation.',
     formDetailsNote: 'You choose which updates or opportunities are relevant to you.',
     communityCardTitle: "What you'll hear about",
     communityInfo: ['Selected opportunities', 'Real projects and challenges', 'Events & workshops', 'Community and company updates'],
-    privacyNote: 'The local prototype stores your signup and optional profile answers only in this browser. Joining does not commit you to attend or contribute.',
+    privacyNote: 'Your name and email create your membership. Interests and profile details are optional after joining. The local prototype keeps this information in the current browser session.',
     privacyKicker: 'Privacy',
     privacyTitle: 'Privacy notice',
-    privacyText: 'For this local prototype, the required signup stores your first name, email, consent, language, timestamp, selected interests and automatic campaign/referrer information in this browser. Optional profile answers can include status, study or professional background, institution, practical experience, contribution areas and profile links.',
+    privacyText: 'The signup asks for your first name, last name, email and consent. Interests are selected before signup and stored only in this browser until you join. Optional profile details include status, study or professional background, university or institution, practical experience, contribution areas and profile links. Language, timestamps and campaign/referrer information are also recorded.',
     privacyDetails: [
-      'This prototype uses mock mode and does not send signup data to Formspree, n8n, Google Sheets, Gmail or another production registration service. Prototype data remains in this browser session.',
+      'This prototype uses mock mode. It does not send signup data to Formspree, n8n, Google Sheets, Gmail or another production registration service. After joining, mock data stays in this browser session.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
       'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Responsible: Niklas Brüne and Frederik Krause.',
-      'Purpose: show the progressive community signup and optional profile flow locally, and preserve campaign attribution for prototype review.',
-      'Prototype storage: browser session storage only; no production signup endpoint is used.',
+      'Purpose: manage Community membership, send relevant updates and understand which areas people are interested in.',
+      'Prototype storage: session storage in this browser. Optional answers can be skipped.',
       'Withdrawal, objection or deletion request: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'I have read the ',
     privacyConsentLink: 'privacy notice',
-    privacyConsentEnd: ' and agree to receive relevant Tech Meets Problems community updates by email. Joining does not require participation; I can unsubscribe at any time.',
+    privacyConsentEnd: ' and agree to receive relevant Tech Meets Problems community updates by email. I can unsubscribe at any time.',
     privacyAndUpdatesText:
       'I have read the privacy notice and agree to receive relevant Tech Meets Problems community updates by email. Participation is optional; I can unsubscribe at any time.',
     privacyRequired: 'Please accept the privacy notice and community updates before submitting.',
@@ -480,29 +480,29 @@ const copy = {
     ],
     formKicker: 'Community-Updates',
     formTitle: 'Werde Teil der Tech Meets Problems Community.',
-    formSubtitle: 'Tritt kostenlos bei und erfahre von relevanten Opportunities, Projekten, Events und Updates. Du entscheidest selbst, woran du teilnehmen möchtest.',
+    formSubtitle: 'Du bekommst relevante Updates zu Projekten, Opportunities, Unternehmen und Events. Mitmachen ist freiwillig. Du entscheidest selbst, was für dich interessant ist.',
     formInstruction: 'Der Beitritt ist kostenlos und erfordert weder Bewerbung noch Teilnahme.',
     formDetailsNote: 'Du entscheidest selbst, welche Updates und Opportunities für dich relevant sind.',
     communityCardTitle: 'Was du mitbekommst',
     communityInfo: ['Ausgewählte Opportunities', 'Reale Projekte und Problemräume', 'Events & Workshops', 'Community- und Unternehmensupdates'],
-    privacyNote: 'Der lokale Prototyp speichert deine Anmeldung und optionale Profilangaben nur in diesem Browser. Der Beitritt verpflichtet dich zu keiner Teilnahme oder Mitarbeit.',
+    privacyNote: 'Für deine Mitgliedschaft brauchen wir Name und E-Mail-Adresse. Interessen und weitere Profilangaben sind optional. Der lokale Prototyp speichert diese Angaben in der aktuellen Browser-Session.',
     privacyKicker: 'Datenschutz',
     privacyTitle: 'Datenschutzhinweise',
-    privacyText: 'Im lokalen Prototyp werden für den erforderlichen Beitritt Vorname, E-Mail, Einwilligung, Sprache, Zeitstempel, ausgewählte Interessen sowie automatische Kampagnen- und Referrer-Informationen in diesem Browser gespeichert. Optionale Profilangaben können Status, Studien- oder beruflichen Hintergrund, Hochschule/Institution, Praxiserfahrung, Beitragsbereiche und Profil-Links umfassen.',
+    privacyText: 'Für den Beitritt fragen wir Vorname, Nachname, E-Mail-Adresse und Einwilligung ab. Interessen werden vor der Anmeldung ausgewählt und bis zum Beitritt nur in diesem Browser gespeichert. Optional kannst du Status, Studien- oder Berufshintergrund, Hochschule oder Institution, Praxiserfahrung, Beitragsbereiche und Profil-Links ergänzen. Sprache, Zeitstempel und Kampagnen- sowie Referrer-Informationen werden ebenfalls erfasst.',
     privacyDetails: [
-      'Dieser Prototyp läuft im Mock-Modus und sendet keine Anmeldedaten an Formspree, n8n, Google Sheets, Gmail oder einen anderen produktiven Registrierungsdienst. Prototypdaten bleiben in der Browser-Session.',
+      'Dieser Prototyp läuft im Mock-Modus. Er sendet keine Anmeldedaten an Formspree, n8n, Google Sheets, Gmail oder einen anderen produktiven Registrierungsdienst. Nach dem Beitritt bleiben Prototypdaten in der Browser-Session.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
       'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Verantwortlich: Niklas Brüne und Frederik Krause.',
-      'Zweck: den schrittweisen Community-Beitritt und optionale Profilfluss lokal zeigen und Kampagnenzuordnung für den Prototyp erhalten.',
-      'Prototyp-Speicherung: nur in der Browser-Session; es wird kein produktiver Registrierungsendpunkt verwendet.',
+      'Zweck: die Community-Mitgliedschaft verwalten, relevante Updates versenden und Interessen besser verstehen.',
+      'Prototyp-Speicherung: in der Browser-Session. Optionale Angaben können übersprungen werden.',
       'Widerruf, Widerspruch oder Löschanfrage: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'Ich habe die ',
     privacyConsentLink: 'Datenschutzhinweise',
-    privacyConsentEnd: ' gelesen und möchte relevante Community-Updates von Tech Meets Problems per E-Mail erhalten. Der Beitritt verpflichtet mich zu keiner Teilnahme; ich kann mich jederzeit abmelden.',
+    privacyConsentEnd: ' gelesen und möchte relevante Community-Updates von Tech Meets Problems per E-Mail erhalten. Ich kann mich jederzeit abmelden.',
     privacyAndUpdatesText:
       'Ich habe die Datenschutzhinweise gelesen und möchte relevante Community-Updates von Tech Meets Problems per E-Mail erhalten. Die Teilnahme ist freiwillig; ich kann mich jederzeit abmelden.',
     privacyRequired: 'Bitte bestätige die Datenschutzhinweise und Community-Updates vor dem Absenden.',
@@ -634,12 +634,12 @@ const seoByLang: Record<Lang, { title: string; description: string }> = {
   de: {
     title: 'Tech Meets Problems | Builder-first Tech-Community',
     description:
-      'Tech Meets Problems verbindet Builder und technische Talente mit realen Herausforderungen, Community-Formaten und Projektmöglichkeiten. In Siegen gestartet, offen für Menschen aus ganz Deutschland.',
+      'Tech Meets Problems verbindet Studierende und Young Professionals mit echten Herausforderungen, Projekten und ausgewählten Opportunities. In Siegen gestartet, offen darüber hinaus.',
   },
   en: {
     title: 'Tech Meets Problems | Builder-first tech community',
     description:
-      'Tech Meets Problems connects builders and technical talent with real challenges, community formats and project opportunities. Started in Siegen, open to people across Germany.',
+      'Tech Meets Problems connects students and young professionals with real challenges, projects and selected opportunities. Started in Siegen. Open beyond Siegen.',
   },
 };
 
@@ -893,7 +893,7 @@ function App() {
   }, [analyticsConsent]);
 
   useEffect(() => {
-    if (import.meta.env.VITE_COMMUNITY_SIGNUP_MODE === 'live') {
+    if (import.meta.env.VITE_COMMUNITY_SIGNUP_MODE === 'live' && import.meta.env.VITE_LEGACY_N8N_RETRY === 'true') {
       retryPendingN8nRegistration();
     }
   }, []);
@@ -1178,8 +1178,8 @@ function formatEventTime(event: (typeof UPCOMING_EVENTS)[number], lang: Lang) {
   }
   if (event.endTime) {
     return lang === 'de'
-      ? `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)} Uhr`
-      : `${formatClock(event.startTime, lang)}–${formatClock(event.endTime, lang)}`;
+      ? `${formatClock(event.startTime, lang)} bis ${formatClock(event.endTime, lang)} Uhr`
+      : `${formatClock(event.startTime, lang)} to ${formatClock(event.endTime, lang)}`;
   }
   return lang === 'de' ? `ab ${formatClock(event.startTime, lang)} Uhr` : `from ${formatClock(event.startTime, lang)}`;
 }

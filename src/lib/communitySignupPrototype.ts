@@ -1,5 +1,6 @@
 import type { Lang } from './language';
 import type { CommunityProfileV2, GoalId } from '../content/communityOnboarding';
+import { getSignupMode, postCommunityApi, type CommunityJoinRequest, type CommunityJoinResponse, type CommunityProfilePatch, type CommunityProfileUpdateRequest, type CommunityProfileUpdateResponse } from './communitySignupTransport';
 
 const SIGNUPS_KEY = 'tmp_surgical_v2_mock_signups';
 const ANALYTICS_KEY = 'tmp_surgical_v2_analytics_events';
@@ -12,18 +13,22 @@ export type PrototypeEvent =
   | 'profile_experience_saved' | 'profile_contribution_saved' | 'profile_link_saved'
   | 'onboarding_skipped' | 'onboarding_finished';
 
+const ANALYTICS_KEYS = new Set(['language', 'variant', 'step', 'goals', 'areas', 'value']);
+const CATEGORY_IDS = new Set(['de', 'en', 'guided', 'email-first', 'goals', 'join', 'success', 'stage', 'study', 'studyOther', 'university', 'experience', 'contribution', 'profileLink', 'profileLinkInput', 'summary', 'jobs', 'projects', 'startups', 'companies', 'events', 'community', 'exploring', 'bachelor', 'master', 'research', 'professional', 'founder', 'other', 'computer-science', 'ai-data', 'engineering', 'business-informatics', 'business', 'entrepreneurship', 'product-design', 'media', 'science-research', 'unsure', 'tech', 'data', 'product', 'none', 'uni-projects', 'first-role', 'multiple', 'linkedin', 'github', 'portfolio', 'provided', 'skipped']);
+
 export interface CommunityJoinPrototype {
   memberId: string;
+  requestId: string;
   firstName: string;
-  /** Kept empty for compatibility with the current downstream row shape. */
-  lastName: '';
+  lastName: string;
   email: string;
   selectedGoals: GoalId[];
   consent: true;
   consentedAt: string;
+  consentVersion: string;
   language: Lang;
-  formVersion: 'community-onboarding-progressive-v4';
-  attribution: { source: string; medium: string; campaign: string; content: string; term: string; referrer: string; landingPage: string };
+  formVersion: 'community-v1';
+  attribution: { utmSource: string; utmMedium: string; utmCampaign: string; utmContent: string; utmTerm: string; referrer: string; landingPage: string };
   createdAt: string;
 }
 
@@ -34,35 +39,42 @@ export interface LocalCommunitySubmission {
   profilePresence: { hasStatus: boolean; hasStudyField: boolean; hasUniversity: boolean; hasExperience: boolean; hasContributionAreas: boolean; hasProfileLink: boolean };
   createdAt: string;
   mode: 'mock' | 'live';
+  /** Session-only credential. Never emitted to analytics, URLs, or console. */
+  profileUpdateToken: string;
+  pendingProfileUpdates: Array<{ requestId: string; patch: CommunityProfilePatch }>;
 }
 
 export function trackPrototypeEvent(event: PrototypeEvent, properties: Record<string, string> = {}) {
   if (typeof window === 'undefined' || localStorage.getItem('tmp_analytics_consent') !== 'accepted') return;
   try {
+    const safeProperties = Object.fromEntries(Object.entries(properties).filter(([key, value]) => {
+      if (!ANALYTICS_KEYS.has(key)) return false;
+      const values = value.split(',').filter(Boolean);
+      return values.length > 0 && values.every((item) => CATEGORY_IDS.has(item));
+    }));
     const events = JSON.parse(sessionStorage.getItem(ANALYTICS_KEY) ?? '[]') as Array<{ event: PrototypeEvent; properties: Record<string, string>; at: string }>;
-    // Properties are category IDs only. Callers must never pass PII/free text.
-    events.push({ event, properties, at: new Date().toISOString() });
+    events.push({ event, properties: safeProperties, at: new Date().toISOString() });
     sessionStorage.setItem(ANALYTICS_KEY, JSON.stringify(events.slice(-100)));
   } catch { /* analytics must never interrupt signup */ }
 }
 
-export function savePreJoinDraft(goals: GoalId[], variant: 'guided' | 'email-first', screen: string) {
-  try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ goals, variant, screen })); } catch { /* best effort */ }
+export function savePreJoinDraft(goals: GoalId[], variant: 'guided' | 'email-first', screen: string, requestId?: string) {
+  try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ goals, variant, screen, requestId })); } catch { /* best effort */ }
 }
 
-export function readPreJoinDraft(variant: 'guided' | 'email-first'): { goals: GoalId[]; screen: string } | undefined {
+export function readPreJoinDraft(variant: 'guided' | 'email-first'): { goals: GoalId[]; screen: string; requestId?: string } | undefined {
   try {
-    const value = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? 'null') as { goals?: GoalId[]; variant?: string; screen?: string } | null;
+    const value = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? 'null') as { goals?: GoalId[]; variant?: string; screen?: string; requestId?: string } | null;
     if (!value || value.variant !== variant || !Array.isArray(value.goals)) return undefined;
-    return { goals: value.goals, screen: value.screen ?? (variant === 'guided' ? 'goals' : 'join') };
+    return { goals: value.goals, screen: value.screen ?? (variant === 'guided' ? 'goals' : 'join'), requestId: value.requestId };
   } catch { return undefined; }
 }
 
 function readAttribution(): CommunityJoinPrototype['attribution'] {
   const params = new URLSearchParams(window.location.search);
   return {
-    source: params.get('utm_source') ?? '', medium: params.get('utm_medium') ?? '', campaign: params.get('utm_campaign') ?? '',
-    content: params.get('utm_content') ?? '', term: params.get('utm_term') ?? '', referrer: document.referrer ?? '', landingPage: window.location.pathname,
+    utmSource: params.get('utm_source') ?? '', utmMedium: params.get('utm_medium') ?? '', utmCampaign: params.get('utm_campaign') ?? '',
+    utmContent: params.get('utm_content') ?? '', utmTerm: params.get('utm_term') ?? '', referrer: document.referrer ?? '', landingPage: window.location.pathname,
   };
 }
 
@@ -70,63 +82,114 @@ function readRows(): LocalCommunitySubmission[] {
   try { return JSON.parse(sessionStorage.getItem(SIGNUPS_KEY) ?? '[]') as LocalCommunitySubmission[]; } catch { return []; }
 }
 
-export async function submitCommunityJoin(input: { firstName: string; email: string; goals: GoalId[]; consent: true; language: Lang }): Promise<LocalCommunitySubmission> {
-  const mode = import.meta.env.VITE_COMMUNITY_SIGNUP_MODE ?? 'mock';
+export async function submitCommunityJoin(input: { requestId: string; firstName: string; lastName: string; email: string; goals: GoalId[]; consent: true; language: Lang }): Promise<LocalCommunitySubmission> {
+  const mode = getSignupMode();
+  const existing = readRows().find((row) => row.join.requestId === input.requestId);
+  if (existing) return existing;
   const timestamp = new Date().toISOString();
-  let memberId: string = crypto.randomUUID();
   const join: CommunityJoinPrototype = {
-    memberId, firstName: input.firstName.trim(), lastName: '', email: input.email.trim(), selectedGoals: input.goals,
-    consent: true, consentedAt: timestamp, language: input.language, formVersion: 'community-onboarding-progressive-v4',
+    memberId: crypto.randomUUID(), requestId: input.requestId, firstName: input.firstName.trim(), lastName: input.lastName.trim(), email: input.email.trim(), selectedGoals: input.goals,
+    consent: true, consentedAt: timestamp, consentVersion: 'community-updates-v1', language: input.language, formVersion: 'community-v1',
     attribution: readAttribution(), createdAt: timestamp,
   };
   trackPrototypeEvent('community_join_submit', { language: input.language, goals: input.goals.join(',') });
+  let memberId: string = join.memberId;
+  let profileUpdateToken: string = crypto.randomUUID();
   if (mode === 'live') {
-    const endpoint = import.meta.env.VITE_COMMUNITY_SIGNUP_ENDPOINT;
-    if (!endpoint) throw new Error('Live signup mode requires an explicitly configured endpoint.');
-    const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(join) });
-    if (!response.ok) throw new Error('Signup request failed.');
-    const result = await response.json().catch(() => null) as { memberId?: string } | null;
-    // Future transport must return the stable server memberId. Do not key partial updates by UI state/email.
-    if (!result?.memberId) throw new Error('Signup endpoint did not return a memberId.');
+    const payload: CommunityJoinRequest = {
+      type: 'community_join', schemaVersion: 'community-v1', requestId: input.requestId,
+      payload: {
+        firstName: join.firstName, lastName: join.lastName, email: join.email, selectedGoals: join.selectedGoals, consent: true,
+        consentedAt: timestamp, consentVersion: join.consentVersion, language: input.language, attribution: join.attribution, createdAt: timestamp,
+      },
+    };
+    const result = await postCommunityApi<CommunityJoinRequest, CommunityJoinResponse>(payload);
+    if (!result.ok || !result.memberId || !result.profileUpdateToken) throw new Error('Signup endpoint returned an incomplete response.');
     memberId = result.memberId;
+    profileUpdateToken = result.profileUpdateToken;
     join.memberId = memberId;
   }
-  const submission: LocalCommunitySubmission = { id: memberId, join, profile: {}, profilePresence: getProfilePresence({}), createdAt: timestamp, mode };
-  if (mode === 'mock') sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify([...readRows(), submission]));
+  const submission: LocalCommunitySubmission = { id: memberId, join, profile: {}, profilePresence: getProfilePresence({}), createdAt: timestamp, mode, profileUpdateToken, pendingProfileUpdates: [] };
+  sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify([...readRows().filter((row) => row.join.requestId !== input.requestId), submission]));
   sessionStorage.removeItem(DRAFT_KEY);
   return submission;
 }
 
-/** Optimistic local profile upsert keyed by stable member ID. */
-export function updateCommunityProfile(memberId: string, partialProfile: Partial<CommunityProfileV2>): boolean {
+/** Optimistically updates the same member. Failed live patches remain in session storage for retry. */
+export async function updateCommunityProfile(memberId: string, token: string, partialProfile: Partial<CommunityProfileV2>): Promise<boolean> {
   try {
     const rows = readRows();
     const row = rows.find((item) => item.join.memberId === memberId);
     if (!row) return false;
+    if (row.mode === 'live' && (!token || row.profileUpdateToken !== token)) return false;
+    const patch = toProfilePatch(partialProfile);
+    if (!Object.keys(patch).length) return true;
     row.profile = { ...row.profile, ...partialProfile, updatedAt: new Date().toISOString() };
     row.profilePresence = getProfilePresence(row.profile);
+    if (row.mode === 'live') row.pendingProfileUpdates.push({ requestId: crypto.randomUUID(), patch });
     sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
-    return true;
+    if (row.mode === 'mock') return true;
+    return flushPendingProfileUpdates(row, rows, token);
   } catch { return false; }
 }
 
-function getProfilePresence(profile: CommunityProfileV2): LocalCommunitySubmission['profilePresence'] {
+export async function updateCommunityGoals(memberId: string, token: string, goals: GoalId[]): Promise<boolean> {
+  try {
+    const rows = readRows();
+    const row = rows.find((item) => item.join.memberId === memberId);
+    if (!row || (row.mode === 'live' && (!token || row.profileUpdateToken !== token))) return false;
+    row.join.selectedGoals = goals;
+    if (row.mode === 'live') row.pendingProfileUpdates.push({ requestId: crypto.randomUUID(), patch: { selectedGoals: goals } });
+    sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
+    if (row.mode === 'mock') return true;
+    return flushPendingProfileUpdates(row, rows, token);
+  } catch { return false; }
+}
+
+export async function retryPendingCommunityProfileUpdates(memberId: string, token: string): Promise<boolean> {
+  const rows = readRows();
+  const row = rows.find((item) => item.join.memberId === memberId);
+  if (!row || row.mode !== 'live' || !token || row.profileUpdateToken !== token) return false;
+  return flushPendingProfileUpdates(row, rows, token);
+}
+
+function toProfilePatch(profile: Partial<CommunityProfileV2>): CommunityProfilePatch {
+  const patch: CommunityProfilePatch = {};
+  if (profile.status) patch.status = profile.status;
+  if (profile.studyField) patch.studyField = profile.studyField;
+  if (profile.studyFieldOther !== undefined) patch.studyFieldOther = profile.studyFieldOther;
+  if (profile.university !== undefined) patch.university = profile.university;
+  if (profile.experienceLevel) patch.experienceLevel = profile.experienceLevel;
+  if (profile.contributionAreas) patch.contributionAreas = profile.contributionAreas;
+  if (profile.profileLinks?.linkedin !== undefined) patch.linkedinUrl = profile.profileLinks.linkedin;
+  if (profile.profileLinks?.github !== undefined) patch.githubUrl = profile.profileLinks.github;
+  if (profile.profileLinks?.portfolio !== undefined) patch.portfolioUrl = profile.profileLinks.portfolio;
+  return patch;
+}
+
+async function flushPendingProfileUpdates(row: LocalCommunitySubmission, rows: LocalCommunitySubmission[], token: string): Promise<boolean> {
+  let allSaved = true;
+  for (const pending of [...row.pendingProfileUpdates]) {
+    try {
+      const request: CommunityProfileUpdateRequest = {
+        type: 'community_profile_update', schemaVersion: 'community-v1', requestId: pending.requestId,
+        memberId: row.join.memberId, profileUpdateToken: token, patch: pending.patch,
+      };
+      const response = await postCommunityApi<CommunityProfileUpdateRequest, CommunityProfileUpdateResponse>(request);
+      if (!response.ok || response.memberId !== row.join.memberId) { allSaved = false; continue; }
+      row.pendingProfileUpdates = row.pendingProfileUpdates.filter((item) => item.requestId !== pending.requestId);
+    } catch { allSaved = false; }
+    sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
+  }
+  return allSaved;
+}
+
+export function getProfilePresence(profile: CommunityProfileV2): LocalCommunitySubmission['profilePresence'] {
   return {
     hasStatus: Boolean(profile.status), hasStudyField: Boolean(profile.studyField || profile.studyFieldOther?.trim()),
     hasUniversity: Boolean(profile.university?.trim()), hasExperience: Boolean(profile.experienceLevel),
     hasContributionAreas: Boolean(profile.contributionAreas?.length), hasProfileLink: Boolean(Object.values(profile.profileLinks ?? {}).some(Boolean)),
   };
-}
-
-export function updateCommunityGoals(memberId: string, goals: GoalId[]): boolean {
-  try {
-    const rows = readRows();
-    const row = rows.find((item) => item.join.memberId === memberId);
-    if (!row) return false;
-    row.join.selectedGoals = goals;
-    sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
-    return true;
-  } catch { return false; }
 }
 
 export function readMockMember(memberId: string): LocalCommunitySubmission | undefined {

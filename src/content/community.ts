@@ -66,11 +66,11 @@ export const communityContent: Record<Lang, CommunityContent> = {
   de: {
     metaTitle: 'Tech Meets Problems | Builder-first Tech-Community',
     metaDescription:
-      'Tech Meets Problems verbindet Studierende und Young Professionals aus Tech, Business, Product und Design mit realen Herausforderungen, ausgewählten Opportunities und einer praxisnahen Community. In Siegen gestartet, offen darüber hinaus.',
+      'Tech Meets Problems verbindet Studierende und Young Professionals mit echten Herausforderungen, Projekten und ausgewählten Opportunities. In Siegen gestartet, offen darüber hinaus.',
     heroEyebrow: 'Builder-first Community',
     heroTitle: 'Sammle Praxiserfahrung an echten Problemen.',
     heroText:
-      'Tech Meets Problems verbindet Studierende und Young Professionals aus Tech, Business, Product und Design mit echten Herausforderungen, Unternehmen und ausgewählten Opportunities. Events sind ein Teil davon – die Community geht darüber hinaus. In Siegen gestartet, offen darüber hinaus.',
+      'Tech Meets Problems bringt Studierende und Young Professionals mit echten Herausforderungen, Unternehmen, Projekten und ausgewählten Opportunities zusammen. Du sammelst Praxiserfahrung und lernst Leute kennen, mit denen du etwas umsetzen kannst. In Siegen gestartet, offen darüber hinaus.',
     heroPrimary: 'Community beitreten',
     heroSecondary: 'Für Unternehmen',
     heroImageAlt: 'Technische Talente arbeiten beim Tech Meets Problems Pilot gemeinsam an Problemkarten',
@@ -123,12 +123,12 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Praxis, Austausch und neue Perspektiven.',
     benefitsIntro:
-      'Praktische Erfahrung, relevante Einblicke und Menschen, die gemeinsam Dinge umsetzen wollen – auch über einzelne Events hinaus.',
+      'Hier findest du praktische Erfahrung und Einblicke, auch wenn gerade kein Event stattfindet.',
     benefits: [
-      { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Bedarfen aus Unternehmen, Organisationen und Projekten.' },
-      { title: 'Praxiserfahrung', text: 'Sammle Erfahrung außerhalb der Vorlesungen – in praktischen Fragen, Projekten und Formaten.' },
+      { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Problemen aus Unternehmen, Organisationen und Projekten.' },
+      { title: 'Praxiserfahrung', text: 'Sammle Erfahrung außerhalb der Vorlesungen, etwa in Projekten und praktischen Formaten.' },
       { title: 'Ausgewählte Opportunities', text: 'Erfahre von passenden Praktika, Werkstudentenstellen, Jobs und Projekten aus unserem Netzwerk, wenn sie verfügbar sind.' },
-      { title: 'Menschen & Unternehmen', text: 'Lerne motivierte Menschen aus Tech, Business, Product, Design und Entrepreneurship kennen und erhalte Einblicke in Unternehmen.' },
+      { title: 'Menschen & Unternehmen', text: 'Lerne Leute aus Tech, Business, Product, Design und Entrepreneurship kennen und erhalte Einblicke in Unternehmen.' },
     ],
     processEyebrow: 'So funktionieren Sessions',
     processTitle: 'Von der Herausforderung zum ersten konkreten Ansatz.',
@@ -142,7 +142,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     ],
     channelsEyebrow: 'Community-Kanäle',
     channelsTitle: 'Bleib mit Tech Meets Problems verbunden.',
-    channelsText: 'Dort teilen wir neue Sessions, Problemräume und Projektmöglichkeiten.',
+    channelsText: 'Dort teilen wir neue Formate, Projekte und passende Möglichkeiten.',
     companyEyebrow: 'Für Unternehmen',
     companyTitle: 'Reale Herausforderung im Unternehmen?',
     companyText:
@@ -166,7 +166,8 @@ export const communityContent: Record<Lang, CommunityContent> = {
     faqTitle: 'Das Wichtigste zur Community.',
     faqs: [
       { question: 'Muss ich eine eigene Idee mitbringen?', answer: 'Nein. Die Sessions starten mit konkreten Problemräumen.' },
-      { question: 'Muss ich programmieren können?', answer: 'Du musst kein Programmierprofi sein. Du solltest aber technische, gestalterische oder analytische Fähigkeiten mitbringen und Lust haben, praktisch an einer Lösung zu arbeiten.' },
+      { question: 'Muss ich programmieren können?', answer: 'Nein. Tech bleibt ein wichtiger Teil von TMP, aber Programmieren ist keine Voraussetzung. Auch Product, Design, Business, Strategy, GTM, Research und Entrepreneurship passen. Wichtig ist, dass du praktisch mitarbeiten möchtest.' },
+      { question: 'Muss ich an Events oder Projekten teilnehmen?', answer: 'Nein. Du bekommst relevante Updates und entscheidest selbst, welche Opportunities, Projekte oder Events für dich interessant sind.' },
       { question: 'Ist die Community kostenlos?', answer: 'Ja. Der Community-Beitritt und die Teilnahme an unseren Community-Events sind kostenlos. Möglich machen das unsere Partner und Sponsoren.' },
       { question: 'Muss ich aus Siegen kommen?', answer: 'Nein. Tech Meets Problems ist in Siegen gestartet und unsere bisherigen Präsenz-Events fanden hier statt. Die Community ist aber offen für Builder und Tech-Interessierte aus ganz Deutschland. Bei Events kommunizieren wir den jeweiligen Ort separat.' },
       { question: 'Wie erfahre ich von neuen Events?', answer: 'Trag dich in die Community-Liste ein oder folge unseren Community-Kanälen.' },
@@ -179,7 +180,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     heroEyebrow: 'Builder-first community',
     heroTitle: 'Gain real-world experience solving real problems.',
     heroText:
-      'Tech Meets Problems connects students and young professionals across tech, business, product and design with real challenges, companies and selected opportunities. Events are part of it – the community goes beyond them. Started in Siegen. Open beyond Siegen.',
+      'Tech Meets Problems connects students and young professionals with real challenges, companies, projects and selected opportunities. Gain practical experience and meet people you can build with. Started in Siegen. Open beyond Siegen.',
     heroPrimary: 'Join the community',
     heroSecondary: 'For companies',
     heroImageAlt: 'Technical talent working with problem cards at the first Tech Meets Problems pilot',
@@ -232,12 +233,12 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Practice, exchange and new perspectives.',
     benefitsIntro:
-      'Practical experience, relevant insights and people who want to make things happen together – beyond individual events.',
+      'Find practical experience and useful insights here, even when there is no event coming up.',
     benefits: [
-      { title: 'Real challenges', text: 'Work on concrete needs from companies, organizations and projects.' },
-      { title: 'Practical experience', text: 'Gain experience beyond lectures by working on practical questions, projects and formats.' },
+      { title: 'Real challenges', text: 'Work on concrete problems from companies, organizations and projects.' },
+      { title: 'Practical experience', text: 'Build experience beyond lectures through projects and hands-on formats.' },
       { title: 'Selected opportunities', text: 'Hear about relevant internships, student jobs, jobs and projects from our network when available.' },
-      { title: 'People & companies', text: 'Meet motivated people across Tech, Business, Product, Design and Entrepreneurship, and get closer to companies.' },
+      { title: 'People & companies', text: 'Meet people across Tech, Business, Product, Design and Entrepreneurship, and get a closer look at companies.' },
     ],
     processEyebrow: 'How sessions work',
     processTitle: 'From the challenge to a first practical approach.',
@@ -251,7 +252,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     ],
     channelsEyebrow: 'Community channels',
     channelsTitle: 'Stay connected with Tech Meets Problems.',
-    channelsText: 'This is where we share new sessions, problem spaces and project opportunities.',
+    channelsText: 'This is where we share new formats, projects and relevant opportunities.',
     companyEyebrow: 'For companies',
     companyTitle: 'A real challenge inside your company?',
     companyText:
@@ -275,7 +276,8 @@ export const communityContent: Record<Lang, CommunityContent> = {
     faqTitle: 'What matters about the community.',
     faqs: [
       { question: 'Do I need to bring an idea?', answer: 'No. Sessions start with concrete problem spaces.' },
-      { question: 'Do I need to code?', answer: 'You do not need to be an expert programmer. You should bring technical, design or analytical skills and be willing to work practically on a solution.' },
+      { question: 'Do I need to code?', answer: 'No. Tech is an important part of TMP, but coding is not required. Product, Design, Business, Strategy, GTM, Research and Entrepreneurship can fit too. What matters is a willingness to work on things in practice.' },
+      { question: 'Do I have to attend events or join projects?', answer: 'No. You receive relevant updates and choose which opportunities, projects or events interest you.' },
       { question: 'Is the community free?', answer: 'Yes. Joining the community and attending our community events is free. Our partners and sponsors make this possible.' },
       { question: 'Do I need to be based in Siegen?', answer: 'No. Tech Meets Problems started in Siegen and our in-person events so far have taken place here. The community is open to builders and tech-minded people across Germany. We share the location separately for each event.' },
       { question: 'How do I hear about new events?', answer: 'Join the community list or follow our community channels.' },

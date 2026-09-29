@@ -1,0 +1,53 @@
+name: Community onboarding preview validation
+
+on:
+  push:
+    branches: [prototype/community-onboarding-production-ready-v5]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout prototype
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Community contract and copy
+        run: npm run test:community-contract
+
+      - name: Check company form contract
+        run: npm run test:company-contract
+
+      - name: Build local preview artifact
+        run: npm run build
+        env:
+          VITE_SITE_ENV: preview
+          VITE_BASE_PATH: /
+          VITE_COMMUNITY_SIGNUP_MODE: mock
+          VITE_COMMUNITY_API_ENDPOINT: https://staging.example.invalid/community-v1
+
+      - name: Verify preview build
+        run: npm run test:build
+        env:
+          VITE_SITE_ENV: preview
+          VITE_BASE_PATH: /
+
+      - name: Upload inspectable build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: community-onboarding-v5-preview
+          path: dist
+          if-no-files-found: error
+          retention-days: 7

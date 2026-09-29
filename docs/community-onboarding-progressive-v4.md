@@ -1,5 +1,7 @@
 # Community onboarding prototype v4
 
+Historical handoff for the V4 checkpoint. The production-ready frontend/API contract is now described in [the V5 n8n handoff](community-signup-n8n-v2-handoff.md). V5 supersedes V4's empty last-name compatibility field and its simple live signup adapter. Use the V5 docs for current behavior.
+
 ## Purpose and positioning
 
 This local iteration keeps the reviewed Community page, event photography and section layout. It improves the signup question sequence and captures useful profile context gradually. TMP remains a builder-first community that connects people with practical problems, companies, relevant opportunities and one another; events are one format, not a membership requirement. Joining is free and does not commit someone to attend or contribute.

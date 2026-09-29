@@ -3133,10 +3133,23 @@ fieldset legend {
   gap: 0.7rem;
 }
 
-.tmp-onboarding-form > label:not(.tmp-onboarding-consent) {
+.tmp-onboarding-form > label:not(.tmp-onboarding-consent),
+.tmp-community-name-fields > div > label {
   color: #dbe4ef;
   font-size: 0.88rem;
   font-weight: 650;
+}
+
+.tmp-community-name-fields {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.tmp-community-name-fields > div,
+.tmp-onboarding-form > div:not(.tmp-onboarding-consent) {
+  display: grid;
+  min-width: 0;
+  gap: 0.55rem;
 }
 
 .tmp-onboarding-form input[type="email"],
@@ -3322,6 +3335,10 @@ fieldset legend {
 
 @media (min-width: 640px) {
   .tmp-goals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tmp-community-name-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

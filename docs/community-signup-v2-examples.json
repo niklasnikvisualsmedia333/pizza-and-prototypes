@@ -1,0 +1,53 @@
+{
+  "community_join": {
+    "request": {
+      "type": "community_join",
+      "schemaVersion": "community-v1",
+      "requestId": "stable-client-generated-uuid",
+      "payload": {
+        "firstName": "Example",
+        "lastName": "Member",
+        "email": "example@example.invalid",
+        "selectedGoals": ["projects", "community"],
+        "consent": true,
+        "consentedAt": "2026-09-29T12:00:00.000Z",
+        "consentVersion": "community-updates-v1",
+        "language": "de",
+        "attribution": {
+          "utmSource": "",
+          "utmMedium": "",
+          "utmCampaign": "",
+          "utmContent": "",
+          "utmTerm": "",
+          "referrer": "",
+          "landingPage": "/"
+        },
+        "createdAt": "2026-09-29T12:00:00.000Z"
+      }
+    },
+    "response": {
+      "ok": true,
+      "memberId": "opaque-member-id",
+      "profileUpdateToken": "opaque-random-token"
+    }
+  },
+  "community_profile_update": {
+    "request": {
+      "type": "community_profile_update",
+      "schemaVersion": "community-v1",
+      "requestId": "unique-profile-patch-uuid",
+      "memberId": "opaque-member-id",
+      "profileUpdateToken": "opaque-random-token",
+      "patch": {
+        "status": "master",
+        "studyField": "business",
+        "university": "University name"
+      }
+    },
+    "response": {
+      "ok": true,
+      "memberId": "opaque-member-id",
+      "updatedAt": "2026-09-29T12:01:00.000Z"
+    }
+  }
+}

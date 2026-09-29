@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, Building2, CalendarDays, Check, CheckCircle2, Compass, Lightbulb, Rocket, Sparkles, Users } from 'lucide-react';
 import { commonUniversities, onboardingCopy, type CommunityProfileV2, type ContributionId, type ExperienceId, type GoalId, type ProfileLinkType, type StageId, type StudyFieldId } from '../../content/communityOnboarding';
-import { readMockMember, readPreJoinDraft, savePreJoinDraft, submitCommunityJoin, trackPrototypeEvent, updateCommunityGoals, updateCommunityProfile, type PrototypeEvent } from '../../lib/communitySignupPrototype';
+import { readMockMember, readPreJoinDraft, retryPendingCommunityProfileUpdates, savePreJoinDraft, submitCommunityJoin, trackPrototypeEvent, updateCommunityGoals, updateCommunityProfile, type PrototypeEvent } from '../../lib/communitySignupPrototype';
 import type { Lang } from '../../lib/language';
 
 type Screen = 'goals' | 'join' | 'success' | 'stage' | 'study' | 'studyOther' | 'university' | 'experience' | 'contribution' | 'profileLink' | 'profileLinkInput' | 'summary';
 type Variant = 'guided' | 'email-first';
-type FlowState = { screen: Screen; goals: GoalId[]; firstName: string; email: string; consent: boolean; profile: CommunityProfileV2; variant: Variant; memberId?: string; activeLink?: ProfileLinkType };
+type FlowState = { screen: Screen; goals: GoalId[]; firstName: string; lastName: string; email: string; consent: boolean; profile: CommunityProfileV2; variant: Variant; joinRequestId?: string; memberId?: string; profileUpdateToken?: string; activeLink?: ProfileLinkType };
 
 const STORAGE_KEY = 'tmp_surgical_community_onboarding_v2';
 const GOAL_ICONS = { jobs: BriefcaseBusiness, projects: Lightbulb, startups: Rocket, companies: Building2, events: CalendarDays, community: Users, exploring: Compass } as const;
@@ -14,12 +14,12 @@ const GOAL_ICONS = { jobs: BriefcaseBusiness, projects: Lightbulb, startups: Roc
 function getVariant(): Variant { return new URLSearchParams(window.location.search).get('onboarding') === 'email-first' ? 'email-first' : 'guided'; }
 function getInitialState(variant: Variant): FlowState {
   const draft = readPreJoinDraft(variant);
-  const initial: FlowState = { screen: (draft?.screen as Screen) ?? (variant === 'guided' ? 'goals' : 'join'), goals: draft?.goals ?? [], firstName: '', email: '', consent: false, profile: {}, variant };
+  const initial: FlowState = { screen: (draft?.screen as Screen) ?? (variant === 'guided' ? 'goals' : 'join'), goals: draft?.goals ?? [], firstName: '', lastName: '', email: '', consent: false, profile: {}, variant, joinRequestId: draft?.requestId };
   try {
     const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<FlowState> | null;
     if (saved?.variant === variant && saved.memberId && saved.screen) {
       const member = readMockMember(saved.memberId);
-      if (member) return { ...initial, ...saved, firstName: member.join.firstName, email: member.join.email, goals: member.join.selectedGoals, profile: member.profile, consent: true };
+      if (member) return { ...initial, ...saved, firstName: member.join.firstName, lastName: member.join.lastName, email: member.join.email, goals: member.join.selectedGoals, profile: member.profile, consent: true, profileUpdateToken: member.profileUpdateToken };
     }
   } catch { /* a fresh local draft is fine */ }
   return initial;
@@ -36,12 +36,16 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
 
   useEffect(() => {
     if (!flow.memberId) {
-      savePreJoinDraft(flow.goals, variant, flow.screen === 'join' ? 'join' : 'goals');
+      savePreJoinDraft(flow.goals, variant, flow.screen === 'join' ? 'join' : 'goals', flow.joinRequestId);
       sessionStorage.removeItem(STORAGE_KEY);
       return;
     }
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(flow));
   }, [flow, variant]);
+
+  useEffect(() => {
+    if (flow.memberId && flow.profileUpdateToken) void retryPendingCommunityProfileUpdates(flow.memberId, flow.profileUpdateToken);
+  }, [flow.memberId, flow.profileUpdateToken]);
 
   useEffect(() => {
     trackPrototypeEvent('onboarding_step_view', { step: flow.screen, language: lang });
@@ -50,7 +54,7 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
   function move(screen: Screen) { setError(''); setFlow((current) => ({ ...current, screen })); }
   function saveProfile(partial: Partial<CommunityProfileV2>, event?: PrototypeEvent, value?: string) {
     setFlow((current) => ({ ...current, profile: { ...current.profile, ...partial } }));
-    if (flow.memberId) updateCommunityProfile(flow.memberId, partial);
+    if (flow.memberId && flow.profileUpdateToken) void updateCommunityProfile(flow.memberId, flow.profileUpdateToken, partial);
     if (event) trackPrototypeEvent(event, { language: lang, ...(value ? { value } : {}) });
   }
   function toggleGoal(id: GoalId) {
@@ -63,30 +67,34 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
       goals = withoutExploring.includes(id) ? withoutExploring.filter((goal) => goal !== id) : withoutExploring.length < 3 ? [...withoutExploring, id] : withoutExploring;
     }
     setFlow((current) => ({ ...current, goals }));
-    if (flow.memberId) updateCommunityGoals(flow.memberId, goals);
+    if (flow.memberId && flow.profileUpdateToken) void updateCommunityGoals(flow.memberId, flow.profileUpdateToken, goals);
   }
   function continueGoals() {
     if (!flow.goals.length) { setError(lang === 'de' ? 'Wähle einen Bereich oder „Ich schaue mich erstmal um“.' : 'Choose an area or “Just exploring.”'); return; }
-    if (flow.memberId) updateCommunityGoals(flow.memberId, flow.goals);
     trackPrototypeEvent('interest_selected', { language: lang, goals: flow.goals.join(',') });
     move(variant === 'guided' && !flow.memberId ? 'join' : 'stage');
   }
   async function handleJoin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError('');
-    const firstName = flow.firstName.trim(); const email = flow.email.trim();
+    const firstName = flow.firstName.trim(); const lastName = flow.lastName.trim(); const email = flow.email.trim();
     if (!firstName) { setError(copy.firstNameRequired); return; }
+    if (!lastName) { setError(copy.lastNameRequired); return; }
     if (!email) { setError(copy.emailRequired); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError(copy.emailInvalid); return; }
     if (!flow.consent) { setError(copy.consentRequired); return; }
+    const requestId = flow.joinRequestId ?? crypto.randomUUID();
+    setFlow((current) => ({ ...current, joinRequestId: requestId }));
+    savePreJoinDraft(flow.goals, variant, 'join', requestId);
     setBusy(true);
     try {
-      const submission = await submitCommunityJoin({ firstName, email, goals: flow.goals, consent: true, language: lang });
-      setFlow((current) => ({ ...current, firstName: submission.join.firstName, email: submission.join.email, goals: submission.join.selectedGoals, profile: submission.profile, memberId: submission.join.memberId, screen: 'success' }));
+      const submission = await submitCommunityJoin({ requestId, firstName, lastName, email, goals: flow.goals, consent: true, language: lang });
+      setFlow((current) => ({ ...current, firstName: submission.join.firstName, lastName: submission.join.lastName, email: submission.join.email, goals: submission.join.selectedGoals, profile: submission.profile, memberId: submission.join.memberId, profileUpdateToken: submission.profileUpdateToken, joinRequestId: undefined, screen: 'success' }));
       trackPrototypeEvent('community_join_success', { language: lang });
     } catch { setError(copy.joinError); } finally { setBusy(false); }
   }
   function skip(screen: Screen = flow.screen) {
     trackPrototypeEvent('onboarding_skipped', { step: screen, language: lang });
+    if (screen === 'success') setFlow((current) => ({ ...current, profileUpdateToken: undefined }));
     const next: Partial<Record<Screen, Screen>> = { success: variant === 'email-first' ? 'goals' : 'summary', goals: 'stage', stage: 'study', study: 'university', studyOther: 'university', university: 'experience', experience: 'contribution', contribution: 'profileLink', profileLink: 'summary', profileLinkInput: 'profileLink' };
     move(next[screen] ?? 'summary');
   }
@@ -143,23 +151,26 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
     {flow.screen === 'join' && <>
       <div className="tmp-onboarding-heading"><p className="section-eyebrow">{copy.joinEyebrow}</p><h3>{copy.joinTitle}</h3><p>{copy.joinText}</p></div>
       <form className="tmp-onboarding-form" onSubmit={handleJoin} noValidate>
-        <label htmlFor="tmp-community-first-name">{copy.firstNameLabel}</label><input id="tmp-community-first-name" type="text" autoComplete="given-name" required value={flow.firstName} placeholder={copy.firstNamePlaceholder} aria-describedby={error ? 'tmp-join-error' : undefined} onChange={(event) => setFlow((current) => ({ ...current, firstName: event.target.value }))} />
-        <label htmlFor="tmp-community-email">{copy.emailLabel}</label><input id="tmp-community-email" type="email" autoComplete="email" inputMode="email" required value={flow.email} placeholder={copy.emailPlaceholder} aria-describedby={error ? 'tmp-join-error' : 'tmp-privacy-copy'} onChange={(event) => setFlow((current) => ({ ...current, email: event.target.value }))} />
-        <div className="tmp-onboarding-consent"><input id="tmp-community-consent" type="checkbox" checked={flow.consent} onChange={(event) => setFlow((current) => ({ ...current, consent: event.target.checked }))} /><span><label htmlFor="tmp-community-consent">{privacyCopy.start}</label><button type="button" className="privacy-link-button" onClick={onOpenPrivacyNotice}>{privacyCopy.link}</button>{privacyCopy.end}</span></div>
+        <div className="tmp-community-name-fields">
+          <div><label htmlFor="tmp-community-first-name">{copy.firstNameLabel}</label><input id="tmp-community-first-name" type="text" autoComplete="given-name" required value={flow.firstName} placeholder={copy.firstNamePlaceholder} aria-describedby={error ? 'tmp-join-error' : undefined} onChange={(event) => setFlow((current) => ({ ...current, firstName: event.target.value }))} /></div>
+          <div><label htmlFor="tmp-community-last-name">{copy.lastNameLabel}</label><input id="tmp-community-last-name" type="text" autoComplete="family-name" required value={flow.lastName} placeholder={copy.lastNamePlaceholder} aria-describedby={error ? 'tmp-join-error' : undefined} onChange={(event) => setFlow((current) => ({ ...current, lastName: event.target.value }))} /></div>
+        </div>
+        <div><label htmlFor="tmp-community-email">{copy.emailLabel}</label><input id="tmp-community-email" type="email" autoComplete="email" inputMode="email" required value={flow.email} placeholder={copy.emailPlaceholder} aria-describedby={error ? 'tmp-join-error' : 'tmp-privacy-copy'} onChange={(event) => setFlow((current) => ({ ...current, email: event.target.value }))} /></div>
+        <div className="tmp-onboarding-consent"><input id="tmp-community-consent" type="checkbox" required aria-label={copy.consentAccessibleLabel} checked={flow.consent} onChange={(event) => setFlow((current) => ({ ...current, consent: event.target.checked }))} /><span><label htmlFor="tmp-community-consent">{privacyCopy.start}</label><button type="button" className="privacy-link-button" onClick={onOpenPrivacyNotice}>{privacyCopy.link}</button>{privacyCopy.end}</span></div>
         <p id="tmp-privacy-copy" className="tmp-onboarding-privacy">{privacyCopy.note}</p>{error && <p className="tmp-onboarding-error" id="tmp-join-error" role="alert">{error}</p>}
         <button type="submit" className="button button-primary tmp-onboarding-submit" disabled={busy}>{busy ? copy.joinSubmitting : copy.joinSubmit}<ArrowRight aria-hidden="true" /></button>
       </form><div className="tmp-onboarding-actions"><button type="button" className="tmp-onboarding-back" onClick={back}><ArrowLeft aria-hidden="true" />{copy.back}</button><span className="tmp-onboarding-hint">{copy.freeNote}</span></div>
     </>}
 
-    {flow.screen === 'success' && <div className="tmp-onboarding-success"><span className="tmp-onboarding-success-icon"><CheckCircle2 aria-hidden="true" /></span><p className="section-eyebrow">{copy.successEyebrow}</p><h3>{copy.successTitle}</h3><p>{copy.successText}</p><div className="tmp-onboarding-success-note"><Sparkles aria-hidden="true" /><span>{copy.successNext}<br /><strong>{copy.successOptional}</strong></span></div><button type="button" className="button button-primary" onClick={() => { trackPrototypeEvent('community_profile_start', { language: lang }); move(variant === 'email-first' ? 'goals' : 'stage'); }}>{copy.successCta}<ArrowRight aria-hidden="true" /></button><button type="button" className="tmp-onboarding-back" onClick={() => { trackPrototypeEvent('onboarding_finished', { language: lang }); move('summary'); }}>{copy.successSkip}</button></div>}
+    {flow.screen === 'success' && <div className="tmp-onboarding-success"><span className="tmp-onboarding-success-icon"><CheckCircle2 aria-hidden="true" /></span><p className="section-eyebrow">{copy.successEyebrow}</p><h3>{copy.successTitle}</h3><p>{copy.successText}</p><div className="tmp-onboarding-success-note"><Sparkles aria-hidden="true" /><span>{copy.successNext}<br /><strong>{copy.successOptional}</strong></span></div><button type="button" className="button button-primary" onClick={() => { trackPrototypeEvent('community_profile_start', { language: lang }); move(variant === 'email-first' ? 'goals' : 'stage'); }}>{copy.successCta}<ArrowRight aria-hidden="true" /></button><button type="button" className="tmp-onboarding-back" onClick={() => { trackPrototypeEvent('onboarding_finished', { language: lang }); setFlow((current) => ({ ...current, profileUpdateToken: undefined })); move('summary'); }}>{copy.successSkip}</button></div>}
 
     {flow.screen === 'stage' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.stageTitle} description={copy.stageText} onBack={back} onSkip={() => skip('stage')}><div className="tmp-onboarding-options">{copy.stages.map((item) => <Option key={item.id} selected={flow.profile.status === item.id} title={item.title} onClick={() => chooseStage(item.id)} />)}</div></OptionalStep>}
 
     {flow.screen === 'study' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.studyTitle} description={copy.studyText} onBack={back} onSkip={() => skip('study')}><div className="tmp-onboarding-options">{copy.studyFields.map(([id, title]) => <Option key={id} selected={flow.profile.studyField === id} title={title} onClick={() => chooseStudy(id)} />)}</div></OptionalStep>}
 
-    {flow.screen === 'studyOther' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.otherStudyTitle} description={copy.otherStudyText} onBack={back} onSkip={() => skip('studyOther')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-study-other">{copy.otherStudyLabel}</label><input id="tmp-study-other" value={flow.profile.studyFieldOther ?? ''} onChange={(event) => setFlow((current) => ({ ...current, profile: { ...current.profile, studyFieldOther: event.target.value } }))} onBlur={(event) => saveProfile({ studyFieldOther: event.target.value })} placeholder={copy.otherStudyPlaceholder} /></div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.continue} onBack={back} onSkip={() => skip('studyOther')} onContinue={() => { saveProfile({ studyFieldOther: flow.profile.studyFieldOther }); move('university'); }} /></OptionalStep>}
+    {flow.screen === 'studyOther' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.otherStudyTitle} description={copy.otherStudyText} onBack={back} onSkip={() => skip('studyOther')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-study-other">{copy.otherStudyLabel}</label><input id="tmp-study-other" value={flow.profile.studyFieldOther ?? ''} onChange={(event) => setFlow((current) => ({ ...current, profile: { ...current.profile, studyFieldOther: event.target.value } }))} placeholder={copy.otherStudyPlaceholder} /></div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.continue} onBack={back} onSkip={() => skip('studyOther')} onContinue={() => { saveProfile({ studyFieldOther: flow.profile.studyFieldOther }); move('university'); }} /></OptionalStep>}
 
-    {flow.screen === 'university' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={['bachelor', 'master', 'research'].includes(flow.profile.status ?? '') ? copy.universityStudentTitle : copy.universityOtherTitle} description={copy.universityText} onBack={back} onSkip={() => skip('university')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-community-university">{copy.universityLabel}</label><input id="tmp-community-university" list="tmp-community-university-options" autoComplete="organization" placeholder={copy.universityPlaceholder} value={flow.profile.university ?? ''} onChange={(event) => setFlow((current) => ({ ...current, profile: { ...current.profile, university: event.target.value } }))} onBlur={(event) => { saveProfile({ university: event.target.value }, 'profile_university_saved', 'provided'); }} /><datalist id="tmp-community-university-options">{commonUniversities.map((name) => <option value={name} key={name} />)}</datalist><p className="tmp-onboarding-privacy">{copy.universityHint}</p></div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.continue} onBack={back} onSkip={() => skip('university')} onContinue={() => { saveProfile({ university: flow.profile.university }, 'profile_university_saved', flow.profile.university ? 'provided' : 'skipped'); move('experience'); }} /></OptionalStep>}
+    {flow.screen === 'university' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={['bachelor', 'master', 'research'].includes(flow.profile.status ?? '') ? copy.universityStudentTitle : copy.universityOtherTitle} description={copy.universityText} onBack={back} onSkip={() => skip('university')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-community-university">{copy.universityLabel}</label><input id="tmp-community-university" list="tmp-community-university-options" autoComplete="organization" placeholder={copy.universityPlaceholder} value={flow.profile.university ?? ''} onChange={(event) => setFlow((current) => ({ ...current, profile: { ...current.profile, university: event.target.value } }))} /><datalist id="tmp-community-university-options">{commonUniversities.map((name) => <option value={name} key={name} />)}</datalist><p className="tmp-onboarding-privacy">{copy.universityHint}</p></div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.continue} onBack={back} onSkip={() => skip('university')} onContinue={() => { saveProfile({ university: flow.profile.university }, 'profile_university_saved', flow.profile.university ? 'provided' : 'skipped'); move('experience'); }} /></OptionalStep>}
 
     {flow.screen === 'experience' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.experienceTitle} description={copy.experienceText} onBack={back} onSkip={() => skip('experience')}><div className="tmp-onboarding-experience">{copy.experience.map((item, index) => <button type="button" className={`tmp-onboarding-option tmp-experience-option${flow.profile.experienceLevel === item.id ? ' is-selected' : ''}`} key={item.id} aria-pressed={flow.profile.experienceLevel === item.id} onClick={() => { saveProfile({ experienceLevel: item.id as ExperienceId }, 'profile_experience_saved', item.id); move('contribution'); }}><span className="tmp-onboarding-level">{index + 1}</span><strong>{item.title}</strong><span className="tmp-onboarding-check">{flow.profile.experienceLevel === item.id && <Check size={15} aria-hidden="true" />}</span></button>)}</div></OptionalStep>}
 
@@ -167,7 +178,7 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
 
     {flow.screen === 'profileLink' && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.linkTitle} description={copy.linkText} onBack={back} onSkip={() => skip('profileLink')}><div className="tmp-onboarding-options">{copy.linkTypes.map(([id, title]) => <Option key={id} selected={Boolean(flow.profile.profileLinks?.[id])} title={title} onClick={() => selectLink(id)} />)}</div></OptionalStep>}
 
-    {flow.screen === 'profileLinkInput' && flow.activeLink && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.linkTypes.find(([id]) => id === flow.activeLink)?.[1] ?? copy.linkTitle} description={copy.linkText} onBack={back} onSkip={() => skip('profileLinkInput')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-profile-link">{copy.linkLabel}</label><input id="tmp-profile-link" type="url" inputMode="url" autoComplete="url" placeholder={copy.linkPlaceholder} value={flow.profile.profileLinks?.[flow.activeLink] ?? ''} onChange={(event) => changeProfileLink(event.target.value)} onBlur={() => { const type = flow.activeLink; const value = type ? flow.profile.profileLinks?.[type] : undefined; if (type && value?.startsWith('https://')) saveProfile({ profileLinks: { ...flow.profile.profileLinks, [type]: value } }, 'profile_link_saved', type); }} />{error && <p className="tmp-onboarding-error" role="alert">{error}</p>}</div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.saveContinue} onBack={back} onSkip={() => skip('profileLinkInput')} onContinue={saveLink} /></OptionalStep>}
+    {flow.screen === 'profileLinkInput' && flow.activeLink && <OptionalStep copy={copy.optional} backLabel={copy.back} skipLabel={copy.skip} title={copy.linkTypes.find(([id]) => id === flow.activeLink)?.[1] ?? copy.linkTitle} description={copy.linkText} onBack={back} onSkip={() => skip('profileLinkInput')} showActions={false}><div className="tmp-onboarding-form"><label htmlFor="tmp-profile-link">{copy.linkLabel}</label><input id="tmp-profile-link" type="url" inputMode="url" autoComplete="url" placeholder={copy.linkPlaceholder} value={flow.profile.profileLinks?.[flow.activeLink] ?? ''} onChange={(event) => changeProfileLink(event.target.value)} />{error && <p className="tmp-onboarding-error" role="alert">{error}</p>}</div><StepActions backLabel={copy.back} skipLabel={copy.skip} continueLabel={copy.saveContinue} onBack={back} onSkip={() => skip('profileLinkInput')} onContinue={saveLink} /></OptionalStep>}
 
     {flow.screen === 'summary' && <div className="tmp-onboarding-summary"><p className="section-eyebrow">{copy.summaryEyebrow}</p><h3>{copy.summaryTitle}</h3><p>{copy.summaryText}</p><SummaryTags title={copy.summaryGoals} tags={selectedGoalTitles} empty={copy.summaryEmpty} />{profileTitles.length > 0 && <SummaryTags title={copy.summaryProfile} tags={profileTitles} />}<div className="tmp-onboarding-summary-actions"><p>{copy.finalInstagramText}</p><a className="button button-primary" href={whatsappLink} target="_blank" rel="noopener noreferrer">{copy.finalCta}<ArrowRight aria-hidden="true" /></a><a className="tmp-onboarding-external" href={instagramLink} target="_blank" rel="noopener noreferrer">{copy.finalSecondary}<ArrowRight aria-hidden="true" /></a></div><button type="button" className="tmp-onboarding-back" onClick={() => { trackPrototypeEvent('onboarding_finished', { language: lang }); resetFlow(); }}>{copy.finalRestart}</button></div>}
   </div>;
