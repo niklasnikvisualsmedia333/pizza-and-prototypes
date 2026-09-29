@@ -3141,7 +3141,8 @@ fieldset legend {
 
 .tmp-onboarding-form input[type="email"],
 .tmp-onboarding-form input[type="text"],
-.tmp-onboarding-form input[list] {
+.tmp-onboarding-form input[list],
+.tmp-onboarding-form input[type="url"] {
   width: 100%;
   min-height: 3.25rem;
   border: 1px solid rgba(255, 255, 255, 0.16);

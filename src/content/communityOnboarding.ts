@@ -2,14 +2,20 @@ import type { Lang } from '../lib/language';
 
 export type GoalId = 'jobs' | 'projects' | 'startups' | 'companies' | 'events' | 'community' | 'exploring';
 export type StageId = 'bachelor' | 'master' | 'research' | 'professional' | 'founder' | 'other';
-export type FieldId = 'tech' | 'data' | 'product' | 'business' | 'entrepreneurship' | 'figuring-out';
+export type StudyFieldId = 'computer-science' | 'ai-data' | 'engineering' | 'business-informatics' | 'business' | 'entrepreneurship' | 'product-design' | 'media' | 'science-research' | 'other' | 'unsure';
+export type ContributionId = 'tech' | 'data' | 'product' | 'business' | 'entrepreneurship' | 'community' | 'unsure';
 export type ExperienceId = 'none' | 'uni-projects' | 'first-role' | 'multiple';
+export type ProfileLinkType = 'linkedin' | 'github' | 'portfolio';
 
 export interface CommunityProfileV2 {
   status?: StageId;
-  contributionAreas?: FieldId[];
-  experienceLevel?: ExperienceId;
+  studyField?: StudyFieldId;
+  studyFieldOther?: string;
   university?: string;
+  experienceLevel?: ExperienceId;
+  contributionAreas?: ContributionId[];
+  profileLinks?: Partial<Record<ProfileLinkType, string>>;
+  updatedAt?: string;
 }
 
 export const commonUniversities = [
@@ -18,115 +24,120 @@ export const commonUniversities = [
   'FOM Hochschule', 'IU Internationale Hochschule',
 ];
 
+const sharedStages = [
+  { id: 'bachelor', title: 'Bachelor' }, { id: 'master', title: 'Master' },
+  { id: 'research', title: 'PhD / Research' }, { id: 'professional', title: 'Young Professional' },
+  { id: 'founder', title: 'Founder / Self-employed' }, { id: 'other', title: 'Other' },
+] as Array<{ id: StageId; title: string }>;
+const englishStudy = [
+  ['computer-science', 'Computer Science / Software'], ['ai-data', 'AI / Data'], ['engineering', 'Engineering'],
+  ['business-informatics', 'Business Informatics'], ['business', 'Business / Management'], ['entrepreneurship', 'Entrepreneurship'],
+  ['product-design', 'Product / UX / Design'], ['media', 'Media / Communications'], ['science-research', 'Natural Sciences / Research'],
+  ['other', 'Other'], ['unsure', 'Still figuring it out'],
+] as Array<[StudyFieldId, string]>;
+const englishContribution = [
+  ['tech', 'Tech & Engineering'], ['data', 'AI / Data / Research'], ['product', 'Product / UX / Design'],
+  ['business', 'Business / Strategy / GTM'], ['entrepreneurship', 'Entrepreneurship / Startups'],
+  ['community', 'Community / Operations'], ['unsure', 'Still figuring it out'],
+] as Array<[ContributionId, string]>;
+
 export const onboardingCopy = {
   de: {
-    questionEyebrow: 'Dein Start bei TMP',
-    goalsTitle: 'Was interessiert dich gerade am meisten?',
-    goalsText: 'Wähle bis zu drei Bereiche. Du kannst das später jederzeit ändern.',
+    questionEyebrow: 'Dein Start bei TMP', goalsTitle: 'Was interessiert dich gerade am meisten?', goalsText: 'Wähle bis zu drei Bereiche.',
     goals: [
       { id: 'jobs', title: 'Jobs & Praktika', description: 'Ausgewählte Möglichkeiten, wenn verfügbar.' },
       { id: 'projects', title: 'Reale Projekte', description: 'An konkreten Herausforderungen arbeiten.' },
-      { id: 'startups', title: 'Startups & Entrepreneurship', description: 'Ideen und Unternehmertum praktisch erleben.' },
+      { id: 'startups', title: 'Startups & Entrepreneurship', description: 'Ideen praktisch weiterbringen.' },
       { id: 'companies', title: 'Unternehmen & Karriere', description: 'Einblicke in Rollen und Arbeitsweisen.' },
-      { id: 'events', title: 'Events & Workshops', description: 'Menschen treffen und gemeinsam ausprobieren.' },
+      { id: 'events', title: 'Events & Workshops', description: 'Gemeinsam ausprobieren und lernen.' },
       { id: 'community', title: 'Community & Leute', description: 'Motivierte Menschen aus mehreren Bereichen.' },
       { id: 'exploring', title: 'Ich schaue mich erstmal um', description: 'Ganz unverbindlich kennenlernen.' },
     ] as Array<{ id: GoalId; title: string; description: string }>,
-    selected: '{count} ausgewählt', continue: 'Weiter', back: 'Zurück', skip: 'Später',
-    joinEyebrow: 'Kostenloser Community-Beitritt', joinTitle: 'Werde Teil der Community.',
-    joinText: 'Tritt kostenlos bei. Keine Bewerbung. Kein Spam.',
+    selected: '{count} ausgewählt', continue: 'Weiter', back: 'Zurück', skip: 'Überspringen',
+    joinEyebrow: 'Kostenlos der Community beitreten', joinTitle: 'Werde Teil von Tech Meets Problems.',
+    joinText: 'Du bekommst relevante Updates zu Opportunities, Projekten, Unternehmen und Community-Formaten. Du musst an nichts teilnehmen und entscheidest selbst, was für dich relevant ist.',
     firstNameLabel: 'Vorname', firstNamePlaceholder: 'Dein Vorname', firstNameRequired: 'Bitte gib deinen Vornamen ein.',
     emailLabel: 'E-Mail-Adresse', emailPlaceholder: 'du@beispiel.de', emailRequired: 'Bitte gib deine E-Mail-Adresse ein.',
     emailInvalid: 'Bitte gib eine gültige E-Mail-Adresse ein.', consentRequired: 'Bitte bestätige den Datenschutzhinweis und die Community-Updates.',
     joinSubmit: 'Kostenlos beitreten', joinSubmitting: 'Wird gespeichert …', joinError: 'Das hat gerade nicht geklappt. Bitte versuche es erneut.',
-    freeNote: 'Keine Bewerbung. Kein Spam.',
+    freeNote: 'Kostenlos. Keine Bewerbung. Kein Spam. Kein Teilnahmezwang.',
     successEyebrow: 'Mitgliedschaft bestätigt', successTitle: 'Du bist drin.',
-    successText: 'Du bist der TMP Community beigetreten.',
-    successNext: 'Wenn du willst, mach TMP in wenigen Klicks relevanter für dich. Alles Weitere ist freiwillig.',
-    successCta: 'Profil ergänzen', successSkip: 'Für jetzt abschließen', optional: 'Optional · jederzeit überspringbar',
-    stageTitle: 'Was beschreibt dich am besten?', stageText: 'Wähle die passendste Option. Das ist kein Bewerbungskriterium.',
+    successText: 'Du bist jetzt Teil der Tech Meets Problems Community und bekommst die wichtigsten Updates mit.',
+    successNext: 'Wenn du willst, erzähl uns noch ein bisschen mehr über dich. So können wir besser verstehen, was für dich relevant ist.',
+    successOptional: 'Alles Weitere ist optional.', successCta: 'Profil kurz ergänzen', successSkip: 'Für jetzt fertig', optional: 'Optional',
+    stageTitle: 'Was beschreibt dich gerade am besten?', stageText: 'Wähle die passendste Option.',
     stages: [
-      { id: 'bachelor', title: 'Bachelor-Student:in' }, { id: 'master', title: 'Master-Student:in' },
-      { id: 'research', title: 'Promotion / Forschung' }, { id: 'professional', title: 'Young Professional' },
-      { id: 'founder', title: 'Gründer:in / selbstständig' }, { id: 'other', title: 'Sonstiges' },
+      { id: 'bachelor', title: 'Bachelor' }, { id: 'master', title: 'Master' }, { id: 'research', title: 'PhD / Forschung' },
+      { id: 'professional', title: 'Young Professional' }, { id: 'founder', title: 'Gründer:in / selbstständig' }, { id: 'other', title: 'Sonstiges' },
     ] as Array<{ id: StageId; title: string }>,
-    fieldTitle: 'In welchen Bereichen möchtest du beitragen?', fieldText: 'Wähle bis zu zwei. Programmieren ist keine Voraussetzung.',
-    fields: [
-      { id: 'tech', title: 'Tech & Engineering' }, { id: 'data', title: 'AI / Data / Research' },
-      { id: 'product', title: 'Product / UX / Design' }, { id: 'business', title: 'Business / Strategy / GTM' },
-      { id: 'entrepreneurship', title: 'Entrepreneurship / Startups' }, { id: 'figuring-out', title: 'Sonstiges / finde ich noch heraus' },
-    ] as Array<{ id: FieldId; title: string }>,
-    fieldLimit: 'Bis zu zwei Bereiche auswählen.',
-    experienceTitle: 'Wie viel relevante Praxiserfahrung hast du bisher?',
-    experienceText: 'Eine grobe Einordnung reicht. Das ist keine Bewertung.',
+    studyTitle: 'Was studierst du bzw. was ist dein Hintergrund?', studyText: 'Wähle eine Option, die am besten passt.',
+    studyFields: [
+      ['computer-science', 'Informatik / Software'], ['ai-data', 'AI / Data'], ['engineering', 'Engineering'],
+      ['business-informatics', 'Wirtschaftsinformatik'], ['business', 'BWL / Business / Management'], ['entrepreneurship', 'Entrepreneurship'],
+      ['product-design', 'Product / UX / Design'], ['media', 'Medien / Kommunikation'], ['science-research', 'Naturwissenschaften / Research'],
+      ['other', 'Sonstiges'], ['unsure', 'Noch unsicher'],
+    ] as Array<[StudyFieldId, string]>,
+    otherStudyTitle: 'Was ist dein Hintergrund?', otherStudyText: 'Optional – ein paar Worte reichen.', otherStudyLabel: 'Hintergrund', otherStudyPlaceholder: 'Zum Beispiel Psychologie',
+    universityStudentTitle: 'Wo studierst du?', universityOtherTitle: 'Hochschule oder Institution, falls relevant', universityText: 'Optional. Du kannst jede Hochschule eintragen oder überspringen.',
+    universityLabel: 'Hochschule oder Institution', universityPlaceholder: 'Zum Beispiel Universität Siegen', universityHint: 'Freitext ist möglich.',
+    experienceTitle: 'Wie viel relevante Praxiserfahrung hast du bisher?', experienceText: 'Eine grobe Einordnung reicht.',
     experience: [
-      { id: 'none', title: 'Noch keine relevante Praxiserfahrung' },
-      { id: 'uni-projects', title: 'Vor allem Uni- oder eigene Projekte' },
-      { id: 'first-role', title: 'Eine erste relevante Rolle, ein Praktikum oder Projekt' },
-      { id: 'multiple', title: 'Mehrere relevante praktische Erfahrungen' },
+      { id: 'none', title: 'Noch keine relevante Praxiserfahrung' }, { id: 'uni-projects', title: 'Vor allem Uni- oder eigene Projekte' },
+      { id: 'first-role', title: 'Erste relevante Rolle, Praktikum oder Projekt' }, { id: 'multiple', title: 'Mehrere relevante praktische Erfahrungen' },
     ] as Array<{ id: ExperienceId; title: string }>,
-    universityTitle: 'Wo studierst oder arbeitest du?', universityText: 'Optional. So verstehen wir besser, wo sich Community-Schwerpunkte entwickeln.',
-    universityLabel: 'Hochschule oder Universität', universityPlaceholder: 'Zum Beispiel Universität Siegen',
-    universityHint: 'Du kannst den Namen frei eingeben oder die Antwort überspringen.',
-    summaryEyebrow: 'Dein TMP-Profil', summaryTitle: 'Das könnte für dich relevant sein.',
-    summaryText: 'Deine Auswahl hilft uns, passende Community-Updates besser einzuordnen. Sie ist kein Matching-Score.',
-    summaryGoals: 'Dein Fokus', summaryProfile: 'Optionales Profil', summaryEmpty: 'Erstmal umsehen',
-    finalInstagramText: 'Bleib mit TMP verbunden und erfahre, wenn es passende Neuigkeiten gibt.',
-    finalCta: 'TMP Community-Kanal öffnen', finalSecondary: 'Auf Instagram folgen', finalRestart: 'Zurück zur Community-Seite',
+    contributionTitle: 'Wo würdest du am liebsten mitwirken?', contributionText: 'Wähle bis zu zwei Bereiche. Das ist unabhängig davon, was du studierst.', contributionLimit: 'Bis zu zwei auswählen.',
+    contributions: [
+      ['tech', 'Tech & Engineering'], ['data', 'AI / Data / Research'], ['product', 'Product / UX / Design'],
+      ['business', 'Business / Strategy / GTM'], ['entrepreneurship', 'Entrepreneurship / Startups'], ['community', 'Community / Operations'], ['unsure', 'Noch unsicher'],
+    ] as Array<[ContributionId, string]>,
+    linkTitle: 'Möchtest du ein Profil verlinken?', linkText: 'Optional. Du kannst auch einfach weitermachen.',
+    linkTypes: [['linkedin', 'LinkedIn'], ['github', 'GitHub'], ['portfolio', 'Portfolio / Website']] as Array<[ProfileLinkType, string]>,
+    linkLabel: 'Profil-Link', linkPlaceholder: 'https://', addAnother: 'Weiteres Profil hinzufügen', saveContinue: 'Weiter',
+    summaryEyebrow: 'Dein TMP-Profil', summaryTitle: 'Danke, dass du dabei bist.', summaryText: 'Deine Auswahl hilft uns, relevante Community-Updates besser einzuordnen.',
+    summaryGoals: 'Dein Interesse', summaryProfile: 'Was du ergänzt hast', summaryEmpty: 'Erstmal umsehen', finalInstagramText: 'Du entscheidest selbst, was für dich relevant ist.',
+    finalCta: 'TMP Community-Kanal öffnen', finalSecondary: 'Auf Instagram folgen', finalRestart: 'Zurück zur Community-Seite', invalidUrl: 'Bitte gib einen gültigen Profil-Link ein.',
   },
   en: {
-    questionEyebrow: 'Your start at TMP',
-    goalsTitle: 'What are you most interested in right now?',
-    goalsText: 'Choose up to three. You can change this later.',
+    questionEyebrow: 'Your start at TMP', goalsTitle: 'What are you most interested in right now?', goalsText: 'Choose up to three areas.',
     goals: [
       { id: 'jobs', title: 'Jobs & Internships', description: 'Selected opportunities when available.' },
       { id: 'projects', title: 'Real Projects', description: 'Work on concrete challenges.' },
-      { id: 'startups', title: 'Startups & Entrepreneurship', description: 'Explore ideas and building a venture.' },
+      { id: 'startups', title: 'Startups & Entrepreneurship', description: 'Move ideas forward in practice.' },
       { id: 'companies', title: 'Companies & Career', description: 'Learn about roles and how teams work.' },
-      { id: 'events', title: 'Events & Workshops', description: 'Meet people and try things together.' },
+      { id: 'events', title: 'Events & Workshops', description: 'Learn and try things together.' },
       { id: 'community', title: 'Community & People', description: 'Meet motivated people across fields.' },
       { id: 'exploring', title: 'Just exploring', description: 'Get to know TMP without pressure.' },
     ] as Array<{ id: GoalId; title: string; description: string }>,
-    selected: '{count} selected', continue: 'Continue', back: 'Back', skip: 'Skip for now',
-    joinEyebrow: 'Join the community for free', joinTitle: 'Become part of the community.',
-    joinText: 'Join for free. No application. No spam.',
+    selected: '{count} selected', continue: 'Continue', back: 'Back', skip: 'Skip',
+    joinEyebrow: 'Join the community for free', joinTitle: 'Join Tech Meets Problems.',
+    joinText: 'Get relevant updates about opportunities, projects, companies and community formats. There is nothing you have to attend or commit to – you decide what is relevant to you.',
     firstNameLabel: 'First name', firstNamePlaceholder: 'Your first name', firstNameRequired: 'Enter your first name.',
     emailLabel: 'Email address', emailPlaceholder: 'you@example.com', emailRequired: 'Enter your email address.',
     emailInvalid: 'Enter a valid email address.', consentRequired: 'Please confirm the privacy notice and community updates.',
     joinSubmit: 'Join for free', joinSubmitting: 'Saving …', joinError: 'We could not save this just now. Please try again.',
-    freeNote: 'No application. No spam.',
+    freeNote: 'Free. No application. No spam. No participation required.',
     successEyebrow: 'Membership confirmed', successTitle: "You're in.",
-    successText: 'You have joined the TMP community.',
-    successNext: 'If you like, make TMP more relevant to you in a few clicks. Everything else is optional.',
-    successCta: 'Add optional profile details', successSkip: 'Finish for now', optional: 'Optional · you can skip at any time',
-    stageTitle: 'What describes you best?', stageText: 'Choose the closest fit. This is not an application criterion.',
-    stages: [
-      { id: 'bachelor', title: 'Bachelor student' }, { id: 'master', title: 'Master student' },
-      { id: 'research', title: 'PhD / Research' }, { id: 'professional', title: 'Young professional' },
-      { id: 'founder', title: 'Founder / Self-employed' }, { id: 'other', title: 'Other' },
-    ] as Array<{ id: StageId; title: string }>,
-    fieldTitle: 'Where would you like to contribute?', fieldText: 'Choose up to two areas. Coding is not required to join.',
-    fields: [
-      { id: 'tech', title: 'Tech & Engineering' }, { id: 'data', title: 'AI / Data / Research' },
-      { id: 'product', title: 'Product / UX / Design' }, { id: 'business', title: 'Business / Strategy / GTM' },
-      { id: 'entrepreneurship', title: 'Entrepreneurship / Startups' }, { id: 'figuring-out', title: 'Other / still figuring it out' },
-    ] as Array<{ id: FieldId; title: string }>,
-    fieldLimit: 'Choose up to two areas.',
-    experienceTitle: 'How much relevant real-world experience do you have so far?',
-    experienceText: 'A rough direction is enough. This is not an assessment.',
+    successText: 'You are now part of the Tech Meets Problems community and will receive the key updates.',
+    successNext: 'If you like, tell us a little more about yourself so we can better understand what is relevant to you.',
+    successOptional: 'Everything else is optional.', successCta: 'Add a few profile details', successSkip: 'Finish for now', optional: 'Optional',
+    stageTitle: 'What describes you best right now?', stageText: 'Choose the closest fit.', stages: sharedStages,
+    studyTitle: "What do you study or what's your background?", studyText: 'Choose the option that fits best.', studyFields: englishStudy,
+    otherStudyTitle: "What's your background?", otherStudyText: 'Optional – a few words are enough.', otherStudyLabel: 'Background', otherStudyPlaceholder: 'For example, psychology',
+    universityStudentTitle: 'Where do you study?', universityOtherTitle: 'University or institution, if relevant', universityText: 'Optional. Enter any institution or skip.',
+    universityLabel: 'University or institution', universityPlaceholder: 'For example, University of Siegen', universityHint: 'You can enter any institution.',
+    experienceTitle: 'How much relevant real-world experience do you have so far?', experienceText: 'A rough direction is enough.',
     experience: [
-      { id: 'none', title: 'No relevant experience yet' },
-      { id: 'uni-projects', title: 'Mostly university or personal projects' },
-      { id: 'first-role', title: 'One first relevant role, internship or project' },
-      { id: 'multiple', title: 'Several relevant practical experiences' },
+      { id: 'none', title: 'No relevant experience yet' }, { id: 'uni-projects', title: 'Mostly university or personal projects' },
+      { id: 'first-role', title: 'A first relevant role, internship or project' }, { id: 'multiple', title: 'Several relevant practical experiences' },
     ] as Array<{ id: ExperienceId; title: string }>,
-    universityTitle: 'Where do you study or work?', universityText: 'Optional. This helps us understand where community clusters may be emerging.',
-    universityLabel: 'University or institution', universityPlaceholder: 'For example University of Siegen',
-    universityHint: 'Type any institution name or skip this question.',
-    summaryEyebrow: 'Your TMP mix', summaryTitle: 'A few relevant next steps.',
-    summaryText: 'Your choices help us make community updates more relevant. This is not a match score.',
-    summaryGoals: 'Your focus', summaryProfile: 'Optional profile', summaryEmpty: 'Just exploring',
-    finalInstagramText: 'Stay connected with TMP and hear when there is something relevant to share.',
-    finalCta: 'Open the TMP community channel', finalSecondary: 'Follow on Instagram', finalRestart: 'Back to the community page',
+    contributionTitle: 'Where would you most like to contribute?', contributionText: 'Choose up to two. This is separate from what you study.', contributionLimit: 'Choose up to two.', contributions: englishContribution,
+    linkTitle: 'Want to add a profile link?', linkText: 'Optional. You can also keep going.',
+    linkTypes: [['linkedin', 'LinkedIn'], ['github', 'GitHub'], ['portfolio', 'Portfolio / Website']] as Array<[ProfileLinkType, string]>,
+    linkLabel: 'Profile link', linkPlaceholder: 'https://', addAnother: 'Add another profile', saveContinue: 'Continue',
+    summaryEyebrow: 'Your TMP profile', summaryTitle: 'Thanks for being here.', summaryText: 'Your choices help us make community updates more relevant.',
+    summaryGoals: 'Your interests', summaryProfile: 'What you added', summaryEmpty: 'Just exploring', finalInstagramText: 'You decide what is relevant to you.',
+    finalCta: 'Open the TMP community channel', finalSecondary: 'Follow on Instagram', finalRestart: 'Back to the community page', invalidUrl: 'Enter a valid profile link.',
   },
-} as const;
+} as const satisfies Record<Lang, object>;
+
+export const onboardingStages = sharedStages;
