@@ -97,7 +97,7 @@ export const onboardingCopy = {
     linkLabel: 'Profil-Link', linkPlaceholder: 'https://', addAnother: 'Weiteres Profil hinzufügen', saveContinue: 'Weiter',
     summaryEyebrow: 'Dein TMP-Profil', summaryTitle: 'Danke, dass du dabei bist.', summaryText: 'Deine Auswahl hilft uns, relevante Community-Updates besser einzuordnen.',
     summaryGoals: 'Dein Interesse', summaryProfile: 'Was du ergänzt hast', summaryEmpty: 'Erstmal umsehen', finalInstagramText: 'Du entscheidest selbst, was für dich relevant ist.',
-    finalCta: 'TMP Community-Kanal öffnen', finalSecondary: 'Auf Instagram folgen', finalRestart: 'Zurück zur Community-Seite', invalidUrl: 'Bitte gib einen gültigen Profil-Link ein.',
+    finalCta: 'TMP WhatsApp Community beitreten', finalSecondary: 'Auf Instagram folgen', finalRestart: 'Zurück zur Community-Seite', invalidUrl: 'Bitte gib einen gültigen Profil-Link ein.',
   },
   en: {
     questionEyebrow: 'Your start at TMP', goalsTitle: 'What are you most interested in right now?', goalsText: 'Choose up to three areas.',
@@ -140,7 +140,7 @@ export const onboardingCopy = {
     linkLabel: 'Profile link', linkPlaceholder: 'https://', addAnother: 'Add another profile', saveContinue: 'Continue',
     summaryEyebrow: 'Your TMP profile', summaryTitle: 'Thanks for being here.', summaryText: 'Your choices help us make community updates more relevant.',
     summaryGoals: 'Your interests', summaryProfile: 'What you added', summaryEmpty: 'Just exploring', finalInstagramText: 'You decide what is relevant to you.',
-    finalCta: 'Open the TMP community channel', finalSecondary: 'Follow on Instagram', finalRestart: 'Back to the community page', invalidUrl: 'Enter a valid profile link.',
+    finalCta: 'Join the TMP WhatsApp community', finalSecondary: 'Follow on Instagram', finalRestart: 'Back to the community page', invalidUrl: 'Enter a valid profile link.',
   },
 } as const satisfies Record<Lang, object>;
 
