@@ -37,6 +37,8 @@ jobs:
           VITE_COMPANY_CONTACT_ENDPOINT: ${{ secrets.VITE_COMPANY_CONTACT_ENDPOINT }}
           VITE_SITE_ENV: production
           VITE_BASE_PATH: /
+          VITE_COMMUNITY_SIGNUP_MODE: live
+          VITE_COMMUNITY_API_ENDPOINT: ${{ vars.VITE_COMMUNITY_API_ENDPOINT }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
