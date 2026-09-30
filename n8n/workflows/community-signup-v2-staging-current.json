@@ -1,0 +1,4681 @@
+{
+  "name": "Tech Meets Problems Community Signup V2 - Staging",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tech-meets-problems-community-v2-staging",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "http://127.0.0.1:5191"
+        }
+      },
+      "id": "da8b9331-c7ea-429d-96a3-5fd742ba5c04",
+      "name": "TMP Community V2 Staging Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        528
+      ],
+      "webhookId": "2b2c6612-0ff8-4f3c-af24-c470d8fd8a1c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = items[0]?.json ?? {};\nconst body = input.body ?? input;\nconst type = String(body.type ?? '').trim();\nconst schemaVersion = String(body.schemaVersion ?? '').trim();\nconst requestId = String(body.requestId ?? '').trim();\nconst now = new Date().toISOString();\nconst allowedGoals = new Set(['jobs','projects','startups','companies','events','community','exploring']);\nconst allowedStatus = new Set(['bachelor','master','research','professional','founder','other']);\nconst allowedStudy = new Set(['computer-science','ai-data','engineering','business-informatics','business','entrepreneurship','product-design','media','science-research','other','unsure']);\nconst allowedExperience = new Set(['none','uni-projects','first-role','multiple']);\nconst allowedContribution = new Set(['tech','data','product','business','entrepreneurship','community','unsure']);\nconst allowedPatchKeys = new Set(['selectedGoals','status','studyField','studyFieldOther','university','experienceLevel','contributionAreas','linkedinUrl','githubUrl','portfolioUrl']);\nfunction clean(v,max=500){ return String(v ?? '').trim().slice(0,max); }\nfunction list(v,set,maxItems){ return Array.isArray(v) ? [...new Set(v.map(x=>clean(x,80)).filter(x=>set.has(x)))].slice(0,maxItems) : []; }\nfunction validEmail(v){ return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v); }\nlet valid = schemaVersion === 'community-v1' && requestId.length >= 8;\nlet error = '';\nlet normalized = { type, schemaVersion, requestId, receivedAtN8n: now };\nif (type === 'community_join') {\n  const p = body.payload ?? {};\n  const firstName = clean(p.firstName,120);\n  const lastName = clean(p.lastName,120);\n  const email = clean(p.email,254);\n  const emailNormalized = email.toLowerCase();\n  const selectedGoals = list(p.selectedGoals, allowedGoals, 3);\n  const language = p.language === 'en' ? 'en' : 'de';\n  const consent = p.consent === true;\n  if (!firstName || !lastName || !validEmail(email) || !consent) { valid = false; error = 'Missing or invalid required join fields'; }\n  const a = p.attribution ?? {};\n  normalized = {\n    ...normalized, valid, error, firstName, lastName, fullName: `${firstName} ${lastName}`.trim(), email, emailNormalized,\n    selectedGoals, language, consent, consentedAt: clean(p.consentedAt,80) || now,\n    consentVersion: clean(p.consentVersion,120) || 'community-updates-v1', createdAt: clean(p.createdAt,80) || now,\n    utmSource: clean(a.utmSource,200), utmMedium: clean(a.utmMedium,200), utmCampaign: clean(a.utmCampaign,200),\n    utmContent: clean(a.utmContent,200), utmTerm: clean(a.utmTerm,200), referrer: clean(a.referrer,1000), landingPage: clean(a.landingPage,1000)\n  };\n} else if (type === 'community_profile_update') {\n  const memberId = clean(body.memberId,120);\n  const token = clean(body.profileUpdateToken,300);\n  const rawPatch = body.patch && typeof body.patch === 'object' && !Array.isArray(body.patch) ? body.patch : {};\n  const patch = {};\n  for (const [k,v] of Object.entries(rawPatch)) {\n    if (!allowedPatchKeys.has(k)) continue;\n    if (k === 'selectedGoals') patch[k] = list(v, allowedGoals, 3);\n    else if (k === 'status' && allowedStatus.has(clean(v,80))) patch[k] = clean(v,80);\n    else if (k === 'studyField' && allowedStudy.has(clean(v,80))) patch[k] = clean(v,80);\n    else if (k === 'experienceLevel' && allowedExperience.has(clean(v,80))) patch[k] = clean(v,80);\n    else if (k === 'contributionAreas') patch[k] = list(v, allowedContribution, 2);\n    else if (['studyFieldOther','university'].includes(k)) patch[k] = clean(v,300);\n    else if (['linkedinUrl','githubUrl','portfolioUrl'].includes(k)) {\n      const url = clean(v,1000); if (!url || /^https:\\/\\//i.test(url)) patch[k] = url;\n    }\n  }\n  if (!memberId || !token || !Object.keys(patch).length) { valid = false; error = 'Missing member, token, or valid profile patch'; }\n  normalized = { ...normalized, valid, error, memberId, profileUpdateToken: token, patch, updatedAt: now };\n} else {\n  valid = false; error = 'Unsupported request type'; normalized = { ...normalized, valid, error };\n}\nreturn [{json: normalized}];"
+      },
+      "id": "bc5d596d-4c51-4f4c-93f2-52682e8ab66a",
+      "name": "Normalize + Validate V2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "808a30cb-64c7-4577-81e7-f0802e31d0e1",
+              "leftValue": "={{ String($json.valid) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eccee3ef-ce37-4d90-a8b8-e3ff854974c2",
+      "name": "Request Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: false, error: $json.error || 'Invalid request' } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "7dc384b2-004e-4297-853b-a30b0a66aaf3",
+      "name": "Respond 400 Invalid",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        672,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e001afc3-71ee-4aa1-a219-a3408a7ea144",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "community_join",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "83f40933-0a63-4f7b-85ef-b688a7fd98f9",
+      "name": "Is Community Join?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "joinRequestId",
+              "lookupValue": "={{ $json.requestId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3c933638-35e2-4600-bf62-87862058cc1b",
+      "name": "Get Existing Join Request",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        144
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const existing = $('Get Existing Join Request').first().json ?? {};\nconst profileUpdateToken = $('Crypto4').first().json.profileTokenForResponse;\nif (!existing.memberId || !profileUpdateToken) throw new Error('Retry recovery data missing');\nreturn [{ json: { webhookResponse: { ok: true, memberId: existing.memberId, profileUpdateToken } } }];"
+      },
+      "id": "75a2a7e8-6841-4902-ab20-4c6c3cf41ea4",
+      "name": "Build Existing Join Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.webhookResponse }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "8ce7fd91-f681-4a9f-b782-887236a073ba",
+      "name": "Respond Existing Join",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $('Normalize + Validate V2').item.json;\nconst memberId = $('Crypto').first().json.memberId;\nconst now = new Date().toISOString();\nconst whatsappUrl = 'https://chat.whatsapp.com/Is1hh61VskMLHRgjqgJNUH';\nconst websiteUrl = 'https://techmeetsproblems.com/';\nconst instagramUrl = 'https://www.instagram.com/techmeetsproblems/';\nconst linkedinUrl = 'https://www.linkedin.com/company/tech-meets-problems';\nconst safe = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');\nconst goals = JSON.stringify(r.selectedGoals ?? []);\nconst trackingSummary = `source:${r.utmSource||''} | medium:${r.utmMedium||''} | campaign:${r.utmCampaign||''} | content:${r.utmContent||''}`;\nconst consentTextDe = 'Ich habe die Datenschutzhinweise gelesen und möchte der Tech Meets Problems Community beitreten. Ich kann relevante Community-Updates per E-Mail erhalten. Jederzeit widerrufbar.';\nconst consentTextEn = 'I have read the privacy notice and want to join the Tech Meets Problems community. I may receive relevant community updates by email. I can unsubscribe at any time.';\nconst confirmationSubjectDe = 'Willkommen bei Tech Meets Problems';\nconst confirmationSubjectEn = 'Welcome to Tech Meets Problems';\nconst confirmationHtmlDe = `<div style=\"font-family:Arial,sans-serif;line-height:1.55;color:#111\"><p>Hi ${safe(r.firstName)},</p><p>du bist jetzt Teil der <strong>Tech Meets Problems Community</strong>.</p><p>Du bekommst von uns relevante Updates zu Projekten, Opportunities, Unternehmen und Events. Du entscheidest selbst, woran du teilnehmen möchtest.</p><p>In unserer WhatsApp Community bekommst du Updates und kannst dich mit anderen aus der Community austauschen:</p><p><a href=\"${whatsappUrl}\"><strong>TMP WhatsApp Community beitreten</strong></a></p><p>Weitere Updates findest du auf <a href=\"${instagramUrl}\">Instagram</a>, <a href=\"${linkedinUrl}\">LinkedIn</a> und auf unserer <a href=\"${websiteUrl}\">Website</a>.</p><p><strong>Wichtig für zukünftige Mails:</strong> Wenn diese Mail im Spam gelandet ist, markiere sie bitte als „Kein Spam“ oder verschiebe sie in den Posteingang. So landen kommende TMP-Mails eher direkt bei dir.</p><p>Viele Grüße<br>Tech Meets Problems</p></div>`;\nconst confirmationHtmlEn = `<div style=\"font-family:Arial,sans-serif;line-height:1.55;color:#111\"><p>Hi ${safe(r.firstName)},</p><p>you are now part of the <strong>Tech Meets Problems community</strong>.</p><p>We will send you relevant updates about projects, opportunities, companies and events. You decide what you want to take part in.</p><p>Join the TMP WhatsApp community for updates and exchange with other members:</p><p><a href=\"${whatsappUrl}\"><strong>Join the TMP WhatsApp community</strong></a></p><p>You can also find updates on <a href=\"${instagramUrl}\">Instagram</a>, <a href=\"${linkedinUrl}\">LinkedIn</a> and our <a href=\"${websiteUrl}\">website</a>.</p><p><strong>For future emails:</strong> If this message landed in spam, mark it as “Not spam” or move it to your inbox. This helps future TMP emails reach you directly.</p><p>Best<br>Tech Meets Problems</p></div>`;\nconst internalSubject = `Neue TMP Community-Anmeldung: ${r.fullName || r.email}`;\nconst internalHtml = `<div style=\"font-family:Arial,sans-serif;line-height:1.5;color:#111\"><h2>Neue TMP Community-Anmeldung</h2><p><strong>Name:</strong> ${safe(r.fullName)}</p><p><strong>E-Mail:</strong> ${safe(r.email)}</p><p><strong>Interessen:</strong> ${safe((r.selectedGoals||[]).join(', '))}</p><p><strong>Sprache:</strong> ${safe(r.language)}</p><p><strong>Member-ID:</strong> ${safe(memberId)}</p><p><strong>UTM:</strong> source=${safe(r.utmSource)}, medium=${safe(r.utmMedium)}, campaign=${safe(r.utmCampaign)}, content=${safe(r.utmContent)}</p></div>`;return [{json:{...r,joinRequestId:r.requestId,memberId,now,goals,trackingSummary,consentText:r.language==='en'?consentTextEn:consentTextDe,confirmationSubject:r.language==='en'?confirmationSubjectEn:confirmationSubjectDe,confirmationHtml:r.language==='en'?confirmationHtmlEn:confirmationHtmlDe,internalSubject,internalHtml}}];"
+      },
+      "id": "0de3fa43-8419-494a-b1b9-c8cc68456ca4",
+      "name": "Generate Join Member + Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "joinRequestId": "={{ $json.joinRequestId.trim() }}",
+            "memberId": "={{ $json.memberId }}",
+            "emailNormalized": "={{ $('Normalize + Validate V2').first().json.emailNormalized.trim() }}",
+            "updatedAt": "={{ $('Generate Join Member + Token').first().json.now.trim() }}",
+            "schemaVersion": "={{ $('Normalize + Validate V2').first().json.schemaVersion.trim() }}",
+            "createdAt": "={{ $('Generate Join Member + Token').first().json.now.trim() }}",
+            "profileUpdateTokenHash": "=  {{ $('Crypto2').first().json.profileUpdateTokenHash }}",
+            "internalNotificationStatus": "pending"
+          },
+          "matchingColumns": [
+            "joinRequestId"
+          ],
+          "schema": [
+            {
+              "id": "joinRequestId",
+              "displayName": "joinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateToken",
+              "displayName": "profileUpdateToken",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "schemaVersion",
+              "displayName": "schemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileRequestId",
+              "displayName": "lastProfileRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileUpdatedAt",
+              "displayName": "lastProfileUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationSentAt",
+              "displayName": "confirmationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationSentAt",
+              "displayName": "internalNotificationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateTokenHash",
+              "displayName": "profileUpdateTokenHash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationStatus",
+              "displayName": "internalNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationError",
+              "displayName": "internalNotificationError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requestId",
+              "displayName": "requestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "receivedAtN8n",
+              "displayName": "receivedAtN8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valid",
+              "displayName": "valid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "selectedGoals",
+              "displayName": "selectedGoals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consent",
+              "displayName": "consent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consentedAt",
+              "displayName": "consentedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consentVersion",
+              "displayName": "consentVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmSource",
+              "displayName": "utmSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmMedium",
+              "displayName": "utmMedium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmCampaign",
+              "displayName": "utmCampaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmContent",
+              "displayName": "utmContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmTerm",
+              "displayName": "utmTerm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "referrer",
+              "displayName": "referrer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "landingPage",
+              "displayName": "landingPage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateTokenForResponse",
+              "displayName": "profileUpdateTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "now",
+              "displayName": "now",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "goals",
+              "displayName": "goals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "trackingSummary",
+              "displayName": "trackingSummary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consentText",
+              "displayName": "consentText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "confirmationSubject",
+              "displayName": "confirmationSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationHtml",
+              "displayName": "confirmationHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "internalSubject",
+              "displayName": "internalSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalHtml",
+              "displayName": "internalHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "profileTokenForResponse",
+              "displayName": "profileTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "534cd71c-16fc-4823-b216-730435db8867",
+      "name": "Upsert V2 System Join",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2240,
+        48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const j=$('Generate Join Member + Token').item.json; return [{json:{\nsubmittedAt:j.createdAt,receivedAtN8n:j.receivedAtN8n,firstName:j.firstName,lastName:j.lastName,fullName:j.fullName,email:j.email,\ninterests:(j.selectedGoals||[]).join(', '),event:'Tech Meets Problems Community',signupType:'community_v2',eventId:'community_general',formVersion:'community-v1',language:j.language,\nlandingPage:j.landingPage,referrer:j.referrer,trackingSummary:j.trackingSummary,utmSource:j.utmSource,utmMedium:j.utmMedium,utmCampaign:j.utmCampaign,utmContent:j.utmContent,utmTerm:j.utmTerm,\n_replyto:j.email,_subject:j.internalSubject,emailLanguage:j.language,emailSent:'pending',internalStatus:'new',community_confirmation_status:'pending',internal_notification_status:'pending',\nprivacyAndUpdatesAccepted:true,privacyAndUpdatesAcceptedAt:j.consentedAt,privacyAndUpdatesVersion:j.consentVersion,privacyAndUpdatesText:j.consentText,\nmemberId:j.memberId,communityV2JoinRequestId:j.requestId,emailNormalized:j.emailNormalized,selectedGoalsV2:JSON.stringify(j.selectedGoals||[]),communityV2SchemaVersion:j.schemaVersion,communityV2CreatedAt:j.createdAt,communityV2UpdatedAt:j.now\n}}];"
+      },
+      "id": "78bfaab1-cde7-4252-a05b-93715fefef4d",
+      "name": "Prepare Main Community Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 257005917,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=257005917"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "memberId"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "a0e53e22-4b28-4cee-9dcd-45e19c4b297f",
+      "name": "Upsert Community Member",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2688,
+        48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $('Generate Join Member + Token').item.json; return [{json:{webhookResponse:{ok:true,memberId:j.memberId,profileUpdateToken:$('Crypto1').first().json.profileUpdateToken}}}];"
+      },
+      "id": "3c78c5f6-d80e-4fdc-bdaa-5ce7ab0d46a4",
+      "name": "Build Join Success Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.webhookResponse }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "45130b45-eacd-4f4f-96d9-25a9d9f81cd9",
+      "name": "Respond Join Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        3136,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Generate Join Member + Token').item.json.email }}",
+        "subject": "={{ $('Generate Join Member + Token').item.json.confirmationSubject }}",
+        "message": "={{ $('Generate Join Member + Token').item.json.confirmationHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "e9ddccaa-0dd7-46c8-935f-0e4bff7e0bb2",
+      "name": "Gmail - Send V2 Community Confirmation",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3360,
+        48
+      ],
+      "webhookId": "fe38c757-83c2-4c27-9975-c4bfc4f110fb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TIlsycb4qzSl9Vm9",
+          "name": "nvmrobot gmail"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "info@techmeetsproblems.com",
+        "subject": "={{ $('Generate Join Member + Token').item.json.internalSubject }}",
+        "message": "={{ $('Generate Join Member + Token').item.json.internalHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "6d3b2f50-7923-48a8-beff-aea077b3efab",
+      "name": "Gmail - Send V2 Internal Notification",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3584,
+        144
+      ],
+      "webhookId": "12cbc703-0a44-43e7-96fe-fa794b5fab6a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TIlsycb4qzSl9Vm9",
+          "name": "nvmrobot gmail"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "90862ffa-d10c-4856-9bc3-b97a79db3c80",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "community_profile_update",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5c67598d-1340-4866-8e51-dcdee0f60c7a",
+      "name": "Is Profile Update?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: false, error: 'Unsupported request type' } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "0aac36cf-56d5-4855-b004-eb5e9bf9551d",
+      "name": "Respond 400 Unsupported",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1120,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "memberId",
+              "lookupValue": "={{ $('Normalize + Validate V2').item.json.memberId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8715e21b-3d05-43b8-893d-2819c5f6cd2f",
+      "name": "Get V2 Member System Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1120,
+        528
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const request = $('Normalize + Validate V2').first()?.json ?? {};\nconst system = $('Get V2 Member System Row').first()?.json ?? {};\nconst submittedHash = $('Crypto3').first()?.json?.submittedTokenHash ?? '';\nconst storedHash = String(system.profileUpdateTokenHash ?? '').trim();\nconst authorized = Boolean(request.memberId && String(system.memberId ?? '').trim() === String(request.memberId).trim() && storedHash && storedHash === String(submittedHash).trim());\nreturn [{ json: { authorized, memberId: request.memberId, requestId: request.requestId, patch: request.patch || {}, updatedAt: request.updatedAt } }];"
+      },
+      "id": "528184c2-32da-49e2-8192-a33653de60ee",
+      "name": "Verify Profile Update Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d7458c59-f65e-4804-8728-fcff67c27b5d",
+              "leftValue": "={{ String($json.authorized) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4a3d8298-6669-43ee-8902-7905b8286d8e",
+      "name": "Profile Update Authorized?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: false, error: 'Profile update not authorized' } }}",
+        "options": {
+          "responseCode": 403
+        }
+      },
+      "id": "d86d0c93-b8f0-42a8-b16a-743e79cd4221",
+      "name": "Respond 403 Profile Update",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2016,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const v=$('Verify Profile Update Token').item.json; const p=v.patch||{}; const out={memberId:v.memberId,communityV2UpdatedAt:v.updatedAt}; if('selectedGoals' in p){out.selectedGoalsV2=JSON.stringify(p.selectedGoals||[]);out.interests=(p.selectedGoals||[]).join(', ');} if('status' in p)out.status=p.status; if('studyField' in p)out.studyField=p.studyField; if('studyFieldOther' in p)out.studyFieldOther=p.studyFieldOther; if('university' in p)out.university=p.university; if('experienceLevel' in p)out.experienceLevel=p.experienceLevel; if('contributionAreas' in p)out.contributionAreasV2=JSON.stringify(p.contributionAreas||[]); if('linkedinUrl' in p)out.linkedinLink=p.linkedinUrl; if('githubUrl' in p)out.githubLink=p.githubUrl; if('portfolioUrl' in p)out.portfolioLink=p.portfolioUrl; return [{json:out}];"
+      },
+      "id": "96fb2d70-10cd-4da3-a18f-c7e7673316b2",
+      "name": "Prepare Main Profile Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 257005917,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=257005917"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "memberId"
+          ],
+          "schema": [
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "receivedAtN8n",
+              "displayName": "receivedAtN8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "university",
+              "displayName": "university",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "universityOther",
+              "displayName": "universityOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "studyField",
+              "displayName": "studyField",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "studyFieldOther",
+              "displayName": "studyFieldOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "codingLevel",
+              "displayName": "codingLevel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "eventLanguage",
+              "displayName": "eventLanguage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "startupInterest",
+              "displayName": "startupInterest",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "followUp",
+              "displayName": "followUp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "githubLink",
+              "displayName": "githubLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "linkedinLink",
+              "displayName": "linkedinLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "portfolioLink",
+              "displayName": "portfolioLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pizza",
+              "displayName": "pizza",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "interests",
+              "displayName": "interests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sourceOther",
+              "displayName": "sourceOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "foodNotes",
+              "displayName": "foodNotes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "signupType",
+              "displayName": "signupType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "eventId",
+              "displayName": "eventId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formVersion",
+              "displayName": "formVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "landingPage",
+              "displayName": "landingPage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "referrer",
+              "displayName": "referrer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "trackingSummary",
+              "displayName": "trackingSummary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmSource",
+              "displayName": "utmSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmMedium",
+              "displayName": "utmMedium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmCampaign",
+              "displayName": "utmCampaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmContent",
+              "displayName": "utmContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmTerm",
+              "displayName": "utmTerm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_replyto",
+              "displayName": "_replyto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_subject",
+              "displayName": "_subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailLanguage",
+              "displayName": "emailLanguage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailSent",
+              "displayName": "emailSent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalStatus",
+              "displayName": "internalStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "manualNotes",
+              "displayName": "manualNotes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_sent_at",
+              "displayName": "participant_update_2026_06_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_language",
+              "displayName": "participant_update_2026_06_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_status",
+              "displayName": "participant_update_2026_06_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_error",
+              "displayName": "participant_update_2026_06_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_sent_at",
+              "displayName": "community_confirmation_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_status",
+              "displayName": "community_confirmation_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_error",
+              "displayName": "community_confirmation_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastContactedAt",
+              "displayName": "lastContactedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesAccepted",
+              "displayName": "privacyAndUpdatesAccepted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesAcceptedAt",
+              "displayName": "privacyAndUpdatesAcceptedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesVersion",
+              "displayName": "privacyAndUpdatesVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesText",
+              "displayName": "privacyAndUpdatesText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeShown",
+              "displayName": "photoVideoNoticeShown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeVersion",
+              "displayName": "photoVideoNoticeVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeText",
+              "displayName": "photoVideoNoticeText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_status",
+              "displayName": "event1_selection_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_sent_at",
+              "displayName": "event1_selection_email_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_language",
+              "displayName": "event1_selection_email_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_status",
+              "displayName": "event1_selection_email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_error",
+              "displayName": "event1_selection_email_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_confirmation_status",
+              "displayName": "event1_confirmation_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_confirmation_received_at",
+              "displayName": "event1_confirmation_received_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_buddy_request",
+              "displayName": "event1_buddy_request",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_buddy_notes",
+              "displayName": "event1_buddy_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_notes",
+              "displayName": "event1_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_sent_at",
+              "displayName": "tech_jobs_email_2026_07_13_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_language",
+              "displayName": "tech_jobs_email_2026_07_13_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_status",
+              "displayName": "tech_jobs_email_2026_07_13_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2JoinRequestId",
+              "displayName": "communityV2JoinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "selectedGoalsV2",
+              "displayName": "selectedGoalsV2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "experienceLevel",
+              "displayName": "experienceLevel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contributionAreasV2",
+              "displayName": "contributionAreasV2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2SchemaVersion",
+              "displayName": "communityV2SchemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2CreatedAt",
+              "displayName": "communityV2CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2UpdatedAt",
+              "displayName": "communityV2UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internal_notification_status",
+              "displayName": "internal_notification_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "453909fc-6807-4e44-9669-f46445978c11",
+      "name": "Update Community Member Profile",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2240,
+        432
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const v=$('Verify Profile Update Token').item.json; return [{json:{memberId:v.memberId,updatedAt:v.updatedAt,lastProfileRequestId:v.requestId,lastProfileUpdatedAt:v.updatedAt}}];"
+      },
+      "id": "a5a4b607-7db1-4129-a708-9a61fd042af7",
+      "name": "Prepare System Profile Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "memberId"
+          ],
+          "schema": [
+            {
+              "id": "joinRequestId",
+              "displayName": "joinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateToken",
+              "displayName": "profileUpdateToken",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "schemaVersion",
+              "displayName": "schemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileRequestId",
+              "displayName": "lastProfileRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileUpdatedAt",
+              "displayName": "lastProfileUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationSentAt",
+              "displayName": "confirmationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationSentAt",
+              "displayName": "internalNotificationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateTokenHash",
+              "displayName": "profileUpdateTokenHash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationStatus",
+              "displayName": "internalNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationError",
+              "displayName": "internalNotificationError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requestId",
+              "displayName": "requestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "receivedAtN8n",
+              "displayName": "receivedAtN8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valid",
+              "displayName": "valid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "selectedGoals",
+              "displayName": "selectedGoals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consent",
+              "displayName": "consent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consentedAt",
+              "displayName": "consentedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consentVersion",
+              "displayName": "consentVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmSource",
+              "displayName": "utmSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmMedium",
+              "displayName": "utmMedium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmCampaign",
+              "displayName": "utmCampaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmContent",
+              "displayName": "utmContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmTerm",
+              "displayName": "utmTerm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "referrer",
+              "displayName": "referrer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "landingPage",
+              "displayName": "landingPage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateTokenForResponse",
+              "displayName": "profileUpdateTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "now",
+              "displayName": "now",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "goals",
+              "displayName": "goals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "trackingSummary",
+              "displayName": "trackingSummary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "consentText",
+              "displayName": "consentText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationSubject",
+              "displayName": "confirmationSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationHtml",
+              "displayName": "confirmationHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalSubject",
+              "displayName": "internalSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalHtml",
+              "displayName": "internalHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileTokenForResponse",
+              "displayName": "profileTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "27a16663-5cb3-4e36-ad5a-0dff45ba2708",
+      "name": "Update V2 System Metadata",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2688,
+        432
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const v=$('Verify Profile Update Token').item.json; return [{json:{webhookResponse:{ok:true,memberId:v.memberId,updatedAt:v.updatedAt}}}];"
+      },
+      "id": "37cfb0c8-ccea-40b1-86bd-38d76fc0ecb6",
+      "name": "Build Profile Update Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.webhookResponse }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "55b3e275-500b-4af4-99f6-5b54f5eca915",
+      "name": "Respond Profile Update Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        3136,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## TMP Community V2 staging\n\nImport on the same n8n instance. Existing Google Sheets and Gmail credential references are preserved.\n\nWebhook path: `tech-meets-problems-community-v2-staging`\n\nThis workflow is intentionally inactive after import. It writes new Community joins to the existing `TMP_Community_Future_Events` tab and uses the hidden `TMP_Community_V2_System` tab for idempotency and profile update tokens. Existing rows are not deleted.\n\nBefore production: restrict Allowed Origins, replace the staging webhook path, test end to end, and decide whether to move update tokens out of Sheets into an n8n Data Table or another restricted store.\n",
+        "height": 420,
+        "width": 620
+      },
+      "id": "7cdc81ed-5000-4ad6-a328-f882fb58fc64",
+      "name": "V2 Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "memberId"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        48
+      ],
+      "id": "ca56abe6-ebc4-4eec-92b7-fedcf877ac51",
+      "name": "Crypto"
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "profileUpdateToken",
+        "encodingType": "hex",
+        "stringLength": 64
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        48
+      ],
+      "id": "1aec2700-c12c-4590-bab1-0de918bd4675",
+      "name": "Crypto1"
+    },
+    {
+      "parameters": {
+        "value": "={{ $('Crypto1').first().json.profileUpdateToken }}",
+        "dataPropertyName": "profileUpdateTokenHash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        48
+      ],
+      "id": "bb887799-2073-4974-bcd1-258805437efe",
+      "name": "Crypto2"
+    },
+    {
+      "parameters": {
+        "value": "=={{ $('Normalize + Validate V2').first().json.profileUpdateToken }}",
+        "dataPropertyName": "submittedTokenHash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        528
+      ],
+      "id": "cdbb2cab-91ac-4e60-ab05-871f7f9fcec0",
+      "name": "Crypto3"
+    },
+    {
+      "parameters": {
+        "value": "=={{ $('Crypto4').first().json.profileTokenForResponse }}",
+        "dataPropertyName": "profileUpdateTokenHash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -496
+      ],
+      "id": "c307dd53-ce3b-4380-92e3-99c68abf7dec",
+      "name": "Crypto5"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "joinRequestId": "={{ $json.joinRequestId.trim() }}",
+            "memberId": "={{ $('Get Existing Join Request').first().json.memberId.trim() }}",
+            "profileUpdateTokenHash": "={{ $('Crypto5').first().json.profileUpdateTokenHash.trim() }}",
+            "updatedAt": "={{ $now.toISO() }}",
+            "emailNormalized": "={{ $('Normalize + Validate V2').first().json.emailNormalized.trim() }}",
+            "schemaVersion": "={{ $('Normalize + Validate V2').first().json.schemaVersion.trim() }}",
+            "createdAt": "={{ $('Normalize + Validate V2').first().json.createdAt.trim() }}"
+          },
+          "matchingColumns": [
+            "joinRequestId"
+          ],
+          "schema": [
+            {
+              "id": "joinRequestId",
+              "displayName": "joinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateToken",
+              "displayName": "profileUpdateToken",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "schemaVersion",
+              "displayName": "schemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileRequestId",
+              "displayName": "lastProfileRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lastProfileUpdatedAt",
+              "displayName": "lastProfileUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "confirmationSentAt",
+              "displayName": "confirmationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "internalNotificationSentAt",
+              "displayName": "internalNotificationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "profileUpdateTokenHash",
+              "displayName": "profileUpdateTokenHash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationStatus",
+              "displayName": "internalNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "internalNotificationError",
+              "displayName": "internalNotificationError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "requestId",
+              "displayName": "requestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "receivedAtN8n",
+              "displayName": "receivedAtN8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "valid",
+              "displayName": "valid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "selectedGoals",
+              "displayName": "selectedGoals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consent",
+              "displayName": "consent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consentedAt",
+              "displayName": "consentedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consentVersion",
+              "displayName": "consentVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmSource",
+              "displayName": "utmSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmMedium",
+              "displayName": "utmMedium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmCampaign",
+              "displayName": "utmCampaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmContent",
+              "displayName": "utmContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utmTerm",
+              "displayName": "utmTerm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "referrer",
+              "displayName": "referrer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "landingPage",
+              "displayName": "landingPage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "profileUpdateTokenForResponse",
+              "displayName": "profileUpdateTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "now",
+              "displayName": "now",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "goals",
+              "displayName": "goals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "trackingSummary",
+              "displayName": "trackingSummary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consentText",
+              "displayName": "consentText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "confirmationSubject",
+              "displayName": "confirmationSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "confirmationHtml",
+              "displayName": "confirmationHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "internalSubject",
+              "displayName": "internalSubject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "internalHtml",
+              "displayName": "internalHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "profileTokenForResponse",
+              "displayName": "profileTokenForResponse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "403fb9c1-f619-4288-979d-810b43f096fd",
+      "name": "Upsert V2 System Join1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1792,
+        240
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "profileTokenForResponse",
+        "encodingType": "hex",
+        "stringLength": 64
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        240
+      ],
+      "id": "1c6c2143-cacb-4f53-88c4-3e6b4843bf85",
+      "name": "Crypto4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7628e3db-2184-4bb1-9a22-62fb3a29fb21",
+              "leftValue": "={{ $json.memberId ? \"no\" : \"yes\" }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7d6c2c07-d63f-4c26-a663-49cda20a8a65",
+      "name": "New Join Required?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const join = $('Generate Join Member + Token').first().json;\nconst result = $input.first()?.json ?? {};\nconst failed = Boolean(result.error);\nreturn [{ json: { memberId: join.memberId, community_confirmation_status: failed ? 'failed' : 'sent', community_confirmation_sent_at: failed ? '' : new Date().toISOString(), community_confirmation_error: failed ? 'Gmail send failed. Review the staging execution.' : '' } }];"
+      },
+      "id": "87c1ea97-87eb-4542-8bb6-975029fae592",
+      "name": "Prepare Confirmation Sent Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3584,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 257005917,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=257005917"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "memberId"
+          ],
+          "schema": [
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "receivedAtN8n",
+              "displayName": "receivedAtN8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "university",
+              "displayName": "university",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "universityOther",
+              "displayName": "universityOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "studyField",
+              "displayName": "studyField",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "studyFieldOther",
+              "displayName": "studyFieldOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "codingLevel",
+              "displayName": "codingLevel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "eventLanguage",
+              "displayName": "eventLanguage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "startupInterest",
+              "displayName": "startupInterest",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "followUp",
+              "displayName": "followUp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "githubLink",
+              "displayName": "githubLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "linkedinLink",
+              "displayName": "linkedinLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "portfolioLink",
+              "displayName": "portfolioLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pizza",
+              "displayName": "pizza",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "interests",
+              "displayName": "interests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sourceOther",
+              "displayName": "sourceOther",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "foodNotes",
+              "displayName": "foodNotes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "signupType",
+              "displayName": "signupType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "eventId",
+              "displayName": "eventId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formVersion",
+              "displayName": "formVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "landingPage",
+              "displayName": "landingPage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "referrer",
+              "displayName": "referrer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "trackingSummary",
+              "displayName": "trackingSummary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmSource",
+              "displayName": "utmSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmMedium",
+              "displayName": "utmMedium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmCampaign",
+              "displayName": "utmCampaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmContent",
+              "displayName": "utmContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "utmTerm",
+              "displayName": "utmTerm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_replyto",
+              "displayName": "_replyto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_subject",
+              "displayName": "_subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailLanguage",
+              "displayName": "emailLanguage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailSent",
+              "displayName": "emailSent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalStatus",
+              "displayName": "internalStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "manualNotes",
+              "displayName": "manualNotes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_sent_at",
+              "displayName": "participant_update_2026_06_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_language",
+              "displayName": "participant_update_2026_06_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_status",
+              "displayName": "participant_update_2026_06_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "participant_update_2026_06_error",
+              "displayName": "participant_update_2026_06_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_sent_at",
+              "displayName": "community_confirmation_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_status",
+              "displayName": "community_confirmation_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "community_confirmation_error",
+              "displayName": "community_confirmation_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastContactedAt",
+              "displayName": "lastContactedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesAccepted",
+              "displayName": "privacyAndUpdatesAccepted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesAcceptedAt",
+              "displayName": "privacyAndUpdatesAcceptedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesVersion",
+              "displayName": "privacyAndUpdatesVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "privacyAndUpdatesText",
+              "displayName": "privacyAndUpdatesText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeShown",
+              "displayName": "photoVideoNoticeShown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeVersion",
+              "displayName": "photoVideoNoticeVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "photoVideoNoticeText",
+              "displayName": "photoVideoNoticeText",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_status",
+              "displayName": "event1_selection_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_sent_at",
+              "displayName": "event1_selection_email_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_language",
+              "displayName": "event1_selection_email_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_status",
+              "displayName": "event1_selection_email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_selection_email_error",
+              "displayName": "event1_selection_email_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_confirmation_status",
+              "displayName": "event1_confirmation_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_confirmation_received_at",
+              "displayName": "event1_confirmation_received_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_buddy_request",
+              "displayName": "event1_buddy_request",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_buddy_notes",
+              "displayName": "event1_buddy_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event1_notes",
+              "displayName": "event1_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_sent_at",
+              "displayName": "tech_jobs_email_2026_07_13_sent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_language",
+              "displayName": "tech_jobs_email_2026_07_13_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tech_jobs_email_2026_07_13_status",
+              "displayName": "tech_jobs_email_2026_07_13_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2JoinRequestId",
+              "displayName": "communityV2JoinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "selectedGoalsV2",
+              "displayName": "selectedGoalsV2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "experienceLevel",
+              "displayName": "experienceLevel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contributionAreasV2",
+              "displayName": "contributionAreasV2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2SchemaVersion",
+              "displayName": "communityV2SchemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2CreatedAt",
+              "displayName": "communityV2CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "communityV2UpdatedAt",
+              "displayName": "communityV2UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internal_notification_status",
+              "displayName": "internal_notification_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "6b7a4e1f-bb8e-45f7-ba1a-62cf453f70a1",
+      "name": "Update Community Member Profile1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3808,
+        -48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const join = $('Generate Join Member + Token').first().json;\nconst result = $input.first()?.json ?? {};\nconst failed = Boolean(result.error);\nreturn [{ json: { joinRequestId: join.requestId, internalNotificationStatus: failed ? 'failed' : 'sent', internalNotificationSentAt: failed ? '' : new Date().toISOString(), internalNotificationError: failed ? 'Internal Gmail send failed. Review the staging execution.' : '' } }];"
+      },
+      "id": "9668c667-b71d-470f-9d66-0d3f381581dd",
+      "name": "Prepare Internal Notification Sent Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3808,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE",
+          "mode": "list",
+          "cachedResultName": "TMP_Community_Future_Events_Google_Sheet_Template_FINAL_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1186979670,
+          "mode": "list",
+          "cachedResultName": "TMP_Community_V2_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VCCXSH7U_6vl95hV0_6N3SUAs7mk3n97zqGUuVQGHWE/edit#gid=1186979670"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "joinRequestId"
+          ],
+          "schema": [
+            {
+              "id": "joinRequestId",
+              "displayName": "joinRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "memberId",
+              "displayName": "memberId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateToken",
+              "displayName": "profileUpdateToken",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emailNormalized",
+              "displayName": "emailNormalized",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "schemaVersion",
+              "displayName": "schemaVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileRequestId",
+              "displayName": "lastProfileRequestId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lastProfileUpdatedAt",
+              "displayName": "lastProfileUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confirmationSentAt",
+              "displayName": "confirmationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationSentAt",
+              "displayName": "internalNotificationSentAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUpdateTokenHash",
+              "displayName": "profileUpdateTokenHash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationStatus",
+              "displayName": "internalNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "internalNotificationError",
+              "displayName": "internalNotificationError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "46ec89f6-d92b-4479-99a0-aeb2878a2a10",
+      "name": "Update Internal Notification Status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4032,
+        144
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FtNf2TJZypBTXnq1",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "TMP Community V2 Staging Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize + Validate V2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize + Validate V2": {
+      "main": [
+        [
+          {
+            "node": "Request Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Valid?": {
+      "main": [
+        [
+          {
+            "node": "Is Community Join?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 400 Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Community Join?": {
+      "main": [
+        [
+          {
+            "node": "Get Existing Join Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Profile Update?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Existing Join Request": {
+      "main": [
+        [
+          {
+            "node": "New Join Required?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Existing Join Response": {
+      "main": [
+        [
+          {
+            "node": "Respond Existing Join",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Join Member + Token": {
+      "main": [
+        [
+          {
+            "node": "Crypto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert V2 System Join": {
+      "main": [
+        [
+          {
+            "node": "Prepare Main Community Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Main Community Row": {
+      "main": [
+        [
+          {
+            "node": "Upsert Community Member",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Community Member": {
+      "main": [
+        [
+          {
+            "node": "Build Join Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Join Success Response": {
+      "main": [
+        [
+          {
+            "node": "Respond Join Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond Join Success": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Send V2 Community Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Send V2 Community Confirmation": {
+      "main": [
+        [
+          {
+            "node": "Prepare Confirmation Sent Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Confirmation Sent Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Profile Update?": {
+      "main": [
+        [
+          {
+            "node": "Get V2 Member System Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 400 Unsupported",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get V2 Member System Row": {
+      "main": [
+        [
+          {
+            "node": "Crypto3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Profile Update Token": {
+      "main": [
+        [
+          {
+            "node": "Profile Update Authorized?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Profile Update Authorized?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Main Profile Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 403 Profile Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Main Profile Update": {
+      "main": [
+        [
+          {
+            "node": "Update Community Member Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Community Member Profile": {
+      "main": [
+        [
+          {
+            "node": "Prepare System Profile Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare System Profile Update": {
+      "main": [
+        [
+          {
+            "node": "Update V2 System Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update V2 System Metadata": {
+      "main": [
+        [
+          {
+            "node": "Build Profile Update Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Profile Update Response": {
+      "main": [
+        [
+          {
+            "node": "Respond Profile Update Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto": {
+      "main": [
+        [
+          {
+            "node": "Crypto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto1": {
+      "main": [
+        [
+          {
+            "node": "Generate Join Member + Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto2": {
+      "main": [
+        [
+          {
+            "node": "Upsert V2 System Join",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto3": {
+      "main": [
+        [
+          {
+            "node": "Verify Profile Update Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Join Required?": {
+      "main": [
+        [
+          {
+            "node": "Crypto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crypto4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto4": {
+      "main": [
+        [
+          {
+            "node": "Crypto5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto5": {
+      "main": [
+        [
+          {
+            "node": "Upsert V2 System Join1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert V2 System Join1": {
+      "main": [
+        [
+          {
+            "node": "Build Existing Join Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Confirmation Sent Status": {
+      "main": [
+        [
+          {
+            "node": "Update Community Member Profile1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Internal Notification Sent Status": {
+      "main": [
+        [
+          {
+            "node": "Update Internal Notification Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Send V2 Internal Notification": {
+      "main": [
+        [
+          {
+            "node": "Prepare Internal Notification Sent Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Internal Notification Sent Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Community Member Profile1": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Send V2 Internal Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "nxc4n1L1XGHiQbgP",
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "versionId": "f67c215a-0ec4-4760-86a6-13ed31e5ec1f",
+  "meta": {
+    "instanceId": "926835837dd4f57e85b9586f407af605284bebff70a00ea078ea58f0d409e288"
+  },
+  "nodeGroups": [],
+  "id": "4z85LKUOtEB4OUIw",
+  "tags": []
+}
