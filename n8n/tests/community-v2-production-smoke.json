@@ -1,5 +1,5 @@
 {
-  "name": "TMP Community V2 - Staging Verification Harness",
+  "name": "TMP Community V2 - Production Smoke Verification",
   "nodes": [
     {
       "parameters": {},
@@ -10,7 +10,7 @@
         0,
         0
       ],
-      "id": "a1f5fc21-3a02-468f-82b4-578f1b4cdf07"
+      "id": "092b5ef0-b5aa-4969-a6fc-b56133484b56"
     },
     {
       "parameters": {
@@ -24,11 +24,11 @@
         0,
         192
       ],
-      "id": "c7182803-e18e-4e27-909c-5ca0fcd2df0e"
+      "id": "2da1c965-df6a-424a-bdde-413c47c42568"
     },
     {
       "parameters": {
-        "jsCode": "const runId=String($('Generate Test Request ID').first().json.testRequestId??'');\nconst email='nvmrobot@gmail.com';\nif(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) throw new Error('Set the approved test inbox in this node before running');\nconst now=new Date().toISOString();\nconst body={type:'community_join',schemaVersion:'community-v1',requestId:runId,payload:{firstName:'TMP V2 Harness',lastName:'Run '+runId.slice(0,8),email,selectedGoals:['projects','community'],consent:true,consentedAt:now,consentVersion:'community-updates-v1',language:'en',attribution:{utmSource:'internal-test',utmMedium:'staging',utmCampaign:'community-v2-verification',utmContent:'manual-harness',utmTerm:'',referrer:'',landingPage:'n8n-staging-harness'},createdAt:now}};\nreturn [{json:{runId,body}}];"
+        "jsCode": "const runId = '0527531e-0b84-4ad9-8140-589a771ecebd';\nconst email = 'nvmrobot@gmail.com';\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) throw new Error('Approved internal test inbox is not configured');\nconst now = new Date().toISOString();\nconst body = { type: 'community_join', schemaVersion: 'community-v1', requestId: runId, payload: { firstName: 'TMP V2 Production Smoke', lastName: 'Run ' + runId.slice(0, 8), email, selectedGoals: ['projects', 'community'], consent: true, consentedAt: now, consentVersion: 'community-updates-v1', language: 'en', attribution: { utmSource: 'internal-test', utmMedium: 'production-smoke', utmCampaign: 'community-v2-launch', utmContent: 'n8n-harness', utmTerm: '', referrer: '', landingPage: 'n8n-production-harness' }, createdAt: now } };\nreturn [{ json: { runId, body } }];"
       },
       "name": "Prepare Test Join",
       "type": "n8n-nodes-base.code",
@@ -37,12 +37,12 @@
         0,
         368
       ],
-      "id": "1b116287-e993-4e5b-8601-8e7cf62b64db"
+      "id": "f41c529d-903d-4a5e-9a2c-b98f382d84e9"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -64,7 +64,7 @@
         0,
         544
       ],
-      "id": "c55497ab-5894-4904-9c9c-79035aeaa8e6"
+      "id": "1c8d272c-895f-485c-9b0b-3b185dc0a490"
     },
     {
       "parameters": {
@@ -77,7 +77,7 @@
         0,
         720
       ],
-      "id": "7f3fa78f-2577-4fab-82b4-a04971b67361"
+      "id": "6020a36d-c6e2-4024-9188-a0ea58f13136"
     },
     {
       "parameters": {
@@ -90,12 +90,12 @@
         0,
         912
       ],
-      "id": "8a665255-a52f-40af-9fa8-0e5ec15cfab9"
+      "id": "6d01307d-a296-4312-bc26-43c7e4e0fbf6"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -117,7 +117,7 @@
         0,
         1088
       ],
-      "id": "9a266f17-112f-4520-b984-80e75f28fbed"
+      "id": "4b51892a-87d2-4fed-9c49-1e74bb54b8db"
     },
     {
       "parameters": {
@@ -130,7 +130,7 @@
         0,
         1264
       ],
-      "id": "ab2c9f8a-7d8e-4da9-848e-2a3ed94907bb"
+      "id": "058c9064-7cc3-4236-843c-179f882c23e8"
     },
     {
       "parameters": {
@@ -143,12 +143,12 @@
         0,
         1440
       ],
-      "id": "e45826eb-4956-497f-8410-11119e00120c"
+      "id": "b2621fc9-22c8-4619-b18f-0f499875347c"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -170,7 +170,7 @@
         0,
         1632
       ],
-      "id": "9988e523-7b1e-4c6c-93de-d453eb2cc657"
+      "id": "2491bbfb-3c57-494a-b330-a0f43502fed5"
     },
     {
       "parameters": {
@@ -183,7 +183,7 @@
         0,
         1808
       ],
-      "id": "5fec62c9-52a3-4252-80f0-17e5d04c6740"
+      "id": "7f221677-e525-4df9-ba6c-85482ffd48d0"
     },
     {
       "parameters": {
@@ -196,12 +196,12 @@
         0,
         1984
       ],
-      "id": "de1b390f-c5d5-4a4f-8744-75e7a1272ffb"
+      "id": "74f8e485-86fd-4c10-9e19-1ef92116e631"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -223,7 +223,7 @@
         0,
         2160
       ],
-      "id": "d219193d-297f-4a26-b7f7-ee1b9a9d5301"
+      "id": "5e2ed0b6-15f5-47b2-b12a-d452bc1ef7d3"
     },
     {
       "parameters": {
@@ -236,7 +236,7 @@
         0,
         2528
       ],
-      "id": "aa6c6f8a-aa53-483a-b5a6-fdebdbaf865b"
+      "id": "4d4aa40a-4c7c-4296-bbb1-7a74043fa5dc"
     },
     {
       "parameters": {
@@ -249,12 +249,12 @@
         0,
         2704
       ],
-      "id": "3cd7e30c-2b64-451e-9f2c-ce38a54b704f"
+      "id": "2dd4d3b7-564e-4d38-8982-2de6c462d640"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -276,7 +276,7 @@
         0,
         2880
       ],
-      "id": "50b924a9-ee69-4313-a274-6e6f99e97c42"
+      "id": "83f7d02b-529d-41a2-bad8-9f3150a61a23"
     },
     {
       "parameters": {
@@ -289,7 +289,7 @@
         0,
         3072
       ],
-      "id": "e5567908-f7d7-4b79-896e-b6a689445761"
+      "id": "ba23f8bc-e857-4f28-a86b-d410f42b898e"
     },
     {
       "parameters": {
@@ -302,7 +302,7 @@
         0,
         3248
       ],
-      "id": "70e00e01-8ea3-420b-840f-03afdceb18fb"
+      "id": "40206e60-f5f0-456a-986c-88d9eb198997"
     },
     {
       "parameters": {
@@ -315,12 +315,12 @@
         0,
         3424
       ],
-      "id": "3b221c28-c2ec-4b56-a4df-715b8177f969"
+      "id": "43b0f80e-b2e0-4285-8c29-fd246a0e2399"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -342,7 +342,7 @@
         0,
         3600
       ],
-      "id": "269b73aa-f0e5-4acd-b7f3-a68ae9fb1961"
+      "id": "8b227e66-3d92-47ee-8138-e7aba4f84e59"
     },
     {
       "parameters": {
@@ -355,7 +355,7 @@
         0,
         3792
       ],
-      "id": "9c36938c-f6ee-44be-a7f4-099c2911bc84"
+      "id": "5262345f-f3dc-47c2-b633-7c55dacab013"
     },
     {
       "parameters": {
@@ -368,12 +368,12 @@
         0,
         3968
       ],
-      "id": "b6df2915-228d-4340-8391-f558f7e966f3"
+      "id": "523899b8-950c-4b92-a272-342b3ce66b44"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -395,7 +395,7 @@
         0,
         4144
       ],
-      "id": "1344762e-3217-4fc4-8263-cbc0ddc504cc"
+      "id": "1b259917-81d3-413b-a666-bd0bb7c2c8ee"
     },
     {
       "parameters": {
@@ -408,7 +408,7 @@
         0,
         4320
       ],
-      "id": "00f5192b-c0c7-4657-adf7-25893e5ea710"
+      "id": "00eff592-2260-4e0d-92d7-60aed18f3bbc"
     },
     {
       "parameters": {
@@ -421,12 +421,12 @@
         0,
         4512
       ],
-      "id": "44354288-304c-446f-a148-9ce85d28dfb3"
+      "id": "05ba6048-e079-4a20-99b1-900da82f65f9"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -448,7 +448,7 @@
         0,
         4688
       ],
-      "id": "a56a6ffd-b585-49f1-a02c-4cfe1b2192f6"
+      "id": "6ace482a-22d6-4e47-ab08-ec224ed35965"
     },
     {
       "parameters": {
@@ -461,7 +461,7 @@
         0,
         4864
       ],
-      "id": "1c4d50a5-97d8-4331-a24e-ee8c6b1a5762"
+      "id": "bdbdf01b-eb07-4f56-8dec-0a60c96464d1"
     },
     {
       "parameters": {
@@ -474,12 +474,12 @@
         0,
         5040
       ],
-      "id": "6f7d0973-5837-4543-9fe8-4767c4879074"
+      "id": "9a2ec4fb-18cc-4d5d-b83c-831cb9993893"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -501,7 +501,7 @@
         0,
         5232
       ],
-      "id": "c78e1fd9-ffbf-4530-a1e8-f8cb1a824196"
+      "id": "5112c175-d416-4f26-872d-9aef4fce5364"
     },
     {
       "parameters": {
@@ -514,7 +514,7 @@
         0,
         5408
       ],
-      "id": "840138c7-a8ca-4a2f-803f-982f8e713164"
+      "id": "5b69183a-58ea-4326-ba5a-2dc6f47c6932"
     },
     {
       "parameters": {
@@ -527,12 +527,12 @@
         0,
         5584
       ],
-      "id": "5a82b116-d29f-46cb-9ee3-a08e7d2ae4b7"
+      "id": "0ce91b81-46d9-431e-a3e3-e23a195a7194"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -554,7 +554,7 @@
         0,
         5760
       ],
-      "id": "d874ba55-f340-46fc-b7d9-ee23565f9d7a"
+      "id": "5c70cd9b-b6ec-44e7-aa42-aadf37d088e8"
     },
     {
       "parameters": {
@@ -567,7 +567,7 @@
         0,
         5952
       ],
-      "id": "6b654696-8df7-4dad-8a5c-b8881efac1f3"
+      "id": "9c363f1e-76ae-4272-aa78-91714616bd0e"
     },
     {
       "parameters": {
@@ -580,12 +580,12 @@
         0,
         6128
       ],
-      "id": "1929aa27-ff91-498a-a28e-2229f4f92ede"
+      "id": "db2bd439-e98c-48aa-9f1a-dc63da654985"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.body) }}",
@@ -607,7 +607,7 @@
         0,
         6304
       ],
-      "id": "f79f8b44-6769-4074-8e22-1c8e871d290b"
+      "id": "f1db6532-125c-4f80-abfb-7ee57e707e2d"
     },
     {
       "parameters": {
@@ -620,7 +620,7 @@
         0,
         6480
       ],
-      "id": "2136d92c-bd4d-43a3-a71d-426ac0c9ddfb"
+      "id": "a7fce30a-e70c-40b8-bf12-59e1d7a707b8"
     },
     {
       "parameters": {
@@ -633,7 +633,7 @@
         0,
         6672
       ],
-      "id": "0cf48520-f953-4f03-b313-7ce51b8c7c7d"
+      "id": "99b6c03a-c405-4050-9b37-bb45d32463d2"
     }
   ],
   "pinData": {},
@@ -1030,11 +1030,11 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "0f9519b9-670e-4986-b41d-37e95eae0eaf",
+  "versionId": "77b22c12-a83c-49ed-b8b5-903e175c1f69",
   "meta": {
     "instanceId": "926835837dd4f57e85b9586f407af605284bebff70a00ea078ea58f0d409e288"
   },
   "nodeGroups": [],
-  "id": "KlETkAcr2X8CyBfH",
+  "id": "xqzajV9zdJp0kUUl",
   "tags": []
 }
