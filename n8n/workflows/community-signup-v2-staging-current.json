@@ -912,7 +912,7 @@
           "values": [
             {
               "lookupColumn": "memberId",
-              "lookupValue": "={{ $('Normalize + Validate V2').item.json.memberId }}"
+              "lookupValue": "={{ $('Normalize + Validate V2').first().json.memberId }}"
             }
           ]
         },
@@ -4671,7 +4671,7 @@
     "saveDataErrorExecution": "none",
     "saveManualExecutions": false
   },
-  "versionId": "f67c215a-0ec4-4760-86a6-13ed31e5ec1f",
+  "versionId": "ca817043-9a97-4177-b164-13b719d0e9c4",
   "meta": {
     "instanceId": "926835837dd4f57e85b9586f407af605284bebff70a00ea078ea58f0d409e288"
   },
