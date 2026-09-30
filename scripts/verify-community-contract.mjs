@@ -42,5 +42,10 @@ assert(app.includes('EVENT_MEDIA.communityHero') && assets.includes('communityHe
 assert(!app.includes('heroMap') || app.includes('EVENT_MEDIA.communityHero'), 'Hero image reference audit failed');
 assert(app.includes("VITE_LEGACY_N8N_RETRY === 'true'"), 'Legacy n8n retries are not behind an explicit opt-in guard');
 assert(onboarding.includes('lastNameLabel: \'Nachname\'') && onboarding.includes("lastNameLabel: 'Last name'"), 'Bilingual last-name labels are missing');
+assert(onboarding.includes("joinedNotice: 'Anmeldung hat geklappt. Ergänze noch ein paar Angaben, damit wir besser verstehen, was für dich relevant ist.'"), 'German post-join framing is missing');
+assert(onboarding.includes("joinedNotice: 'Signup worked. Add a few more details so we can better understand what is relevant to you.'"), 'English post-join framing is missing');
+assert(!flow.includes('<p className="section-eyebrow">{copy}</p>'), 'Enrichment steps must not show the generic Optional eyebrow');
+assert(flow.includes('onSkip={() => skip(') && flow.includes('{skipLabel}</button>'), 'Enrichment skip actions must remain available');
+assert(flow.includes('updateCommunityProfile(flow.memberId, flow.profileUpdateToken, partial)'), 'Profile autosave must remain enabled');
 
 console.log('Community onboarding contract checks passed.');
