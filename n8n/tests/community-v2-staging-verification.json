@@ -1,0 +1,1062 @@
+{
+  "name": "TMP Community V2 - Staging Verification Harness",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c8dffd3-73ab-4271-838f-b79d96699df9"
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "testRequestId"
+      },
+      "name": "Generate Test Request ID",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ],
+      "id": "66e44ddd-0528-4a18-a2eb-d3b56c90ead8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const runId=String($('Generate Test Request ID').first().json.testRequestId??'');\nconst email='REPLACE_WITH_APPROVED_TEST_EMAIL';\nif(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) throw new Error('Set the approved test inbox in this node before running');\nconst now=new Date().toISOString();\nconst body={type:'community_join',schemaVersion:'community-v1',requestId:runId,payload:{firstName:'TMP V2 Harness',lastName:'Run '+runId.slice(0,8),email,selectedGoals:['projects','community'],consent:true,consentedAt:now,consentVersion:'community-updates-v1',language:'en',attribution:{utmSource:'internal-test',utmMedium:'staging',utmCampaign:'community-v2-verification',utmContent:'manual-harness',utmTerm:'',referrer:'',landingPage:'n8n-staging-harness'},createdAt:now}};\nreturn [{json:{runId,body}}];"
+      },
+      "name": "Prepare Test Join",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        360
+      ],
+      "id": "e73ae8de-8720-4f94-b3e3-178b50fe2be5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Join",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        540
+      ],
+      "id": "7f9246b2-3cd0-4868-8d7f-0edb9fed0e93"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const prep=$('Prepare Test Join').first().json; if(status!==200||b.ok!==true||!b.memberId||!b.profileUpdateToken) throw new Error('New join assertion failed, HTTP '+status); return [{json:{runId:prep.runId,joinBody:prep.body,memberId:b.memberId,oldToken:b.profileUpdateToken,joinHttpStatus:status,joinOk:true}}];"
+      },
+      "name": "Assert New Join",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        720
+      ],
+      "id": "56968f28-d80c-4f73-a66f-d5087b24e7e6"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert New Join').first().json; const runId=String(s.runId); return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:runId+'-original-token',memberId:s.memberId,profileUpdateToken:s.oldToken,patch:{\"experienceLevel\":\"none\"}}}}];"
+      },
+      "name": "Prepare Original Token Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        900
+      ],
+      "id": "79e01109-5313-4a19-840e-cb23788f4f45"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Original Token Update",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        1080
+      ],
+      "id": "9fc5ab08-6e2c-4d59-b7d4-9d4c6d6ce12b"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; if(status!==200||b.ok!==true) throw new Error(\"Prepare Original Token Update assertion failed\"+' (HTTP '+status+')'); return [{json:{test:\"original-token\",status,ok:true,memberId:b.memberId}}];"
+      },
+      "name": "Assert Original Token Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1260
+      ],
+      "id": "fdb70001-1bcf-4640-9b13-11728509386c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert New Join').first().json; return [{json:{body:s.joinBody}}];"
+      },
+      "name": "Prepare Same-Request Retry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1440
+      ],
+      "id": "700fa2fe-5b1e-4e32-9bf4-b91919289eee"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Join Retry",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        1620
+      ],
+      "id": "b1f21042-6309-497e-bf18-a79d57966d81"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const old=$('Assert New Join').first().json; if(status!==200||b.ok!==true||b.memberId!==old.memberId||!b.profileUpdateToken||b.profileUpdateToken===old.oldToken) throw new Error('Retry rotation assertion failed, HTTP '+status); return [{json:{runId:old.runId,joinBody:old.joinBody,memberId:old.memberId,oldToken:old.oldToken,newToken:b.profileUpdateToken,retryHttpStatus:status,retryOk:true,sameMemberId:true,newTokenIssued:true}}];"
+      },
+      "name": "Assert Retry Token Rotation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1800
+      ],
+      "id": "065aa809-6fe1-4ca0-8dae-fdf42a1579f1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; const runId=String(s.runId); return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:runId+'-old-token-rejection',memberId:s.memberId,profileUpdateToken:s.oldToken,patch:{\"status\":\"bachelor\"}}}}];"
+      },
+      "name": "Prepare Old Token Rejection",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1980
+      ],
+      "id": "215c96b5-69be-4f50-b2d7-9cea01a95281"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Old Token Rejection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        2160
+      ],
+      "id": "aafce5d3-541d-499b-bd82-7fda9894113d"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==403||b.ok===true) throw new Error('Old token was not rejected, HTTP '+status); return [{json:{runId:s.runId,memberId:s.memberId,oldTokenRejected:true,oldTokenHttpStatus:status}}];"
+      },
+      "name": "Assert Old Token Rejected",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        2520
+      ],
+      "id": "ec9bef90-ccf0-4717-9cc7-db5c4a5710f9"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; const runId=String(s.runId); return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:runId+'-new-token-acceptance',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"status\":\"master\"}}}}];"
+      },
+      "name": "Prepare New Token Acceptance",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        2700
+      ],
+      "id": "ceaa04cc-1b64-4ac5-9954-b49476b2e69c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP New Token Acceptance",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        2880
+      ],
+      "id": "babe355f-fa7e-426d-b3a2-1e3e61c368bc"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; if(status!==200||b.ok!==true) throw new Error(\"Prepare New Token Acceptance assertion failed\"+' (HTTP '+status+')'); return [{json:{test:\"new-token-acceptance\",status,ok:true,memberId:b.memberId}}];"
+      },
+      "name": "Assert New Token Acceptance",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        3060
+      ],
+      "id": "34b761e8-673b-44ff-9ad6-2eaca19fe474"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error('New token authorization failed, HTTP '+status); return [{json:{runId:s.runId,memberId:s.memberId,newTokenAccepted:true,newTokenHttpStatus:status}}];"
+      },
+      "name": "Assert New Token Accepted",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        3240
+      ],
+      "id": "53c1e560-abe0-4b53-a158-fc5ed0280ad2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-status',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"status\":\"master\"}}}}];"
+      },
+      "name": "Prepare Profile Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        3420
+      ],
+      "id": "185c5617-628f-4a93-83f1-1768e3390e4d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3600
+      ],
+      "id": "825eeaa7-93c3-4687-8e93-2cc38649d48e"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"status profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"status\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        3780
+      ],
+      "id": "88edeb8d-13ad-4b51-bf35-e7766f5071f8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-studyField',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"studyField\":\"business\"}}}}];"
+      },
+      "name": "Prepare Profile StudyField",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        3960
+      ],
+      "id": "727fdac7-2cb0-4127-a03c-971cd9dd83ec"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile StudyField",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4140
+      ],
+      "id": "d58f2f25-82cc-4d82-8920-3b1fae418f7f"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"studyField profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"studyField\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile StudyField",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        4320
+      ],
+      "id": "3dd0d429-7664-4676-aee4-dd4ed9c355b0"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-university',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"university\":\"TMP Staging Verification University\"}}}}];"
+      },
+      "name": "Prepare Profile University",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        4500
+      ],
+      "id": "5e154dad-5383-4677-a617-e2c3da6e47a2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile University",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4680
+      ],
+      "id": "4c3e6fa2-f980-4488-8ef6-4cbbc731376e"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"university profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"university\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile University",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        4860
+      ],
+      "id": "4e179fa7-5595-455c-bfed-b765d6237027"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-experienceLevel',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"experienceLevel\":\"uni-projects\"}}}}];"
+      },
+      "name": "Prepare Profile ExperienceLevel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5040
+      ],
+      "id": "5a35aa10-3ddc-460b-943a-1386cc3beea7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile ExperienceLevel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        5220
+      ],
+      "id": "6b9c8cbc-864a-4f2d-bf08-64f75ecced36"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"experienceLevel profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"experienceLevel\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile ExperienceLevel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5400
+      ],
+      "id": "ea683e87-955f-4816-9732-a0bcf695eb39"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-contributionAreas',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"contributionAreas\":[\"business\",\"community\"]}}}}];"
+      },
+      "name": "Prepare Profile ContributionAreas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5580
+      ],
+      "id": "a662c489-9ed9-4acb-ad2c-902a4fcac72b"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile ContributionAreas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        5760
+      ],
+      "id": "3c01fde2-1359-4a2e-8912-8b733c2a96ab"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"contributionAreas profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"contributionAreas\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile ContributionAreas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5940
+      ],
+      "id": "4925ba19-feb9-480b-8bbb-8a8eac5da58c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Assert Retry Token Rotation').first().json; return [{json:{body:{type:'community_profile_update',schemaVersion:'community-v1',requestId:s.runId+'-profile-portfolioLink',memberId:s.memberId,profileUpdateToken:s.newToken,patch:{\"portfolioUrl\":\"https://example.com/tmp-staging-verification\"}}}}];"
+      },
+      "name": "Prepare Profile PortfolioLink",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        6120
+      ],
+      "id": "27d9114c-eccd-464a-aaf2-036ad4bd9d75"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv2003679.hstgr.cloud/webhook/tech-meets-problems-community-v2-staging",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "HTTP Profile PortfolioLink",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6300
+      ],
+      "id": "929de34b-517d-4063-8755-2561232ab760"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const status=Number(r.statusCode??r.status??0); const b=r.body&&typeof r.body==='object'?r.body:r; const s=$('Assert Retry Token Rotation').first().json; if(status!==200||b.ok!==true||b.memberId!==s.memberId) throw new Error(\"portfolioLink profile update failed\"+' (HTTP '+status+')'); return [{json:{field:\"portfolioLink\",status,ok:true,sameMemberId:true}}];"
+      },
+      "name": "Assert Profile PortfolioLink",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        6480
+      ],
+      "id": "7197437c-1292-4433-990c-c0e889382e0c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const retry=$('Assert Retry Token Rotation').first().json; const old=$('Assert Old Token Rejected').first().json; const newOk=$('Assert New Token Accepted').first().json; const checks=['Assert Original Token Update','Assert Profile Status','Assert Profile StudyField','Assert Profile University','Assert Profile ExperienceLevel','Assert Profile ContributionAreas','Assert Profile PortfolioLink']; const profiles=checks.map(n=>{const x=$(n).first().json;return {test:x.test||x.field,status:x.status,ok:x.ok===true,sameMemberId:x.sameMemberId??(x.memberId===retry.memberId)};}); return [{json:{joinHttpStatus:$('Assert New Join').first().json.joinHttpStatus,joinOk:true,retryHttpStatus:retry.retryHttpStatus,sameMemberId:retry.sameMemberId,newTokenIssued:retry.newTokenIssued,oldTokenRejected:old.oldTokenRejected,oldTokenHttpStatus:old.oldTokenHttpStatus,newTokenAccepted:newOk.newTokenAccepted,newTokenHttpStatus:newOk.newTokenHttpStatus,profileUpdates:profiles,communityRowsExpected:1,systemRowsExpected:1,emailResendsExpected:0}}];"
+      },
+      "name": "Final Safe Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        6660
+      ],
+      "id": "9b4199d2-b2b5-42e7-8e90-69ebfde5c4c4"
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Test Request ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Test Request ID": {
+      "main": [
+        [
+          {
+            "node": "Prepare Test Join",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Test Join": {
+      "main": [
+        [
+          {
+            "node": "HTTP Join",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Join": {
+      "main": [
+        [
+          {
+            "node": "Assert New Join",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert New Join": {
+      "main": [
+        [
+          {
+            "node": "Prepare Original Token Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Original Token Update": {
+      "main": [
+        [
+          {
+            "node": "HTTP Original Token Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Original Token Update": {
+      "main": [
+        [
+          {
+            "node": "Assert Original Token Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Original Token Update": {
+      "main": [
+        [
+          {
+            "node": "Prepare Same-Request Retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Same-Request Retry": {
+      "main": [
+        [
+          {
+            "node": "HTTP Join Retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Join Retry": {
+      "main": [
+        [
+          {
+            "node": "Assert Retry Token Rotation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Retry Token Rotation": {
+      "main": [
+        [
+          {
+            "node": "Prepare Old Token Rejection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Old Token Rejection": {
+      "main": [
+        [
+          {
+            "node": "HTTP Old Token Rejection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Old Token Rejection": {
+      "main": [
+        [
+          {
+            "node": "Assert Old Token Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare New Token Acceptance": {
+      "main": [
+        [
+          {
+            "node": "HTTP New Token Acceptance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP New Token Acceptance": {
+      "main": [
+        [
+          {
+            "node": "Assert New Token Acceptance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert New Token Accepted": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile Status": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile Status": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile Status": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile StudyField",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile StudyField": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile StudyField",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile StudyField": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile StudyField",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile StudyField": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile University",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile University": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile University",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile University": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile University",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile University": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile ExperienceLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile ExperienceLevel": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile ExperienceLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile ExperienceLevel": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile ExperienceLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile ExperienceLevel": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile ContributionAreas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile ContributionAreas": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile ContributionAreas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile ContributionAreas": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile ContributionAreas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile ContributionAreas": {
+      "main": [
+        [
+          {
+            "node": "Prepare Profile PortfolioLink",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Profile PortfolioLink": {
+      "main": [
+        [
+          {
+            "node": "HTTP Profile PortfolioLink",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Profile PortfolioLink": {
+      "main": [
+        [
+          {
+            "node": "Assert Profile PortfolioLink",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Profile PortfolioLink": {
+      "main": [
+        [
+          {
+            "node": "Final Safe Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert Old Token Rejected": {
+      "main": [
+        [
+          {
+            "node": "Prepare New Token Acceptance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assert New Token Acceptance": {
+      "main": [
+        [
+          {
+            "node": "Assert New Token Accepted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false,
+    "saveExecutionProgress": false
+  },
+  "pinData": {},
+  "versionId": "32114d1b-3aa8-40bd-af27-e314d553894f",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
