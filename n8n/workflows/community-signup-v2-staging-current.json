@@ -2526,7 +2526,7 @@
     },
     {
       "parameters": {
-        "value": "=={{ $('Normalize + Validate V2').first().json.profileUpdateToken }}",
+        "value": "={{ String($('Normalize + Validate V2').first().json.profileUpdateToken) }}",
         "dataPropertyName": "submittedTokenHash"
       },
       "type": "n8n-nodes-base.crypto",
@@ -2540,7 +2540,7 @@
     },
     {
       "parameters": {
-        "value": "=={{ $('Crypto4').first().json.profileTokenForResponse }}",
+        "value": "={{ String($('Crypto4').first().json.profileTokenForResponse) }}",
         "dataPropertyName": "profileUpdateTokenHash"
       },
       "type": "n8n-nodes-base.crypto",
@@ -4671,7 +4671,7 @@
     "saveDataErrorExecution": "none",
     "saveManualExecutions": false
   },
-  "versionId": "ca817043-9a97-4177-b164-13b719d0e9c4",
+  "versionId": "d13bf320-2165-4bd2-a881-f009793b667f",
   "meta": {
     "instanceId": "926835837dd4f57e85b9586f407af605284bebff70a00ea078ea58f0d409e288"
   },
