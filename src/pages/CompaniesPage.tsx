@@ -12,7 +12,7 @@ import {
   Workflow,
 } from 'lucide-react';
 import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBanner';
-import { SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
+import { NetworkSection, SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
 import { EventGallery } from '../components/media/EventGallery';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
@@ -413,6 +413,8 @@ export default function CompaniesPage() {
           </ol>
         </div>
       </section>
+
+      <NetworkSection lang={lang} />
 
       <section id="about" className="page-section">
         <div className="site-shell">

@@ -28,6 +28,8 @@ export type SharedContent = {
   consentAccept: string;
   consentDecline: string;
   supportedBy: string;
+  networkTitle: string;
+  networkText: string;
 };
 
 export const sharedContent: Record<Lang, SharedContent> = {
@@ -60,6 +62,8 @@ export const sharedContent: Record<Lang, SharedContent> = {
     consentAccept: 'Akzeptieren',
     consentDecline: 'Ablehnen',
     supportedBy: 'Unterstützt durch',
+    networkTitle: 'Unser Netzwerk',
+    networkText: 'Austausch, Eventbeiträge und Kontakte im Tech- und Gründungsumfeld verbinden uns mit diesen Organisationen.',
   },
   en: {
     brandLine: 'Builder-first community',
@@ -90,5 +94,7 @@ export const sharedContent: Record<Lang, SharedContent> = {
     consentAccept: 'Accept',
     consentDecline: 'Decline',
     supportedBy: 'Supported by',
+    networkTitle: 'Our Network',
+    networkText: 'We connect with these organizations through exchanges, event contributions and contacts across the tech and startup community.',
   },
 };

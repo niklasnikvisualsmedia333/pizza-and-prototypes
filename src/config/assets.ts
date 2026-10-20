@@ -5,6 +5,9 @@ export const ASSETS = {
   logoTransparent: asset('logo-tech-meets-problems-transparent.png'),
   supporterStartpunkt57: asset('logo-startpunkt57.png'),
   supporterEntrepreneurshipCenter: asset('logo-entrepreneurship-center.png'),
+  networkKlietsch: asset('network/klietsch.svg'),
+  networkAutomatiqSynergies: asset('network/automatiq-synergies.webp'),
+  networkJarvis: asset('network/jarvis.webp'),
   teamProfiles: [
     asset('niklas-bruene.jpg'),
     asset('frederik-krause.jpg'),

@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
-import { SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
+import { NetworkSection, SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
 import { EventGallery } from './components/media/EventGallery';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
@@ -257,14 +257,14 @@ const copy = {
     privacyTitle: 'Privacy notice',
     privacyText: 'The signup asks for your first name, last name, email and consent. Interests are selected before signup and stored only in this browser until you join. Optional profile details include status, study or professional background, university or institution, practical experience, contribution areas and profile links. Language, timestamps and campaign/referrer information are also recorded.',
     privacyDetails: [
-      'This prototype uses mock mode. It does not send signup data to Formspree, n8n, Google Sheets, Gmail or another production registration service. After joining, mock data stays in this browser session.',
+      'Your signup details are sent to our community service to manage your membership and send relevant community updates. Any profile details you add are also saved there.',
       'Photos and videos may be taken at the event to document and communicate Tech Meets Problems. If you do not want to appear recognizably in photos, please tell us on site. For interviews, testimonials or focused individual shots, we will ask separately.',
       'No sale of your data, no spam. You can object to further updates or request deletion at any time by emailing info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Responsible: Niklas Brüne and Frederik Krause.',
       'Purpose: manage Community membership, send relevant updates and understand which areas people are interested in.',
-      'Prototype storage: session storage in this browser. Optional answers can be skipped.',
+      'Storage: your membership and profile details are saved by our community service. This browser session lets you resume signup. Optional answers can be skipped.',
       'Withdrawal, objection or deletion request: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'I have read the ',
@@ -491,14 +491,14 @@ const copy = {
     privacyTitle: 'Datenschutzhinweise',
     privacyText: 'Für den Beitritt fragen wir Vorname, Nachname, E-Mail-Adresse und Einwilligung ab. Interessen werden vor der Anmeldung ausgewählt und bis zum Beitritt nur in diesem Browser gespeichert. Optional kannst du Status, Studien- oder Berufshintergrund, Hochschule oder Institution, Praxiserfahrung, Beitragsbereiche und Profil-Links ergänzen. Sprache, Zeitstempel und Kampagnen- sowie Referrer-Informationen werden ebenfalls erfasst.',
     privacyDetails: [
-      'Dieser Prototyp läuft im Mock-Modus. Er sendet keine Anmeldedaten an Formspree, n8n, Google Sheets, Gmail oder einen anderen produktiven Registrierungsdienst. Nach dem Beitritt bleiben Prototypdaten in der Browser-Session.',
+      'Deine Anmeldedaten werden an unseren Community-Dienst übermittelt, um deine Mitgliedschaft zu verwalten und relevante Community-Updates zu versenden. Ergänzte Profilangaben werden dort ebenfalls gespeichert.',
       'Beim Event können Foto- und Videoaufnahmen entstehen, um Tech Meets Problems zu dokumentieren und darüber zu berichten. Wenn du nicht erkennbar auf Bildern erscheinen möchtest, sag uns bitte vor Ort Bescheid. Für Interviews, Testimonials oder gezielte Einzelaufnahmen fragen wir separat.',
       'Kein Verkauf deiner Daten, kein Spam. Du kannst der Nutzung deiner Daten für weitere Updates jederzeit widersprechen oder eine Löschung anfragen. Schreib dafür an info@techmeetsproblems.com.',
     ],
     privacyItems: [
       'Verantwortlich: Niklas Brüne und Frederik Krause.',
       'Zweck: die Community-Mitgliedschaft verwalten, relevante Updates versenden und Interessen besser verstehen.',
-      'Prototyp-Speicherung: in der Browser-Session. Optionale Angaben können übersprungen werden.',
+      'Speicherung: Mitgliedschaft und Profilangaben werden beim Community-Dienst gespeichert. Diese Browser-Session ermöglicht es dir, die Anmeldung fortzusetzen. Optionale Angaben können übersprungen werden.',
       'Widerruf, Widerspruch oder Löschanfrage: info@techmeetsproblems.com.',
     ],
     privacyConsentStart: 'Ich habe die ',
@@ -1098,6 +1098,7 @@ function App() {
         shareMessage={shareMessage}
       />
       <CommunityCompanyTeaser content={refresh} lang={lang} />
+      <NetworkSection lang={lang} />
       <CommunityTeam content={refresh} />
       <CommunityFaq content={refresh} />
       <PrivacySection t={t} isOpen={privacyNoticeOpen} setIsOpen={setPrivacyNoticeOpen} />
@@ -1228,8 +1229,8 @@ function LatestEvent({
         </div>
         <dl className="event-facts">
           <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
-          {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.language}</dd></div>}
-          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location ? event.address ?? event.language : event.language}</dd></div>}
+          {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.company && <><a href={event.company.url} target="_blank" rel="noopener noreferrer">{event.company.name}</a><br /></>}{event.language}</dd></div>}
+          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location && <>{event.location}<br /></>}{event.address ?? event.language}</dd></div>}
           {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
         </dl>
         <div className="event-followup">

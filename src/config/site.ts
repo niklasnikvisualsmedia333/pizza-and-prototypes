@@ -16,6 +16,11 @@ export const SITE = {
   imprint: 'https://nikvisuals.de/impressum',
   supporters: {
     startpunkt57: 'https://startpunkt57.de/',
-    entrepreneurshipCenter: 'https://www.uni-siegen.de/startup/',
+    entrepreneurshipCenter: 'https://www.uni-siegen.de/ec',
+  },
+  network: {
+    klietsch: 'https://klietsch.com/',
+    automatiqSynergies: 'https://www.automatiq-synergies.de/',
+    jarvis: 'https://jarvis-solutions.de/',
   },
 } as const;
