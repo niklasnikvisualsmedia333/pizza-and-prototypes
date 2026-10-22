@@ -3217,6 +3217,14 @@ fieldset legend {
   line-height: 1.45;
 }
 
+.tmp-onboarding-profile-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
 .tmp-onboarding-success,
 .tmp-onboarding-summary {
   display: grid;

@@ -33,6 +33,8 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
   const [flow, setFlow] = useState<FlowState>(() => getInitialState(variant));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [profileSaveError, setProfileSaveError] = useState(false);
+  const [profileRetrying, setProfileRetrying] = useState(false);
 
   useEffect(() => {
     if (!flow.memberId) {
@@ -44,7 +46,11 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
   }, [flow, variant]);
 
   useEffect(() => {
-    if (flow.memberId && flow.profileUpdateToken) void retryPendingCommunityProfileUpdates(flow.memberId, flow.profileUpdateToken);
+    if (flow.memberId && flow.profileUpdateToken) {
+      void retryPendingCommunityProfileUpdates(flow.memberId, flow.profileUpdateToken).then((saved) => {
+        if (!saved) setProfileSaveError(true);
+      }).catch(() => setProfileSaveError(true));
+    }
   }, [flow.memberId, flow.profileUpdateToken]);
 
   useEffect(() => {
@@ -52,9 +58,21 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
   }, [flow.screen, lang]);
 
   function move(screen: Screen) { setError(''); setFlow((current) => ({ ...current, screen, showJoinNotice: false })); }
+  async function retryProfileUpdates() {
+    if (!flow.memberId || !flow.profileUpdateToken) return;
+    setProfileRetrying(true);
+    try {
+      const saved = await retryPendingCommunityProfileUpdates(flow.memberId, flow.profileUpdateToken);
+      setProfileSaveError(!saved);
+    } catch { setProfileSaveError(true); } finally { setProfileRetrying(false); }
+  }
   function saveProfile(partial: Partial<CommunityProfileV2>, event?: PrototypeEvent, value?: string) {
     setFlow((current) => ({ ...current, profile: { ...current.profile, ...partial } }));
-    if (flow.memberId && flow.profileUpdateToken) void updateCommunityProfile(flow.memberId, flow.profileUpdateToken, partial);
+    if (flow.memberId && flow.profileUpdateToken) {
+      void updateCommunityProfile(flow.memberId, flow.profileUpdateToken, partial)
+        .then((saved) => setProfileSaveError(!saved))
+        .catch(() => setProfileSaveError(true));
+    }
     if (event) trackPrototypeEvent(event, { language: lang, ...(value ? { value } : {}) });
   }
   function toggleGoal(id: GoalId) {
@@ -67,7 +85,11 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
       goals = withoutExploring.includes(id) ? withoutExploring.filter((goal) => goal !== id) : withoutExploring.length < 3 ? [...withoutExploring, id] : withoutExploring;
     }
     setFlow((current) => ({ ...current, goals }));
-    if (flow.memberId && flow.profileUpdateToken) void updateCommunityGoals(flow.memberId, flow.profileUpdateToken, goals);
+    if (flow.memberId && flow.profileUpdateToken) {
+      void updateCommunityGoals(flow.memberId, flow.profileUpdateToken, goals)
+        .then((saved) => setProfileSaveError(!saved))
+        .catch(() => setProfileSaveError(true));
+    }
   }
   function continueGoals() {
     if (!flow.goals.length) { setError(lang === 'de' ? 'Wähle einen Bereich oder „Ich schaue mich erstmal um“.' : 'Choose an area or “Just exploring.”'); return; }
@@ -129,7 +151,7 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
     saveProfile({ profileLinks: { ...flow.profile.profileLinks, [flow.activeLink]: value } }, 'profile_link_saved', flow.activeLink);
     move('profileLink');
   }
-  function resetFlow() { sessionStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem('tmp_community_onboarding_prejoin'); setFlow(getInitialState(variant)); window.location.hash = ''; document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' }); }
+  function resetFlow() { sessionStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem('tmp_community_onboarding_prejoin'); setProfileSaveError(false); setProfileRetrying(false); setFlow(getInitialState(variant)); window.location.hash = ''; document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' }); }
 
   const selectedGoalTitles = flow.goals.filter((id) => id !== 'exploring').map((id) => copy.goals.find((goal) => goal.id === id)?.title).filter((value): value is string => Boolean(value));
   const profileTitles = [
@@ -143,6 +165,7 @@ export function CommunitySignupFlow({ lang, privacyCopy, onOpenPrivacyNotice, wh
 
   return <div className="form-card tmp-onboarding-card" aria-live="polite">
     {flow.showJoinNotice && <div className="tmp-onboarding-success-note"><CheckCircle2 aria-hidden="true" /><span>{copy.joinedNotice}</span></div>}
+    {profileSaveError && flow.memberId && <div className="tmp-onboarding-error tmp-onboarding-profile-error" role="alert"><span>{copy.profileSaveError}</span><button type="button" className="button button-ghost button-small" onClick={() => void retryProfileUpdates()} disabled={profileRetrying}>{profileRetrying ? copy.profileRetrying : copy.profileRetry}</button></div>}
     {flow.screen === 'goals' && <>
       <div className="tmp-onboarding-heading"><p className="section-eyebrow">{copy.questionEyebrow}</p><h3>{copy.goalsTitle}</h3><p>{copy.goalsText}</p></div>
       <div className="tmp-onboarding-options tmp-goals-grid">{copy.goals.map((goal) => { const Icon = GOAL_ICONS[goal.id]; const selected = flow.goals.includes(goal.id); return <button type="button" key={goal.id} className={`tmp-onboarding-option${selected ? ' is-selected' : ''}`} aria-pressed={selected} onClick={() => toggleGoal(goal.id)}><Icon aria-hidden="true" /><span><strong>{goal.title}</strong><small>{goal.description}</small></span><span className="tmp-onboarding-check">{selected && <Check size={15} aria-hidden="true" />}</span></button>; })}</div>

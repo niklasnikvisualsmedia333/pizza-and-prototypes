@@ -65,6 +65,13 @@ export interface CommunityProfileUpdateResponse {
   updatedAt?: string;
 }
 
+const COMMUNITY_API_RETRY_DELAYS_MS = [500, 1500] as const;
+const RETRYABLE_COMMUNITY_API_STATUSES = new Set([429, 500, 502, 503, 504]);
+
+function wait(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
 export function getSignupMode(): SignupMode {
   const mode = import.meta.env.VITE_COMMUNITY_SIGNUP_MODE;
   if (!mode || mode === 'mock') return 'mock';
@@ -83,15 +90,33 @@ export function getCommunityApiEndpoint(): string {
   return parsed.toString();
 }
 
-export async function postCommunityApi<Request, Response>(payload: Request): Promise<Response> {
-  const response = await fetch(getCommunityApiEndpoint(), {
-    method: 'POST',
-    mode: 'cors',
-    credentials: 'omit',
-    cache: 'no-store',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  if (!response.ok) throw new Error(`Community API request failed (${response.status}).`);
-  return await response.json() as Response;
+export async function postCommunityApi<Request, ResponseBody>(payload: Request, options: { retryTransient?: boolean } = {}): Promise<ResponseBody> {
+  for (let attempt = 0; ; attempt += 1) {
+    let response: Response;
+    try {
+      response = await fetch(getCommunityApiEndpoint(), {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        cache: 'no-store',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (error) {
+      const delay = options.retryTransient ? COMMUNITY_API_RETRY_DELAYS_MS[attempt] : undefined;
+      if (delay === undefined) throw error;
+      await wait(delay);
+      continue;
+    }
+
+    if (!response.ok) {
+      const delay = options.retryTransient ? COMMUNITY_API_RETRY_DELAYS_MS[attempt] : undefined;
+      if (options.retryTransient && RETRYABLE_COMMUNITY_API_STATUSES.has(response.status) && delay !== undefined) {
+        await wait(delay);
+        continue;
+      }
+      throw new Error(`Community API request failed (${response.status}).`);
+    }
+    return await response.json() as ResponseBody;
+  }
 }
