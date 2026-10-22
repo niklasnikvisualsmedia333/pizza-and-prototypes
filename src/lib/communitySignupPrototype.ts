@@ -5,6 +5,55 @@ import { getSignupMode, postCommunityApi, type CommunityJoinRequest, type Commun
 const SIGNUPS_KEY = 'tmp_surgical_v2_mock_signups';
 const ANALYTICS_KEY = 'tmp_surgical_v2_analytics_events';
 const DRAFT_KEY = 'tmp_community_onboarding_prejoin';
+const PROFILE_UPDATE_BATCH_DELAY_MS = 250;
+
+type ProfileUpdateFlushState = {
+  timer?: ReturnType<typeof setTimeout>;
+  scheduledRequestId?: string;
+  inFlight: boolean;
+  requestWaiters: Map<string, Array<(saved: boolean) => void>>;
+  drainWaiters: Array<(saved: boolean) => void>;
+};
+
+const profileUpdateFlushStates = new Map<string, ProfileUpdateFlushState>();
+
+function getProfileUpdateFlushState(memberId: string): ProfileUpdateFlushState {
+  let state = profileUpdateFlushStates.get(memberId);
+  if (!state) {
+    state = { inFlight: false, requestWaiters: new Map(), drainWaiters: [] };
+    profileUpdateFlushStates.set(memberId, state);
+  }
+  return state;
+}
+
+function resolveProfileUpdateWaiters(state: ProfileUpdateFlushState, requestId: string, saved: boolean) {
+  const waiters = state.requestWaiters.get(requestId) ?? [];
+  state.requestWaiters.delete(requestId);
+  waiters.forEach((resolve) => resolve(saved));
+}
+
+function resolvePendingProfileUpdateWaiters(state: ProfileUpdateFlushState, row: LocalCommunitySubmission, saved: boolean) {
+  row.pendingProfileUpdates.forEach(({ requestId }) => resolveProfileUpdateWaiters(state, requestId, saved));
+}
+
+function resolveProfileUpdateDrain(state: ProfileUpdateFlushState, saved: boolean) {
+  const waiters = state.drainWaiters.splice(0);
+  waiters.forEach((resolve) => resolve(saved));
+}
+
+function scheduleProfileUpdateFlush(memberId: string, token: string, delayMs: number, resetTimer = false) {
+  const state = getProfileUpdateFlushState(memberId);
+  if (state.timer && resetTimer) {
+    clearTimeout(state.timer);
+    state.timer = undefined;
+  }
+  if (state.timer) return;
+  state.timer = setTimeout(() => {
+    state.timer = undefined;
+    state.scheduledRequestId = undefined;
+    void flushNextProfileUpdate(memberId, token);
+  }, delayMs);
+}
 
 export type PrototypeEvent =
   | 'community_cta_click' | 'onboarding_start' | 'onboarding_step_view' | 'onboarding_step_complete'
@@ -126,10 +175,9 @@ export async function updateCommunityProfile(memberId: string, token: string, pa
     if (!Object.keys(patch).length) return true;
     row.profile = { ...row.profile, ...partialProfile, updatedAt: new Date().toISOString() };
     row.profilePresence = getProfilePresence(row.profile);
-    if (row.mode === 'live') row.pendingProfileUpdates.push({ requestId: crypto.randomUUID(), patch });
     sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
     if (row.mode === 'mock') return true;
-    return flushPendingProfileUpdates(row, rows, token);
+    return queueProfileUpdate(memberId, token, patch);
   } catch { return false; }
 }
 
@@ -139,10 +187,9 @@ export async function updateCommunityGoals(memberId: string, token: string, goal
     const row = rows.find((item) => item.join.memberId === memberId);
     if (!row || (row.mode === 'live' && (!token || row.profileUpdateToken !== token))) return false;
     row.join.selectedGoals = goals;
-    if (row.mode === 'live') row.pendingProfileUpdates.push({ requestId: crypto.randomUUID(), patch: { selectedGoals: goals } });
     sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
     if (row.mode === 'mock') return true;
-    return flushPendingProfileUpdates(row, rows, token);
+    return queueProfileUpdate(memberId, token, { selectedGoals: goals });
   } catch { return false; }
 }
 
@@ -150,7 +197,7 @@ export async function retryPendingCommunityProfileUpdates(memberId: string, toke
   const rows = readRows();
   const row = rows.find((item) => item.join.memberId === memberId);
   if (!row || row.mode !== 'live' || !token || row.profileUpdateToken !== token) return false;
-  return flushPendingProfileUpdates(row, rows, token);
+  return flushPendingProfileUpdates(memberId, token);
 }
 
 function toProfilePatch(profile: Partial<CommunityProfileV2>): CommunityProfilePatch {
@@ -167,21 +214,99 @@ function toProfilePatch(profile: Partial<CommunityProfileV2>): CommunityProfileP
   return patch;
 }
 
-async function flushPendingProfileUpdates(row: LocalCommunitySubmission, rows: LocalCommunitySubmission[], token: string): Promise<boolean> {
-  let allSaved = true;
-  for (const pending of [...row.pendingProfileUpdates]) {
-    try {
-      const request: CommunityProfileUpdateRequest = {
-        type: 'community_profile_update', schemaVersion: 'community-v1', requestId: pending.requestId,
-        memberId: row.join.memberId, profileUpdateToken: token, patch: pending.patch,
-      };
-      const response = await postCommunityApi<CommunityProfileUpdateRequest, CommunityProfileUpdateResponse>(request);
-      if (!response.ok || response.memberId !== row.join.memberId) { allSaved = false; continue; }
-      row.pendingProfileUpdates = row.pendingProfileUpdates.filter((item) => item.requestId !== pending.requestId);
-    } catch { allSaved = false; }
-    sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
+function queueProfileUpdate(memberId: string, token: string, patch: CommunityProfilePatch): Promise<boolean> {
+  const rows = readRows();
+  const row = rows.find((item) => item.join.memberId === memberId);
+  if (!row || row.mode !== 'live' || !token || row.profileUpdateToken !== token) return Promise.resolve(false);
+
+  const state = getProfileUpdateFlushState(memberId);
+  let pending = state.scheduledRequestId
+    ? row.pendingProfileUpdates.find((item) => item.requestId === state.scheduledRequestId)
+    : undefined;
+  if (pending) {
+    pending.patch = { ...pending.patch, ...patch };
+  } else {
+    pending = { requestId: crypto.randomUUID(), patch };
+    row.pendingProfileUpdates.push(pending);
+    state.scheduledRequestId = pending.requestId;
   }
-  return allSaved;
+  sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(rows));
+
+  const acknowledged = new Promise<boolean>((resolve) => {
+    const waiters = state.requestWaiters.get(pending!.requestId) ?? [];
+    waiters.push(resolve);
+    state.requestWaiters.set(pending!.requestId, waiters);
+  });
+  scheduleProfileUpdateFlush(memberId, token, PROFILE_UPDATE_BATCH_DELAY_MS, true);
+  return acknowledged;
+}
+
+function flushPendingProfileUpdates(memberId: string, token: string): Promise<boolean> {
+  const row = readRows().find((item) => item.join.memberId === memberId);
+  if (!row || row.mode !== 'live' || !token || row.profileUpdateToken !== token) return Promise.resolve(false);
+  if (!row.pendingProfileUpdates.length) return Promise.resolve(true);
+
+  const state = getProfileUpdateFlushState(memberId);
+  const drained = new Promise<boolean>((resolve) => state.drainWaiters.push(resolve));
+  if (!state.inFlight && !state.timer) scheduleProfileUpdateFlush(memberId, token, 0);
+  return drained;
+}
+
+async function flushNextProfileUpdate(memberId: string, token: string) {
+  const state = getProfileUpdateFlushState(memberId);
+  if (state.inFlight) return;
+
+  const currentRow = readRows().find((item) => item.join.memberId === memberId);
+  if (!currentRow || currentRow.mode !== 'live' || !token || currentRow.profileUpdateToken !== token) {
+    if (currentRow) resolvePendingProfileUpdateWaiters(state, currentRow, false);
+    resolveProfileUpdateDrain(state, false);
+    return;
+  }
+
+  const pending = currentRow.pendingProfileUpdates[0];
+  if (!pending) {
+    resolveProfileUpdateDrain(state, true);
+    return;
+  }
+
+  state.inFlight = true;
+  let saved = false;
+  try {
+    const request: CommunityProfileUpdateRequest = {
+      type: 'community_profile_update', schemaVersion: 'community-v1', requestId: pending.requestId,
+      memberId, profileUpdateToken: token, patch: pending.patch,
+    };
+    const response = await postCommunityApi<CommunityProfileUpdateRequest, CommunityProfileUpdateResponse>(request, { retryTransient: true });
+    if (!response.ok || response.memberId !== memberId) throw new Error('Profile update was not acknowledged by the server.');
+
+    const latestRows = readRows();
+    const latestRow = latestRows.find((item) => item.join.memberId === memberId);
+    if (!latestRow) throw new Error('Profile update session was not found after server acknowledgment.');
+    latestRow.pendingProfileUpdates = latestRow.pendingProfileUpdates.filter((item) => item.requestId !== pending.requestId);
+    sessionStorage.setItem(SIGNUPS_KEY, JSON.stringify(latestRows));
+    resolveProfileUpdateWaiters(state, pending.requestId, true);
+    saved = true;
+  } catch {
+    resolveProfileUpdateWaiters(state, pending.requestId, false);
+  } finally {
+    state.inFlight = false;
+  }
+
+  const latestRow = readRows().find((item) => item.join.memberId === memberId);
+  if (!saved) {
+    if (state.timer) clearTimeout(state.timer);
+    state.timer = undefined;
+    state.scheduledRequestId = undefined;
+    if (latestRow) resolvePendingProfileUpdateWaiters(state, latestRow, false);
+    resolveProfileUpdateDrain(state, false);
+    return;
+  }
+
+  if (!latestRow || !latestRow.pendingProfileUpdates.length) {
+    resolveProfileUpdateDrain(state, true);
+    return;
+  }
+  scheduleProfileUpdateFlush(memberId, token, PROFILE_UPDATE_BATCH_DELAY_MS);
 }
 
 export function getProfilePresence(profile: CommunityProfileV2): LocalCommunitySubmission['profilePresence'] {
