@@ -25,6 +25,10 @@ export type SiteEvent = {
   image: string;
   registrationStatus: RegistrationStatus;
   registrationUrl?: string;
+  registrationNoteDe?: string;
+  registrationNoteEn?: string;
+  registrationCtaDe?: string;
+  registrationCtaEn?: string;
   recapUrl?: string;
   descriptionDe: string;
   descriptionEn: string;
@@ -75,7 +79,7 @@ export const EVENTS: SiteEvent[] = [
   },
   {
     slug: 'tech-talks-niklas-woelfl-automatiq-2026',
-    status: 'upcoming',
+    status: 'past',
     titleDe: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
     titleEn: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
     subtitleDe: 'Eintritt frei · Vortrag auf Englisch',
@@ -90,12 +94,38 @@ export const EVENTS: SiteEvent[] = [
     eventTypeEn: 'Talk & open Q&A',
     language: 'EN',
     image: ASSETS.event.roomAlternative,
-    registrationStatus: 'open',
+    registrationStatus: 'closed',
     registrationUrl: 'https://forms.gle/X49w7RSGtuF3Ay4q8',
     descriptionDe:
       'Einblicke in den Aufbau eines KI-Startups, den Einsatz von KI in industriellen Workflows und Entrepreneurship. Dazu gibt es eine offene Fragerunde. Im Anschluss ist Zeit für kostenlose Getränke und lockeren Austausch.',
     descriptionEn:
       'Insights into building an AI startup, real-world applications of AI in industrial workflows and entrepreneurship, followed by an open Q&A. Free drinks and informal conversations afterward.',
+  },
+  {
+    slug: 'pizza-and-prototypes-pagyz-2026',
+    status: 'upcoming',
+    titleDe: 'Pizza & Prototypes × Pagyz',
+    titleEn: 'Pizza & Prototypes × Pagyz',
+    subtitleDe: 'Kostenlos · Echte Probleme. Kleine Teams. Gemeinsam etwas entwickeln.',
+    subtitleEn: 'Free admission · Real problems. Small teams. Hands-on building.',
+    date: '2026-11-18',
+    startTime: '17:30',
+    endTime: '20:30',
+    location: 'Startpunkt57 / Haus der Innovation',
+    address: 'Sandstraße 26, 57072 Siegen, Germany',
+    eventTypeDe: 'Workshop · Pizza & Getränke inklusive',
+    eventTypeEn: 'Workshop · Free pizza & drinks',
+    language: 'EN',
+    capacity: 30,
+    image: ASSETS.event.roomAlternative,
+    registrationStatus: 'open',
+    registrationUrl: 'https://forms.gle/YMBLpsbM746i9xHk7',
+    registrationNoteDe: 'Eine Anmeldung ist erforderlich. Es gibt rund 30 Plätze. Dein Platz wird separat per E-Mail bestätigt.',
+    registrationNoteEn: 'Registration is required. Places are limited to around 30 participants. Your place will be confirmed by email.',
+    registrationCtaDe: 'Jetzt zum Workshop anmelden',
+    registrationCtaEn: 'Register for the workshop',
+    descriptionDe: 'Gemeinsam mit Pagyz, einem KI-Startup für intelligentere wissenschaftliche Recherche, arbeiten wir an sechs echten Herausforderungen aus KI, Software und UX. In kleinen Teams entwickeln wir Ideen, Workflows, Mockups oder erste Prototypen. Willkommen sind Menschen aus Informatik, KI, Design, HCI/UX, Produktentwicklung und Business.',
+    descriptionEn: 'Join us for a hands-on workshop with Pagyz, an AI startup building smarter tools for scientific research. Choose from six real challenges in AI, software and UX and develop ideas, workflows, mockups or first prototypes in small teams. Open to developers, designers, students and business-minded problem-solvers.',
   },
 ];
 

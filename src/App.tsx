@@ -1230,6 +1230,7 @@ function LatestEvent({
         <dl className="event-facts">
           <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
           {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.company && <><a href={event.company.url} target="_blank" rel="noopener noreferrer">{event.company.name}</a><br /></>}{event.language}</dd></div>}
+          {!event.speaker && (event.startTime || event.location) && <div><dt>{event.language}</dt></div>}
           {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location && <>{event.location}<br /></>}{event.address ?? event.language}</dd></div>}
           {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
         </dl>
@@ -1237,7 +1238,7 @@ function LatestEvent({
           <p>{isUpcoming ? (lang === 'de' ? event.descriptionDe : event.descriptionEn) : content.eventFallbackText}</p>
           {isUpcoming && (
             <p className="event-registration-note">
-              {directRegistrationUrl ? content.eventRegistrationDirectNote : content.eventRegistrationNote}
+              {directRegistrationUrl ? (lang === 'de' ? event.registrationNoteDe : event.registrationNoteEn) ?? content.eventRegistrationDirectNote : content.eventRegistrationNote}
             </p>
           )}
           <div className="event-actions">
@@ -1248,7 +1249,7 @@ function LatestEvent({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {event.registrationStatus === 'waitlist' ? content.eventWaitlistLabel : content.eventRegisterCta}
+                {event.registrationStatus === 'waitlist' ? content.eventWaitlistLabel : (lang === 'de' ? event.registrationCtaDe : event.registrationCtaEn) ?? content.eventRegisterCta}
                 <ExternalLink aria-hidden="true" />
               </a>
             )}
