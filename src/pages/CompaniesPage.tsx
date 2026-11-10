@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { AnalyticsConsentBanner } from '../components/layout/AnalyticsConsentBanner';
 import { NetworkSection, SectionHeading, Supporters, TeamBlock } from '../components/layout/SharedSections';
-import { EventGallery } from '../components/media/EventGallery';
+import { EventOverview } from '../components/media/EventOverview';
 import { SiteFooter } from '../components/layout/SiteFooter';
 import { SiteHeader } from '../components/layout/SiteHeader';
 import { ASSETS, EVENT_MEDIA } from '../config/assets';
@@ -361,44 +361,13 @@ export default function CompaniesPage() {
         </div>
       </section>
 
-      <section id="pilot-proof" className="page-section page-section-muted">
-        <div className="site-shell">
-          <SectionHeading eyebrow={content.proofEyebrow} title={content.proofTitle} intro={content.proofText} />
-          <a
-            className="button button-secondary recap-aftermovie-link"
-            href={SITE.aftermovie.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {SITE.aftermovie.label[lang]}
-            <ExternalLink aria-hidden="true" />
-          </a>
-          <EventGallery
-            images={[
-              EVENT_MEDIA.roomAlternative,
-              EVENT_MEDIA.builderDiscussion,
-              EVENT_MEDIA.codeCloseup,
-              EVENT_MEDIA.presenterProjector,
-              EVENT_MEDIA.demo,
-            ].map((image, index) => ({
-              ...image,
-              alt: content.proofImageAlts[index],
-              caption: content.proofImageCaptions[index],
-            }))}
-            lightboxLabel={content.galleryLabel}
-            previousLabel={content.galleryPrevious}
-            nextLabel={content.galleryNext}
-            closeLabel={content.galleryClose}
-          />
-          <div className="expectation-card expectation-card-compact">
-            <Sparkles aria-hidden="true" />
-            <div>
-              <h3>{content.proofExpectationTitle}</h3>
-              <p>{content.proofExpectation}</p>
-            </div>
-          </div>
+      <EventOverview page="company" lang={lang} />
+      <div className="site-shell">
+        <div className="expectation-card expectation-card-compact">
+          <Sparkles aria-hidden="true" />
+          <div><h3>{content.proofExpectationTitle}</h3><p>{content.proofExpectation}</p></div>
         </div>
-      </section>
+      </div>
 
       <section className="page-section">
         <div className="site-shell process-layout">

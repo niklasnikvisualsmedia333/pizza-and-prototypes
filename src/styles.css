@@ -4325,6 +4325,30 @@ fieldset legend {
   object-fit: contain;
 }
 
+.event-overview-title { margin: 0 0 1.5rem; font-size: 1.7rem; color: #fff; }
+.event-overview-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.event-overview-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 0.5rem; background: #0d1523; }
+.event-overview-image { position: relative; aspect-ratio: 16 / 9; }
+.event-overview-cover { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.event-overview-arrow { position: absolute; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; background: rgba(5, 13, 24, 0.8); color: #fff; cursor: pointer; }
+.event-overview-arrow.is-previous { left: 0.5rem; }
+.event-overview-arrow.is-next { right: 0.5rem; }
+.event-overview-arrow:focus-visible { outline: 2px solid #70dcea; outline-offset: 2px; }
+.event-overview-arrow svg { width: 1.2rem; height: 1.2rem; }
+.event-overview-content { display: flex; flex: 1; flex-direction: column; padding: 1rem; }
+.event-overview-content time { color: #70dcea; font-size: 0.8rem; }
+.event-overview-content h3 { margin: 0.5rem 0; color: #fff; font-size: 1rem; line-height: 1.35; }
+.event-overview-content p { margin: 0 0 0.7rem; color: #aeb9ca; font-size: 0.82rem; line-height: 1.4; }
+.event-overview-actions { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin-top: auto; padding-top: 0.75rem; }
+.event-overview-actions .event-gallery { margin: 0; }
+.event-overview-action { display: inline-flex; align-items: center; gap: 0.3rem; border: 0; padding: 0; background: transparent; color: #70dcea; font: inherit; font-size: 0.82rem; cursor: pointer; text-decoration: none; }
+.event-overview-action:hover { text-decoration: underline; }
+.event-overview-action svg { width: 0.85rem; height: 0.85rem; }
+@media (max-width: 700px) {
+  .event-overview-list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0.8rem; padding-bottom: 0.8rem; }
+  .event-overview-card { flex: 0 0 85%; scroll-snap-align: start; }
+}
+
 .event-lightbox figcaption {
   margin-top: 0.7rem;
   color: #d7e0ec;
