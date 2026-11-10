@@ -143,9 +143,9 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     ],
     communityProfileEyebrow: 'Die Community',
     communityProfileTitle: 'Technische Studierende und junge Berufstätige.',
-    communityProfileFacts: ['Über 120 Mitglieder', 'Viele studieren im Master', 'International und praxiserfahren'],
+    communityProfileFacts: ['Über 180 Mitglieder', 'Rund 80 % Studierende', 'Informatik, Technik und Design'],
     communityProfileText:
-      'Viele Mitglieder haben ihren Bachelor in Deutschland oder im Ausland abgeschlossen und studieren heute im Master. Ein großer Teil bringt bereits Berufserfahrung aus Unternehmen, Projekten oder eigener Gründung mit.',
+      'Die Community vereint unter anderem Menschen aus Informatik, Ingenieurwesen und HCI/UX. Dazu kommen Perspektiven aus Business, Data und KI.',
     proofEyebrow: 'Unser erstes Event',
     proofTitle: 'Pizza & Prototypes · 26. Juni 2026',
     proofText: 'Bei unserem ersten Event arbeiteten kleine Teams an einem realen, anonymisierten Problemraum. Entstanden sind Workflows, Mockups, technische Konzepte und erste Prototypen.',
@@ -280,9 +280,9 @@ export const companiesContent: Record<Lang, CompaniesContent> = {
     ],
     communityProfileEyebrow: 'The community',
     communityProfileTitle: 'Technical students and young professionals.',
-    communityProfileFacts: ['More than 120 members', 'Many are master’s students', 'International and experienced in practice'],
+    communityProfileFacts: ['More than 180 members', 'Around 80% students', 'Computing, engineering and design'],
     communityProfileText:
-      'Many members completed their bachelor’s degree in Germany or abroad and are now studying at master’s level. A significant part of the community already brings experience from companies, projects or their own ventures.',
+      'The community brings together people from computer science, engineering and HCI/UX, alongside perspectives from business, data and AI.',
     proofEyebrow: 'Our first event',
     proofTitle: 'Pizza & Prototypes · 26 June 2026',
     proofText: 'At our first event, small teams worked on a real, anonymized problem space. They developed workflows, mockups, technical concepts and first prototypes.',

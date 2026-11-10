@@ -123,7 +123,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Praxis, Austausch und neue Perspektiven.',
     benefitsIntro:
-      'Hier findest du praktische Erfahrung und Einblicke, auch wenn gerade kein Event stattfindet.',
+      'Über 180 Mitglieder aus Informatik, Ingenieurwesen, HCI, Design und weiteren Bereichen lernen und entwickeln gemeinsam.',
     benefits: [
       { title: 'Reale Herausforderungen', text: 'Arbeite an konkreten Problemen aus Unternehmen, Organisationen und Projekten.' },
       { title: 'Praxiserfahrung', text: 'Sammle Erfahrung außerhalb der Vorlesungen, etwa in Projekten und praktischen Formaten.' },
@@ -233,7 +233,7 @@ export const communityContent: Record<Lang, CommunityContent> = {
     benefitsEyebrow: 'Community',
     benefitsTitle: 'Practice, exchange and new perspectives.',
     benefitsIntro:
-      'Find practical experience and useful insights here, even when there is no event coming up.',
+      'More than 180 members from computer science, engineering, HCI, design and other backgrounds learn and build together.',
     benefits: [
       { title: 'Real challenges', text: 'Work on concrete problems from companies, organizations and projects.' },
       { title: 'Practical experience', text: 'Build experience beyond lectures through projects and hands-on formats.' },
