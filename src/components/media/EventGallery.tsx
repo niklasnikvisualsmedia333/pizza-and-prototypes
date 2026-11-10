@@ -24,6 +24,7 @@ export function EventGallery({
   nextLabel,
   closeLabel,
   triggerLabel,
+  initialIndex = 0,
 }: {
   images: EventGalleryImage[];
   lightboxLabel: string;
@@ -31,6 +32,7 @@ export function EventGallery({
   nextLabel: string;
   closeLabel: string;
   triggerLabel?: string;
+  initialIndex?: number;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -74,7 +76,7 @@ export function EventGallery({
 
   return (
     <div className="event-gallery">
-      {triggerLabel ? <button ref={mainButtonRef} type="button" className="event-overview-action" onClick={() => setLightboxOpen(true)}>{triggerLabel}</button> : <>
+      {triggerLabel ? <button ref={mainButtonRef} type="button" className="event-overview-action" onClick={() => { setActiveIndex(initialIndex); setLightboxOpen(true); }}>{triggerLabel}</button> : <>
       <div className="event-gallery-stage">
         <button
           ref={mainButtonRef}

@@ -4328,7 +4328,13 @@ fieldset legend {
 .event-overview-title { margin: 0 0 1.5rem; font-size: 1.7rem; color: #fff; }
 .event-overview-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .event-overview-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 0.5rem; background: #0d1523; }
+.event-overview-image { position: relative; aspect-ratio: 16 / 9; }
 .event-overview-cover { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.event-overview-arrow { position: absolute; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; background: rgba(5, 13, 24, 0.8); color: #fff; cursor: pointer; }
+.event-overview-arrow.is-previous { left: 0.5rem; }
+.event-overview-arrow.is-next { right: 0.5rem; }
+.event-overview-arrow:focus-visible { outline: 2px solid #70dcea; outline-offset: 2px; }
+.event-overview-arrow svg { width: 1.2rem; height: 1.2rem; }
 .event-overview-content { display: flex; flex: 1; flex-direction: column; padding: 1rem; }
 .event-overview-content time { color: #70dcea; font-size: 0.8rem; }
 .event-overview-content h3 { margin: 0.5rem 0; color: #fff; font-size: 1rem; line-height: 1.35; }

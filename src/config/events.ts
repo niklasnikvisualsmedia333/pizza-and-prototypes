@@ -4,11 +4,11 @@ import { SITE } from './site';
 export type EventStatus = 'past' | 'upcoming' | 'draft';
 export type RegistrationStatus = 'closed' | 'open' | 'waitlist' | 'sold_out';
 
-type RecapImage = { src: string; thumbnail?: string; width: number; height: number };
-const recapImage = (index: number, width = 2048, height = 1365): RecapImage => ({
+type RecapImage = { src: string; thumbnail?: string; width: number; height: number; objectPosition?: string };
+const recapImage = (index: number, width = 2048, height = 1365, objectPosition?: string): RecapImage => ({
   src: `${import.meta.env.BASE_URL}assets/event-overview/${index}-1600.webp`,
   thumbnail: `${import.meta.env.BASE_URL}assets/event-overview/${index}-480.webp`,
-  width, height,
+  width, height, objectPosition,
 });
 const existingRecapImages = [EVENT_MEDIA.roomAlternative, EVENT_MEDIA.builderDiscussion, EVENT_MEDIA.codeCloseup, EVENT_MEDIA.presenterProjector, EVENT_MEDIA.demo].map((image) => ({
   src: image.large ?? image.src,
@@ -43,7 +43,7 @@ export type SiteEvent = {
   registrationCtaDe?: string;
   registrationCtaEn?: string;
   recapUrl?: string;
-  recap?: { images: RecapImage[]; aftermovie: string; titleDe?: string; titleEn?: string };
+  recap?: { images: RecapImage[]; aftermovie: string; titleDe?: string; titleEn?: string; summaryDe: string; summaryEn: string };
   descriptionDe: string;
   descriptionEn: string;
 };
@@ -51,7 +51,7 @@ export type SiteEvent = {
 export const EVENTS: SiteEvent[] = [
   {
     slug: 'pizza-and-prototypes-2026',
-    recap: { images: [recapImage(1), ...existingRecapImages], aftermovie: SITE.aftermovie.url },
+    recap: { images: [existingRecapImages[0], recapImage(1), ...existingRecapImages.slice(1)], aftermovie: SITE.aftermovie.url, summaryDe: 'Kleine Teams entwickelten Ideen zu einer echten Herausforderung.', summaryEn: 'Small teams developed ideas around a real challenge.' },
     status: 'past',
     titleDe: 'Pizza & Prototypes',
     titleEn: 'Pizza & Prototypes',
@@ -73,7 +73,7 @@ export const EVENTS: SiteEvent[] = [
   },
   {
     slug: 'ai-in-software-development-2026',
-    recap: { images: [recapImage(2, 1365, 2048), recapImage(3), recapImage(4)], aftermovie: 'https://de.linkedin.com/posts/niklas-bruene_techmeetsproblems-openinnovation-techtalents-activity-7501519713097699328-ibGa', titleDe: 'AI in Software Development – From Euphoria to Reality', titleEn: 'AI in Software Development – From Euphoria to Reality' },
+    recap: { images: [recapImage(2, 1365, 2048, 'center 25%'), recapImage(3), recapImage(4)], aftermovie: 'https://de.linkedin.com/posts/niklas-bruene_techmeetsproblems-openinnovation-techtalents-activity-7501519713097699328-ibGa', titleDe: 'AI in Software Development – From Euphoria to Reality', titleEn: 'AI in Software Development – From Euphoria to Reality', summaryDe: 'Ein Vortrag und Austausch über KI in der Softwareentwicklung.', summaryEn: 'A talk and discussion about AI in software development.' },
     status: 'past',
     titleDe: 'AI in Software Development',
     titleEn: 'AI in Software Development',
@@ -96,7 +96,7 @@ export const EVENTS: SiteEvent[] = [
   },
   {
     slug: 'tech-talks-niklas-woelfl-automatiq-2026',
-    recap: { images: [recapImage(5), recapImage(6), recapImage(7), recapImage(8)], aftermovie: 'https://lnkd.in/p/gauSjxYU' },
+    recap: { images: [recapImage(5), recapImage(6), recapImage(7), recapImage(8)], aftermovie: 'https://lnkd.in/p/gauSjxYU', summaryDe: 'Einblicke in den Aufbau eines KI-Startups und industrielle KI-Anwendungen.', summaryEn: 'Insights into building an AI startup and industrial AI applications.' },
     status: 'past',
     titleDe: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
     titleEn: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
