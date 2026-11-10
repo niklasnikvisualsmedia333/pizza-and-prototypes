@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { AnalyticsConsentBanner as SharedAnalyticsConsentBanner } from './components/layout/AnalyticsConsentBanner';
 import { NetworkSection, SectionHeading, Supporters, TeamBlock } from './components/layout/SharedSections';
-import { EventGallery } from './components/media/EventGallery';
+import { EventOverview } from './components/media/EventOverview';
 import { SiteFooter as SharedSiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
 import { ASSETS as REFRESH_ASSETS, EVENT_MEDIA } from './config/assets';
@@ -1081,7 +1081,7 @@ function App() {
       <LatestEvent content={refresh} lang={lang} />
       <CommunityBenefits content={refresh} />
       <SessionProcess content={refresh} />
-      <PilotRecap content={refresh} lang={lang} />
+      <EventOverview page="community" lang={lang} />
       <div id="community-signup">
         <Registration
           t={t}
@@ -1259,53 +1259,6 @@ function LatestEvent({
             </a>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function PilotRecap({ content, lang }: { content: typeof communityContent.en; lang: Lang }) {
-  const galleryImages = [
-    EVENT_MEDIA.roomAlternative,
-    EVENT_MEDIA.builderDiscussion,
-    EVENT_MEDIA.codeCloseup,
-    EVENT_MEDIA.presenterProjector,
-    EVENT_MEDIA.demo,
-  ].map((image, index) => ({
-    ...image,
-    alt: content.recapImageAlts[index],
-    caption: content.recapImageCaptions[index],
-  }));
-
-  return (
-    <section id="recap" className="page-section page-section-muted">
-      <div className="site-shell">
-        <SectionHeading eyebrow={content.recapEyebrow} title={content.recapTitle} intro={content.recapText} />
-        <p className="recap-date">{content.recapDate}</p>
-        <a
-          className="button button-secondary recap-aftermovie-link"
-          href={SITE.aftermovie.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {SITE.aftermovie.label[lang]}
-          <ExternalLink aria-hidden="true" />
-        </a>
-        <ul className="recap-proof-list recap-proof-list-inline">
-          {content.recapFacts.map((fact) => (
-            <li key={fact}>
-              <Check aria-hidden="true" />
-              {fact}
-            </li>
-          ))}
-        </ul>
-        <EventGallery
-          images={galleryImages}
-          lightboxLabel={content.galleryLabel}
-          previousLabel={content.galleryPrevious}
-          nextLabel={content.galleryNext}
-          closeLabel={content.galleryClose}
-        />
       </div>
     </section>
   );

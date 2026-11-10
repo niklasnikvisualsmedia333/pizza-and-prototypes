@@ -1,8 +1,21 @@
-import { ASSETS } from './assets';
+import { ASSETS, EVENT_MEDIA } from './assets';
 import { SITE } from './site';
 
 export type EventStatus = 'past' | 'upcoming' | 'draft';
 export type RegistrationStatus = 'closed' | 'open' | 'waitlist' | 'sold_out';
+
+type RecapImage = { src: string; thumbnail?: string; width: number; height: number };
+const recapImage = (index: number, width = 2048, height = 1365): RecapImage => ({
+  src: `${import.meta.env.BASE_URL}assets/event-overview/${index}-1600.webp`,
+  thumbnail: `${import.meta.env.BASE_URL}assets/event-overview/${index}-480.webp`,
+  width, height,
+});
+const existingRecapImages = [EVENT_MEDIA.roomAlternative, EVENT_MEDIA.builderDiscussion, EVENT_MEDIA.codeCloseup, EVENT_MEDIA.presenterProjector, EVENT_MEDIA.demo].map((image) => ({
+  src: image.large ?? image.src,
+  thumbnail: image.thumbnail,
+  width: image.width,
+  height: image.height,
+}));
 
 export type SiteEvent = {
   slug: string;
@@ -30,6 +43,7 @@ export type SiteEvent = {
   registrationCtaDe?: string;
   registrationCtaEn?: string;
   recapUrl?: string;
+  recap?: { images: RecapImage[]; aftermovie: string; titleDe?: string; titleEn?: string };
   descriptionDe: string;
   descriptionEn: string;
 };
@@ -37,6 +51,7 @@ export type SiteEvent = {
 export const EVENTS: SiteEvent[] = [
   {
     slug: 'pizza-and-prototypes-2026',
+    recap: { images: [recapImage(1), ...existingRecapImages], aftermovie: SITE.aftermovie.url },
     status: 'past',
     titleDe: 'Pizza & Prototypes',
     titleEn: 'Pizza & Prototypes',
@@ -58,6 +73,7 @@ export const EVENTS: SiteEvent[] = [
   },
   {
     slug: 'ai-in-software-development-2026',
+    recap: { images: [recapImage(2, 1365, 2048), recapImage(3), recapImage(4)], aftermovie: 'https://de.linkedin.com/posts/niklas-bruene_techmeetsproblems-openinnovation-techtalents-activity-7501519713097699328-ibGa', titleDe: 'AI in Software Development – From Euphoria to Reality', titleEn: 'AI in Software Development – From Euphoria to Reality' },
     status: 'past',
     titleDe: 'AI in Software Development',
     titleEn: 'AI in Software Development',
@@ -69,6 +85,7 @@ export const EVENTS: SiteEvent[] = [
     location: 'Startpunkt57 / Haus der Innovation',
     address: 'Sandstraße 26, 57072 Siegen',
     speaker: 'Sebastian Klietsch',
+    company: { name: 'Ingenieurgemeinschaft Klietsch GmbH', url: SITE.network.klietsch },
     eventTypeDe: 'Vortrag & Austausch',
     eventTypeEn: 'Talk & discussion',
     language: 'DE / EN',
@@ -79,6 +96,7 @@ export const EVENTS: SiteEvent[] = [
   },
   {
     slug: 'tech-talks-niklas-woelfl-automatiq-2026',
+    recap: { images: [recapImage(5), recapImage(6), recapImage(7), recapImage(8)], aftermovie: 'https://lnkd.in/p/gauSjxYU' },
     status: 'past',
     titleDe: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
     titleEn: 'Tech Talks by TMP: Niklas Wölfl × AutomatIQ Synergies',
