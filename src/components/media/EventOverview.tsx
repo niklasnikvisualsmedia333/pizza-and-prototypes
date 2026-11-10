@@ -16,7 +16,7 @@ function EventCard({ event, lang }: { event: SiteEvent; lang: Lang }) {
 
   return <article className="event-overview-card">
     <div className="event-overview-image">
-      <img className="event-overview-cover" src={image.thumbnail ?? image.src} alt={image.alt} style={{ objectPosition: image.objectPosition }} loading="lazy" decoding="async" width={image.width} height={image.height} />
+      <img className="event-overview-cover" src={image.cardSrc ?? image.src} srcSet={image.cardSrcSet} sizes="(max-width: 700px) 85vw, 33vw" alt={image.alt} style={{ objectPosition: image.objectPosition }} loading="lazy" decoding="async" width={image.width} height={image.height} />
       {images.length > 1 && <>
         <button type="button" className="event-overview-arrow is-previous" aria-label={`${previousLabel}: ${title}`} onClick={() => setActiveIndex((index) => (index - 1 + images.length) % images.length)}><ChevronLeft aria-hidden="true" /></button>
         <button type="button" className="event-overview-arrow is-next" aria-label={`${nextLabel}: ${title}`} onClick={() => setActiveIndex((index) => (index + 1) % images.length)}><ChevronRight aria-hidden="true" /></button>

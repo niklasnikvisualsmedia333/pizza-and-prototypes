@@ -4,15 +4,19 @@ import { SITE } from './site';
 export type EventStatus = 'past' | 'upcoming' | 'draft';
 export type RegistrationStatus = 'closed' | 'open' | 'waitlist' | 'sold_out';
 
-type RecapImage = { src: string; thumbnail?: string; width: number; height: number; objectPosition?: string };
+type RecapImage = { src: string; thumbnail?: string; cardSrc?: string; cardSrcSet?: string; width: number; height: number; objectPosition?: string };
 const recapImage = (index: number, width = 2048, height = 1365, objectPosition?: string): RecapImage => ({
   src: `${import.meta.env.BASE_URL}assets/event-overview/${index}-1600.webp`,
   thumbnail: `${import.meta.env.BASE_URL}assets/event-overview/${index}-480.webp`,
+  cardSrc: `${import.meta.env.BASE_URL}assets/event-overview/${index === 2 ? '2-card-960' : `${index}-960`}.webp`,
+  cardSrcSet: index === 2 ? undefined : `${import.meta.env.BASE_URL}assets/event-overview/${index}-480.webp 480w, ${import.meta.env.BASE_URL}assets/event-overview/${index}-960.webp 960w, ${import.meta.env.BASE_URL}assets/event-overview/${index}-1600.webp 1600w`,
   width, height, objectPosition,
 });
 const existingRecapImages = [EVENT_MEDIA.roomAlternative, EVENT_MEDIA.builderDiscussion, EVENT_MEDIA.codeCloseup, EVENT_MEDIA.presenterProjector, EVENT_MEDIA.demo].map((image) => ({
   src: image.large ?? image.src,
   thumbnail: image.thumbnail,
+  cardSrc: image.width < image.height ? image.large : image.medium,
+  cardSrcSet: image.width < image.height ? undefined : `${image.medium} 768w, ${image.large} 1280w`,
   width: image.width,
   height: image.height,
 }));
