@@ -1194,7 +1194,7 @@ function LatestEvent({
   content: typeof communityContent.en;
   lang: Lang;
 }) {
-  const event = UPCOMING_EVENTS[0] ?? PAST_EVENTS[0];
+  const event = UPCOMING_EVENTS.find((item) => item.slug === 'tech-talks-datasec-2026') ?? UPCOMING_EVENTS[0] ?? PAST_EVENTS[0];
   if (!event) {
     return null;
   }

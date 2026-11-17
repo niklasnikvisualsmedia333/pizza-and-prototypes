@@ -54,6 +54,22 @@ export type SiteEvent = {
 
 export const EVENTS: SiteEvent[] = [
   {
+    slug: 'tech-talks-datasec-2026', status: 'upcoming',
+    titleDe: 'Tech Talks by TMP × DATASEC', titleEn: 'Tech Talks by TMP × DATASEC',
+    subtitleDe: 'KI, Innovation und Automatisierung in der Praxis', subtitleEn: 'AI, innovation and automation in practice',
+    date: '2026-12-03', startTime: '17:00', endTime: '20:00',
+    location: 'Haus der Innovation, Siegen (voraussichtlich)',
+    speaker: 'Tobias Wilsmann · Managing Director & CTO, DATASEC',
+    eventTypeDe: 'Tech Talk · auf Englisch', eventTypeEn: 'Tech Talk · in English', language: 'EN',
+    image: ASSETS.event.roomAlternative, registrationStatus: 'open',
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdGb2jQBTbB1_1J6jLhGs4d5zf-JqoNhYN7VfxYJKuSOWKIjA/viewform',
+    registrationNoteDe: 'Bitte halte dir vorläufig 17 bis 20 Uhr frei. Die genaue Startzeit, der endgültige Vortragstitel und weitere Details folgen per E-Mail.',
+    registrationNoteEn: 'Please keep 5 to 8 PM free. The exact start time, final talk title and further details will follow by email.',
+    registrationCtaDe: 'Zum Tech Talk anmelden', registrationCtaEn: 'Register for the Tech Talk',
+    descriptionDe: 'Tobias Wilsmann zeigt, wie DATASEC KI und Innovation für die Automatisierung realer Geschäftsprozesse einsetzt. Lerne einen potenziellen Arbeitgeber und seine Geschäftsführung kennen und erfahre mehr über den gemeinsam geplanten Hackathon 2027.',
+    descriptionEn: 'Tobias Wilsmann shares how DATASEC uses AI and innovation to automate real business processes. Meet a potential employer and its executive leadership, and learn about our planned joint hackathon in 2027.',
+  },
+  {
     slug: 'pizza-and-prototypes-2026',
     recap: { images: [existingRecapImages[0], recapImage(1), ...existingRecapImages.slice(1)], aftermovie: SITE.aftermovie.url, summaryDe: 'Kleine Teams entwickelten Ideen zu einer echten Herausforderung.', summaryEn: 'Small teams developed ideas around a real challenge.' },
     status: 'past',
