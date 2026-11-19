@@ -1079,7 +1079,6 @@ function App() {
       <SharedAnalyticsConsentBanner lang={lang} consent={analyticsConsent} onChoice={updateAnalyticsConsent} />
       <CommunityRefreshHero content={refresh} lang={lang} />
       <LatestEvent content={refresh} lang={lang} />
-      {Date.now() < Date.parse('2026-11-18T19:30:00Z') && <LatestEvent content={refresh} lang={lang} eventSlug="pizza-and-prototypes-pagyz-2026" />}
       <CommunityBenefits content={refresh} />
       <SessionProcess content={refresh} />
       <EventOverview page="community" lang={lang} />
@@ -1191,13 +1190,11 @@ function formatEventTime(event: (typeof UPCOMING_EVENTS)[number], lang: Lang) {
 function LatestEvent({
   content,
   lang,
-  eventSlug,
 }: {
   content: typeof communityContent.en;
   lang: Lang;
-  eventSlug?: string;
 }) {
-  const event = UPCOMING_EVENTS.find((item) => item.slug === (eventSlug ?? 'tech-talks-datasec-2026')) ?? (eventSlug ? undefined : UPCOMING_EVENTS[0] ?? PAST_EVENTS[0]);
+  const event = UPCOMING_EVENTS[0] ?? PAST_EVENTS[0];
   if (!event) {
     return null;
   }
@@ -1222,7 +1219,7 @@ function LatestEvent({
   }).format(new Date(`${event.date}T12:00:00`));
 
   return (
-    <section id={eventSlug ? undefined : 'latest-event'} className="page-section page-section-compact latest-event-section">
+    <section id="latest-event" className="page-section page-section-compact latest-event-section">
       <div className="site-shell latest-event-card">
         <div>
           <p className="section-eyebrow">{content.eventEyebrow}</p>
@@ -1234,7 +1231,7 @@ function LatestEvent({
           <div><dt>{date}</dt><dd>{lang === 'de' ? event.eventTypeDe ?? content.eventTypeFallback : event.eventTypeEn ?? content.eventTypeFallback}</dd></div>
           {event.speaker && <div><dt>{event.speaker}</dt><dd>{event.company && <><a href={event.company.url} target="_blank" rel="noopener noreferrer">{event.company.name}</a><br /></>}{event.language}</dd></div>}
           {!event.speaker && (event.startTime || event.location) && <div><dt>{event.language}</dt></div>}
-          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location && <>{event.slug === 'tech-talks-datasec-2026' && lang === 'en' ? 'Haus der Innovation, Siegen (expected)' : event.location}<br /></>}{event.address ?? event.language}</dd></div>}
+          {(event.startTime || event.location) && <div><dt>{formatEventTime(event, lang)}</dt><dd>{event.location && <>{event.location}<br /></>}{event.address ?? event.language}</dd></div>}
           {!event.speaker && !(event.startTime || event.location) && <div><dt>{event.language}</dt><dd>{registrationLabels[event.registrationStatus]}</dd></div>}
         </dl>
         <div className="event-followup">
